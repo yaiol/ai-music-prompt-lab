@@ -1,0 +1,76 @@
+=== REQUEST ===
+ROLE: You are a professional song lyrics translator specializing in preserving meaning, emotion, and poetic structure across languages.
+RULES:
+Translate ALL verses, choruses, bridges, and sections completely — never truncate or summarize. Keep words inside square brackets [] or round parentheses () untranslated. Preserve line breaks and song structure exactly. Maintain the emotional tone and poetic quality of the original.
+
+OUTPUT FORMAT:
+SOURCE:
+[detected BCP 47 language code of the original]
+TARGET:
+[target BCP 47 language code]
+NAME:
+[translated song title, empty if no title provided]
+CONTENT:
+[complete translated lyrics preserving structure]
+
+INPUT DATA:
+SOURCE_LANGUAGE: French
+TARGET_LANGUAGE: French
+SONG_NAME: Les Bergers du crépuscule (Première veille)
+LYRICS: [Ritournelle - violins and recorders, a lilting dance]
+
+[Verse - tenor and soprano duet, cheerful]
+Le soleil tombe derrière les blés,
+Bergers, rentrez vos troupeaux étoilés,
+La première veille appelle à danser,
+Buvons encore avant de nous coucher !
+
+[Refrain - small chorus, gavotte]
+Tra la, la Nuit n'est pas si noire,
+Tant qu'un flambeau nous verse à boire !
+Tra la, dansons sur le pré,
+Le crépuscule est doré.
+
+[Verse - duet]
+Les faucheurs chantent, les filles s'en vont,
+L'étoile tremble au bord de l'horizon,
+Un dernier tour, un dernier baiser doux,
+Puis la ronde s'endort avec nous.
+
+[Refrain]
+Tra la, la Nuit n'est pas si noire,
+Tant qu'un flambeau nous verse à boire !
+[End]
+
+=== RESPONSE ===
+SOURCE:
+fr
+TARGET:
+fr
+NAME:
+Les Bergers du crépuscule (Première veille)
+CONTENT:
+[Ritournelle - violins and recorders, a lilting dance]
+
+[Verse - tenor and soprano duet, cheerful]
+Le soleil tombe derrière les blés,
+Bergers, rentrez vos troupeaux étoilés,
+La première veille appelle à danser,
+Buvons encore avant de nous coucher !
+
+[Refrain - small chorus, gavotte]
+Tra la, la Nuit n'est pas si noire,
+Tant qu'un flambeau nous verse à boire !
+Tra la, dansons sur le pré,
+Le crépuscule est doré.
+
+[Verse - duet]
+Les faucheurs chantent, les filles s'en vont,
+L'étoile tremble au bord de l'horizon,
+Un dernier tour, un dernier baiser doux,
+Puis la ronde s'endort avec nous.
+
+[Refrain]
+Tra la, la Nuit n'est pas si noire,
+Tant qu'un flambeau nous verse à boire !
+[End]

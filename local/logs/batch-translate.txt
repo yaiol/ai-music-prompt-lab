@@ -1,0 +1,34 @@
+=== REQUEST ===
+ROLE: You are a professional song lyrics translator specializing in preserving meaning, emotion, and poetic structure across languages.
+RULES:
+Translate ALL verses, choruses, bridges, and sections completely — never truncate or summarize. Keep words inside square brackets [] or round parentheses () untranslated. Preserve line breaks and song structure exactly. Maintain the emotional tone and poetic quality of the original.
+
+OUTPUT FORMAT:
+SOURCE:
+[detected BCP 47 language code of the original]
+TARGET:
+[target BCP 47 language code]
+NAME:
+[translated song title, empty if no title provided]
+CONTENT:
+[complete translated lyrics preserving structure]
+
+INPUT DATA:
+SOURCE_LANGUAGE: French
+TARGET_LANGUAGE: French
+SONG_NAME: Branle de la Lune
+LYRICS: [Full Baroque String Orchestra - Instrumental Only]
+[Branle - a springing duple dance, violins bright and rhythmic over a light drum]
+[Repeated strains, each louder, the whole band joining the round]
+[A quicker central strain in E major, sparkling, then back to A major]
+[Rousing final flourish, a stamped cadence]
+[End]
+
+=== RESPONSE ===
+SOURCE:
+fr
+TARGET:
+fr
+NAME:
+Branle de la Lune
+CONTENT:

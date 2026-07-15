@@ -1,0 +1,18 @@
+# node
+node_modules/
+# electron-builder output
+dist/
+# binairies
+release/
+# claude
+.claude/
+# log / env
+*.log
+.env
+.env.local
+.env.*.local
+# local scratch & dev files that belong at project root, not main/
+i18n.txt
+DEV-soundcloud.md
+CLAUDE-languages-translation.md
+prompt-json.cmd

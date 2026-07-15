@@ -1,0 +1,86 @@
+name: Build
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        include:
+          - os: windows-latest
+            script: dist
+          - os: macos-latest
+            script: dist:mac
+          - os: ubuntu-latest
+            script: dist:linux
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci --ignore-scripts
+        env:
+          ELECTRON_SKIP_BINARY_DOWNLOAD: 1
+          NODE_OPTIONS: --max-old-space-size=4096
+
+      # App-specific prep before the build — e.g. fetch large vendored binaries (pandoc) that are
+      # deliberately NOT committed to git. --if-present makes it a no-op for apps with no ci:prepare
+      # script, so this stays a single generic workflow.
+      - name: Prepare (fetch vendored binaries if any)
+        run: npm run ci:prepare --if-present
+
+      # Build ONLY — no publish. electron-builder must not create the GitHub Release (see the
+      # top-of-file note); it just writes installers + update metadata into release/.
+      - name: Build
+        run: npm run ${{ matrix.script }} -- --publish never
+        env:
+          NODE_OPTIONS: --max-old-space-size=6144
+
+      - name: Upload installers
+        uses: actions/upload-artifact@v4
+        with:
+          name: installers-${{ matrix.os }}
+          path: |
+            release/*.exe
+            release/*.dmg
+            release/*.AppImage
+            release/*.blockmap
+            release/latest*.yml
+          if-no-files-found: ignore
+
+  # ONE release job: gather every OS's installers and create a single draft GitHub Release,
+  # titled "<productName> <version>" (= info.json app.name + app.version), e.g. "Claude Code
+  # Helper 1.0.0". This is the ONLY place a release is created.
+  release:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/download-artifact@v4
+        with:
+          path: dist
+          pattern: installers-*
+          merge-multiple: true
+      - name: Create the draft GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          title="$(node -p "require('./package.json').productName") $version"
+          gh release create "${GITHUB_REF_NAME}" --draft --title "$title" --notes "Initial Release ${GITHUB_REF_NAME}" dist/*

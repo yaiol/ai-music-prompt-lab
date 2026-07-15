@@ -1,0 +1,104 @@
+{
+  "name": "ai-music-prompt-lab",
+  "productName": "AI Music Prompt Lab",
+  "version": "1.0.0",
+  "license": "MIT",
+  "description": "AI Prompt Manager — Vocal & Music",
+  "private": true,
+  "author": "yaiol",
+  "main": "electron/main.mjs",
+  "homepage": "./",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaiol/ai-music-prompt-lab.git"
+  },
+  "devPort": 3000,
+  "storagePrefix": "ampl",
+  "scripts": {
+    "start": "vite",
+    "build": "vite build",
+    "electron": "electron .",
+    "electron:dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
+    "rebuild": "electron-rebuild -f -w better-sqlite3",
+    "dist": "npm run build && electron-builder --win --x64",
+    "dist:mac": "npm run build && electron-builder --mac",
+    "dist:linux": "npm run build && electron-builder --linux"
+  },
+  "build": {
+    "appId": "com.yaiol.ai-music-prompt-lab.app",
+    "productName": "AI Music Prompt Lab",
+    "extends": null,
+    "extraMetadata": {
+      "main": "electron/main.mjs"
+    },
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "electron/**/*",
+      "seeds/**/*",
+      "src/languages.js",
+      "node_modules/**/*",
+      "package.json"
+    ],
+    "asar": true,
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**/*"
+    ],
+    "win": {
+      "target": "nsis",
+      "icon": "public/app.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "menuCategory": "yaiol",
+      "shortcutName": "AI Music Prompt Lab",
+      "uninstallDisplayName": "yaiol AI Music Prompt Lab"
+    },
+    "mac": {
+      "target": "dmg",
+      "category": "public.app-category.productivity",
+      "icon": "public/app.icns"
+    },
+    "linux": {
+      "target": "AppImage",
+      "icon": "public/app.png"
+    },
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "yaiol",
+        "repo": "ai-music-prompt-lab"
+      }
+    ]
+  },
+  "dependencies": {
+    "better-sqlite3": "^12.11.1",
+    "brace-expansion": "^5.0.5",
+    "cors": "^2.8.5",
+    "docx": "^9.7.1",
+    "express": "^5.2.1",
+    "music-metadata": "^11.13.0",
+    "path-to-regexp": "^8.4.2",
+    "picomatch": "^4.0.4",
+    "yaml": "^2.9.0"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.4",
+    "@vitejs/plugin-react": "^6.0.3",
+    "concurrently": "^10.0.3",
+    "electron": "^42.5.0",
+    "electron-builder": "^26.15.3",
+    "lucide-react": "^1.21.0",
+    "react": "^19.2.7",
+    "react-colorful": "^5.7.0",
+    "react-dom": "^19.2.7",
+    "vite": "^8.1.0",
+    "wait-on": "^9.0.10",
+    "xlsx": "^0.18.5"
+  }
+}

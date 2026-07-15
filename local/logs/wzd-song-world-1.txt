@@ -1,0 +1,64 @@
+=== REQUEST ===
+ROLE: Ethnomusicologist and Cultural Researcher.
+TASK: Extract a high-fidelity "Cultural DNA Profile" for the requested Artist to be used for lyrical emulation.
+RULES:
+1. LANGUAGES: Identify the primary language and any secondary languages (slang, colonial, or tribal) the artist uses in their lyrics.
+2. STANCE: Define the "Soul" of the artist (e.g., political defiance, ancestral wisdom, ethereal melancholia).
+3. STRUCTURE: Identify the specific structure of their writing (e.g., Griot storytelling, urban metaphors, rhythmic repetition).
+4. STYLE: Provide a precise 200-word description of the artist's musical style, focusing on genre fusion, rhythmic complexity, and vocal delivery.
+5. SUBJECTS: List exactly 10 recurring thematic subjects or lyrical themes found in the artist's discography.
+ENFORCE CONSTRAINTS:
+- FORMAT: Output into a code block.
+- NO BIOGRAPHY: Do not provide history, dates, or awards.
+- PRECISION: Ensure the primary language is explicitly named for use as a TARGET_LANGUAGE variable.
+- WORD COUNT: The MUSIC_STYLE section must be approximately 200 words.
+STRUCTURE: [Description]
+STYLE: [200-word description]
+SUBJECTS: 
+1. [Theme]
+2. [Theme]
+3. [Theme]
+4. [Theme]
+5. [Theme]
+6. [Theme]
+7. [Theme]
+8. [Theme]
+9. [Theme]
+10. [Theme]
+
+OUTPUT FORMAT:
+ARTIST: [Name]
+LANGUAGE_PRIMARY: [Language Name]
+LANGUAGE_SECONDARY: [Language Name or None]
+STANCE: 
+[Brief description]
+
+INPUT DATA:
+ARTIST: Elvis Presley
+
+=== RESPONSE ===
+```
+ARTIST: Elvis Presley
+LANGUAGE_PRIMARY: English
+LANGUAGE_SECONDARY: Southern American English (regionalisms, slang)
+STANCE: 
+A primal fusion of rebellious sensuality and earnest longing, embodying the liberating spirit of youth while wrestling with the complexities of devotion and fame. His "soul" is a magnetic paradox, oscillating between untamed desire and a yearning for redemption, rooted in a distinctly American mythos of working-class dreams made grand.
+
+STRUCTURE: 
+His lyrical structure is typically direct and narrative-driven, often drawing from blues and country traditions with clear verse-chorus forms. He frequently employs simple, relatable storytelling, emphasizing emotional directness over complex metaphors. The power often lies in his *delivery* within these structures, using dynamic shifts, interjections, and improvisational vocalizations to imbue straightforward lines with profound feeling and urgency. He builds anticipation through vocal tension and releases it with characteristic growls, croons, or powerful belts.
+
+STYLE: 
+Elvis Presley's musical style is a seminal blend, primarily forging the genre of Rock and Roll by synthesizing Rhythm & Blues, Country, Gospel, and Pop. His rhythmic complexity, though often built on straightforward 4/4 time signatures, pulsed with an undeniable swing and shuffle derived from his R&B and blues influences, creating an infectious, propulsive energy that defined early rock. Instrumentation typically featured electric guitar, bass, drums, and often piano, with a raw, driving sound that became iconic. His vocal delivery was extraordinarily versatile and iconic, encompassing a rich baritone-to-tenor range. He could shift from a tender croon to a powerful, guttural growl, employing a distinctive vibrato, falsetto flourishes, and a dynamic control that conveyed intense emotion. This emotive range, coupled with his innovative genre fusion and charismatic stage presence, created a sound that was simultaneously rebellious, tender, and universally appealing, irrevocably altering the landscape of popular music.
+
+SUBJECTS: 
+1. Love (romantic, passionate, new)
+2. Heartbreak and Loss
+3. Rebellion and Non-conformity
+4. Longing and Desire
+5. Loyalty and Devotion
+6. Good Times and Celebration
+7. Faith and Spirituality (especially Gospel)
+8. Loneliness and Isolation
+9. Freedom and Escape
+10. The Power of Music/Dance
+```

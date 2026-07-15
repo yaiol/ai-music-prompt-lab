@@ -1,0 +1,154 @@
+=== REQUEST ===
+TASK: Transmute the 'INPUT DATA' into a high-fidelity lyrical composition that mirrors the requested artist's specific vocabulary, language, and cultural depth.
+RULES:
+1. IDENTIFY: [Artist/Style] -> Primary Language -> Cultural Stance -> Signature Metaphors.
+2. ANCHOR: Use the LANGUAGE and traditional poetic forms native to that culture.
+3. CADENCE: Mimic the repetitive, cyclical nature of the songwriting and specific syllabic meter.
+4. IMAGERY: Replace literal descriptions with the artist's specific cultural symbols (e.g., the calabash, the desert wind).
+5. STANCE: Adopt the emotional core (e.g., griot wisdom, urban grit, or ethereal folk).
+ENFORCE CONSTRAINTS:
+- FORMAT: Output the DESCRIPTION, TITLE, LANGUAGES and LYRICS fields.
+- NO AUDIO: Do not offer Lyria 3 music generation.
+- LABELS: Use [Verse], [Chorus], [Bridge], [Outro] blocks if make sense. Use only double line breaks to separate stanzas.
+- EXCLUSION: Never include the artist's name in the CONTENT section.
+- TRANSLATION: Always output TITLE_1/LYRICS_1
+- TRANSLATION: LANGUAGE_2 must be en. If LANGUAGE_1 is already en ignore TITLE_2/LYRICS_2,
+- TRANSLATION: LANGUAGE_3 must be fr. If LANGUAGE_1 is already fr, ignore TITLE_3/LYRICS_3
+
+OUTPUT FORMAT:
+DESCRIPTION:
+[pure text, 3 chapters using poetic style describes the language, artist, song. no titles, presented into a block code correctly intended]
+
+TITLE 1: [3-6 word title]
+LANGUAGE_1: [BCP 47 language code]
+LYRICS_1:
+[pure text, present into a block code correctly intended]
+
+TITLE_2: [Translation of orignal song title]
+LANGUAGE_2: [BCP 47 language code]
+LYRICS_2:
+[Translation of orignal song lyrics]
+
+TITLE_3: [Translation of orignal song title]
+LANGUAGE_3: [BCP 47 language code]
+LYRICS_3:
+[Translation of orignal song lyrics]
+
+INPUT DATA:
+ARTIST: Elvis Presley
+SUBJECT: Romantic Love and Infatuation
+LANGUAGE: English
+
+=== RESPONSE ===
+```
+From the Mississippi earth, where rhythm bloomed
+and blues-infused whispers gently loomed,
+a voice emerged, a sound both raw and bold,
+a story of the heart, forever to be told.
+It spoke in soulful cries, in rock'n'roll's embrace,
+a wild, electric spirit, time cannot erase.
+
+The language, steeped in Dixie's sun-drenched drawl,
+painted tales of passion, answering love's call.
+No grand metaphors, but feelings sharp and clear,
+of aching hearts, and longing ever near.
+A vibrant tapestry of simple, potent truth,
+sung with raw abandon, from the fire of youth.
+
+This song, a burning ember, from that sacred flame,
+an ode to infatuation, whispering her name.
+It pulses with the beat of a captivated soul,
+lost in golden starlight, losing all control.
+A fervent declaration, honest and profound,
+where all of life's true meaning, in her gaze is found.
+```
+
+TITLE_1: Caught in Your Light
+LANGUAGE_1: en
+LYRICS_1:
+[Verse]
+Walked in tonight, the room was spinnin' slow
+Then your eyes met mine, darling, didn't you know?
+Felt a thunder rumble, from my head to my toe
+Never felt a feeling quite like this before, oh no
+
+[Chorus]
+Oh, you got me caught in your sweet golden light
+Burning like a wildfire, shining ever so bright
+Every single heartbeat, tells me this is right
+You're the only star in my midnight sky
+
+[Verse]
+My feet don't touch the ground, I swear it's true
+Ever since that moment, baby, I saw you
+Got that wild sweet rhythm, runnin' through and through
+Every single thought, sugar, points straight to you
+
+[Chorus]
+Oh, you got me caught in your sweet golden light
+Burning like a wildfire, shining ever so bright
+Every single heartbeat, tells me this is right
+You're the only star in my midnight sky
+
+[Bridge]
+Some folks chase shadows, some chase a fading dream
+But your love, my darling, is the purest, truest gleam
+A spell you cast, a powerful, wondrous scheme
+Lost in your magic, caught in your stream
+
+[Chorus]
+Oh, you got me caught in your sweet golden light
+Burning like a wildfire, shining ever so bright
+Every single heartbeat, tells me this is right
+You's the only star in my midnight sky
+
+[Outro]
+Yeah, caught in your light, it's true
+Only for you, darling, only for you
+My whole world is new, caught in your light...
+Goodnight, goodnight...
+
+TITLE_3: Pris Dans Ta Lumière
+LANGUAGE_3: fr
+LYRICS_3:
+[Verse]
+Entré ce soir, la pièce tournait lentement
+Puis tes yeux ont rencontré les miens, chérie, ne savais-tu pas ?
+J'ai senti un grondement de tonnerre, de ma tête à mes pieds
+Jamais ressenti une telle sensation auparavant, oh non
+
+[Chorus]
+Oh, tu m'as pris dans ta douce lumière dorée
+Brûlant comme un feu de forêt, brillant si intensément
+Chaque battement de cœur, me dit que c'est bien
+Tu es la seule étoile dans mon ciel de minuit
+
+[Verse]
+Mes pieds ne touchent pas le sol, je le jure, c'est vrai
+Depuis ce moment, bébé, où je t'ai vue
+J'ai ce rythme doux et sauvage, qui me traverse de part en part
+Chaque pensée, ma chérie, pointe droit vers toi
+
+[Chorus]
+Oh, tu m'as pris dans ta douce lumière dorée
+Brûlant comme un feu de forêt, brillant si intensément
+Chaque battement de cœur, me dit que c'est bien
+Tu es la seule étoile dans mon ciel de minuit
+
+[Bridge]
+Certains courent après les ombres, certains après un rêve qui s'estompe
+Mais ton amour, ma chérie, est le plus pur, le plus vrai éclat
+Un sort que tu as jeté, un plan puissant et merveilleux
+Perdu dans ta magie, pris dans ton courant
+
+[Chorus]
+Oh, tu m'as pris dans ta douce lumière dorée
+Brûlant comme un feu de forêt, brillant si intensément
+Chaque battement de cœur, me dit que c'est bien
+Tu es la seule étoile dans mon ciel de minuit
+
+[Outro]
+Oui, pris dans ta lumière, c'est vrai
+Seulement pour toi, chérie, seulement pour toi
+Mon monde entier est nouveau, pris dans ta lumière...
+Bonne nuit, bonne nuit...

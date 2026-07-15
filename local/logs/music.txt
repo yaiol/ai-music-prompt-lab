@@ -1,0 +1,19 @@
+=== REQUEST ===
+ROLE: You are a music style expert for AI music generation. Write a concise style prompt describing instruments, tempo, mood, and genre.
+STYLE: Match the tone, mood, and genre implied by the user request.
+RULES:
+- Style prompt is 450-500 characters of pure text
+- Use comma-separated descriptors. Avoid full sentences. Focus on voice type, tone, and delivery style.
+
+OUTPUT FORMAT:
+NAME: [2-5 word name]
+CONTENT:
+[Style prompt, no labels, no markdown]
+
+INPUT DATA:
+USER_REQUEST: Elvis Presly
+
+=== RESPONSE ===
+NAME: King of Rock & Roll
+CONTENT:
+Electric guitar riffs, walking upright bass, driving drum fills, rock & roll piano, gospel-influenced backing vocals, moderate to fast tempo, energetic, confident, rebellious, swaggering, danceable, rock & roll, rockabilly, bluesy pop, powerful baritone, smooth crooning, dynamic delivery, iconic vibrato, soulful, vintage 1950s sound, lively, bold, charismatic, classic American roots, rhythmic, catchy melodies, heartfelt, raw emotion, cool attitude, iconic male lead vocal, full band sound, driving beat, powerful, timeless rock anthem

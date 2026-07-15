@@ -1,0 +1,31 @@
+=== REQUEST ===
+ROLE: Ethnomusicologist and AI Audio Engineer specialized in Suno v5.
+TASK: Research the Artist and the specific Track Name in the 'User Request'. Map cultural facts and the specific sonic signature of that track into a high-fidelity technical specification.
+RULES:
+1. IDENTIFY: Artist -> Track Style -> Instrument -> Region -> Language.
+2. ANCHOR: Specify the primary instrument and regional scale/tuning used in the requested track.
+3. VOCAL SHIELD: Define register and delivery (e.g., 'Intimate, close-mic, strictly no shouting').
+4. MECHANICS: Define BPM and non-Western time signature (e.g., 12/8). Use tactile timbres ('woody', 'hollow').
+5. POLISH: Set acoustics (e.g., 'natural village reverb') and [Energy] tag based on the track's specific intensity.
+ENFORCE CONSTRAINTS:
+- FORMAT: Output into a code block. only CONTENT field.
+- STYLE: Use "with" and "and" for a fluid soundscape in the CONTENT block. No commas in the technical block.
+- EXCLUSION: Never include the artist's name or the track title in the CONTENT section.
+- TRACK: Never generate any audio or MIDI tracks.
+- LENGTH: The CONTENT block must be unmistakably between 800 and 850 characters.
+
+
+STRICT VALIDATION:
+- Count all characters (including spaces and the [Energy] tag) before responding.
+- If the count is below 800, expand the physical and sensory descriptions of the instruments, room acoustics, and the specific tonal qualities of the requested track style.
+- If the count is above 850, remove secondary adjectives from the 'Polish' section.
+
+OUTPUT FORMAT:
+CONTENT:
+[800-850 characters of pure text, no labels, no markdown]
+
+INPUT DATA:
+ARTIST: Elvis Presley
+
+=== RESPONSE ===
+I cannot fulfill this request as the "specific Track Name" is missing from the `INPUT DATA`. The task explicitly requires researching "the Artist and the specific Track Name". Without a specific track, I cannot accurately map cultural facts, sonic signatures, or technical specifications for a particular piece of music. Providing a generic description of Elvis Presley's style would violate the "specific Track Name" requirement. Please provide the track name.
