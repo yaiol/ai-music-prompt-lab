@@ -795,6 +795,7 @@ export default function App() {
 
   const copy = (p, mode = "default") => {
     let text = p.style, toastMsg = t("tstCardCopied"), copyKey = p.id;
+    if (mode === "title")   { text = p.sortNumber != null ? `${String(p.sortNumber).padStart(2, "0")}-${p.name}` : p.name; toastMsg = t("tstCardTitleCopied"); copyKey = p.id + "_title"; }
     if (mode === "lyrics")  { text = p.lyrics; toastMsg = t("tstCardLyricsCopied"); copyKey = p.id + "_lyrics"; }
     if (mode === "linked") {
       const linked = (p.linkedCards || []).map((id) => cards.find((x) => x.id === id)).filter(Boolean);
@@ -3194,6 +3195,19 @@ function playBtnProps(mediaExists, isPlaying, accentColor, t) {
   };
 }
 
+// ── Lettered copy glyphs — a lucide "copy" icon with a T / S / L badge, one per copyable field ──
+// (title / style / lyrics). Single base so the three share one geometry; only the letter varies.
+const CopyLetter = ({ letter }) => (
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
+    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
+    <text x="11.7" y="18.8" fontSize="10.67" fontFamily="Arial, sans-serif" fill="currentColor" strokeWidth="0.6">{letter}</text>
+  </svg>
+);
+const CopyTitle  = () => <CopyLetter letter="T" />;
+const CopyStyle  = () => <CopyLetter letter="S" />;
+const CopyLyrics = () => <CopyLetter letter="L" />;
+
 // ── SongListCard - single source for song rows across the list view and the three special views ──
 // mode: "list" = full card (checkbox + toolbar + lyrics/tags). "link" / "media" / "sort" = stripped
 // single-feature card — number + title + version + the feature's own control only, no generic buttons.
@@ -3374,19 +3388,24 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, mediaExists, i
         const otherUrl = (song.urls || []).find(u => { const lbl = (u.label || "").toLowerCase().trim(); return !aiList.includes(lbl) && !musicList.includes(lbl); });
         const emptySlot = <span style={{ visibility: "hidden" }} />;
         return (
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: 4, flexShrink: 0, alignSelf: "start" }}>
-            {/* Row 1: copy style, copy lyrics, unlink, delete */}
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, flexShrink: 0, alignSelf: "start" }}>
+            {/* Row 1: copy title, copy style, copy lyrics, unlink, delete */}
+            <button className="btn icon small" style={{ ...(copiedId === song.id + "_title" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}) }}
+              onClick={() => onCopy && onCopy(song, "title")}
+              title={t("tipCardCopyTitle")}>
+              {copiedId === song.id + "_title" ? <Check /> : <CopyTitle />}
+            </button>
             {!isNote ? <button className="btn icon small" style={{ ...(copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: (isSong ? (song.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : song.style?.trim()) ? "visible" : "hidden" }}
               onClick={() => onCopy && onCopy(song, isLinkedSong ? "linked" : undefined)}
               title={t("tipCardCopyStyle")}
               tabIndex={(isSong ? (song.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : song.style?.trim()) ? 0 : -1}>
-              {copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? <Check /> : <Copy />}
+              {copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? <Check /> : <CopyStyle />}
             </button> : emptySlot}
             {!isNote ? <button className="btn icon small" style={{ ...(copiedId === song.id + "_lyrics" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: isSong && song.lyrics ? "visible" : "hidden" }}
               onClick={() => onCopy && onCopy(song, "lyrics")}
               title={t("tipCardCopyLyrics")}
               tabIndex={isSong && song.lyrics ? 0 : -1}>
-              {copiedId === song.id + "_lyrics" ? <Check /> : <ScrollText />}
+              {copiedId === song.id + "_lyrics" ? <Check /> : <CopyLyrics />}
             </button> : emptySlot}
             {onRemoveFromProject
               ? <button className="btn icon small" style={{ color: "var(--warn)", borderColor: "var(--warn)" }} onClick={() => onRemoveFromProject(activeProjectId, song.id)} title={t("tipCardUnlink")}>
@@ -3415,6 +3434,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, mediaExists, i
                   <span style={{ fontWeight: 700, lineHeight: 1 }}>{(otherUrl.label || "?")[0].toUpperCase()}</span>
                 </button>
               : emptySlot}
+            {emptySlot}
           </div>
         );
       })()}
@@ -3477,19 +3497,25 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
   } : {};
   const actionButtons = (
     <>
+      {/* Title/copy button - always available (every card has a name) */}
+      <button className="btn icon small" style={{ ...(copiedId === card.id + "_title" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}) }}
+        onClick={() => onCopy(card, "title")}
+        title={t("tipCardCopyTitle")}>
+        {copiedId === card.id + "_title" ? <Check /> : <CopyTitle />}
+      </button>
       {/* Style/copy button - hidden for note type; invisible placeholder when style is empty */}
       {!isNote && <button className="btn icon small" style={{ ...(copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: (isSong ? (card.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : card.style?.trim()) ? "visible" : "hidden" }}
         onClick={() => onCopy(card, isLinkedSong ? "linked" : undefined)}
         title={t("tipCardCopyStyle")}
         tabIndex={(isSong ? (card.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : card.style?.trim()) ? 0 : -1}>
-        {copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? <Check /> : <Copy />}
+        {copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? <Check /> : <CopyStyle />}
       </button>}
       {/* Lyrics button - visible for song with lyrics, invisible placeholder for music/vocal, hidden for note */}
       {!isNote && <button className="btn icon small" style={{ ...(copiedId === card.id + "_lyrics" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: isSong && card.lyrics ? "visible" : "hidden" }}
         onClick={() => onCopy(card, "lyrics")}
         title={t("tipCardCopyLyrics")}
         tabIndex={isSong && card.lyrics ? 0 : -1}>
-        {copiedId === card.id + "_lyrics" ? <Check /> : <ScrollText />}
+        {copiedId === card.id + "_lyrics" ? <Check /> : <CopyLyrics />}
       </button>}
       {onRemoveFromProject && (
         <button className="btn icon small" style={{ color: "var(--warn)", borderColor: "var(--warn)" }} onClick={onRemoveFromProject} title={t("tipCardUnlink")}>
