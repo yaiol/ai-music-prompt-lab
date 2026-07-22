@@ -467,10 +467,40 @@ function startServer(callback) {
     res.status(201).json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(id)));
   });
 
-  api.put("/cards/:id", (req, res) => {
+  // Read the Suno song id from a media file's comment tag ("made with suno; created=…; id=…").
+  // The flac's comment is scrubbed at tagging time, so fall back to the same-name sibling
+  // (the wav keeps its comment as provenance — same rule as the suno-sync tool).
+  async function readSunoId(mediaPath) {
+    const mm = await import("music-metadata");
+    const tryFile = async (p) => {
+      if (!p || !fs.existsSync(p)) return null;
+      try {
+        const meta = await mm.parseFile(p, { duration: false, skipCovers: true });
+        for (const c of (meta.common.comment || [])) {
+          const text = typeof c === "string" ? c : (c?.text || "");
+          const m = text.match(/made with suno.*?\bid=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+          if (m) return m[1];
+        }
+      } catch (_) {}
+      return null;
+    };
+    let id = await tryFile(mediaPath);
+    if (!id) {
+      const base = mediaPath.replace(/\.[^.]+$/, "");
+      const ext = path.extname(mediaPath).toLowerCase();
+      for (const sib of [".wav", ".flac"].filter(e => e !== ext)) {
+        id = await tryFile(base + sib);
+        if (id) break;
+      }
+    }
+    return id;
+  }
+
+  api.put("/cards/:id", async (req, res) => {
     const { id } = req.params;
     if (!db.prepare("SELECT cad_id FROM card WHERE cad_id=?").get(id)) return res.status(404).json({ error: "Not found" });
     const { type, name, desc, note, style, lyrics, tags, favorite, linkedCards, sortNumber, mediaPath, aiTweaks, lang, env, date } = req.body;
+    const prevMediaPath = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(id).cad_media_path;
     db.transaction(() => {
       const current = db.prepare("SELECT cad_name,cad_type FROM card WHERE cad_id=?").get(id);
       const effectiveName = name ?? current.cad_name;
@@ -485,6 +515,19 @@ function startServer(callback) {
         for (const c of linkedCards) ins.run(id, c);
       }
     })();
+    // Media newly linked → if the file carries Suno provenance, add the Suno song URL.
+    if (mediaPath && mediaPath !== prevMediaPath) {
+      const sunoId = await readSunoId(mediaPath);
+      if (sunoId) {
+        const href = `https://suno.com/song/${sunoId}`;
+        const exists = db.prepare("SELECT url_id FROM url WHERE url_parent_id=? AND url_type='cad' AND url_href=?").get(id, href);
+        if (!exists) {
+          const maxOrder = db.prepare("SELECT COALESCE(MAX(url_order),0) AS m FROM url WHERE url_parent_id=? AND url_type='cad'").get(id).m;
+          db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)")
+            .run(crypto.randomUUID(), id, "cad", "Suno", href, maxOrder + 1);
+        }
+      }
+    }
     res.json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(id)));
   });
 
@@ -2122,9 +2165,10 @@ function startServer(callback) {
         songs = rows.map(rowToCard);
       }
 
+      if (!songs.length) return res.status(400).json({ error: "No songs found" });
       if (filterLyrics === "withLyrics") songs = songs.filter(s => hasRealLyrics(s.lyrics));
       if (filterPublished === "publishedOnly") { const ms = (readSettings()[`${STORAGE_PREFIX}-music-sites`] || "soundcloud").split(",").map(s => s.trim().toLowerCase()).filter(Boolean); songs = songs.filter(s => (s.urls || []).some(u => ms.includes((u.label || "").toLowerCase().trim()))); }
-      if (!songs.length) return res.status(400).json({ error: "No songs found" });
+      if (!songs.length) return res.status(400).json({ error: "No songs match the filters (lyrics / published)" });
 
       // Default filename: project name when exactly one project selected
       let defaultName = "songs";
@@ -2327,6 +2371,9 @@ function startServer(callback) {
       }
 
       if (!songs.length) return res.status(400).json({ error: "No songs found" });
+      if (filterLyrics === "withLyrics") songs = songs.filter(s => hasRealLyrics(s.lyrics));
+      if (filterPublished === "publishedOnly") songs = songs.filter(s => (s.urls || []).some(u => musicSites.includes((u.label || "").toLowerCase().trim())));
+      if (!songs.length) return res.status(400).json({ error: "No songs match the filters (lyrics / published)" });
 
       let defaultName = "songs";
       let defaultDir = "";
@@ -2344,10 +2391,6 @@ function startServer(callback) {
         filters: [{ name: "Markdown", extensions: ["md"] }],
       });
       if (canceled || !filePath) return res.json({ canceled: true });
-
-      if (filterLyrics === "withLyrics") songs = songs.filter(s => hasRealLyrics(s.lyrics));
-      if (filterPublished === "publishedOnly") songs = songs.filter(s => (s.urls || []).some(u => musicSites.includes((u.label || "").toLowerCase().trim())));
-      if (!songs.length) return res.json({ canceled: true });
 
       songs.sort((a, b) => {
         const na = parseFloat(a.sortNumber) || Infinity;
@@ -2421,9 +2464,10 @@ function startServer(callback) {
         songs = db.prepare("SELECT * FROM card WHERE cad_type = 'song' ORDER BY cad_order, cad_name").all().map(rowToCard);
       }
 
+      if (!songs.length) return res.status(400).json({ error: "No songs found" });
       if (filterLyrics === "withLyrics") songs = songs.filter(s => hasRealLyrics(s.lyrics));
       if (filterPublished === "publishedOnly") songs = songs.filter(s => (s.urls || []).some(u => musicSites.includes((u.label || "").toLowerCase().trim())));
-      if (!songs.length) return res.status(400).json({ error: "No songs found" });
+      if (!songs.length) return res.status(400).json({ error: "No songs match the filters (lyrics / published)" });
 
       songs.sort((a, b) => {
         const na = parseFloat(a.sortNumber) || Infinity;

@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.3 — 2026-07-22
+- New wand button in the media panel auto-links files to songs when both the track number and title match (flac preferred over wav)
+- Linking a media file that carries Suno provenance automatically adds the suno.com song URL to the card
+- Document-export dialog shows a live count of songs the export will include and disables Create when it is zero
+- Export filters (lyrics / published) are now applied before the save dialog, with a clearer error when no songs match
+
 ## 1.0.2 — 2026-07-22
 - Deleting a project now offers a checkbox to also delete all cards inside it
 - `.suno` LP import reads each track's DESCRIPTION field into the card description

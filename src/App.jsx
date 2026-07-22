@@ -113,6 +113,14 @@ function getSongState(card, types, txtSettingsCardsAiSites = "udio, suno, produc
   return types.SongStateUndefined;
 }
 
+// ⚠ CLAUDE: mirrors hasRealLyrics in electron/main.mjs (the server owns export filtering) — keep the two in step.
+function hasRealLyrics(raw) {
+  return (raw || "").split("\n").some(line => {
+    const t = line.trim();
+    return t && !/^\[.*\]$/.test(t) && !/^\(.*\)$/.test(t);
+  });
+}
+
 // Static fallback used outside component scope (tag palettes etc.)
 const TYPES = buildTypes(DEFAULT_TYPE_COLORS);
 
@@ -1284,6 +1292,38 @@ export default function App() {
     } catch (err) { showToast("❌ " + err.message); }
   };
 
+  // Auto-link — pair each unlinked song with the scanned file `NN-<title>.<ext>` whose
+  // number AND title both match. Non-destructive: existing links and already-taken files
+  // are never touched; among flac/wav twins of the same track the flac wins.
+  const handleAutoLinkMedia = async () => {
+    // ⚠ CLAUDE: mirrors suno-sync's filename sanitize (files on disk are named from it) — keep in step.
+    const sanitizeTitle = (title) => title
+      .replace(/\s*[\/\\]\s*/g, " - ")
+      .replace(/[:*?"<>|]/g, "")
+      .replace(/\s+/g, " ")
+      .replace(/[ .]+$/, "")
+      .trim();
+    const usedPaths = new Set(linkViewSongs.map(s => s.mediaPath).filter(Boolean));
+    let linked = 0;
+    for (const song of linkViewSongs) {
+      if (song.mediaPath || song.sortNumber == null) continue;
+      const wantNum = parseInt(song.sortNumber, 10);
+      if (isNaN(wantNum)) continue;
+      const wantTitle = sanitizeTitle(song.name).toLowerCase();
+      const matches = mediaLinkFiles.filter(f => {
+        if (usedPaths.has(f.path)) return false;
+        const m = f.name.match(/^(\d+)\s*-\s*(.+)\.[^.]+$/);
+        return m && parseInt(m[1], 10) === wantNum && m[2].replace(/\s+/g, " ").trim().toLowerCase() === wantTitle;
+      });
+      if (!matches.length) continue;
+      const file = matches.find(f => /\.flac$/i.test(f.name)) || matches[0];
+      await handleSetMediaPath(song.id, file.path);
+      usedPaths.add(file.path);
+      linked++;
+    }
+    showToast(`✅ ${linked} ${t("tstAppMediaAutoLinked")}`);
+  };
+
   const s = makeStyles();
   const activeProj = activeProjectIds.length === 1 ? envProjects.find(p => p.id === activeProjectIds[0]) : null;
   // A finalized project locks its three special functions — the view is enterable but its
@@ -1947,6 +1987,11 @@ export default function App() {
                   <button onClick={() => handleScanMediaFolder(!!mediaLinkFolder)} title={t("tipPnlLinkChooseFolder")} className="btn icon small">
                     <FolderOpen />
                   </button>
+                  {mediaLinkFiles.length > 0 && (
+                    <button onClick={handleAutoLinkMedia} disabled={projLocked} title={t("tipPnlMediaAutoLink")} className="btn icon small">
+                      <Wand2 />
+                    </button>
+                  )}
                   {mediaLinkedCount > 0 && (
                     <button onClick={toggleHideLinkedMedia} title={hideLinkedMedia ? t("tipPnlMediaShowLinked") : t("tipPnlMediaHideLinked")}
                       className={`btn icon small${hideLinkedMedia ? " active" : ""}`}>
@@ -2408,9 +2453,15 @@ export default function App() {
           { key: "adoc", label: "AsciiDoc" },
         ];
         const close = () => setDocCreateOpen(false);
+        // Songs the export will actually include, given the current filters — mirrors the
+        // server-side filtering in /export-docx | /export-md | /export-adoc.
+        const ids = activeProjectIds.length ? activeProjectIds : (activeProj ? [activeProj.id] : []);
+        let exportSongs = cards.filter(c => c.type === "song" && (ids.length === 0 || ids.includes(c.project)));
+        if ((docCreateSettings.filterLyrics || "withLyrics") === "withLyrics") exportSongs = exportSongs.filter(c => hasRealLyrics(c.lyrics));
+        if ((docCreateSettings.filterPublished || "all") === "publishedOnly") exportSongs = exportSongs.filter(c => getSongState(c, types, txtSettingsCardsAiSites, txtSettingsCardsMusicSites) === types.SongStatePublished);
+        const exportCount = exportSongs.length;
         const doExport = async () => {
           close();
-          const ids = activeProjectIds.length ? activeProjectIds : (activeProj ? [activeProj.id] : []);
           const fmt = docCreateSettings.docFormat || "docx";
           const endpoint = fmt === "md" ? "/export-md" : fmt === "adoc" ? "/export-adoc" : "/export-docx";
           try {
@@ -2523,9 +2574,10 @@ export default function App() {
                 </div>
               </div>
               {/* Actions */}
-              <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
+              <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", alignItems: "center" }}>
+                <span className={`hint${exportCount === 0 ? " warn" : ""}`} style={{ marginRight: "auto" }}>{exportCount} {t("msgDlgDocSongCount")}</span>
                 <button className="btn subtle" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={close}>{t("btnGlbCancel")}</button>
-                <button className="btn primary" onClick={doExport}><FilePlus style={{ marginRight: 6 }} />{t("btnDlgDocCreate")}</button>
+                <button className="btn primary" disabled={exportCount === 0} onClick={doExport}><FilePlus style={{ marginRight: 6 }} />{t("btnDlgDocCreate")}</button>
               </div>
             </div>
           </div>
