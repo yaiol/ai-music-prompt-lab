@@ -415,6 +415,7 @@ export default function App() {
   const [dragOverFolderId, setDragOverFolderId] = useState(null);
   const [rootDropOver, setRootDropOver] = useState(false);
   const [deleteProjectConfirm, setDeleteProjectConfirm] = useState(null);
+  const [deleteProjectCards, setDeleteProjectCards]     = useState(false);
   const [importFolderPending, setImportFolderPending] = useState(null); // { projectId, path }
   const [sidebarOpen, setSidebarOpen]     = useState(true);
   const [sidebarWidth, setSidebarWidth]   = useState(() => parseInt(localStorage.getItem(`${STORAGE_PREFIX}-sidebar-width`) || "220"));
@@ -1066,11 +1067,12 @@ export default function App() {
     } catch (err) { showToast("❌ " + err.message); }
   };
 
-  const handleDeleteProject = async (id) => {
+  const handleDeleteProject = async (id, withCards) => {
     try {
-      await apiFetch(`/projects/${id}`, { method: "DELETE" });
+      await apiFetch(`/projects/${id}${withCards ? "?cards=1" : ""}`, { method: "DELETE" });
       setProjects((prev) => prev.filter((p) => p.id !== id));
       setActiveProjectIds(prev => prev.filter(pid => pid !== id));
+      if (withCards) setCards((prev) => prev.filter((c) => c.project !== id));
       setDeleteProjectConfirm(null);
       showToast(t("tstAppProjectDeleted"));
     } catch (err) { showToast("❌ " + err.message); }
@@ -1579,7 +1581,7 @@ export default function App() {
                   </div>
                   {/* Delete — a single self-framed danger .btn.icon: deletes the project, or the selected cards. */}
                   <div style={{ ...(!bulkEnabled ? sidebarDim : {}) }}>
-                    <button onClick={() => { if (bulkOnSelection) setBulkDeleteConfirm(true); else setDeleteProjectConfirm(bulkProject.id); }} title={t("tipCardDelete")} className="btn icon" style={{ color: "var(--danger)" }}>
+                    <button onClick={() => { if (bulkOnSelection) setBulkDeleteConfirm(true); else { setDeleteProjectCards(false); setDeleteProjectConfirm(bulkProject.id); } }} title={t("tipCardDelete")} className="btn icon" style={{ color: "var(--danger)" }}>
                       <Trash2 />
                     </button>
                   </div>
@@ -2359,10 +2361,15 @@ export default function App() {
             <button className="dl-close" onClick={() => setDeleteProjectConfirm(null)}><X /></button>
             <Trash2 color="var(--danger)" className="dlp-icon" />
             <p className="dlp-title">{t("cfmDlgDeleteProjectTitle")}</p>
-            <p className="dlp-sub">{t("cfmDlgDeleteProjectSub")}</p>
+            <div className="dlp-body">
+              <label className="check-label">
+                <input type="checkbox" className="check-box" checked={deleteProjectCards} onChange={(e) => setDeleteProjectCards(e.target.checked)} />
+                <span>{t("lblDlgDeleteProjectCards")}</span>
+              </label>
+            </div>
             <div className="dlp-foot">
               <button className="btn subtle" onClick={() => setDeleteProjectConfirm(null)}>{t("btnGlbCancel")}</button>
-              <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={() => handleDeleteProject(deleteProjectConfirm)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
+              <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={() => handleDeleteProject(deleteProjectConfirm, deleteProjectCards)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
             </div>
           </div>
         </div>
@@ -2486,12 +2493,13 @@ export default function App() {
               {/* Lyrics content option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 <span className="dlg-field-label">{t("lblDlgDocContentLyrics")}</span>
-                <div style={{ display: "flex", border: `1px solid var(--border-strong)`, borderRadius: 8, overflow: "hidden" }}>
-                  {opts.map((opt, i) => (
-                    <button className="btn icon small subtle" key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, contentLyrics: opt.key }))}
-                      style={{ color: docCreateSettings.contentLyrics === opt.key ? 'var(--accent)' : 'var(--text-mute)' }}>
-                      <div>{opt.label}</div>
-                      <div style={{ fontSize: 10, opacity: 0.6, marginTop: 2 }}>{opt.desc}</div>
+                <div className="barh-grp">
+                  {opts.map((opt) => (
+                    <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, contentLyrics: opt.key }))}
+                      className={`btn icon${docCreateSettings.contentLyrics === opt.key ? " active" : ""}`}
+                      title={opt.desc}
+                      style={{ flex: 1, justifyContent: "center" }}>
+                      {opt.label}
                     </button>
                   ))}
                 </div>

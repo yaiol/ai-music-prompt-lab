@@ -12,10 +12,10 @@
 //
 // parseSuno(text) -> { project, tracks }
 //   project: { title, date, style, theme, lang }   (header KEY: values)
-//   tracks:  [{ num, title, style, lyrics }, ...]   (in file order)
+//   tracks:  [{ num, title, description, style, lyrics }, ...]   (in file order)
 
 const BANNER = /^===\s*PROMPT\s+(\d+)\s*===\s*$/i;
-const FIELD  = /^(TITLE|STYLE|LYRICS|DATE|THEME|LANG):\s*(.*)$/;
+const FIELD  = /^(TITLE|DESCRIPTION|STYLE|LYRICS|DATE|THEME|LANG):\s*(.*)$/;
 
 function parseSuno(text) {
   const lines = String(text).split(/\r?\n/);
@@ -61,7 +61,7 @@ function parseSuno(text) {
 
   // Default any unseen fields so consumers never get `undefined`.
   for (const k of ['title', 'date', 'style', 'theme', 'lang']) project[k] ??= '';
-  for (const t of tracks) { t.title ??= ''; t.style ??= ''; t.lyrics ??= ''; }
+  for (const t of tracks) { t.title ??= ''; t.description ??= ''; t.style ??= ''; t.lyrics ??= ''; }
 
   return { project, tracks };
 }

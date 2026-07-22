@@ -585,9 +585,14 @@ function startServer(callback) {
   });
 
   api.delete("/projects/:id", (req, res) => {
-    const result = db.prepare("DELETE FROM project WHERE prj_id=?").run(req.params.id);
+    const deleteCards = req.query.cards === "1";
+    let cardsDeleted = 0;
+    const result = db.transaction(() => {
+      if (deleteCards) cardsDeleted = db.prepare("DELETE FROM card WHERE cad_prjid=?").run(req.params.id).changes;
+      return db.prepare("DELETE FROM project WHERE prj_id=?").run(req.params.id);
+    })();
     if (result.changes === 0) return res.status(404).json({ error: "Not found" });
-    res.json({ deleted: req.params.id });
+    res.json({ deleted: req.params.id, cardsDeleted });
   });
 
   // Move card to project (a card can only belong to one project at a time)
@@ -1258,7 +1263,7 @@ function startServer(callback) {
         for (const t of tracks) {
           const name    = t.title || `Track ${String(t.num).padStart(2, '0')}`;
           const version = nextCardVersion(name, 'song');
-          ins.run(crypto.randomUUID(), targetEnvId, projId, name, version, 'song', toOrderInt(t.num), '', t.style || '', langCode, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
+          ins.run(crypto.randomUUID(), targetEnvId, projId, name, version, 'song', toOrderInt(t.num), t.description || '', t.style || '', langCode, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
           results.cardsCreated++;
         }
       })();
@@ -2179,6 +2184,29 @@ function startServer(callback) {
         } catch (_) { return null; }
       }
 
+      // folder.jpg fallback — the album cover beside the media, used when the
+      // audio file carries no embedded art (covers are tagged externally, so
+      // embedded art is often absent). Cached per directory.
+      const folderCoverCache = new Map();
+      function folderCover(mediaPath) {
+        const dir = path.dirname(mediaPath);
+        if (!folderCoverCache.has(dir)) {
+          let cover = null;
+          try {
+            const candidate = path.join(dir, "folder.jpg");
+            if (fs.existsSync(candidate)) {
+              const data = fs.readFileSync(candidate);
+              const dims = getImgDimensions(data, "image/jpeg");
+              const w = CONTENT_WIDTH_PX;
+              const h = dims ? Math.round(w * dims.h / dims.w) : w;
+              cover = { data, type: "jpg", w, h };
+            }
+          } catch (_) {}
+          folderCoverCache.set(dir, cover);
+        }
+        return folderCoverCache.get(dir);
+      }
+
       function lyricsToRuns(lines) {
         return lines.map(line => {
           const t = line.trim();
@@ -2208,7 +2236,7 @@ function startServer(callback) {
 
         // Cover art - skip if images disabled or image data is identical to previous song
         if (contentImages && song.mediaPath) {
-          const cover = await extractCover(song.mediaPath);
+          const cover = await extractCover(song.mediaPath) || folderCover(song.mediaPath);
           if (cover) {
             const key = coverKey(cover.data);
             if (key !== lastCoverKey) {

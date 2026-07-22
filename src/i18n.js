@@ -379,9 +379,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Delete this card?",
     cfmDlgDeleteCardSub:                    "This cannot be undone.",
     btnDlgDeleteAll:                        "Delete all",
-    cfmDlgDeleteProjectSub:                 "Cards inside won't be deleted.",
     cfmDlgDeleteSelected:                   "cards?",
     cfmDlgDeleteProjectTitle:               "Delete this project?",
+    lblDlgDeleteProjectCards:               "Also delete all cards in this project",
     msgDlgDeleteLinkedWarning:              "The following songs will lose their linked style:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -804,9 +804,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Supprimer cette carte ?",
     cfmDlgDeleteCardSub:                    "Cette action est irréversible.",
     btnDlgDeleteAll:                        "Tout supprimer",
-    cfmDlgDeleteProjectSub:                 "Les cartes à l'intérieur ne seront pas supprimées.",
     cfmDlgDeleteSelected:                   "cartes ?",
     cfmDlgDeleteProjectTitle:               "Supprimer ce projet ?",
+    lblDlgDeleteProjectCards:               "Supprimer également toutes les cartes de ce projet",
     msgDlgDeleteLinkedWarning:              "Les chansons suivantes perdront leur style lié :",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -1228,9 +1228,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Diese Karte löschen?",
     cfmDlgDeleteCardSub:                    "Diese Aktion kann nicht rückgängig gemacht werden.",
     btnDlgDeleteAll:                        "Alle löschen",
-    cfmDlgDeleteProjectSub:                 "Karten darin werden nicht gelöscht.",
     cfmDlgDeleteSelected:                   "Karten?",
     cfmDlgDeleteProjectTitle:               "Dieses Projekt löschen?",
+    lblDlgDeleteProjectCards:               "Auch alle Karten in diesem Projekt löschen",
     msgDlgDeleteLinkedWarning:              "Die folgenden Songs verlieren ihren verknüpften Stil:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -1652,9 +1652,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "¿Eliminar esta tarjeta?",
     cfmDlgDeleteCardSub:                    "Esta acción no se puede deshacer.",
     btnDlgDeleteAll:                        "Eliminar todo",
-    cfmDlgDeleteProjectSub:                 "Las tarjetas internas no se eliminarán.",
     cfmDlgDeleteSelected:                   "¿tarjetas?",
     cfmDlgDeleteProjectTitle:               "¿Eliminar este proyecto?",
+    lblDlgDeleteProjectCards:               "Eliminar también todas las tarjetas de este proyecto",
     msgDlgDeleteLinkedWarning:              "Las siguientes canciones perderán su estilo vinculado:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -2076,9 +2076,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Excluir este cartão?",
     cfmDlgDeleteCardSub:                    "Esta ação não pode ser desfeita.",
     btnDlgDeleteAll:                        "Excluir tudo",
-    cfmDlgDeleteProjectSub:                 "Os cartões internos não serão excluídos.",
     cfmDlgDeleteSelected:                   "cartões?",
     cfmDlgDeleteProjectTitle:               "Excluir este projeto?",
+    lblDlgDeleteProjectCards:               "Excluir também todos os cartões deste projeto",
     msgDlgDeleteLinkedWarning:              "As seguintes músicas perderão seu estilo vinculado:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -2500,9 +2500,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Excluir este cartão?",
     cfmDlgDeleteCardSub:                    "Esta ação não pode ser desfeita.",
     btnDlgDeleteAll:                        "Excluir tudo",
-    cfmDlgDeleteProjectSub:                 "Os cartões internos não serão excluídos.",
     cfmDlgDeleteSelected:                   "cartões?",
     cfmDlgDeleteProjectTitle:               "Excluir este projeto?",
+    lblDlgDeleteProjectCards:               "Eliminar também todos os cartões deste projeto",
     msgDlgDeleteLinkedWarning:              "As seguintes músicas perderão o seu estilo vinculado:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -2924,9 +2924,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "删除此卡片？",
     cfmDlgDeleteCardSub:                    "此操作无法撤销。",
     btnDlgDeleteAll:                        "全部删除",
-    cfmDlgDeleteProjectSub:                 "内部卡片不会被删除。",
     cfmDlgDeleteSelected:                   "卡片？",
     cfmDlgDeleteProjectTitle:               "删除此项目？",
+    lblDlgDeleteProjectCards:               "同时删除此项目中的所有卡片",
     msgDlgDeleteLinkedWarning:              "以下歌曲将失去其关联风格：",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -3348,9 +3348,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "刪除此卡片？",
     cfmDlgDeleteCardSub:                    "此操作無法復原。",
     btnDlgDeleteAll:                        "全部刪除",
-    cfmDlgDeleteProjectSub:                 "內部卡片不會被刪除。",
     cfmDlgDeleteSelected:                   "卡片？",
     cfmDlgDeleteProjectTitle:               "刪除此專案？",
+    lblDlgDeleteProjectCards:               "同時刪除此專案中的所有卡片",
     msgDlgDeleteLinkedWarning:              "以下歌曲將失去其關聯風格：",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -3772,9 +3772,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "このカードを削除しますか？",
     cfmDlgDeleteCardSub:                    "この操作は元に戻せません。",
     btnDlgDeleteAll:                        "すべて削除",
-    cfmDlgDeleteProjectSub:                 "内部のカードは削除されません。",
     cfmDlgDeleteSelected:                   "カード？",
     cfmDlgDeleteProjectTitle:               "このプロジェクトを削除しますか？",
+    lblDlgDeleteProjectCards:               "このプロジェクト内のすべてのカードも削除する",
     msgDlgDeleteLinkedWarning:              "以下の曲はリンクされたスタイルを失います：",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -4196,9 +4196,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Usunąć tę kartę?",
     cfmDlgDeleteCardSub:                    "Tej operacji nie można cofnąć.",
     btnDlgDeleteAll:                        "Usuń wszystko",
-    cfmDlgDeleteProjectSub:                 "Karty w środku nie zostaną usunięte.",
     cfmDlgDeleteSelected:                   "kart?",
     cfmDlgDeleteProjectTitle:               "Usunąć ten projekt?",
+    lblDlgDeleteProjectCards:               "Usuń również wszystkie karty w tym projekcie",
     msgDlgDeleteLinkedWarning:              "Następujące utwory utracą powiązany styl:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -4620,9 +4620,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Видалити цю картку?",
     cfmDlgDeleteCardSub:                    "Цю дію не можна скасувати.",
     btnDlgDeleteAll:                        "Видалити все",
-    cfmDlgDeleteProjectSub:                 "Картки всередині не буде видалено.",
     cfmDlgDeleteSelected:                   "карток?",
     cfmDlgDeleteProjectTitle:               "Видалити цей проект?",
+    lblDlgDeleteProjectCards:               "Також видалити всі картки в цьому проєкті",
     msgDlgDeleteLinkedWarning:              "Наступні пісні втратять пов'язаний стиль:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -5044,9 +5044,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Eliminare questa scheda?",
     cfmDlgDeleteCardSub:                    "Questa azione non può essere annullata.",
     btnDlgDeleteAll:                        "Elimina tutto",
-    cfmDlgDeleteProjectSub:                 "Le schede interne non verranno eliminate.",
     cfmDlgDeleteSelected:                   "schede?",
     cfmDlgDeleteProjectTitle:               "Eliminare questo progetto?",
+    lblDlgDeleteProjectCards:               "Elimina anche tutte le schede in questo progetto",
     msgDlgDeleteLinkedWarning:              "Le seguenti canzoni perderanno il loro stile collegato:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -5468,9 +5468,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "هل تريد حذف هذه البطاقة؟",
     cfmDlgDeleteCardSub:                    "لا يمكن التراجع عن هذا الإجراء.",
     btnDlgDeleteAll:                        "حذف الكل",
-    cfmDlgDeleteProjectSub:                 "البطاقات الموجودة بالداخل لن يتم حذفها.",
     cfmDlgDeleteSelected:                   "بطاقات؟",
     cfmDlgDeleteProjectTitle:               "حذف هذا المشروع؟",
+    lblDlgDeleteProjectCards:               "حذف جميع البطاقات في هذا المشروع أيضًا",
     msgDlgDeleteLinkedWarning:              "ستفقد الأغاني التالية أسلوبها المرتبط:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -5892,9 +5892,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Deze kaart verwijderen?",
     cfmDlgDeleteCardSub:                    "Dit kan niet ongedaan worden gemaakt.",
     btnDlgDeleteAll:                        "Alles verwijderen",
-    cfmDlgDeleteProjectSub:                 "Kaarten binnenin worden niet verwijderd.",
     cfmDlgDeleteSelected:                   "kaarten?",
     cfmDlgDeleteProjectTitle:               "Dit project verwijderen?",
+    lblDlgDeleteProjectCards:               "Ook alle kaarten in dit project verwijderen",
     msgDlgDeleteLinkedWarning:              "De volgende nummers verliezen hun gekoppelde stijl:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -6316,9 +6316,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Slette dette kortet?",
     cfmDlgDeleteCardSub:                    "Dette kan ikke angres.",
     btnDlgDeleteAll:                        "Slett alle",
-    cfmDlgDeleteProjectSub:                 "Kortene inni blir ikke slettet.",
     cfmDlgDeleteSelected:                   "kort?",
     cfmDlgDeleteProjectTitle:               "Slette dette prosjektet?",
+    lblDlgDeleteProjectCards:               "Slett også alle kort i dette prosjektet",
     msgDlgDeleteLinkedWarning:              "Følgende sanger vil miste sin tilknyttede stil:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -6740,9 +6740,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Ta bort det här kortet?",
     cfmDlgDeleteCardSub:                    "Det går inte att ångra.",
     btnDlgDeleteAll:                        "Ta bort alla",
-    cfmDlgDeleteProjectSub:                 "Korten inuti kommer inte att tas bort.",
     cfmDlgDeleteSelected:                   "kort?",
     cfmDlgDeleteProjectTitle:               "Ta bort det här projektet?",
+    lblDlgDeleteProjectCards:               "Ta även bort alla kort i det här projektet",
     msgDlgDeleteLinkedWarning:              "Följande låtar förlorar sin länkade stil:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -7164,9 +7164,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Bu kartı sil?",
     cfmDlgDeleteCardSub:                    "Bu işlem geri alınamaz.",
     btnDlgDeleteAll:                        "Tümünü Sil",
-    cfmDlgDeleteProjectSub:                 "İçindeki kartlar silinmeyecek.",
     cfmDlgDeleteSelected:                   "kartlar?",
     cfmDlgDeleteProjectTitle:               "Bu proje silinsin mi?",
+    lblDlgDeleteProjectCards:               "Bu projedeki tüm kartları da sil",
     msgDlgDeleteLinkedWarning:              "Aşağıdaki şarkılar bağlı stillerini kaybedecek:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -7588,9 +7588,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Slet dette kort?",
     cfmDlgDeleteCardSub:                    "Dette kan ikke fortrydes.",
     btnDlgDeleteAll:                        "Slet alle",
-    cfmDlgDeleteProjectSub:                 "Kort indeni slettes ikke.",
     cfmDlgDeleteSelected:                   "kort?",
     cfmDlgDeleteProjectTitle:               "Slette dette projekt?",
+    lblDlgDeleteProjectCards:               "Slet også alle kort i dette projekt",
     msgDlgDeleteLinkedWarning:              "Følgende sange mister deres tilknyttede stil:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -8012,9 +8012,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Poistetaanko tämä kortti?",
     cfmDlgDeleteCardSub:                    "Tätä toimintoa ei voi kumota.",
     btnDlgDeleteAll:                        "Poista kaikki",
-    cfmDlgDeleteProjectSub:                 "Sisällä olevia kortteja ei poisteta.",
     cfmDlgDeleteSelected:                   "korttia?",
     cfmDlgDeleteProjectTitle:               "Poistetaanko tämä projekti?",
+    lblDlgDeleteProjectCards:               "Poista myös kaikki kortit tästä projektista",
     msgDlgDeleteLinkedWarning:              "Seuraavat kappaleet menettävät linkitetyn tyylinsä:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -8436,9 +8436,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Διαγραφή αυτής της κάρτας;",
     cfmDlgDeleteCardSub:                    "Αυτή η ενέργεια δεν μπορεί να αναιρεθεί.",
     btnDlgDeleteAll:                        "Διαγραφή όλων",
-    cfmDlgDeleteProjectSub:                 "Οι κάρτες μέσα δεν θα διαγραφούν.",
     cfmDlgDeleteSelected:                   "κάρτες;",
     cfmDlgDeleteProjectTitle:               "Διαγραφή αυτού του έργου;",
+    lblDlgDeleteProjectCards:               "Διαγραφή όλων των καρτών σε αυτό το έργο επίσης",
     msgDlgDeleteLinkedWarning:              "Τα παρακάτω τραγούδια θα χάσουν το συνδεδεμένο στυλ τους:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -8860,9 +8860,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "למחוק כרטיס זה?",
     cfmDlgDeleteCardSub:                    "לא ניתן לבטל פעולה זו.",
     btnDlgDeleteAll:                        "מחק הכל",
-    cfmDlgDeleteProjectSub:                 "כרטיסים בפנים לא יימחקו.",
     cfmDlgDeleteSelected:                   "כרטיסים?",
     cfmDlgDeleteProjectTitle:               "למחוק את הפרויקט הזה?",
+    lblDlgDeleteProjectCards:               "מחק גם את כל הכרטיסים בפרויקט זה",
     msgDlgDeleteLinkedWarning:              "השירים הבאים יאבדו את הסגנון המקושר שלהם:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -9284,9 +9284,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "이 카드를 삭제하시겠습니까?",
     cfmDlgDeleteCardSub:                    "이 작업은 취소할 수 없습니다.",
     btnDlgDeleteAll:                        "모두 삭제",
-    cfmDlgDeleteProjectSub:                 "내부 카드는 삭제되지 않습니다.",
     cfmDlgDeleteSelected:                   "카드?",
     cfmDlgDeleteProjectTitle:               "이 프로젝트를 삭제하시겠습니까?",
+    lblDlgDeleteProjectCards:               "이 프로젝트의 모든 카드도 삭제",
     msgDlgDeleteLinkedWarning:              "다음 노래들은 연결된 스타일을 잃게 됩니다:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -9708,9 +9708,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Ștergeți acest card?",
     cfmDlgDeleteCardSub:                    "Această acțiune nu poate fi anulată.",
     btnDlgDeleteAll:                        "Șterge tot",
-    cfmDlgDeleteProjectSub:                 "Cardurile din interior nu vor fi șterse.",
     cfmDlgDeleteSelected:                   "carduri?",
     cfmDlgDeleteProjectTitle:               "Ștergi acest proiect?",
+    lblDlgDeleteProjectCards:               "Șterge și toate cardurile din acest proiect",
     msgDlgDeleteLinkedWarning:              "Următoarele cântece vor pierde stilul lor legat:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -10132,9 +10132,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Xóa thẻ này?",
     cfmDlgDeleteCardSub:                    "Không thể hoàn tác hành động này.",
     btnDlgDeleteAll:                        "Xóa tất cả",
-    cfmDlgDeleteProjectSub:                 "Các thẻ bên trong sẽ không bị xóa.",
     cfmDlgDeleteSelected:                   "thẻ?",
     cfmDlgDeleteProjectTitle:               "Xóa dự án này?",
+    lblDlgDeleteProjectCards:               "Cũng xóa tất cả thẻ trong dự án này",
     msgDlgDeleteLinkedWarning:              "Các bài hát sau sẽ mất kiểu dáng được liên kết:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -10556,9 +10556,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "این کارت حذف شود؟",
     cfmDlgDeleteCardSub:                    "این عمل قابل بازگشت نیست.",
     btnDlgDeleteAll:                        "حذف همه",
-    cfmDlgDeleteProjectSub:                 "کارت‌های داخلی حذف نخواهند شد.",
     cfmDlgDeleteSelected:                   "کارت‌ها؟",
     cfmDlgDeleteProjectTitle:               "این پروژه حذف شود؟",
+    lblDlgDeleteProjectCards:               "همچنین همه کارت‌های این پروژه را حذف کن",
     msgDlgDeleteLinkedWarning:              "آهنگ‌های زیر سبک مرتبط خود را از دست خواهند داد:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -10980,9 +10980,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Smazat tuto kartu?",
     cfmDlgDeleteCardSub:                    "Tuto akci nelze vrátit zpět.",
     btnDlgDeleteAll:                        "Smazat vše",
-    cfmDlgDeleteProjectSub:                 "Karty uvnitř nebudou smazány.",
     cfmDlgDeleteSelected:                   "karet?",
     cfmDlgDeleteProjectTitle:               "Smazat tento projekt?",
+    lblDlgDeleteProjectCards:               "Také smazat všechny karty v tomto projektu",
     msgDlgDeleteLinkedWarning:              "Následující skladby ztratí svůj propojený styl:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -11404,9 +11404,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Izbrisati ovu karticu?",
     cfmDlgDeleteCardSub:                    "Ova radnja se ne može poništiti.",
     btnDlgDeleteAll:                        "Izbriši sve",
-    cfmDlgDeleteProjectSub:                 "Kartice unutra neće biti izbrisane.",
     cfmDlgDeleteSelected:                   "kartica?",
     cfmDlgDeleteProjectTitle:               "Izbrisati ovaj projekt?",
+    lblDlgDeleteProjectCards:               "Izbriši i sve kartice u ovom projektu",
     msgDlgDeleteLinkedWarning:              "Sljedeće pjesme izgubit će svoj povezani stil:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -11828,9 +11828,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Suprimir aquesta targeta?",
     cfmDlgDeleteCardSub:                    "Aquesta acció no es pot desfer.",
     btnDlgDeleteAll:                        "Eliminar tot",
-    cfmDlgDeleteProjectSub:                 "Les targetes de dins no se suprimiran.",
     cfmDlgDeleteSelected:                   "targetes?",
     cfmDlgDeleteProjectTitle:               "Voleu eliminar aquest projecte?",
+    lblDlgDeleteProjectCards:               "Suprimeix també totes les targetes d'aquest projecte",
     msgDlgDeleteLinkedWarning:              "Les cançons següents perdran el seu estil vinculat:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -12252,9 +12252,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Hapus kartu ini?",
     cfmDlgDeleteCardSub:                    "Tindakan ini tidak dapat dibatalkan.",
     btnDlgDeleteAll:                        "Hapus semua",
-    cfmDlgDeleteProjectSub:                 "Kartu di dalamnya tidak akan dihapus.",
     cfmDlgDeleteSelected:                   "kartu?",
     cfmDlgDeleteProjectTitle:               "Hapus proyek ini?",
+    lblDlgDeleteProjectCards:               "Juga hapus semua kartu di proyek ini",
     msgDlgDeleteLinkedWarning:              "Lagu-lagu berikut akan kehilangan gaya tertautnya:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -12676,9 +12676,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Padam kad ini?",
     cfmDlgDeleteCardSub:                    "Tindakan ini tidak boleh dibatalkan.",
     btnDlgDeleteAll:                        "Padam semua",
-    cfmDlgDeleteProjectSub:                 "Kad di dalam tidak akan dipadam.",
     cfmDlgDeleteSelected:                   "kad?",
     cfmDlgDeleteProjectTitle:               "Padam projek ini?",
+    lblDlgDeleteProjectCards:               "Padam juga semua kad dalam projek ini",
     msgDlgDeleteLinkedWarning:              "Lagu-lagu berikut akan kehilangan gaya dipautnya:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -13100,9 +13100,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Удалить эту карточку?",
     cfmDlgDeleteCardSub:                    "Это действие нельзя отменить.",
     btnDlgDeleteAll:                        "Удалить все",
-    cfmDlgDeleteProjectSub:                 "Карточки внутри не будут удалены.",
     cfmDlgDeleteSelected:                   "карточек?",
     cfmDlgDeleteProjectTitle:               "Удалить этот проект?",
+    lblDlgDeleteProjectCards:               "Также удалить все карточки в этом проекте",
     msgDlgDeleteLinkedWarning:              "Следующие песни потеряют связанный стиль:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -13524,9 +13524,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "ลบการ์ดนี้หรือไม่?",
     cfmDlgDeleteCardSub:                    "ไม่สามารถยกเลิกได้",
     btnDlgDeleteAll:                        "ลบทั้งหมด",
-    cfmDlgDeleteProjectSub:                 "การ์ดภายในจะไม่ถูกลบ",
     cfmDlgDeleteSelected:                   "การ์ด?",
     cfmDlgDeleteProjectTitle:               "ลบโปรเจกต์นี้?",
+    lblDlgDeleteProjectCards:               "ลบการ์ดทั้งหมดในโปรเจกต์นี้ด้วย",
     msgDlgDeleteLinkedWarning:              "เพลงต่อไปนี้จะสูญเสียสไตล์ที่เชื่อมโยง:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -13948,9 +13948,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Ջնջե՞լ այս քարտը։",
     cfmDlgDeleteCardSub:                    "Հնարավոր չէ հետարկել:",
     btnDlgDeleteAll:                        "Ջնջել բոլորը",
-    cfmDlgDeleteProjectSub:                 "Ներսի քարտերը չեն ջնջվի։",
     cfmDlgDeleteSelected:                   "քարտեր?",
     cfmDlgDeleteProjectTitle:               "Ջնջե՞լ այս նախագիծը։",
+    lblDlgDeleteProjectCards:               "Ջնջել նաև այս նախագծի բոլոր քարտերը",
     msgDlgDeleteLinkedWarning:              "Herink eghery kkоrtsnen irentz kazvatsoched och:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -14372,9 +14372,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Изтриване на тази карта?",
     cfmDlgDeleteCardSub:                    "Това не може да бъде отменено.",
     btnDlgDeleteAll:                        "Изтрий всички",
-    cfmDlgDeleteProjectSub:                 "Картите вътре няма да бъдат изтрити.",
     cfmDlgDeleteSelected:                   "карти?",
     cfmDlgDeleteProjectTitle:               "Изтриване на този проект?",
+    lblDlgDeleteProjectCards:               "Също така изтрийте всички карти в този проект",
     msgDlgDeleteLinkedWarning:              "Следните песни ще загубят свързания си стил:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -14796,9 +14796,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Eliminar esta tarxeta?",
     cfmDlgDeleteCardSub:                    "Isto non se pode desfacer.",
     btnDlgDeleteAll:                        "Eliminar todo",
-    cfmDlgDeleteProjectSub:                 "As tarxetas do interior non se eliminarán.",
     cfmDlgDeleteSelected:                   "tarxetas?",
     cfmDlgDeleteProjectTitle:               "Eliminar este proxecto?",
+    lblDlgDeleteProjectCards:               "Eliminar tamén todas as tarxetas deste proxecto",
     msgDlgDeleteLinkedWarning:              "As seguintes cancións perderán o seu estilo vinculado:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -15220,9 +15220,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Törli ezt a kártyát?",
     cfmDlgDeleteCardSub:                    "Ez nem vonható vissza.",
     btnDlgDeleteAll:                        "Összes törlése",
-    cfmDlgDeleteProjectSub:                 "A benne lévő kártyák nem törlődnek.",
     cfmDlgDeleteSelected:                   "kártyát?",
     cfmDlgDeleteProjectTitle:               "Törli ezt a projektet?",
+    lblDlgDeleteProjectCards:               "Törölje a projekt összes kártyáját is",
     msgDlgDeleteLinkedWarning:              "A következő dalok elveszítik a kapcsolt stílusukat:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -15644,9 +15644,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Ištrinti šią kortelę?",
     cfmDlgDeleteCardSub:                    "To negalima atšaukti.",
     btnDlgDeleteAll:                        "Ištrinti viską",
-    cfmDlgDeleteProjectSub:                 "Kortelės viduje nebus ištrintos.",
     cfmDlgDeleteSelected:                   "kortelių?",
     cfmDlgDeleteProjectTitle:               "Ištrinti šį projektą?",
+    lblDlgDeleteProjectCards:               "Taip pat ištrinti visas korteles šiame projekte",
     msgDlgDeleteLinkedWarning:              "Šios dainos praras susietus stilius:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -16068,9 +16068,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Избриши ја оваа картичка?",
     cfmDlgDeleteCardSub:                    "Ова не може да се врати.",
     btnDlgDeleteAll:                        "Избриши ги сите",
-    cfmDlgDeleteProjectSub:                 "Картичките внатре нема да бидат избришани.",
     cfmDlgDeleteSelected:                   "картички?",
     cfmDlgDeleteProjectTitle:               "Да се избрише овој проект?",
+    lblDlgDeleteProjectCards:               "Избриши ги и сите картички во овој проект",
     msgDlgDeleteLinkedWarning:              "Следните песни ќе го изгубат нивниот поврзан стил:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -16492,9 +16492,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Избрисати ову картицу?",
     cfmDlgDeleteCardSub:                    "Ово се не може поништити.",
     btnDlgDeleteAll:                        "Обриши све",
-    cfmDlgDeleteProjectSub:                 "Картице унутра неће бити избрисане.",
     cfmDlgDeleteSelected:                   "картица?",
     cfmDlgDeleteProjectTitle:               "Избрисати овај пројекат?",
+    lblDlgDeleteProjectCards:               "Такође избриши све картице у овом пројекту",
     msgDlgDeleteLinkedWarning:              "Следеће песме ће изгубити повезани стил:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -16916,9 +16916,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Odstrániť túto kartu?",
     cfmDlgDeleteCardSub:                    "Toto nie je možné vrátiť späť.",
     btnDlgDeleteAll:                        "Odstrániť všetko",
-    cfmDlgDeleteProjectSub:                 "Karty vo vnútri nebudú odstránené.",
     cfmDlgDeleteSelected:                   "kariet?",
     cfmDlgDeleteProjectTitle:               "Odstrániť tento projekt?",
+    lblDlgDeleteProjectCards:               "Tiež odstrániť všetky karty v tomto projekte",
     msgDlgDeleteLinkedWarning:              "Nasledujúce piesne stratia prepojený štýl:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -17340,9 +17340,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Izbrišem to kartico?",
     cfmDlgDeleteCardSub:                    "Tega ni mogoče razveljaviti.",
     btnDlgDeleteAll:                        "Izbriši vse",
-    cfmDlgDeleteProjectSub:                 "Kartice znotraj ne bodo izbrisane.",
     cfmDlgDeleteSelected:                   "kartic?",
     cfmDlgDeleteProjectTitle:               "Izbrisati ta projekt?",
+    lblDlgDeleteProjectCards:               "Izbriši tudi vse kartice v tem projektu",
     msgDlgDeleteLinkedWarning:              "Naslednje pesmi bodo izgubile povezani slog:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -17764,9 +17764,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "இந்த அட்டையை நீக்கவா?",
     cfmDlgDeleteCardSub:                    "இதை மீட்டெடுக்க முடியாது.",
     btnDlgDeleteAll:                        "அனைத்தையும் நீக்கு",
-    cfmDlgDeleteProjectSub:                 "உள்ளே உள்ள அட்டைகள் நீக்கப்படாது.",
     cfmDlgDeleteSelected:                   "அட்டைகள்?",
     cfmDlgDeleteProjectTitle:               "இந்த திட்டத்தை நீக்கவா?",
+    lblDlgDeleteProjectCards:               "இந்த திட்டத்தில் உள்ள அனைத்து அட்டைகளையும் நீக்கவும்",
     msgDlgDeleteLinkedWarning:              "பின்வரும் பாடல்கள் இணைக்கப்பட்ட பாணியை இழக்கும்:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -18188,9 +18188,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "यह कार्ड हटाएँ?",
     cfmDlgDeleteCardSub:                    "यह वापस नहीं किया जा सकता।",
     btnDlgDeleteAll:                        "सभी हटाएं",
-    cfmDlgDeleteProjectSub:                 "अंदर के कार्ड हटाए नहीं जाएँगे।",
     cfmDlgDeleteSelected:                   "कार्ड?",
     cfmDlgDeleteProjectTitle:               "यह प्रोजेक्ट हटाएँ?",
+    lblDlgDeleteProjectCards:               "इस प्रोजेक्ट के सभी कार्ड भी हटाएँ",
     msgDlgDeleteLinkedWarning:              "निम्नलिखित गाने अपनी लिंक की गई शैली खो देंगे:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -18612,9 +18612,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "এই কার্ডটি মুছবেন?",
     cfmDlgDeleteCardSub:                    "এটি পূর্বাবস্থায় ফেরানো যাবে না।",
     btnDlgDeleteAll:                        "সব মুছুন",
-    cfmDlgDeleteProjectSub:                 "ভিতরের কার্ডগুলো মুছে ফেলা হবে না।",
     cfmDlgDeleteSelected:                   "কার্ড?",
     cfmDlgDeleteProjectTitle:               "এই প্রকল্পটি মুছবেন?",
+    lblDlgDeleteProjectCards:               "এই প্রকল্পের সমস্ত কার্ডও মুছে ফেলুন",
     msgDlgDeleteLinkedWarning:              "নিচের গানগুলো তাদের লিঙ্কড স্টাইল হারাবে:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -19036,9 +19036,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "کیا یہ کارڈ حذف کریں؟",
     cfmDlgDeleteCardSub:                    "یہ واپس نہیں کیا جا سکتا۔",
     btnDlgDeleteAll:                        "سب حذف کریں",
-    cfmDlgDeleteProjectSub:                 "اندر کے کارڈز حذف نہیں کیے جائیں گے۔",
     cfmDlgDeleteSelected:                   "کارڈز؟",
     cfmDlgDeleteProjectTitle:               "یہ منصوبہ حذف کریں؟",
+    lblDlgDeleteProjectCards:               "اس پروجیکٹ کے تمام کارڈز بھی حذف کریں",
     msgDlgDeleteLinkedWarning:              "درج ذیل گانے اپنا منسلک انداز کھو دیں گے:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -19460,9 +19460,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Futa kadi hii?",
     cfmDlgDeleteCardSub:                    "Hii haiwezi kutenduliwa.",
     btnDlgDeleteAll:                        "Futa zote",
-    cfmDlgDeleteProjectSub:                 "Kadi za ndani hazitafutwa.",
     cfmDlgDeleteSelected:                   "kadi?",
     cfmDlgDeleteProjectTitle:               "Futa mradi huu?",
+    lblDlgDeleteProjectCards:               "Futa pia kadi zote katika mradi huu",
     msgDlgDeleteLinkedWarning:              "Nyimbo zifuatazo zitapoteza mtindo wao ulioungwa:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -19884,9 +19884,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "ਇਹ ਕਾਰਡ ਮਿਟਾਓ?",
     cfmDlgDeleteCardSub:                    "ਇਹ ਵਾਪਸ ਨਹੀਂ ਕੀਤਾ ਜਾ ਸਕਦਾ।",
     btnDlgDeleteAll:                        "ਸਭ ਹਟਾਓ",
-    cfmDlgDeleteProjectSub:                 "ਅੰਦਰਲੇ ਕਾਰਡ ਮਿਟਾਏ ਨਹੀਂ ਜਾਣਗੇ।",
     cfmDlgDeleteSelected:                   "ਕਾਰਡ?",
     cfmDlgDeleteProjectTitle:               "ਇਹ ਪ੍ਰੋਜੈਕਟ ਮਿਟਾਓ?",
+    lblDlgDeleteProjectCards:               "ਇਸ ਪ੍ਰੋਜੈਕਟ ਦੇ ਸਾਰੇ ਕਾਰਡ ਵੀ ਮਿਟਾਓ",
     msgDlgDeleteLinkedWarning:              "ਹੇਠਾਂ ਦਿੱਤੇ ਗੀਤ ਆਪਣੀ ਲਿੰਕ ਕੀਤੀ ਸ਼ੈਲੀ ਗੁਆ ਦੇਣਗੇ:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -20308,9 +20308,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Share wannan katin?",
     cfmDlgDeleteCardSub:                    "Ba za a iya mayar da hankali ba.",
     btnDlgDeleteAll:                        "Goge duka",
-    cfmDlgDeleteProjectSub:                 "Katinan ciki ba za a share su ba.",
     cfmDlgDeleteSelected:                   "katuna?",
     cfmDlgDeleteProjectTitle:               "Share wannan aikin?",
+    lblDlgDeleteProjectCards:               "Kuma share dukkan katunan da ke cikin wannan aikin",
     msgDlgDeleteLinkedWarning:              "Waɗannan waƙoƙin za su rasa salonsu da aka haɗa:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -20732,9 +20732,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Pa kaadi yii rẹ?",
     cfmDlgDeleteCardSub:                    "A kò lè padà sẹ́yìn.",
     btnDlgDeleteAll:                        "Pa gbogbo rẹ́",
-    cfmDlgDeleteProjectSub:                 "Awọn kaadi inu kii yoo parẹ.",
     cfmDlgDeleteSelected:                   "awọn kaadi?",
     cfmDlgDeleteProjectTitle:               "Parẹ́ iṣẹ́ àgbékalẹ̀ yìí?",
+    lblDlgDeleteProjectCards:               "Pa gbogbo awọn kaadi ninu iṣẹ akanṣe yii rẹ pẹlu",
     msgDlgDeleteLinkedWarning:              "Àwọn orin wọ̀nyí yóò pàdánù ọ̀nà tí a so pọ̀ wọn:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -21156,9 +21156,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "ఈ కార్డును తొలగించాలా?",
     cfmDlgDeleteCardSub:                    "దీన్ని రద్దు చేయలేరు.",
     btnDlgDeleteAll:                        "అన్నీ తొలగించండి",
-    cfmDlgDeleteProjectSub:                 "లోపల ఉన్న కార్డులు తొలగించబడవు.",
     cfmDlgDeleteSelected:                   "కార్డులు?",
     cfmDlgDeleteProjectTitle:               "ఈ ప్రాజెక్ట్ తొలగించాలా?",
+    lblDlgDeleteProjectCards:               "ఈ ప్రాజెక్ట్‌లోని అన్ని కార్డ్‌లను కూడా తొలగించండి",
     msgDlgDeleteLinkedWarning:              "ఈ పాటలు వాటి లింక్ చేయబడిన శైలిని కోల్పోతాయి:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -21580,9 +21580,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "हे कार्ड हटवायचे?",
     cfmDlgDeleteCardSub:                    "हे पूर्ववत करता येणार नाही.",
     btnDlgDeleteAll:                        "सर्व हटवा",
-    cfmDlgDeleteProjectSub:                 "आतील कार्ड हटवले जाणार नाहीत.",
     cfmDlgDeleteSelected:                   "कार्ड्स?",
     cfmDlgDeleteProjectTitle:               "हा प्रकल्प हटवायचा?",
+    lblDlgDeleteProjectCards:               "या प्रकल्पातील सर्व कार्ड्स देखील हटवा",
     msgDlgDeleteLinkedWarning:              "खालील गाणी त्यांची लिंक केलेली शैली गमावतील:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
@@ -22004,9 +22004,9 @@ const TRANSLATIONS = {
     cfmDlgDeleteCardQ:                      "Burahin ang card na ito?",
     cfmDlgDeleteCardSub:                    "Hindi ito maaaring ibalik.",
     btnDlgDeleteAll:                        "Tanggalin lahat",
-    cfmDlgDeleteProjectSub:                 "Ang mga card sa loob ay hindi buburahin.",
     cfmDlgDeleteSelected:                   "card?",
     cfmDlgDeleteProjectTitle:               "Tanggalin ang proyektong ito?",
+    lblDlgDeleteProjectCards:               "Tanggalin din ang lahat ng card sa proyektong ito",
     msgDlgDeleteLinkedWarning:              "Mawawalan ng naka-link na estilo ang mga sumusunod na kanta:",
 
     // Prefix:Card - Scope:card actions (grid & list views)
