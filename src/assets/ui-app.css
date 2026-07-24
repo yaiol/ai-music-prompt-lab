@@ -296,11 +296,29 @@
   width: 4px; height: 8px; border: solid #fff; border-width: 0 2px 2px 0;
   transform: rotate(45deg);
 }
-/* Optional label wrapper — put on a <label> around the box to get a clickable "box + text" row. All-global
-   colour (label text = --text), so it's usable on ANY surface (dialog, panel, settings). */
+/* Optional label wrapper — put on a <label> around the box to get a clickable "box + text" row. Shared
+   by the checkbox AND the radio (below). All-global colour (label text = --text), so it's usable on ANY
+   surface (dialog, panel, settings). */
 .check-label {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--text); font-size: 13px; cursor: pointer;
+}
+
+/* Radio — the pick-ONE-of-a-set inline control. Same box (`.radio-box` on the <input type="radio">
+   itself), same surface fill + accent-when-selected as `.check-box`; only round, with a filled dot
+   instead of a tick. Wrap each in a `.check-label` (shared) and give the group one `name`. For a
+   pick-one that's a prominent full-row choice (e.g. the theme switch), use `.opt-btn` instead. */
+.radio-box {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; flex-shrink: 0;
+  background: var(--s-inp);
+  border: 1px solid var(--border); border-radius: 50%;
+  cursor: pointer; position: relative;
+}
+.radio-box:checked { border-color: var(--accent); }
+.radio-box:checked::after {
+  content: ''; position: absolute; left: 4px; top: 4px;
+  width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
 }
 
 /* Hint — the ONE muted description text (under a label/control, a section note, a status line).
