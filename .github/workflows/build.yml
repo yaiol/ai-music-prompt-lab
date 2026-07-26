@@ -83,4 +83,7 @@ jobs:
         run: |
           version="${GITHUB_REF_NAME#v}"
           title="$(node -p "require('./package.json').productName") $version"
-          gh release create "${GITHUB_REF_NAME}" --draft --title "$title" --notes "Initial Release ${GITHUB_REF_NAME}" dist/*
+          # Release body = the top CHANGELOG.md block (first "## …" heading through the line before the next).
+          awk '/^## /{n++} n==1{print} n==2{exit}' CHANGELOG.md > RELEASE_NOTES.md
+          [ -s RELEASE_NOTES.md ] || printf 'Release %s\n' "${GITHUB_REF_NAME}" > RELEASE_NOTES.md
+          gh release create "${GITHUB_REF_NAME}" --draft --title "$title" --notes-file RELEASE_NOTES.md dist/*
