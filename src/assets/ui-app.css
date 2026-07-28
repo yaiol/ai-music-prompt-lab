@@ -23,7 +23,7 @@
      --border --border-strong --accent --accent-hov --text --text-dim --text-mute --ok --warn --danger --gradient --shadow
 
    SECTIONS below:
-     1. App                 1.1 App frame · 1.2 Overlays (file-drop)
+     1. App                 1.1 App frame · 1.2 Overlays (file-drop, toast)
      2. Standard controls   2.1 Buttons · 2.2 Fields (+hint) · 2.3 Pills & badges · 2.4 Menu · 2.5 Tabs
      3. Update banner   4. Bars   5. Dialogs & modals   6. Panel
    ────────────────────────────────────────────────────────────────────────── */
@@ -57,7 +57,7 @@
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; min-height: 30px; min-width: 30px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--accent); }
 
-/* ─── 1.2 Overlays — file-drop ───────────────────────────────────────────── */
+/* ─── 1.2 Overlays — file-drop, toast ────────────────────────────────────── */
 
 /* File-drop overlay — the look for "drag a file onto this region to open it". Behaviour lives in the
    useFileDrop hook (lib/ui-fx-filedrop.jsx). position:absolute so it covers its nearest POSITIONED
@@ -72,6 +72,29 @@
   pointer-events: none;
 }
 .drop-overlay-label { font-size: 18px; font-weight: 700; color: var(--accent); }
+
+/* Toast — the ONE transient "it happened" message: a centered pill floating over the bottom of the
+   window, self-dismissing, never interactive (pointer-events:none — it must never eat a click).
+   An ACCENT fill — the same colour set as .btn.primary (accent bg + border, #fff text), so the pill
+   reads instantly over any surface it floats above and carries the app's identity colour. Long
+   messages WRAP inside a capped width — never nowrap, which runs a translated string off-screen. Behaviour
+   (a showToast(msg) + timeout) stays app-side; only the look lives here. An app whose bottom chrome
+   would cover it lifts it with --toast-bottom (the .chip pattern — a per-instance value, never a
+   re-shape). Seeds: ai-music-prompt-lab, lrc-editor. */
+@keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
+.toast {
+  position: fixed; bottom: var(--toast-bottom, 28px); left: 50%; transform: translateX(-50%);
+  z-index: 200;
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 30px;
+  box-shadow: var(--shadow);
+  padding: 12px 24px;
+  color: #fff; font-size: 14px; text-align: center;
+  max-width: min(560px, 90vw);
+  pointer-events: none;
+  animation: toastIn 0.22s ease;
+}
 
 /* ─── Surface → role bindings ──────────────────────────────────────────────
    Each surface CONTAINER announces two colour roles; every control READS them (--s-inp

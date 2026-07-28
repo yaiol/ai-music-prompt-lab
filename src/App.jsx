@@ -32,6 +32,7 @@ import { DatePicker } from './lib/ui-ctl-datepicker';
 import { CollapseToggle } from './lib/ui-ctl-collapsetoggle';
 import { Menu, MenuItem } from './lib/ui-ctl-menu';
 import { Combobox } from './lib/ui-ctl-combobox';
+import { useToast } from './lib/ui-fx-toast';
 import { Popover } from './lib/ui-ctl-popover';
 // Storage namespace - single source: package.json `storagePrefix`. Never hardcode a prefix.
 const STORAGE_PREFIX = pkg.storagePrefix;
@@ -405,7 +406,6 @@ export default function App() {
   const [editingCard, setEditingCard] = useState(null);
   const [copiedId, setCopiedId]           = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
-  const [toast, setToast]                 = useState(null);
   const [settingsOpen, setSettingsOpen]   = useState(false);
   const [tabSettingsActive, setTabSettingsActive]     = useState("display");
   const [projectModalOpen, setProjectModalOpen] = useState(false);
@@ -645,13 +645,9 @@ export default function App() {
       .catch(() => setAvailableTranslationLangs([]));
   }, [docCreateOpen, activeProjectIds]); // eslint-disable-line
 
-  // ms defaults to 2400; errors pass a longer duration so they can be read.
-  const toastTimer = useRef(null);
-  const showToast = (msg, ms = 2400) => {
-    if (toastTimer.current) clearTimeout(toastTimer.current);
-    setToast(msg);
-    toastTimer.current = setTimeout(() => setToast(null), ms);
-  };
+  // Shared toast — the pill lifts clear of the player bar when one is open. Errors still pass
+  // a longer ms at the call site so they can be read.
+  const { showToast, toast } = useToast({ bottom: playerMedia ? 84 : undefined });
 
   const isGlobalSearch = search.trim().length > 0;
   const parseSearch = (raw) => {
@@ -2843,7 +2839,7 @@ export default function App() {
           </div>
         </div>
       )}
-      {toast && <div style={{ ...s.toast, bottom: playerMedia ? 84 : 28 }} className="toast">{toast}</div>}
+      {toast}
     </div>
   );
 }
@@ -5472,7 +5468,6 @@ function makeStyles() {
     modalHead:        { display: "flex", justifyContent: "space-between", alignItems: "center" },
     errBorder:        { borderColor: "var(--danger)" },
     errMsg:           { fontSize: 12, color: "var(--danger)" },
-    toast:            { position: "fixed", bottom: 28, left: "50%", transform: "translateX(-50%)", background: 'var(--bg-elev)', border: `1px solid var(--border)`, color: 'var(--text)', padding: "12px 24px", borderRadius: 30, fontSize: 14, zIndex: 200, boxShadow: "0 4px 24px rgba(0,0,0,0.4)", maxWidth: "min(560px, 90vw)", whiteSpace: "normal", textAlign: "center" },
   };
 }
 
@@ -5490,9 +5485,7 @@ function buildCss() {
        unscoped in ui-app.css (bg = --bar-bgd). Not redefined here. */
     .act-btn:hover { border-color: #8888ff88 !important; color: var(--accent) !important; background: var(--bg-hov) !important; }
     .act-btn-danger:hover { border-color: var(--danger) !important; }
-    @keyframes fadeInUp { from { opacity:0; transform:translateX(-50%) translateY(8px); } to { opacity:1; transform:translateX(-50%) translateY(0); } }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    .toast { animation: fadeInUp 0.22s ease; }
     /* Splitters now use the shared <Splitter> (lib/ui-ctl-splitter.jsx) - its .app-splitter look is
        self-injected; the old .sidebar-resize rules were removed (this app is the reference). */
     .card-item:hover { border-color: var(--card-accent) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transform: translateY(-2px); }
