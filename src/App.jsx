@@ -41,9 +41,13 @@ const STORAGE_PREFIX = pkg.storagePrefix;
 const APP_NAME    = pkg.productName;
 const APP_VERSION = pkg.version;
 
-// Help page - opens at the user's setting language; the help site falls back to
-// EN for languages it doesn't publish (no app-side fallback).
-const HELP_URL = 'https://apps.yaiol.com/en/p/music-prompt-lab/help/';
+// Help page URL - the id comes from package.json `name` (the canonical app id =
+// folder = apps.yaiol.com slug). At runtime the lang segment is swapped to the current
+// UI language; the help site falls back to EN for languages it does not publish, so any
+// code is safe to send.
+// CLAUDE: NEVER hardcode the slug here. A typed literal silently drifts from the id and
+// 404s the help button - it did, unnoticed, in two shipped apps until 2026-07-28.
+const HELP_URL = `https://apps.yaiol.com/en/p/${pkg.name}/help/`;
 // GitHub source - owner is constant (yaiol); repo name is the app id (pkg.name).
 const GITHUB_URL = `https://github.com/yaiol/${pkg.name}`;
 const UNLINKED_KEY  = "__unlinked__";

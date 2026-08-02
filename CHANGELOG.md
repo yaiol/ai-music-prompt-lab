@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.0.4 — 2026-08-02
+- Help button now opens the app's own help page — it pointed at a stale address and led nowhere
+- Derive the help URL from the app id in `package.json` instead of a typed literal, so it can no longer drift
+
 ## 1.0.3 — 2026-07-22
 - New wand button in the media panel auto-links files to songs when both the track number and title match (flac preferred over wav)
 - Linking a media file that carries Suno provenance automatically adds the suno.com song URL to the card

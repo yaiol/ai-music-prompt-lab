@@ -1,7 +1,7 @@
 {
   "name": "ai-music-prompt-lab",
   "productName": "AI Music Prompt Lab",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "license": "MIT",
   "description": "AI Prompt Manager — Vocal & Music",
   "private": true,
