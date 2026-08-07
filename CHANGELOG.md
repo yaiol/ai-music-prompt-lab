@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.5 — 2026-08-07
+- Menu submenus now open reliably — they were clipped out of sight and unreachable whenever the menu was long enough to scroll
+- Only one submenu stays on screen when sweeping down a menu, and it survives the pointer travelling from the row into it
+- Submenus open beside their row and flip to the other side when the window edge is close
+- Dropdown panels now use the height actually available on screen instead of a fixed 320px cap, so long menus no longer scroll for no reason
+- Dropdowns only flip upwards when there is genuinely more room above
+
 ## 1.0.4 — 2026-08-02
 - Help button now opens the app's own help page — it pointed at a stale address and led nowhere
 - Derive the help URL from the app id in `package.json` instead of a typed literal, so it can no longer drift

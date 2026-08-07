@@ -432,7 +432,13 @@ button.chip:hover { opacity: .8; }
 .menu-item-parent { cursor: default; }
 .menu-sub { position: relative; }
 .menu-sub:hover > .menu-item-parent { background: var(--bg-hov); }
-.menu-flyout { position: absolute; top: 0; left: 100%; }   /* nested submenu — a .pop-surface beside its parent row */
+/* Nested submenu — a .pop-surface beside its parent row. It is PORTALLED and positioned by
+   Popover (placement="side"), so it must NOT be positioned here: it used to be
+   `position:absolute; left:100%`, a child of the panel — which `.pop-surface`'s own
+   `overflow-y:auto` then clipped away entirely (an overflow box clips on both axes), making
+   every submenu unreachable as soon as the menu was tall enough to scroll. The class is now a
+   marker only: it tags the flyout so the parent popover's click-away ignores it, and carries no
+   style of its own — hence no `.menu-flyout` rule below. Do not add position/top/left here. */
 
 
 /* ─── 2.5 Tabs — a standard nav control (dialogs today; usable on any surface) ── */
