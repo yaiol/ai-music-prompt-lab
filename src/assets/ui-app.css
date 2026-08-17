@@ -424,6 +424,23 @@ button.chip:hover { opacity: .8; }
 .pop-item.active { color: var(--accent); background: color-mix(in srgb, var(--accent) 14%, transparent); }
 .pop-dim { color: var(--text-mute); }   /* muted trailing detail in a row (e.g. a language code) */
 
+/* Popover FORM rows — a panel of labelled controls rather than pickable rows. Same relationship to
+   `.pop-surface` that `.dlg-field` has to `.dlg`, and deliberately the same label look, so a
+   "set these few options" panel reads identically whether it opens under a toolbar button or in a
+   dialog. Use for a small settings panel (markzen's appearance: style + 3 fonts); anything the user
+   PICKS from a list is still `.pop-item`.
+   ⚠ The `min-width` is load-bearing and belongs HERE, not at a call site: `.pop-surface` is
+   `width: max-content` (it sizes to its widest ROW, which is right for a list of labels), and a
+   `<select>`'s content width is whatever option happens to be selected — so without a floor the
+   panel visibly resizes as you change a value, and an icon-button anchor gives `minWidthAnchor`
+   nothing useful to floor against. */
+.pop-form { display: flex; flex-direction: column; gap: 10px; padding: 6px 8px; min-width: 200px; }
+.pop-field { display: flex; flex-direction: column; gap: 4px; }
+.pop-field-label {
+  font-size: 11px; letter-spacing: 1px; text-transform: uppercase;
+  font-weight: 600; color: var(--accent);
+}
+
 /* Menu — adds section labels, a right-aligned caret, and one level of hover-submenu on the pop base. */
 .menu-title { padding: 4px 12px; font-size: 11px; font-weight: 600; letter-spacing: 0.04em; color: var(--text-dim); }
 .menu-label { padding: 2px 12px; font-size: 10px; text-transform: uppercase; letter-spacing: 0.08em; color: var(--text-dim); }

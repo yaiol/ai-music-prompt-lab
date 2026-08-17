@@ -1,7 +1,7 @@
-// parse-suno.js — self-contained reader for the .suno LP prompt format.
+// parse-amlp.js — self-contained reader for the .amlp LP prompt format.
 //
 // Mirrors the canonical grammar of suno-sync's parse-prompts.mjs (the single
-// reader for .suno files). ampl is a packaged Electron app and cannot import
+// reader for .amlp files). ampl is a packaged Electron app and cannot import
 // that module from another app's repo at runtime, so the pure text parser is
 // reproduced here. Keep the grammar in step with parse-prompts.mjs:
 //   "=== PROMPT NN ==="  -> track boundary, carries the number
@@ -10,14 +10,14 @@
 //   LYRICS is always the last field of a track and runs to the next boundary,
 //   so its inner blank lines and [bracket] tags are preserved untouched.
 //
-// parseSuno(text) -> { project, tracks }
+// parseAmlp(text) -> { project, tracks }
 //   project: { title, date, style, theme, lang }   (header KEY: values)
-//   tracks:  [{ num, title, description, style, lyrics }, ...]   (in file order)
+//   tracks:  [{ num, title, description, style, url, lyrics }, ...]   (in file order)
 
 const BANNER = /^===\s*PROMPT\s+(\d+)\s*===\s*$/i;
-const FIELD  = /^(TITLE|DESCRIPTION|STYLE|LYRICS|DATE|THEME|LANG):\s*(.*)$/;
+const FIELD  = /^(TITLE|DESCRIPTION|STYLE|URL|LYRICS|DATE|THEME|LANG):\s*(.*)$/;
 
-function parseSuno(text) {
+function parseAmlp(text) {
   const lines = String(text).split(/\r?\n/);
   const project = {};
   const tracks = [];
@@ -61,9 +61,9 @@ function parseSuno(text) {
 
   // Default any unseen fields so consumers never get `undefined`.
   for (const k of ['title', 'date', 'style', 'theme', 'lang']) project[k] ??= '';
-  for (const t of tracks) { t.title ??= ''; t.description ??= ''; t.style ??= ''; t.lyrics ??= ''; }
+  for (const t of tracks) { t.title ??= ''; t.description ??= ''; t.style ??= ''; t.url ??= ''; t.lyrics ??= ''; }
 
   return { project, tracks };
 }
 
-module.exports = { parseSuno };
+module.exports = { parseAmlp };

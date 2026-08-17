@@ -1,3 +1,5 @@
+# generated per-language i18n chunks (see scripts/i18n-split.mjs)
+src/i18n-gen/
 # node
 node_modules/
 # electron-builder output

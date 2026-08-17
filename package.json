@@ -15,7 +15,9 @@
   "devPort": 3000,
   "storagePrefix": "ampl",
   "scripts": {
+    "prestart": "node scripts/i18n-split.mjs .",
     "start": "vite",
+    "prebuild": "node scripts/i18n-split.mjs .",
     "build": "vite build",
     "electron": "electron .",
     "electron:dev": "concurrently \"npm start\" \"wait-on http://localhost:3000 && electron .\"",
@@ -73,6 +75,15 @@
         "provider": "github",
         "owner": "yaiol",
         "repo": "ai-music-prompt-lab"
+      }
+    ],
+    "fileAssociations": [
+      {
+        "ext": "amlp",
+        "name": "AI Music Prompt Lab LP",
+        "description": "AI Music Prompt Lab LP prompt file",
+        "role": "Editor",
+        "icon": "public/app.ico"
       }
     ]
   },

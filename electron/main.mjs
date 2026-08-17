@@ -1,5 +1,5 @@
 // app-icon tag for icons-cockpit (do not remove): data-icon="yaiol:ai-music-prompt-lab" -> res/icons/custom/apps/ai-music-prompt-lab.svg
-import { app, BrowserWindow, shell, dialog } from "electron";
+import { app, BrowserWindow, shell, dialog, clipboard } from "electron";
 import path from "path";
 import fs from "fs";
 import net from "net";
@@ -13,8 +13,10 @@ import { spawn } from "child_process";
 import { Document, Packer, Paragraph, TextRun, ImageRun, AlignmentType } from "docx";
 import { fileURLToPath } from "node:url";
 import { getLangName, SONG_LANGUAGES } from "./lang-helper.js";
-import { parseSuno } from "./parse-suno.js";
+import { parseAmlp } from "./parse-amlp.js";
 import pkg from "../package.json" with { type: "json" };
+import { mark, dumpStartupTiming } from "./startup-timing.mjs";
+mark("electron boot + module imports");
 
 // ESM has no __dirname - derive it from import.meta.url.
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
@@ -28,6 +30,7 @@ const STORAGE_PREFIX = pkg.storagePrefix;
 // backup files can be shared between machines without env ID mismatches.
 const GLOBAL_ENV_ID = "00000000-0000-4000-8000-000000000000";
 app.setPath('userData', path.join(app.getPath('appData'), 'yaiol', isDev ? `${pkg.productName} (Dev)` : pkg.productName));
+
 
 let server;
 let SERVER_PORT = 4000;
@@ -55,6 +58,7 @@ function startServer(callback) {
 
   const db = new Database(dbPath);
   db.pragma("foreign_keys = ON");
+  mark("sqlite opened");
 
   // ── Schema ───────────────────────────────────────────────────────────────────
   db.exec(`
@@ -201,6 +205,8 @@ function startServer(callback) {
     db.prepare("UPDATE card SET cad_envid=? WHERE cad_envid=''").run(defaultEnvId);
     db.prepare("UPDATE project SET prj_env=? WHERE prj_env=''").run(defaultEnvId);
   }
+
+  mark("schema + migrations");
 
   // ── Seed default AI presets & templates ──────────────────────────────────────
   const defaults = JSON.parse(fs.readFileSync(path.join(__dirname, "..", "seeds", "ai-music.json"), "utf8"));
@@ -442,6 +448,8 @@ function startServer(callback) {
   }
 
   // ── Routes ───────────────────────────────────────────────────────────────────
+  mark("seed reconciliation");
+
   const api = express();
   api.use(cors({ origin: "*" }));
   api.use(express.json({ limit: "50mb" }));
@@ -1255,12 +1263,25 @@ function startServer(callback) {
     }
   });
 
-  // ── .suno LP import ──────────────────────────────────────────────────────────
-  // A .suno file (authored by the /suno skill) is one LP: header + N track
+  // ⚠ CLAUDE: mirrors the auto-label mapping in App.jsx's handleAddUrl — keep the two in step.
+  // The LABEL, not the href, is what getSongState matches against the AI/music site lists, so a
+  // mislabelled link leaves an imported song sitting at *undefined* with a working URL on it.
+  function songUrlLabel(href) {
+    const h = String(href || "");
+    if (h.includes("mozartai.com")) return "mozartai";
+    if (h.includes("producer.ai"))  return "producer";
+    if (h.includes("suno.com"))     return "suno";
+    if (h.includes("tunee.ai"))     return "tunee";
+    if (h.includes("musicfy.club")) return "musicfy";
+    try { return new URL(h).hostname.replace("www.", "").replace(/\.(com|ai)$/, ""); } catch { return "Link"; }
+  }
+
+  // ── .amlp LP import ──────────────────────────────────────────────────────────
+  // An .amlp file (authored by the /suno skill) is one LP: header + N track
   // prompts. It maps 1:1 onto ampl — the LP becomes a project, each track a
   // `song` card (style + embedded lyrics). Validation failures are returned as
   // 200 { error } so the renderer can show a message without apiFetch throwing.
-  // The .suno LANG header is prose ("French (17th-century court idiom)"); we
+  // The .amlp LANG header is prose ("French (17th-century court idiom)"); we
   // best-effort resolve the leading language name to a song-language code.
   function sunoLangToCode(raw) {
     const s = String(raw || '').trim().toLowerCase();
@@ -1276,7 +1297,7 @@ function startServer(callback) {
     return bestCode;
   }
 
-  api.post("/import-suno", (req, res) => {
+  api.post("/import-amlp", (req, res) => {
     const targetEnvId = req.body.targetEnvId || defaultEnvId;
     const text = req.body.text;
     if (typeof text !== 'string' || !text.trim()) return res.json({ error: "empty" });
@@ -1284,34 +1305,52 @@ function startServer(callback) {
     if (targetEnvId === globalEnvId) return res.json({ error: "globalEnv" });
 
     let parsed;
-    try { parsed = parseSuno(text); }
-    catch (e) { console.error(".suno parse error:", e.message); return res.json({ error: "parse" }); }
+    try { parsed = parseAmlp(text); }
+    catch (e) { console.error(".amlp parse error:", e.message); return res.json({ error: "parse" }); }
     const { project: header, tracks } = parsed;
     if (!tracks.length) return res.json({ error: "noTracks" });
 
-    const projId   = crypto.randomUUID();
-    const projName = header.title || "Imported LP";
+    // The tracks land in the project the user is currently in, when there is one — the
+    // renderer passes it as targetProjectId. With no project open (or an id that no longer
+    // exists) the LP brings its own: a new project named after the header TITLE.
+    const openProject = req.body.targetProjectId
+      ? db.prepare("SELECT prj_id, prj_name, prj_env FROM project WHERE prj_id=?").get(req.body.targetProjectId)
+      : null;
+    const projId   = openProject ? openProject.prj_id : crypto.randomUUID();
+    const projName = openProject ? openProject.prj_name : (header.title || "Imported LP");
+    // A project carries its own environment — importing into it must not scatter the cards
+    // into a different one just because the sidebar selection and the env picker disagree.
+    const cardEnvId = openProject ? openProject.prj_env : targetEnvId;
+    if (cardEnvId === globalEnvId) return res.json({ error: "globalEnv" });
     const langCode = sunoLangToCode(header.lang);
-    // .suno DATE is "YYYY-MM-DD"; fall back to now if absent/unparseable.
+    // .amlp DATE is "YYYY-MM-DD"; fall back to now if absent/unparseable.
     const parsedDate = header.date ? Date.parse(header.date) : NaN;
     const baseDate   = Number.isNaN(parsedDate) ? Date.now() : parsedDate;
     const results = { projectName: projName, cardsCreated: 0, tracks: tracks.length };
 
     try {
       db.transaction(() => {
-        const projVersion = nextProjectVersion(projName);
-        db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path) VALUES (?,?,?,?,?,?,?,?)")
-          .run(projId, projName, "#7c6fff", baseDate, projVersion, null, targetEnvId, '');
+        if (!openProject) {
+          const projVersion = nextProjectVersion(projName);
+          db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path) VALUES (?,?,?,?,?,?,?,?)")
+            .run(projId, projName, "#7c6fff", baseDate, projVersion, null, cardEnvId, '');
+        }
         const ins = db.prepare("INSERT INTO card(cad_id,cad_envid,cad_prjid,cad_name,cad_version,cad_type,cad_order,cad_desc,cad_style,cad_lang,cad_lyrics,cad_ai_tweaks,cad_media_path,cad_note,cad_tags,cad_favorite,cad_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        const insUrl = db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)");
         for (const t of tracks) {
+          const cardId  = crypto.randomUUID();
           const name    = t.title || `Track ${String(t.num).padStart(2, '0')}`;
           const version = nextCardVersion(name, 'song');
-          ins.run(crypto.randomUUID(), targetEnvId, projId, name, version, 'song', toOrderInt(t.num), t.description || '', t.style || '', langCode, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
+          ins.run(cardId, cardEnvId, projId, name, version, 'song', toOrderInt(t.num), t.description || '', t.style || '', langCode, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
+          // A track's URL (written by the Suno Bridge extension when it saves the song) becomes
+          // the card's link — which is also what turns the song's colour state to *created*.
+          const href = (t.url || '').trim();
+          if (/^https?:\/\//i.test(href)) insUrl.run(crypto.randomUUID(), cardId, "cad", songUrlLabel(href), href, 1);
           results.cardsCreated++;
         }
       })();
     } catch (err) {
-      console.error(".suno import error:", err.message);
+      console.error(".amlp import error:", err.message);
       return res.status(500).json({ error: err.message });
     }
 
@@ -1860,6 +1899,38 @@ function startServer(callback) {
     res.json({ created: created.length });
   });
 
+  // Read the OS clipboard — done in the main process because the renderer's
+  // navigator.clipboard.readText() needs a focused document and a permission grant.
+  api.get("/clipboard", (_req, res) => res.json({ text: clipboard.readText() || "" }));
+
+  // A .amlp opened from the desktop, waiting to be imported. Read-once: the path is cleared
+  // as it is handed over, so a re-check (the renderer asks again on every window focus) can
+  // never import the same file twice.
+  api.get("/pending-open", (_req, res) => {
+    const filePath = pendingOpenPath;
+    pendingOpenPath = null;
+    if (!filePath) return res.json({});
+    try {
+      return res.json({ name: path.basename(filePath), text: fs.readFileSync(filePath, "utf8") });
+    } catch (err) {
+      console.error("pending .amlp read failed:", err.message);
+      return res.json({ error: err.message });
+    }
+  });
+
+  // Minimal entity decode — <meta> content is HTML-escaped ("Rock &amp; Roll").
+  const decodeEntities = (s) => String(s || "")
+    .replace(/&quot;/g, '"').replace(/&#0?39;|&#x27;/gi, "'")
+    .replace(/&lt;/g, "<").replace(/&gt;/g, ">").replace(/&amp;/g, "&");
+
+  // Browser-looking headers for the song-page scrapers below — these sites serve a stripped
+  // page (or nothing) to a bare Node user agent.
+  const SCRAPE_HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+    "Accept-Language": "en-US,en;q=0.5",
+  };
+
   // ── Fetch tunee.ai lyrics ─────────────────────────────────────────────────────
   api.post("/fetch-tunee-lyrics", async (req, res) => {
     const { url } = req.body;
@@ -1867,11 +1938,7 @@ function startServer(callback) {
     try {
       const html = await new Promise((resolve, reject) => {
         const request = https.get(url, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.5",
-          }
+          headers: SCRAPE_HEADERS
         }, (response) => {
           let data = "";
           response.on("data", chunk => data += chunk);
@@ -1920,6 +1987,33 @@ function startServer(callback) {
     }
   });
 
+  // ── Resolve a Suno share link to its canonical song URL ───────────────────────
+  // A share link (suno.com/s/<code>) is a redirect stub: Suno answers it with a 307 whose
+  // Location is /song/<uuid>?sh=<code>. Reading that one header is enough — the response body
+  // is never consumed (the song page is megabytes of RSC), and only the uuid is kept, so the
+  // stored URL matches the one media provenance produces (https://suno.com/song/<uuid>).
+  api.post("/resolve-suno-share", async (req, res) => {
+    const { url } = req.body;
+    if (!url || !/^https?:\/\/(www\.)?suno\.com\/s\/[A-Za-z0-9_-]+/.test(url)) {
+      return res.status(400).json({ error: "Not a Suno share URL" });
+    }
+    try {
+      const location = await new Promise((resolve, reject) => {
+        const request = https.get(url, { headers: SCRAPE_HEADERS }, (response) => {
+          response.resume(); // headers are all we need — drain so the socket can be freed
+          const isRedirect = response.statusCode >= 300 && response.statusCode < 400;
+          resolve(isRedirect ? (response.headers.location || "") : "");
+        });
+        request.on("error", reject);
+        request.setTimeout(15000, () => { request.destroy(); reject(new Error("Request timed out")); });
+      });
+      const id = location.match(/\/song\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
+      return res.json({ url: id ? `https://suno.com/song/${id[1].toLowerCase()}` : "" });
+    } catch (err) {
+      return res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Fetch Suno lyrics ─────────────────────────────────────────────────────────
   api.post("/fetch-suno-lyrics", async (req, res) => {
     const { url } = req.body;
@@ -1927,11 +2021,7 @@ function startServer(callback) {
     try {
       const html = await new Promise((resolve, reject) => {
         const request = https.get(url, {
-          headers: {
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-            "Accept-Language": "en-US,en;q=0.5",
-          }
+          headers: SCRAPE_HEADERS
         }, (response) => {
           let data = "";
           response.on("data", chunk => data += chunk);
@@ -1951,22 +2041,41 @@ function startServer(callback) {
         try { pushes.push(JSON.parse('"' + m[1] + '"')); } catch (_) { pushes.push(""); }
       }
 
-      // Extract style from metadata.tags or display_tags
+      // Extract style from metadata.tags or display_tags.
+      // ⚠ CLAUDE: these are JSON string values inside the RSC payload, so the capture MUST be the
+      // escape-aware `(?:[^"\\]|\\.)*` and go through JSON.parse — a plain `[^"]+` truncates the
+      // style at the first escaped quote (a prompt saying a driving \"walking\" bass line lost
+      // everything after "driving").
+      const jsonStr = (raw) => { try { return JSON.parse('"' + raw + '"'); } catch (_) { return raw; } };
       let style = "";
       for (const p of pushes) {
-        // metadata.tags - tags may not be first key in the object
+        // metadata.tags — take the first "tags" after the object opens; it is metadata's own.
         const metaIdx = p.indexOf('"metadata":{');
         if (metaIdx !== -1) {
-          // Find the closing brace of the metadata object (values are simple strings, no nested {})
-          const closeIdx = p.indexOf('}', metaIdx + 12);
-          const metaStr = closeIdx !== -1 ? p.substring(metaIdx, closeIdx + 1) : p.substring(metaIdx, metaIdx + 500);
-          const tagsM = metaStr.match(/"tags":"([^"]+)"/);
-          if (tagsM) { style = tagsM[1]; break; }
+          const tagsM = p.slice(metaIdx).match(/"tags":"((?:[^"\\]|\\.)*)"/);
+          if (tagsM) { style = jsonStr(tagsM[1]).trim(); break; }
         }
         // display_tags fallback
-        const tm = p.match(/"display_tags":"([^"]+)"/);
-        if (tm) { style = tm[1]; break; }
+        const tm = p.match(/"display_tags":"((?:[^"\\]|\\.)*)"/);
+        if (tm) { style = jsonStr(tm[1]).trim(); break; }
       }
+
+      // Song title + creation date — what a card built from the link uses for its name,
+      // its sort number ("10-Sanctus") and its date. og:title is the bare title; the
+      // <title> tag adds " by <artist> | Suno", so it is only the fallback.
+      let title = "";
+      const ogM = html.match(/property="og:title"[^>]*content="([^"]*)"/i) || html.match(/content="([^"]*)"[^>]*property="og:title"/i);
+      if (ogM) title = decodeEntities(ogM[1]).trim();
+      if (!title) {
+        const hM = html.match(/<title>([^<]*)<\/title>/i);
+        if (hM) title = decodeEntities(hM[1]).replace(/\s*\|\s*Suno\s*$/i, "").replace(/\s+by\s+[^|]*$/i, "").trim();
+      }
+      let date = "";
+      for (const p of pushes) {
+        const dm = p.match(/"created_at":"([^"]+)"/);
+        if (dm) { date = dm[1]; break; }
+      }
+      const info = { style, title, date };
 
       // Case 1: inline lyrics - "prompt":"[Verse]..." (string value, starts with "[")
       for (const inner of pushes) {
@@ -1975,7 +2084,7 @@ function startServer(callback) {
         while ((pm = pRe.exec(inner)) !== null) {
           try {
             const lyrics = JSON.parse('"' + pm[1] + '"');
-            if (lyrics.trim()) return res.json({ lyrics: lyrics.trim(), style });
+            if (lyrics.trim()) return res.json({ lyrics: lyrics.trim(), ...info });
           } catch (_) {}
         }
       }
@@ -1996,11 +2105,11 @@ function startServer(callback) {
             collected += pushes[j];
           }
           const lyrics = Buffer.from(collected, "utf8").slice(0, expectedBytes).toString("utf8").trim();
-          if (lyrics.length > 0) return res.json({ lyrics, style });
+          if (lyrics.length > 0) return res.json({ lyrics, ...info });
         }
       }
 
-      return res.json({ lyrics: "", style });
+      return res.json({ lyrics: "", ...info });
     } catch (err) {
       return res.status(500).json({ error: err.message });
     }
@@ -2350,6 +2459,85 @@ function startServer(callback) {
     }
   });
 
+  // ── Export .amlp (the LP prompt file) ─────────────────────────────────────────
+  // The exact inverse of POST /import-amlp: a project (or the whole song list) back out as one
+  // LP file. ⚠ CLAUDE: the grammar spec is app/node/suno-sync/main/README.md — header fields
+  // inline, per-track fields value-below, and LYRICS LAST in each track (it runs to the next
+  // "=== PROMPT ===", so a field written after it would be read back as lyric text).
+  api.post("/export-amlp", async (req, res) => {
+    try {
+      // The renderer decides WHAT to export — the songs selected in the view, or everything
+      // currently listed when nothing is selected. The server only orders and formats them, so
+      // "what you see is what you export" can never drift from what the grid shows.
+      const { cardIds = [], projectId = null, title } = req.body;
+      if (!cardIds.length) return res.json({ error: "noSongs" });
+
+      const placeholders = cardIds.map(() => "?").join(",");
+      const songs = db.prepare(`SELECT * FROM card WHERE cad_id IN (${placeholders}) AND cad_type='song' ORDER BY cad_order, cad_name`)
+        .all(...cardIds).map(rowToCard);
+      if (!songs.length) return res.json({ error: "noSongs" });
+
+      // The project only supplies the file's identity (name, folder, date) — never its contents.
+      let lpName = "songs", lpDate = "", defaultDir = "";
+      if (projectId) {
+        const proj = db.prepare("SELECT prj_name, prj_path, prj_date FROM project WHERE prj_id=?").get(projectId);
+        if (proj) {
+          lpName = proj.prj_name;
+          lpDate = new Date(proj.prj_date || Date.now()).toISOString().slice(0, 10);
+          if (proj.prj_path) defaultDir = proj.prj_path;
+        }
+      }
+      if (!lpDate) lpDate = new Date().toISOString().slice(0, 10);
+
+      const safeName = lpName.replace(/[\\/:*?"<>|]/g, "_");
+      const { canceled, filePath } = await dialog.showSaveDialog(mainWindow, {
+        title,
+        defaultPath: defaultDir ? path.join(defaultDir, `${safeName}.amlp`) : `${safeName}.amlp`,
+        filters: [{ name: "AI Music Prompt Lab LP", extensions: ["amlp"] }],
+      });
+      if (canceled || !filePath) return res.json({ canceled: true });
+
+      // LANG is a plain language name — the shape sunoLangToCode() reads back on import.
+      // ⚠ CLAUDE: always the ENGLISH name ("en" here, never the UI language). sunoLangToCode()
+      // matches SONG_LANGUAGES[].name, which is English-only, so writing a localized name
+      // ("Latín" on a Spanish UI) would export a file whose language silently fails to import.
+      const langCode = songs.find(s => s.lang)?.lang || "";
+      const linkedStyles = db.prepare("SELECT cad_style FROM card WHERE cad_id IN (SELECT cal_cadid_child FROM card_link WHERE cal_cadid_parent=?)");
+
+      const out = [
+        `TITLE: ${lpName}`,
+        `DATE: ${lpDate}`,
+        `STYLE: `,
+        `THEME: `,
+        `LANG: ${langCode ? getLangName(langCode, "en") : ""}`,
+        ``,
+      ];
+      songs.forEach((song, i) => {
+        // A song's style is its own text plus the styles of the music/vocal cards linked to it —
+        // the same composition the card's "copy with linked" action puts on the clipboard, i.e.
+        // what actually gets pasted into Suno. A song with no links exports its style verbatim.
+        const styles = [song.style, ...linkedStyles.all(song.id).map(r => r.cad_style)]
+          .map(s => (s || "").trim()).filter(Boolean);
+        const aiUrl = (song.urls || []).find(u => /suno\.com|producer\.ai|tunee\.ai|mozartai\.com/i.test(u.href || ""));
+        const num = String(song.sortNumber ?? (i + 1)).padStart(2, "0");
+        out.push(
+          `=== PROMPT ${num} ===`,
+          `TITLE:`, song.name || "", ``,
+          `DESCRIPTION:`, song.desc || "", ``,
+          `STYLE:`, styles.join("\n"), ``,
+        );
+        if (aiUrl) out.push(`URL:`, aiUrl.href, ``);
+        out.push(`LYRICS:`, song.lyrics || "", ``);
+      });
+
+      fs.writeFileSync(filePath, out.join("\n"), "utf8");
+      res.json({ saved: true, filePath, songs: songs.length });
+    } catch (err) {
+      console.error(".amlp export error:", err.message);
+      res.status(500).json({ error: err.message });
+    }
+  });
+
   // ── Export Markdown ───────────────────────────────────────────────────────────
   api.post("/export-md", async (req, res) => {
     try {
@@ -2590,9 +2778,13 @@ function startServer(callback) {
     res.json({ ok: true });
   });
 
+  mark("express route registration");
+
   findFreePort(4000, (port) => {
     SERVER_PORT = port;
+    mark(`free port probe (landed on ${port})`);
     server = api.listen(port, () => {
+      mark("express listening");
       console.log(`✅ ${APP_NAME} API on http://localhost:${port} - DB: ${dbPath}`);
       if (callback) callback(port);
     });
@@ -2606,17 +2798,21 @@ let mainWindow;
 function createWindow(port) {
   mainWindow = new BrowserWindow({
     width: 1280, height: 860, minWidth: 800, minHeight: 600,
-    title: APP_NAME, backgroundColor: "#0d0d14",
+    // ⚠ CLAUDE: no `backgroundColor` — it painted the window near-black until the first render
+    // while this app's default theme is light. No other app sets one; don't reintroduce it.
+    title: APP_NAME,
     icon: path.join(__dirname, isDev ? '../public/app.ico' : '../dist/app.ico'),
     webPreferences: { nodeIntegration: false, contextIsolation: true },
     titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
   });
   mainWindow.setMenuBarVisibility(false);
+  mark("BrowserWindow created");
   if (isDev) {
     mainWindow.loadURL(`http://localhost:${DEV_PORT}?apiPort=${port}`);
   } else {
     mainWindow.loadFile(path.join(__dirname, "../dist/index.html"), { query: { apiPort: String(port) } });
   }
+  mainWindow.webContents.once('did-finish-load', () => { mark("renderer did-finish-load"); dumpStartupTiming({ appName: APP_NAME, isDev, userDataPath: app.getPath("userData") }); });
   mainWindow.webContents.on('did-finish-load', () => mainWindow.setTitle(isDev ? `${APP_NAME} (Dev)` : APP_NAME));
   // ⚠ CLAUDE: Ctrl+Shift+I is dead because Menu.setApplicationMenu(null) removes the default shortcut.
   // This restores it in dev only - do NOT remove.
@@ -2633,6 +2829,49 @@ function createWindow(port) {
   mainWindow.on("closed", () => { mainWindow = null; });
 }
 
-app.whenReady().then(() => { startServer((port) => { createWindow(port); }); });
-app.on("window-all-closed", () => { if (server) server.close(); if (process.platform !== "darwin") app.quit(); });
-app.on("activate", () => { if (mainWindow === null) createWindow(SERVER_PORT); });
+// ── Opening a .amlp file from the desktop ─────────────────────────────────────
+// Double-clicking a .amlp (the file association is declared in package.json →
+// build.fileAssociations) launches the app with the path in argv, or — when a window is
+// already up — fires "second-instance" with that instance's argv. Either way the path is
+// parked here and the renderer collects it from GET /pending-open, then runs the very same
+// import as the Import button (which is why the file is handed over as text, not imported
+// here: only the renderer knows which environment is active).
+// ⚠ CLAUDE: the single-instance lock is load-bearing, not hygiene — a second instance would
+// open its own SQLite handle on the same file and its own Express port, so an association
+// double-click would silently run two apps against one database.
+let pendingOpenPath = null;
+
+function amlpPathFromArgv(argv) {
+  return argv.slice(1).find((a) => !a.startsWith("-") && /\.amlp$/i.test(a)) || null;
+}
+
+function focusMainWindow() {
+  if (!mainWindow) return;
+  if (mainWindow.isMinimized()) mainWindow.restore();
+  mainWindow.focus();
+}
+
+// macOS hands the file over by event, and it can arrive before the window exists.
+app.on("open-file", (event, filePath) => {
+  event.preventDefault();
+  pendingOpenPath = filePath;
+  focusMainWindow();
+});
+
+if (!app.requestSingleInstanceLock()) {
+  app.quit();
+} else {
+  app.on("second-instance", (_event, argv) => {
+    const file = amlpPathFromArgv(argv);
+    if (file) pendingOpenPath = file;
+    // Focusing is what makes the running renderer look: it re-checks /pending-open on window
+    // focus (the app has no IPC bridge — everything goes through the local HTTP API).
+    focusMainWindow();
+  });
+
+  pendingOpenPath = amlpPathFromArgv(process.argv);
+
+  app.whenReady().then(() => { mark("app.whenReady"); startServer((port) => { createWindow(port); }); });
+  app.on("window-all-closed", () => { if (server) server.close(); if (process.platform !== "darwin") app.quit(); });
+  app.on("activate", () => { if (mainWindow === null) createWindow(SERVER_PORT); });
+}

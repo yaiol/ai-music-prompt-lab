@@ -60,6 +60,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON import failed",
     ttlAppImportJSONWarnings:               "Import Warnings",
     msgAppImportJSONCardsCreated:           "cards created",
+    msgAppExportAmlpSongs:                  "songs exported",
+    msgAppExportAmlpNone:                   "No songs to export",
     msgAppImportJSONCardsUpdated:           "cards updated",
     msgAppImportJSONCardsUnchanged:         "cards unchanged",
     msgAppImportJSONProjectsCreated:        "projects created",
@@ -68,9 +70,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "song URLs added",
     tstAppImportJSONBackupRestored:         "Backup restored.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file",
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.",
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file",
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Save Document",
@@ -96,6 +98,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Export",
     tipHdrExportCards:                      "Export cards",
     tipHdrExportAi:                         "Export AI templates",
+    btnHdrExportAmlp:                       "Export LP file",
     btnHdrExportBackup:                     "Database Backup",
     tipHdrSettings:                         "Settings",
     tipHdrHelp:                             "Help",
@@ -488,6 +491,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Échec de l'importation JSON",
     ttlAppImportJSONWarnings:               "Avertissements d'importation",
     msgAppImportJSONCardsCreated:           "cartes créées",
+    msgAppExportAmlpSongs:                  "morceaux exportés",
+    msgAppExportAmlpNone:                   "Aucune chanson à exporter",
     msgAppImportJSONCardsUpdated:           "cartes mises à jour",
     msgAppImportJSONCardsUnchanged:         "cartes inchangées",
     msgAppImportJSONProjectsCreated:        "projets créés",
@@ -496,9 +501,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URLs de chansons ajoutées",
     tstAppImportJSONBackupRestored:         "Sauvegarde restaurée.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to fr
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fr
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fr
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fr
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Enregistrer le document",
@@ -524,6 +529,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exporter",
     tipHdrExportCards:                      "Exporter les cartes",
     tipHdrExportAi:                         "Exporter les modèles IA",
+    btnHdrExportAmlp:                       "Exporter le fichier LP",
     btnHdrExportBackup:                     "Sauvegarde de la base de données",
     tipHdrSettings:                         "Paramètres",
     tipHdrHelp:                             "Aide",
@@ -915,6 +921,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-Import fehlgeschlagen",
     ttlAppImportJSONWarnings:               "Import-Warnungen",
     msgAppImportJSONCardsCreated:           "Karten erstellt",
+    msgAppExportAmlpSongs:                  "Lieder exportiert",
+    msgAppExportAmlpNone:                   "Keine Songs zum Exportieren",
     msgAppImportJSONCardsUpdated:           "Karten aktualisiert",
     msgAppImportJSONCardsUnchanged:         "Karten unverändert",
     msgAppImportJSONProjectsCreated:        "Projekte erstellt",
@@ -923,9 +931,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "Lied-URLs hinzugefügt",
     tstAppImportJSONBackupRestored:         "Sicherung wiederhergestellt.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to de
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to de
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to de
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to de
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Dokument speichern",
@@ -951,6 +959,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportieren",
     tipHdrExportCards:                      "Karten exportieren",
     tipHdrExportAi:                         "KI-Vorlagen exportieren",
+    btnHdrExportAmlp:                       "LP-Datei exportieren",
     btnHdrExportBackup:                     "Datenbank-Sicherung",
     tipHdrSettings:                         "Einstellungen",
     tipHdrHelp:                             "Hilfe",
@@ -1342,6 +1351,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Error al importar JSON",
     ttlAppImportJSONWarnings:               "Avisos de importación",
     msgAppImportJSONCardsCreated:           "tarjetas creadas",
+    msgAppExportAmlpSongs:                  "canciones exportadas",
+    msgAppExportAmlpNone:                   "No hay canciones para exportar",
     msgAppImportJSONCardsUpdated:           "tarjetas actualizadas",
     msgAppImportJSONCardsUnchanged:         "tarjetas sin cambios",
     msgAppImportJSONProjectsCreated:        "proyectos creados",
@@ -1350,9 +1361,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URLs de canciones añadidas",
     tstAppImportJSONBackupRestored:         "Copia de seguridad restaurada.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to es
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to es
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to es
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to es
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Guardar documento",
@@ -1378,6 +1389,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportar",
     tipHdrExportCards:                      "Exportar tarjetas",
     tipHdrExportAi:                         "Exportar plantillas de IA",
+    btnHdrExportAmlp:                       "Exportar archivo LP",
     btnHdrExportBackup:                     "Copia de seguridad de la base de datos",
     tipHdrSettings:                         "Ajustes",
     tipHdrHelp:                             "Ayuda",
@@ -1769,6 +1781,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Falha na importação JSON",
     ttlAppImportJSONWarnings:               "Avisos de importação",
     msgAppImportJSONCardsCreated:           "cartões criados",
+    msgAppExportAmlpSongs:                  "músicas exportadas",
+    msgAppExportAmlpNone:                   "Nenhuma música para exportar",
     msgAppImportJSONCardsUpdated:           "cartões atualizados",
     msgAppImportJSONCardsUnchanged:         "cartões inalterados",
     msgAppImportJSONProjectsCreated:        "projetos criados",
@@ -1777,9 +1791,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URLs de músicas adicionadas",
     tstAppImportJSONBackupRestored:         "Backup restaurado.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to pt_BR
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_BR
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pt_BR
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_BR
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salvar documento",
@@ -1805,6 +1819,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportar",
     tipHdrExportCards:                      "Exportar cartões",
     tipHdrExportAi:                         "Exportar modelos de IA",
+    btnHdrExportAmlp:                       "Exportar arquivo LP",
     btnHdrExportBackup:                     "Backup do banco de dados",
     tipHdrSettings:                         "Configurações",
     tipHdrHelp:                             "Ajuda",
@@ -2196,6 +2211,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Falha na importação JSON",
     ttlAppImportJSONWarnings:               "Avisos de importação",
     msgAppImportJSONCardsCreated:           "cartões criados",
+    msgAppExportAmlpSongs:                  "músicas exportadas",
+    msgAppExportAmlpNone:                   "Nenhuma música para exportar",
     msgAppImportJSONCardsUpdated:           "cartões atualizados",
     msgAppImportJSONCardsUnchanged:         "cartões inalterados",
     msgAppImportJSONProjectsCreated:        "projetos criados",
@@ -2204,9 +2221,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URLs de músicas adicionadas",
     tstAppImportJSONBackupRestored:         "Cópia de segurança restaurada.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to pt_PT
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_PT
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pt_PT
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_PT
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Guardar documento",
@@ -2232,6 +2249,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportar",
     tipHdrExportCards:                      "Exportar cartões",
     tipHdrExportAi:                         "Exportar modelos de IA",
+    btnHdrExportAmlp:                       "Exportar ficheiro LP",
     btnHdrExportBackup:                     "Cópia de segurança da base de dados",
     tipHdrSettings:                         "Definições",
     tipHdrHelp:                             "Ajuda",
@@ -2623,6 +2641,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON 导入失败",
     ttlAppImportJSONWarnings:               "导入警告",
     msgAppImportJSONCardsCreated:           "已创建卡片",
+    msgAppExportAmlpSongs:                  "已导出歌曲",
+    msgAppExportAmlpNone:                   "没有可导出的歌曲",
     msgAppImportJSONCardsUpdated:           "已更新卡片",
     msgAppImportJSONCardsUnchanged:         "未更改卡片",
     msgAppImportJSONProjectsCreated:        "个项目已创建",
@@ -2631,9 +2651,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "个歌曲 URL 已添加",
     tstAppImportJSONBackupRestored:         "备份已恢复。",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to zh_CN
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_CN
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to zh_CN
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_CN
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "保存文档",
@@ -2659,6 +2679,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "导出",
     tipHdrExportCards:                      "导出卡片",
     tipHdrExportAi:                         "导出 AI 模板",
+    btnHdrExportAmlp:                       "导出 LP 文件",
     btnHdrExportBackup:                     "数据库备份",
     tipHdrSettings:                         "设置",
     tipHdrHelp:                             "帮助",
@@ -3050,6 +3071,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON 匯入失敗",
     ttlAppImportJSONWarnings:               "匯入警告",
     msgAppImportJSONCardsCreated:           "已建立卡片",
+    msgAppExportAmlpSongs:                  "已匯出歌曲",
+    msgAppExportAmlpNone:                   "沒有可匯出的歌曲",
     msgAppImportJSONCardsUpdated:           "已更新卡片",
     msgAppImportJSONCardsUnchanged:         "未變更卡片",
     msgAppImportJSONProjectsCreated:        "個專案已建立",
@@ -3058,9 +3081,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "個歌曲 URL 已新增",
     tstAppImportJSONBackupRestored:         "備份已還原。",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to zh_TW
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_TW
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to zh_TW
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_TW
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "儲存檔案",
@@ -3086,6 +3109,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "匯出",
     tipHdrExportCards:                      "匯出卡片",
     tipHdrExportAi:                         "匯出 AI 範本",
+    btnHdrExportAmlp:                       "匯出 LP 檔案",
     btnHdrExportBackup:                     "資料庫備份",
     tipHdrSettings:                         "設定",
     tipHdrHelp:                             "說明",
@@ -3477,6 +3501,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSONインポート失敗",
     ttlAppImportJSONWarnings:               "インポート警告",
     msgAppImportJSONCardsCreated:           "カード作成済み",
+    msgAppExportAmlpSongs:                  "曲をエクスポートしました",
+    msgAppExportAmlpNone:                   "エクスポートする曲がありません",
     msgAppImportJSONCardsUpdated:           "カード更新済み",
     msgAppImportJSONCardsUnchanged:         "カード変更なし",
     msgAppImportJSONProjectsCreated:        "件のプロジェクトを作成",
@@ -3485,9 +3511,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "件の曲URLを追加",
     tstAppImportJSONBackupRestored:         "バックアップを復元しました。",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ja
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ja
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ja
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ja
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ドキュメントを保存",
@@ -3513,6 +3539,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "エクスポート",
     tipHdrExportCards:                      "カードをエクスポート",
     tipHdrExportAi:                         "AIテンプレートをエクスポート",
+    btnHdrExportAmlp:                       "LPファイルをエクスポート",
     btnHdrExportBackup:                     "データベースバックアップ",
     tipHdrSettings:                         "設定",
     tipHdrHelp:                             "ヘルプ",
@@ -3904,6 +3931,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Import JSON nieudany",
     ttlAppImportJSONWarnings:               "Ostrzeżenia importu",
     msgAppImportJSONCardsCreated:           "utworzone karty",
+    msgAppExportAmlpSongs:                  "utwory wyeksportowane",
+    msgAppExportAmlpNone:                   "Brak utworów do wyeksportowania",
     msgAppImportJSONCardsUpdated:           "zaktualizowane karty",
     msgAppImportJSONCardsUnchanged:         "niezmienione karty",
     msgAppImportJSONProjectsCreated:        "projektów utworzonych",
@@ -3912,9 +3941,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL-i piosenek dodanych",
     tstAppImportJSONBackupRestored:         "Kopia zapasowa przywrócona.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to pl
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pl
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pl
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pl
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Zapisz dokument",
@@ -3940,6 +3969,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Eksportuj",
     tipHdrExportCards:                      "Eksportuj karty",
     tipHdrExportAi:                         "Eksportuj szablony AI",
+    btnHdrExportAmlp:                       "Eksportuj plik LP",
     btnHdrExportBackup:                     "Kopia zapasowa bazy danych",
     tipHdrSettings:                         "Ustawienia",
     tipHdrHelp:                             "Pomoc",
@@ -4331,6 +4361,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Помилка імпорту JSON",
     ttlAppImportJSONWarnings:               "Попередження імпорту",
     msgAppImportJSONCardsCreated:           "створено карток",
+    msgAppExportAmlpSongs:                  "пісні експортовано",
+    msgAppExportAmlpNone:                   "Немає пісень для експорту",
     msgAppImportJSONCardsUpdated:           "оновлено карток",
     msgAppImportJSONCardsUnchanged:         "карток без змін",
     msgAppImportJSONProjectsCreated:        "проектів створено",
@@ -4339,9 +4371,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL пісень додано",
     tstAppImportJSONBackupRestored:         "Резервну копію відновлено.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to uk
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to uk
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to uk
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to uk
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Зберегти документ",
@@ -4367,6 +4399,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Експортувати",
     tipHdrExportCards:                      "Експортувати картки",
     tipHdrExportAi:                         "Експортувати шаблони ШІ",
+    btnHdrExportAmlp:                       "Експортувати файл LP",
     btnHdrExportBackup:                     "Резервна копія бази даних",
     tipHdrSettings:                         "Налаштування",
     tipHdrHelp:                             "Довідка",
@@ -4758,6 +4791,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Importazione JSON fallita",
     ttlAppImportJSONWarnings:               "Avvisi di importazione",
     msgAppImportJSONCardsCreated:           "carte create",
+    msgAppExportAmlpSongs:                  "brani esportati",
+    msgAppExportAmlpNone:                   "Nessun brano da esportare",
     msgAppImportJSONCardsUpdated:           "carte aggiornate",
     msgAppImportJSONCardsUnchanged:         "carte invariate",
     msgAppImportJSONProjectsCreated:        "progetti creati",
@@ -4766,9 +4801,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL canzoni aggiunte",
     tstAppImportJSONBackupRestored:         "Backup ripristinato.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to it
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to it
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to it
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to it
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salva documento",
@@ -4794,6 +4829,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Esporta",
     tipHdrExportCards:                      "Esporta schede",
     tipHdrExportAi:                         "Esporta modelli AI",
+    btnHdrExportAmlp:                       "Esporta file LP",
     btnHdrExportBackup:                     "Backup del database",
     tipHdrSettings:                         "Impostazioni",
     tipHdrHelp:                             "Aiuto",
@@ -5185,6 +5221,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "فشل استيراد JSON",
     ttlAppImportJSONWarnings:               "تحذيرات الاستيراد",
     msgAppImportJSONCardsCreated:           "بطاقات تم إنشاؤها",
+    msgAppExportAmlpSongs:                  "تم تصدير الأغاني",
+    msgAppExportAmlpNone:                   "لا توجد أغاني للتصدير",
     msgAppImportJSONCardsUpdated:           "بطاقات تم تحديثها",
     msgAppImportJSONCardsUnchanged:         "بطاقات لم تتغير",
     msgAppImportJSONProjectsCreated:        "مشاريع تم إنشاؤها",
@@ -5193,9 +5231,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "عناوين URL للأغاني أضيفت",
     tstAppImportJSONBackupRestored:         "تم استعادة النسخة الاحتياطية.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ar
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ar
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ar
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ar
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "حفظ المستند",
@@ -5221,6 +5259,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "تصدير",
     tipHdrExportCards:                      "تصدير البطاقات",
     tipHdrExportAi:                         "تصدير قوالب الذكاء الاصطناعي",
+    btnHdrExportAmlp:                       "تصدير ملف LP",
     btnHdrExportBackup:                     "نسخ احتياطي لقاعدة البيانات",
     tipHdrSettings:                         "الإعدادات",
     tipHdrHelp:                             "مساعدة",
@@ -5612,6 +5651,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-import mislukt",
     ttlAppImportJSONWarnings:               "Importwaarschuwingen",
     msgAppImportJSONCardsCreated:           "kaarten aangemaakt",
+    msgAppExportAmlpSongs:                  "nummers geëxporteerd",
+    msgAppExportAmlpNone:                   "Geen nummers om te exporteren",
     msgAppImportJSONCardsUpdated:           "kaarten bijgewerkt",
     msgAppImportJSONCardsUnchanged:         "kaarten ongewijzigd",
     msgAppImportJSONProjectsCreated:        "projecten aangemaakt",
@@ -5620,9 +5661,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "lied-URLs toegevoegd",
     tstAppImportJSONBackupRestored:         "Back-up hersteld.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to nl
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nl
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to nl
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nl
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Document opslaan",
@@ -5648,6 +5689,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exporteren",
     tipHdrExportCards:                      "Kaarten exporteren",
     tipHdrExportAi:                         "AI-sjablonen exporteren",
+    btnHdrExportAmlp:                       "LP-bestand exporteren",
     btnHdrExportBackup:                     "Database back-up",
     tipHdrSettings:                         "Instellingen",
     tipHdrHelp:                             "Hulp",
@@ -6039,6 +6081,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-import mislyktes",
     ttlAppImportJSONWarnings:               "Importadvarsler",
     msgAppImportJSONCardsCreated:           "kort opprettet",
+    msgAppExportAmlpSongs:                  "sanger eksportert",
+    msgAppExportAmlpNone:                   "Ingen sanger å eksportere",
     msgAppImportJSONCardsUpdated:           "kort oppdatert",
     msgAppImportJSONCardsUnchanged:         "kort uendret",
     msgAppImportJSONProjectsCreated:        "prosjekter opprettet",
@@ -6047,9 +6091,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "sang-URLer lagt til",
     tstAppImportJSONBackupRestored:         "Sikkerhetskopi gjenopprettet.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to nb
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nb
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to nb
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nb
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Lagre dokument",
@@ -6075,6 +6119,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Eksporter",
     tipHdrExportCards:                      "Eksporter kort",
     tipHdrExportAi:                         "Eksporter AI-maler",
+    btnHdrExportAmlp:                       "Eksporter LP-fil",
     btnHdrExportBackup:                     "Databasesikkerhetskopi",
     tipHdrSettings:                         "Innstillinger",
     tipHdrHelp:                             "Hjelp",
@@ -6466,6 +6511,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-import misslyckades",
     ttlAppImportJSONWarnings:               "Importvarningar",
     msgAppImportJSONCardsCreated:           "kort skapade",
+    msgAppExportAmlpSongs:                  "låtar exporterade",
+    msgAppExportAmlpNone:                   "Inga låtar att exportera",
     msgAppImportJSONCardsUpdated:           "kort uppdaterade",
     msgAppImportJSONCardsUnchanged:         "kort oförändrade",
     msgAppImportJSONProjectsCreated:        "projekt skapade",
@@ -6474,9 +6521,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "låt-URLer tillagda",
     tstAppImportJSONBackupRestored:         "Säkerhetskopia återställd.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to sv
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sv
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sv
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sv
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Spara dokument",
@@ -6502,6 +6549,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportera",
     tipHdrExportCards:                      "Exportera kort",
     tipHdrExportAi:                         "Exportera AI-mallar",
+    btnHdrExportAmlp:                       "Exportera LP-fil",
     btnHdrExportBackup:                     "Databassäkerhetskopia",
     tipHdrSettings:                         "Inställningar",
     tipHdrHelp:                             "Hjälp",
@@ -6893,6 +6941,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON içe aktarma başarısız",
     ttlAppImportJSONWarnings:               "İçe aktarma uyarıları",
     msgAppImportJSONCardsCreated:           "kart oluşturuldu",
+    msgAppExportAmlpSongs:                  "şarkılar dışa aktarıldı",
+    msgAppExportAmlpNone:                   "Dışa aktarılacak şarkı yok",
     msgAppImportJSONCardsUpdated:           "kart güncellendi",
     msgAppImportJSONCardsUnchanged:         "kart değişmedi",
     msgAppImportJSONProjectsCreated:        "proje oluşturuldu",
@@ -6901,9 +6951,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "şarkı URL'si eklendi",
     tstAppImportJSONBackupRestored:         "Yedek geri yüklendi.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to tr
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tr
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to tr
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tr
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Belgeyi kaydet",
@@ -6929,6 +6979,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Dışa aktar",
     tipHdrExportCards:                      "Kartları dışa aktar",
     tipHdrExportAi:                         "Yapay zeka şablonlarını dışa aktar",
+    btnHdrExportAmlp:                       "LP dosyasını dışa aktar",
     btnHdrExportBackup:                     "Veritabanı Yedekleme",
     tipHdrSettings:                         "Ayarlar",
     tipHdrHelp:                             "Yardım",
@@ -7320,6 +7371,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-import mislykkedes",
     ttlAppImportJSONWarnings:               "Importadvarsler",
     msgAppImportJSONCardsCreated:           "kort oprettet",
+    msgAppExportAmlpSongs:                  "sange eksporteret",
+    msgAppExportAmlpNone:                   "Ingen sange at eksportere",
     msgAppImportJSONCardsUpdated:           "kort opdateret",
     msgAppImportJSONCardsUnchanged:         "kort uændret",
     msgAppImportJSONProjectsCreated:        "projekter oprettet",
@@ -7328,9 +7381,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "sang-URL'er tilføjet",
     tstAppImportJSONBackupRestored:         "Sikkerhedskopi gendannet.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to da
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to da
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to da
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to da
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Gem dokument",
@@ -7356,6 +7409,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Eksporter",
     tipHdrExportCards:                      "Eksporter kort",
     tipHdrExportAi:                         "Eksportér AI-skabeloner",
+    btnHdrExportAmlp:                       "Eksporter LP-fil",
     btnHdrExportBackup:                     "Databasesikkerhedskopi",
     tipHdrSettings:                         "Indstillinger",
     tipHdrHelp:                             "Hjælp",
@@ -7747,6 +7801,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON-tuonti epäonnistui",
     ttlAppImportJSONWarnings:               "Tuontivaroitukset",
     msgAppImportJSONCardsCreated:           "korttia luotu",
+    msgAppExportAmlpSongs:                  "kappaletta viety",
+    msgAppExportAmlpNone:                   "Ei kappaleita vietäväksi",
     msgAppImportJSONCardsUpdated:           "korttia päivitetty",
     msgAppImportJSONCardsUnchanged:         "korttia muuttumattomana",
     msgAppImportJSONProjectsCreated:        "projektia luotu",
@@ -7755,9 +7811,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "kappaleen URL:ia lisätty",
     tstAppImportJSONBackupRestored:         "Varmuuskopio palautettu.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to fi
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fi
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fi
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fi
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Tallenna asiakirja",
@@ -7783,6 +7839,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Vie",
     tipHdrExportCards:                      "Vie kortit",
     tipHdrExportAi:                         "Vie AI-mallit",
+    btnHdrExportAmlp:                       "Vie LP-tiedosto",
     btnHdrExportBackup:                     "Tietokannan varmuuskopio",
     tipHdrSettings:                         "Asetukset",
     tipHdrHelp:                             "Ohje",
@@ -8174,6 +8231,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Η εισαγωγή JSON απέτυχε",
     ttlAppImportJSONWarnings:               "Προειδοποιήσεις εισαγωγής",
     msgAppImportJSONCardsCreated:           "κάρτες δημιουργήθηκαν",
+    msgAppExportAmlpSongs:                  "τραγούδια εξήχθησαν",
+    msgAppExportAmlpNone:                   "Δεν υπάρχουν τραγούδια για εξαγωγή",
     msgAppImportJSONCardsUpdated:           "κάρτες ενημερώθηκαν",
     msgAppImportJSONCardsUnchanged:         "κάρτες αμετάβλητες",
     msgAppImportJSONProjectsCreated:        "έργα δημιουργήθηκαν",
@@ -8182,9 +8241,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL τραγουδιών προστέθηκαν",
     tstAppImportJSONBackupRestored:         "Το αντίγραφο ασφαλείας αποκαταστάθηκε.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to el
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to el
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to el
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to el
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Αποθήκευση εγγράφου",
@@ -8210,6 +8269,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Εξαγωγή",
     tipHdrExportCards:                      "Εξαγωγή καρτών",
     tipHdrExportAi:                         "Εξαγωγή προτύπων AI",
+    btnHdrExportAmlp:                       "Εξαγωγή αρχείου LP",
     btnHdrExportBackup:                     "Δημιουργία αντιγράφου ασφαλείας",
     tipHdrSettings:                         "Ρυθμίσεις",
     tipHdrHelp:                             "Βοήθεια",
@@ -8601,6 +8661,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "ייבוא JSON נכשל",
     ttlAppImportJSONWarnings:               "אזהרות ייבוא",
     msgAppImportJSONCardsCreated:           "כרטיסים נוצרו",
+    msgAppExportAmlpSongs:                  "שירים יוצאו",
+    msgAppExportAmlpNone:                   "אין שירים לייצוא",
     msgAppImportJSONCardsUpdated:           "כרטיסים עודכנו",
     msgAppImportJSONCardsUnchanged:         "כרטיסים ללא שינוי",
     msgAppImportJSONProjectsCreated:        "פרויקטים נוצרו",
@@ -8609,9 +8671,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "כתובות URL של שירים נוספו",
     tstAppImportJSONBackupRestored:         "הגיבוי שוחזר.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to he
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to he
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to he
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to he
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "שמור מסמך",
@@ -8637,6 +8699,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "ייצוא",
     tipHdrExportCards:                      "ייצוא כרטיסים",
     tipHdrExportAi:                         "ייצוא תבניות AI",
+    btnHdrExportAmlp:                       "ייצוא קובץ LP",
     btnHdrExportBackup:                     "גיבוי מסד נתונים",
     tipHdrSettings:                         "הגדרות",
     tipHdrHelp:                             "עזרה",
@@ -9028,6 +9091,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON 가져오기 실패",
     ttlAppImportJSONWarnings:               "가져오기 경고",
     msgAppImportJSONCardsCreated:           "카드 생성됨",
+    msgAppExportAmlpSongs:                  "곡 내보내기 완료",
+    msgAppExportAmlpNone:                   "내보낼 곡이 없습니다.",
     msgAppImportJSONCardsUpdated:           "카드 업데이트됨",
     msgAppImportJSONCardsUnchanged:         "카드 변경 없음",
     msgAppImportJSONProjectsCreated:        "개의 프로젝트 생성됨",
@@ -9036,9 +9101,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "개의 노래 URL 추가됨",
     tstAppImportJSONBackupRestored:         "백업이 복원되었습니다.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ko
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ko
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ko
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ko
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "문서 저장",
@@ -9064,6 +9129,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "내보내기",
     tipHdrExportCards:                      "카드 내보내기",
     tipHdrExportAi:                         "AI 템플릿 내보내기",
+    btnHdrExportAmlp:                       "LP 파일 내보내기",
     btnHdrExportBackup:                     "데이터베이스 백업",
     tipHdrSettings:                         "설정",
     tipHdrHelp:                             "도움말",
@@ -9455,6 +9521,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Import JSON eșuat",
     ttlAppImportJSONWarnings:               "Avertismente import",
     msgAppImportJSONCardsCreated:           "carduri create",
+    msgAppExportAmlpSongs:                  "melodii exportate",
+    msgAppExportAmlpNone:                   "Nicio melodie de exportat",
     msgAppImportJSONCardsUpdated:           "carduri actualizate",
     msgAppImportJSONCardsUnchanged:         "carduri neschimbate",
     msgAppImportJSONProjectsCreated:        "proiecte create",
@@ -9463,9 +9531,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL-uri cântece adăugate",
     tstAppImportJSONBackupRestored:         "Backup restaurat.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ro
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ro
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ro
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ro
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salvează documentul",
@@ -9491,6 +9559,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportă",
     tipHdrExportCards:                      "Exportă carduri",
     tipHdrExportAi:                         "Exportați șabloanele AI",
+    btnHdrExportAmlp:                       "Exportă fișier LP",
     btnHdrExportBackup:                     "Backup bază de date",
     tipHdrSettings:                         "Setări",
     tipHdrHelp:                             "Ajutor",
@@ -9882,6 +9951,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Nhập JSON thất bại",
     ttlAppImportJSONWarnings:               "Cảnh báo nhập khẩu",
     msgAppImportJSONCardsCreated:           "thẻ đã tạo",
+    msgAppExportAmlpSongs:                  "đã xuất bài hát",
+    msgAppExportAmlpNone:                   "Không có bài hát nào để xuất",
     msgAppImportJSONCardsUpdated:           "thẻ đã cập nhật",
     msgAppImportJSONCardsUnchanged:         "thẻ không thay đổi",
     msgAppImportJSONProjectsCreated:        "dự án đã tạo",
@@ -9890,9 +9961,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL bài hát đã thêm",
     tstAppImportJSONBackupRestored:         "Đã khôi phục bản sao lưu.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to vi
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to vi
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to vi
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to vi
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Lưu tài liệu",
@@ -9918,6 +9989,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Xuất",
     tipHdrExportCards:                      "Xuất thẻ",
     tipHdrExportAi:                         "Xuất mẫu AI",
+    btnHdrExportAmlp:                       "Xuất tệp LP",
     btnHdrExportBackup:                     "Sao lưu cơ sở dữ liệu",
     tipHdrSettings:                         "Cài đặt",
     tipHdrHelp:                             "Trợ giúp",
@@ -10309,6 +10381,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "وارد کردن JSON ناموفق بود",
     ttlAppImportJSONWarnings:               "هشدارهای وارد کردن",
     msgAppImportJSONCardsCreated:           "کارت‌های ایجاد شده",
+    msgAppExportAmlpSongs:                  "آهنگ‌ها صادر شدند",
+    msgAppExportAmlpNone:                   "آهنگی برای خروجی نیست",
     msgAppImportJSONCardsUpdated:           "کارت‌های به‌روز شده",
     msgAppImportJSONCardsUnchanged:         "کارت‌های بدون تغییر",
     msgAppImportJSONProjectsCreated:        "پروژه ایجاد شد",
@@ -10317,9 +10391,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL آهنگ اضافه شد",
     tstAppImportJSONBackupRestored:         "پشتیبان بازیابی شد.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to fa
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fa
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fa
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fa
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ذخیره سند",
@@ -10345,6 +10419,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "صادر کردن",
     tipHdrExportCards:                      "خروجی گرفتن از کارت‌ها",
     tipHdrExportAi:                         "صدور الگوهای هوش مصنوعی",
+    btnHdrExportAmlp:                       "خروجی گرفتن از فایل LP",
     btnHdrExportBackup:                     "پشتیبان‌گیری از پایگاه داده",
     tipHdrSettings:                         "تنظیمات",
     tipHdrHelp:                             "راهنما",
@@ -10736,6 +10811,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Import JSON selhal",
     ttlAppImportJSONWarnings:               "Varování importu",
     msgAppImportJSONCardsCreated:           "karet vytvořeno",
+    msgAppExportAmlpSongs:                  "skladby exportovány",
+    msgAppExportAmlpNone:                   "Žádné skladby k exportu",
     msgAppImportJSONCardsUpdated:           "karet aktualizováno",
     msgAppImportJSONCardsUnchanged:         "karet nezměněno",
     msgAppImportJSONProjectsCreated:        "projektů vytvořeno",
@@ -10744,9 +10821,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL písní přidáno",
     tstAppImportJSONBackupRestored:         "Záloha obnovena.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to cs
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to cs
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to cs
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to cs
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Uložit dokument",
@@ -10772,6 +10849,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportovat",
     tipHdrExportCards:                      "Exportovat karty",
     tipHdrExportAi:                         "Exportovat šablony AI",
+    btnHdrExportAmlp:                       "Exportovat soubor LP",
     btnHdrExportBackup:                     "Záloha databáze",
     tipHdrSettings:                         "Nastavení",
     tipHdrHelp:                             "Nápověda",
@@ -11163,6 +11241,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Uvoz JSON-a nije uspio",
     ttlAppImportJSONWarnings:               "Upozorenja uvoza",
     msgAppImportJSONCardsCreated:           "kartice stvorene",
+    msgAppExportAmlpSongs:                  "pjesme izvezene",
+    msgAppExportAmlpNone:                   "Nema pjesama za izvoz",
     msgAppImportJSONCardsUpdated:           "kartice ažurirane",
     msgAppImportJSONCardsUnchanged:         "kartice nepromijenjene",
     msgAppImportJSONProjectsCreated:        "projekata stvoreno",
@@ -11171,9 +11251,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL-ova pjesama dodano",
     tstAppImportJSONBackupRestored:         "Sigurnosna kopija obnovljena.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to hr
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hr
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hr
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hr
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Spremi dokument",
@@ -11199,6 +11279,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Izvezi",
     tipHdrExportCards:                      "Izvezi kartice",
     tipHdrExportAi:                         "Izvezi AI predloške",
+    btnHdrExportAmlp:                       "Izvezi LP datoteku",
     btnHdrExportBackup:                     "Sigurnosna kopija baze podataka",
     tipHdrSettings:                         "Postavke",
     tipHdrHelp:                             "Pomoć",
@@ -11590,6 +11671,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "La importació JSON ha fallat",
     ttlAppImportJSONWarnings:               "Advertiments d'importació",
     msgAppImportJSONCardsCreated:           "targetes creades",
+    msgAppExportAmlpSongs:                  "cançons exportades",
+    msgAppExportAmlpNone:                   "No hi ha cançons per exportar",
     msgAppImportJSONCardsUpdated:           "targetes actualitzades",
     msgAppImportJSONCardsUnchanged:         "targetes sense canvis",
     msgAppImportJSONProjectsCreated:        "projectes creats",
@@ -11598,9 +11681,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL de cançons afegits",
     tstAppImportJSONBackupRestored:         "Còpia de seguretat restaurada.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ca
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ca
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ca
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ca
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Desa el document",
@@ -11626,6 +11709,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportar",
     tipHdrExportCards:                      "Exporta targetes",
     tipHdrExportAi:                         "Exportar plantilles d'IA",
+    btnHdrExportAmlp:                       "Exporta fitxer LP",
     btnHdrExportBackup:                     "Còpia de seguretat de la base de dades",
     tipHdrSettings:                         "Configuració",
     tipHdrHelp:                             "Ajuda",
@@ -12017,6 +12101,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Impor JSON gagal",
     ttlAppImportJSONWarnings:               "Peringatan impor",
     msgAppImportJSONCardsCreated:           "kartu dibuat",
+    msgAppExportAmlpSongs:                  "lagu diekspor",
+    msgAppExportAmlpNone:                   "Tidak ada lagu untuk diekspor",
     msgAppImportJSONCardsUpdated:           "kartu diperbarui",
     msgAppImportJSONCardsUnchanged:         "kartu tidak berubah",
     msgAppImportJSONProjectsCreated:        "proyek dibuat",
@@ -12025,9 +12111,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL lagu ditambahkan",
     tstAppImportJSONBackupRestored:         "Backup dipulihkan.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to id
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to id
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to id
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to id
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Simpan dokumen",
@@ -12053,6 +12139,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Ekspor",
     tipHdrExportCards:                      "Ekspor kartu",
     tipHdrExportAi:                         "Ekspor template AI",
+    btnHdrExportAmlp:                       "Ekspor berkas LP",
     btnHdrExportBackup:                     "Backup Database",
     tipHdrSettings:                         "Pengaturan",
     tipHdrHelp:                             "Bantuan",
@@ -12444,6 +12531,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Import JSON gagal",
     ttlAppImportJSONWarnings:               "Amaran import",
     msgAppImportJSONCardsCreated:           "kad dicipta",
+    msgAppExportAmlpSongs:                  "lagu dieksport",
+    msgAppExportAmlpNone:                   "Tiada lagu untuk dieksport",
     msgAppImportJSONCardsUpdated:           "kad dikemas kini",
     msgAppImportJSONCardsUnchanged:         "kad tidak berubah",
     msgAppImportJSONProjectsCreated:        "projek dicipta",
@@ -12452,9 +12541,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL lagu ditambah",
     tstAppImportJSONBackupRestored:         "Sandaran dipulihkan.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ms
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ms
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ms
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ms
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Simpan dokumen",
@@ -12480,6 +12569,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Eksport",
     tipHdrExportCards:                      "Eksport kad",
     tipHdrExportAi:                         "Eksport templat AI",
+    btnHdrExportAmlp:                       "Eksport fail LP",
     btnHdrExportBackup:                     "Sandaran Pangkalan Data",
     tipHdrSettings:                         "Tetapan",
     tipHdrHelp:                             "Bantuan",
@@ -12871,6 +12961,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Импорт JSON не удался",
     ttlAppImportJSONWarnings:               "Предупреждения импорта",
     msgAppImportJSONCardsCreated:           "создано карточек",
+    msgAppExportAmlpSongs:                  "песни экспортированы",
+    msgAppExportAmlpNone:                   "Нет песен для экспорта",
     msgAppImportJSONCardsUpdated:           "обновлено карточек",
     msgAppImportJSONCardsUnchanged:         "карточек без изменений",
     msgAppImportJSONProjectsCreated:        "проектов создано",
@@ -12879,9 +12971,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL песен добавлено",
     tstAppImportJSONBackupRestored:         "Резервная копия восстановлена.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ru
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ru
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ru
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ru
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Сохранить документ",
@@ -12907,6 +12999,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Экспорт",
     tipHdrExportCards:                      "Экспорт карточек",
     tipHdrExportAi:                         "Экспорт шаблонов AI",
+    btnHdrExportAmlp:                       "Экспортировать файл LP",
     btnHdrExportBackup:                     "Резервная копия базы данных",
     tipHdrSettings:                         "Настройки",
     tipHdrHelp:                             "Справка",
@@ -13298,6 +13391,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "การนำเข้า JSON ล้มเหลว",
     ttlAppImportJSONWarnings:               "คำเตือนการนำเข้า",
     msgAppImportJSONCardsCreated:           "สร้างการ์ดแล้ว",
+    msgAppExportAmlpSongs:                  "ส่งออกเพลงแล้ว",
+    msgAppExportAmlpNone:                   "ไม่มีเพลงให้ส่งออก",
     msgAppImportJSONCardsUpdated:           "อัปเดตการ์ดแล้ว",
     msgAppImportJSONCardsUnchanged:         "การ์ดไม่เปลี่ยนแปลง",
     msgAppImportJSONProjectsCreated:        "โปรเจกต์สร้างแล้ว",
@@ -13306,9 +13401,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL เพลงเพิ่มแล้ว",
     tstAppImportJSONBackupRestored:         "กู้คืนข้อมูลสำรองแล้ว",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to th
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to th
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to th
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to th
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "บันทึกเอกสาร",
@@ -13334,6 +13429,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "ส่งออก",
     tipHdrExportCards:                      "ส่งออกการ์ด",
     tipHdrExportAi:                         "ส่งออกเทมเพลต AI",
+    btnHdrExportAmlp:                       "ส่งออกไฟล์ LP",
     btnHdrExportBackup:                     "สำรองข้อมูลฐานข้อมูล",
     tipHdrSettings:                         "การตั้งค่า",
     tipHdrHelp:                             "วิธีใช้",
@@ -13725,6 +13821,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON ներմուծումը ձախողվեց",
     ttlAppImportJSONWarnings:               "Ներմուծման նախազգուշացումներ",
     msgAppImportJSONCardsCreated:           "քարտեր ստեղծված",
+    msgAppExportAmlpSongs:                  "երգերն արտահանվեցին",
+    msgAppExportAmlpNone:                   "Արտահանելու երգեր չկան",
     msgAppImportJSONCardsUpdated:           "քարտեր թարմացված",
     msgAppImportJSONCardsUnchanged:         "քարտեր անփոփոխ",
     msgAppImportJSONProjectsCreated:        "նախագծեր ստեղծված",
@@ -13733,9 +13831,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "երգի URL-ներ ավելացված",
     tstAppImportJSONBackupRestored:         "Pahustpake vеrakangvats е:",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to hy
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hy
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hy
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hy
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Պահել փաստաթուղթը",
@@ -13761,6 +13859,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Արտահանել",
     tipHdrExportCards:                      "Արտահանել քարտեր",
     tipHdrExportAi:                         "Արտահանել AI կաղապարներ",
+    btnHdrExportAmlp:                       "Արտահանել LP ֆայլը",
     btnHdrExportBackup:                     "Tegekabazi pahustpaк",
     tipHdrSettings:                         "Կարգավորումներ",
     tipHdrHelp:                             "Օգնություն",
@@ -14152,6 +14251,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON импортирането е неуспешно",
     ttlAppImportJSONWarnings:               "Предупреждения при импорт",
     msgAppImportJSONCardsCreated:           "създадени карти",
+    msgAppExportAmlpSongs:                  "песни експортирани",
+    msgAppExportAmlpNone:                   "Няма песни за експортиране",
     msgAppImportJSONCardsUpdated:           "актуализирани карти",
     msgAppImportJSONCardsUnchanged:         "непроменени карти",
     msgAppImportJSONProjectsCreated:        "проекти създадени",
@@ -14160,9 +14261,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "добавени URL адреси на песни",
     tstAppImportJSONBackupRestored:         "Резервното копие е възстановено.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to bg
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bg
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to bg
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bg
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Запази документа",
@@ -14188,6 +14289,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Експорт",
     tipHdrExportCards:                      "Експортиране на карти",
     tipHdrExportAi:                         "Експорт на AI шаблони",
+    btnHdrExportAmlp:                       "Експортиране на LP файл",
     btnHdrExportBackup:                     "Резервно копие на базата данни",
     tipHdrSettings:                         "Настройки",
     tipHdrHelp:                             "Справка",
@@ -14579,6 +14681,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Fallo na importación JSON",
     ttlAppImportJSONWarnings:               "Avisos de importación",
     msgAppImportJSONCardsCreated:           "tarxetas creadas",
+    msgAppExportAmlpSongs:                  "cancións exportadas",
+    msgAppExportAmlpNone:                   "Non hai cancións para exportar",
     msgAppImportJSONCardsUpdated:           "tarxetas actualizadas",
     msgAppImportJSONCardsUnchanged:         "tarxetas sen cambios",
     msgAppImportJSONProjectsCreated:        "proxectos creados",
@@ -14587,9 +14691,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URLs de cancións engadidas",
     tstAppImportJSONBackupRestored:         "Copia de seguridade restaurada.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to gl
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to gl
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to gl
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to gl
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Gardar documento",
@@ -14615,6 +14719,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportar",
     tipHdrExportCards:                      "Exportar tarxetas",
     tipHdrExportAi:                         "Exportar modelos de AI",
+    btnHdrExportAmlp:                       "Exportar ficheiro LP",
     btnHdrExportBackup:                     "Copia de seguridade da base de datos",
     tipHdrSettings:                         "Configuración",
     tipHdrHelp:                             "Axuda",
@@ -15006,6 +15111,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "A JSON importálása sikertelen",
     ttlAppImportJSONWarnings:               "Importálási figyelmeztetések",
     msgAppImportJSONCardsCreated:           "kártya létrehozva",
+    msgAppExportAmlpSongs:                  "dalok exportálva",
+    msgAppExportAmlpNone:                   "Nincsenek exportálható dalok",
     msgAppImportJSONCardsUpdated:           "kártya frissítve",
     msgAppImportJSONCardsUnchanged:         "kártya változatlan",
     msgAppImportJSONProjectsCreated:        "projekt létrehozva",
@@ -15014,9 +15121,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "dal URL hozzáadva",
     tstAppImportJSONBackupRestored:         "Mentés visszaállítva.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to hu
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hu
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hu
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hu
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Dokumentum mentése",
@@ -15042,6 +15149,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportálás",
     tipHdrExportCards:                      "Kártyák exportálása",
     tipHdrExportAi:                         "AI sablonok exportálása",
+    btnHdrExportAmlp:                       "LP fájl exportálása",
     btnHdrExportBackup:                     "Adatbázis mentés",
     tipHdrSettings:                         "Beállítások",
     tipHdrHelp:                             "Súgó",
@@ -15433,6 +15541,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON importavimas nepavyko",
     ttlAppImportJSONWarnings:               "Importavimo įspėjimai",
     msgAppImportJSONCardsCreated:           "kortelių sukurta",
+    msgAppExportAmlpSongs:                  "dainos eksportuotos",
+    msgAppExportAmlpNone:                   "Nėra dainų eksportavimui",
     msgAppImportJSONCardsUpdated:           "kortelių atnaujinta",
     msgAppImportJSONCardsUnchanged:         "kortelių nepakeista",
     msgAppImportJSONProjectsCreated:        "projektai sukurti",
@@ -15441,9 +15551,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "dainos URL pridėtos",
     tstAppImportJSONBackupRestored:         "Atsarginė kopija atkurta.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to lt
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to lt
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to lt
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to lt
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Išsaugoti dokumentą",
@@ -15469,6 +15579,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Eksportuoti",
     tipHdrExportCards:                      "Eksportuoti korteles",
     tipHdrExportAi:                         "Eksportuoti AI šablonus",
+    btnHdrExportAmlp:                       "Eksportuoti LP failą",
     btnHdrExportBackup:                     "Duomenų bazės atsarginė kopija",
     tipHdrSettings:                         "Nustatymai",
     tipHdrHelp:                             "Pagalba",
@@ -15860,6 +15971,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON увозот не успеа",
     ttlAppImportJSONWarnings:               "Предупредувања при увоз",
     msgAppImportJSONCardsCreated:           "креирани картички",
+    msgAppExportAmlpSongs:                  "песни извезени",
+    msgAppExportAmlpNone:                   "Нема песни за извоз",
     msgAppImportJSONCardsUpdated:           "ажурирани картички",
     msgAppImportJSONCardsUnchanged:         "непроменети картички",
     msgAppImportJSONProjectsCreated:        "проекти создадени",
@@ -15868,9 +15981,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL-адреси на песни додадени",
     tstAppImportJSONBackupRestored:         "Резервната копија е обновена.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to mk
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mk
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to mk
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mk
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Зачувај документ",
@@ -15896,6 +16009,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Извоз",
     tipHdrExportCards:                      "Извези картички",
     tipHdrExportAi:                         "Извоз на AI шаблони",
+    btnHdrExportAmlp:                       "Извези LP датотека",
     btnHdrExportBackup:                     "Резервна копија на базата",
     tipHdrSettings:                         "Поставки",
     tipHdrHelp:                             "Помош",
@@ -16287,6 +16401,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON увоз није успео",
     ttlAppImportJSONWarnings:               "Упозорења при увозу",
     msgAppImportJSONCardsCreated:           "картице креиране",
+    msgAppExportAmlpSongs:                  "песме извезене",
+    msgAppExportAmlpNone:                   "Нема песама за извоз",
     msgAppImportJSONCardsUpdated:           "картице ажуриране",
     msgAppImportJSONCardsUnchanged:         "картице непромењене",
     msgAppImportJSONProjectsCreated:        "пројекти направљени",
@@ -16295,9 +16411,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "додате URL адресе песама",
     tstAppImportJSONBackupRestored:         "Резервна копија обновљена.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to sr
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sr
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sr
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sr
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Сачувај документ",
@@ -16323,6 +16439,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Извоз",
     tipHdrExportCards:                      "Извези картице",
     tipHdrExportAi:                         "Извоз AI шаблона",
+    btnHdrExportAmlp:                       "Извези LP датотеку",
     btnHdrExportBackup:                     "Резервна копија базе",
     tipHdrSettings:                         "Подешавања",
     tipHdrHelp:                             "Помоћ",
@@ -16714,6 +16831,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Importovanie JSON zlyhalo",
     ttlAppImportJSONWarnings:               "Upozornenia pri importe",
     msgAppImportJSONCardsCreated:           "kariet vytvorených",
+    msgAppExportAmlpSongs:                  "skladby exportované",
+    msgAppExportAmlpNone:                   "Žiadne skladby na export",
     msgAppImportJSONCardsUpdated:           "kariet aktualizovaných",
     msgAppImportJSONCardsUnchanged:         "kariet nezmenených",
     msgAppImportJSONProjectsCreated:        "projekty vytvorené",
@@ -16722,9 +16841,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "pridané URL piesní",
     tstAppImportJSONBackupRestored:         "Záloha obnovená.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to sk
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sk
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sk
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sk
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Uložiť dokument",
@@ -16750,6 +16869,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Exportovať",
     tipHdrExportCards:                      "Exportovať karty",
     tipHdrExportAi:                         "Exportovať AI šablóny",
+    btnHdrExportAmlp:                       "Exportovať súbor LP",
     btnHdrExportBackup:                     "Záloha databázy",
     tipHdrSettings:                         "Nastavenia",
     tipHdrHelp:                             "Nápoveda",
@@ -17141,6 +17261,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Uvoz JSON ni uspel",
     ttlAppImportJSONWarnings:               "Opozorila pri uvozu",
     msgAppImportJSONCardsCreated:           "kartice ustvarjene",
+    msgAppExportAmlpSongs:                  "skladbe izvožene",
+    msgAppExportAmlpNone:                   "Ni skladb za izvoz",
     msgAppImportJSONCardsUpdated:           "kartice posodobljene",
     msgAppImportJSONCardsUnchanged:         "kartice nespremenjene",
     msgAppImportJSONProjectsCreated:        "projekti ustvarjeni",
@@ -17149,9 +17271,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "dodane URL pesmi",
     tstAppImportJSONBackupRestored:         "Varnostna kopija obnovljena.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to sl
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sl
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sl
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sl
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Shrani dokument",
@@ -17177,6 +17299,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Izvozi",
     tipHdrExportCards:                      "Izvozi kartice",
     tipHdrExportAi:                         "Izvozi AI predloge",
+    btnHdrExportAmlp:                       "Izvozi datoteko LP",
     btnHdrExportBackup:                     "Varnostna kopija baze podatkov",
     tipHdrSettings:                         "Nastavitve",
     tipHdrHelp:                             "Pomoč",
@@ -17568,6 +17691,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON இறக்குமதி தோல்வியடைந்தது",
     ttlAppImportJSONWarnings:               "இறக்குமதி எச்சரிக்கைகள்",
     msgAppImportJSONCardsCreated:           "அட்டைகள் உருவாக்கப்பட்டன",
+    msgAppExportAmlpSongs:                  "பாடல்கள் ஏற்றுமதி செய்யப்பட்டன",
+    msgAppExportAmlpNone:                   "ஏற்றுமதி செய்ய பாடல்கள் இல்லை",
     msgAppImportJSONCardsUpdated:           "அட்டைகள் புதுப்பிக்கப்பட்டன",
     msgAppImportJSONCardsUnchanged:         "அட்டைகள் மாறவில்லை",
     msgAppImportJSONProjectsCreated:        "திட்டங்கள் உருவாக்கப்பட்டன",
@@ -17576,9 +17701,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "பாடல் URL-கள் சேர்க்கப்பட்டன",
     tstAppImportJSONBackupRestored:         "காப்புப்பிரதி மீட்டமைக்கப்பட்டது.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ta
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ta
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ta
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ta
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ஆவணத்தை சேமி",
@@ -17604,6 +17729,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "ஏற்றுமதி",
     tipHdrExportCards:                      "அட்டைகளை ஏற்றுமதி செய்",
     tipHdrExportAi:                         "AI வார்ப்புருக்களை ஏற்றுமதி",
+    btnHdrExportAmlp:                       "LP கோப்பை ஏற்றுமதி செய்",
     btnHdrExportBackup:                     "தரவுத்தள காப்புப்பிரதி",
     tipHdrSettings:                         "அமைப்புகள்",
     tipHdrHelp:                             "உதவி",
@@ -17995,6 +18121,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON आयात विफल रहा",
     ttlAppImportJSONWarnings:               "आयात चेतावनियां",
     msgAppImportJSONCardsCreated:           "कार्ड बनाए गए",
+    msgAppExportAmlpSongs:                  "गाने निर्यात किए गए",
+    msgAppExportAmlpNone:                   "निर्यात करने के लिए कोई गीत नहीं",
     msgAppImportJSONCardsUpdated:           "कार्ड अपडेट किए गए",
     msgAppImportJSONCardsUnchanged:         "कार्ड अपरिवर्तित",
     msgAppImportJSONProjectsCreated:        "प्रोजेक्ट्स बनाए गए",
@@ -18003,9 +18131,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "गाने के URL जोड़े गए",
     tstAppImportJSONBackupRestored:         "बैकअप पुनर्स्थापित किया गया।",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to hi
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hi
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hi
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hi
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "दस्तावेज़ सहेजें",
@@ -18031,6 +18159,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "निर्यात करें",
     tipHdrExportCards:                      "कार्ड निर्यात करें",
     tipHdrExportAi:                         "AI टेम्पलेट निर्यात करें",
+    btnHdrExportAmlp:                       "LP फ़ाइल निर्यात करें",
     btnHdrExportBackup:                     "डेटाबेस बैकअप",
     tipHdrSettings:                         "सेटिंग्स",
     tipHdrHelp:                             "सहायता",
@@ -18422,6 +18551,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON আমদানি ব্যর্থ হয়েছে",
     ttlAppImportJSONWarnings:               "আমদানি সতর্কতা",
     msgAppImportJSONCardsCreated:           "কার্ড তৈরি হয়েছে",
+    msgAppExportAmlpSongs:                  "গান এক্সপোর্ট করা হয়েছে",
+    msgAppExportAmlpNone:                   "রপ্তানি করার জন্য কোনো গান নেই",
     msgAppImportJSONCardsUpdated:           "কার্ড আপডেট হয়েছে",
     msgAppImportJSONCardsUnchanged:         "কার্ড অপরিবর্তিত",
     msgAppImportJSONProjectsCreated:        "প্রকল্প তৈরি হয়েছে",
@@ -18430,9 +18561,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "গানের URL যোগ হয়েছে",
     tstAppImportJSONBackupRestored:         "ব্যাকআপ পুনরুদ্ধার হয়েছে।",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to bn
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bn
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to bn
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bn
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ডকুমেন্ট সংরক্ষণ করুন",
@@ -18458,6 +18589,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "রপ্তানি",
     tipHdrExportCards:                      "কার্ড এক্সপোর্ট করুন",
     tipHdrExportAi:                         "AI টেমপ্লেট রপ্তানি",
+    btnHdrExportAmlp:                       "LP ফাইল এক্সপোর্ট করুন",
     btnHdrExportBackup:                     "ডেটাবেস ব্যাকআপ",
     tipHdrSettings:                         "সেটিংস",
     tipHdrHelp:                             "সাহায্য",
@@ -18849,6 +18981,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON درآمد ناکام رہی",
     ttlAppImportJSONWarnings:               "درآمد کی تنبیہات",
     msgAppImportJSONCardsCreated:           "کارڈز بنائے گئے",
+    msgAppExportAmlpSongs:                  "گانے ایکسپورٹ ہو گئے",
+    msgAppExportAmlpNone:                   "برآمد کرنے کے لیے کوئی گانا نہیں",
     msgAppImportJSONCardsUpdated:           "کارڈز اپ ڈیٹ کیے گئے",
     msgAppImportJSONCardsUnchanged:         "کارڈز میں کوئی تبدیلی نہیں",
     msgAppImportJSONProjectsCreated:        "منصوبے بنائے گئے",
@@ -18857,9 +18991,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "گانے کے URLs شامل ہوئے",
     tstAppImportJSONBackupRestored:         "بیک اپ بحال ہو گیا۔",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ur
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ur
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ur
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ur
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "دستاویز محفوظ کریں",
@@ -18885,6 +19019,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "برآمد کریں",
     tipHdrExportCards:                      "کارڈز ایکسپورٹ کریں",
     tipHdrExportAi:                         "AI ٹیمپلیٹس برآمد کریں",
+    btnHdrExportAmlp:                       "ایل پی فائل ایکسپورٹ کریں",
     btnHdrExportBackup:                     "ڈیٹابیس بیک اپ",
     tipHdrSettings:                         "ترتیبات",
     tipHdrHelp:                             "مدد",
@@ -19276,6 +19411,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Uingizaji wa JSON umeshindwa",
     ttlAppImportJSONWarnings:               "Maonyo ya uingizaji",
     msgAppImportJSONCardsCreated:           "kadi zimeundwa",
+    msgAppExportAmlpSongs:                  "nyimbo zimehamishwa",
+    msgAppExportAmlpNone:                   "Hakuna nyimbo za kusafirisha",
     msgAppImportJSONCardsUpdated:           "kadi zimesasishwa",
     msgAppImportJSONCardsUnchanged:         "kadi hazijabadilika",
     msgAppImportJSONProjectsCreated:        "miradi imeundwa",
@@ -19284,9 +19421,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "URL za nyimbo zimeongezwa",
     tstAppImportJSONBackupRestored:         "Nakala ya hifadhi imerejeshwa.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to sw
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sw
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sw
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sw
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Hifadhi hati",
@@ -19312,6 +19449,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Hamisha",
     tipHdrExportCards:                      "Hamisha kadi",
     tipHdrExportAi:                         "Hamisha violezo vya AI",
+    btnHdrExportAmlp:                       "Hamisha faili la LP",
     btnHdrExportBackup:                     "Nakala ya Hifadhi ya Hifadhidata",
     tipHdrSettings:                         "Mipangilio",
     tipHdrHelp:                             "Msaada",
@@ -19703,6 +19841,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON ਆਯਾਤ ਅਸਫਲ ਰਿਹਾ",
     ttlAppImportJSONWarnings:               "ਆਯਾਤ ਚੇਤਾਵਨੀਆਂ",
     msgAppImportJSONCardsCreated:           "ਕਾਰਡ ਬਣਾਏ ਗਏ",
+    msgAppExportAmlpSongs:                  "ਗੀਤ ਐਕਸਪੋਰਟ ਕੀਤੇ ਗਏ",
+    msgAppExportAmlpNone:                   "ਨਿਰਯਾਤ ਕਰਨ ਲਈ ਕੋਈ ਗੀਤ ਨਹੀਂ",
     msgAppImportJSONCardsUpdated:           "ਕਾਰਡ ਅੱਪਡੇਟ ਕੀਤੇ ਗਏ",
     msgAppImportJSONCardsUnchanged:         "ਕਾਰਡ ਬਦਲੇ ਨਹੀਂ ਗਏ",
     msgAppImportJSONProjectsCreated:        "ਪ੍ਰੋਜੈਕਟ ਬਣਾਏ ਗਏ",
@@ -19711,9 +19851,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "ਗੀਤ URL ਜੋੜੇ ਗਏ",
     tstAppImportJSONBackupRestored:         "ਬੈਕਅੱਪ ਬਹਾਲ ਹੋ ਗਿਆ।",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to pa
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pa
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pa
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pa
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ਦਸਤਾਵੇਜ਼ ਸੁਰੱਖਿਅਤ ਕਰੋ",
@@ -19739,6 +19879,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "ਨਿਰਯਾਤ ਕਰੋ",
     tipHdrExportCards:                      "ਕਾਰਡ ਨਿਰਯਾਤ ਕਰੋ",
     tipHdrExportAi:                         "AI ਟੈਂਪਲੇਟ ਨਿਰਯਾਤ ਕਰੋ",
+    btnHdrExportAmlp:                       "LP ਫਾਈਲ ਐਕਸਪੋਰਟ ਕਰੋ",
     btnHdrExportBackup:                     "ਡੇਟਾਬੇਸ ਬੈਕਅੱਪ",
     tipHdrSettings:                         "ਸੈਟਿੰਗਾਂ",
     tipHdrHelp:                             "ਮਦਦ",
@@ -20130,6 +20271,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Shigo da JSON ya kasa",
     ttlAppImportJSONWarnings:               "Gargaɗin shigo da",
     msgAppImportJSONCardsCreated:           "an ƙirƙiri katunan",
+    msgAppExportAmlpSongs:                  "waƙoƙi an fitar",
+    msgAppExportAmlpNone:                   "Babu waƙoƙi don fitarwa",
     msgAppImportJSONCardsUpdated:           "an sabunta katunan",
     msgAppImportJSONCardsUnchanged:         "katunan ba su canza ba",
     msgAppImportJSONProjectsCreated:        "an ƙirƙiri ayyuka",
@@ -20138,9 +20281,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "an ƙara URL na waƙoƙi",
     tstAppImportJSONBackupRestored:         "An dawo da ajiyar.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to ha
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ha
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ha
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ha
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Ajiye takarda",
@@ -20166,6 +20309,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Fitar da",
     tipHdrExportCards:                      "Fitar da katunan",
     tipHdrExportAi:                         "Fitar da samfuran AI",
+    btnHdrExportAmlp:                       "Fitar da fayil ɗin LP",
     btnHdrExportBackup:                     "Ajiyar Bayanan",
     tipHdrSettings:                         "Saituna",
     tipHdrHelp:                             "Taimako",
@@ -20557,6 +20701,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Gbígba JSON wọlé kùnà",
     ttlAppImportJSONWarnings:               "Àwọn ìkìlọ̀ gbígba wọlé",
     msgAppImportJSONCardsCreated:           "awọn kaadi ti ṣẹda",
+    msgAppExportAmlpSongs:                  "awọn orin ti ṣe ìkópa",
+    msgAppExportAmlpNone:                   "Ko si orin lati fi ranṣẹ",
     msgAppImportJSONCardsUpdated:           "awọn kaadi ti ni imudojuiwọn",
     msgAppImportJSONCardsUnchanged:         "awọn kaadi ko yipada",
     msgAppImportJSONProjectsCreated:        "àwọn iṣẹ́ tí a ṣẹ̀dá",
@@ -20565,9 +20711,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "àwọn URL orin tí a fi kún",
     tstAppImportJSONBackupRestored:         "A tún ẹ̀dà àfikún padà.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to yo
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to yo
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to yo
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to yo
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Fi iwe pamọ",
@@ -20593,6 +20739,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "Gbé jáde",
     tipHdrExportCards:                      "Ṣe okeere awọn kaadi",
     tipHdrExportAi:                         "Gbé àwọn àwòfin AI jáde",
+    btnHdrExportAmlp:                       "Ṣe ìkópa faili LP",
     btnHdrExportBackup:                     "Ẹ̀dà Àfikún Àkójọ Ìsọfúnni",
     tipHdrSettings:                         "Ètò",
     tipHdrHelp:                             "Iranlọwọ",
@@ -20984,6 +21131,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON దిగుమతి విఫలమైంది",
     ttlAppImportJSONWarnings:               "దిగుమతి హెచ్చరికలు",
     msgAppImportJSONCardsCreated:           "కార్డులు సృష్టించబడ్డాయి",
+    msgAppExportAmlpSongs:                  "పాటలు ఎగుమతి చేయబడ్డాయి",
+    msgAppExportAmlpNone:                   "ఎగుమతి చేయడానికి పాటలు లేవు",
     msgAppImportJSONCardsUpdated:           "కార్డులు నవీకరించబడ్డాయి",
     msgAppImportJSONCardsUnchanged:         "కార్డులు మారలేదు",
     msgAppImportJSONProjectsCreated:        "ప్రాజెక్టులు సృష్టించబడ్డాయి",
@@ -20992,9 +21141,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "పాట URLలు జోడించబడ్డాయి",
     tstAppImportJSONBackupRestored:         "బ్యాకప్ పునరుద్ధరించబడింది.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to te
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to te
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to te
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to te
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "పత్రాన్ని సేవ్ చేయి",
@@ -21020,6 +21169,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "ఎగుమతి చేయండి",
     tipHdrExportCards:                      "కార్డ్‌లను ఎగుమతి చేయండి",
     tipHdrExportAi:                         "AI టెంప్లేట్‌లు ఎగుమతి చేయండి",
+    btnHdrExportAmlp:                       "LP ఫైల్‌ను ఎగుమతి చేయండి",
     btnHdrExportBackup:                     "డేటాబేస్ బ్యాకప్",
     tipHdrSettings:                         "సెట్టింగ్‌లు",
     tipHdrHelp:                             "సహాయం",
@@ -21411,6 +21561,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "JSON आयात अयशस्वी झाली",
     ttlAppImportJSONWarnings:               "आयात इशारे",
     msgAppImportJSONCardsCreated:           "कार्ड्स तयार केले",
+    msgAppExportAmlpSongs:                  "गाणी निर्यात केली",
+    msgAppExportAmlpNone:                   "निर्यात करण्यासाठी गाणी नाहीत",
     msgAppImportJSONCardsUpdated:           "कार्ड्स अद्यतनित केले",
     msgAppImportJSONCardsUnchanged:         "कार्ड्स अपरिवर्तित",
     msgAppImportJSONProjectsCreated:        "प्रकल्प तयार केले",
@@ -21419,9 +21571,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "गाण्याचे URL जोडले",
     tstAppImportJSONBackupRestored:         "बॅकअप पुनर्संचयित झाला.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to mr
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mr
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to mr
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mr
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "दस्तऐवज जतन करा",
@@ -21447,6 +21599,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "निर्यात करा",
     tipHdrExportCards:                      "कार्ड निर्यात करा",
     tipHdrExportAi:                         "AI टेम्पलेट्स निर्यात करा",
+    btnHdrExportAmlp:                       "LP फाइल निर्यात करा",
     btnHdrExportBackup:                     "डेटाबेस बॅकअप",
     tipHdrSettings:                         "सेटिंग्ज",
     tipHdrHelp:                             "मदत",
@@ -21838,6 +21991,8 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonFailed:             "Nabigo ang JSON import",
     ttlAppImportJSONWarnings:               "Mga babala sa pag-import",
     msgAppImportJSONCardsCreated:           "mga card na nilikha",
+    msgAppExportAmlpSongs:                  "na-export ang mga kanta",
+    msgAppExportAmlpNone:                   "Walang kanta na i-e-export",
     msgAppImportJSONCardsUpdated:           "mga card na na-update",
     msgAppImportJSONCardsUnchanged:         "mga card na hindi nagbago",
     msgAppImportJSONProjectsCreated:        "mga proyektong ginawa",
@@ -21846,9 +22001,9 @@ const TRANSLATIONS = {
     msgAppImportJSONSongUrlsAdded:          "mga URL ng kanta na idinagdag",
     tstAppImportJSONBackupRestored:         "Na-restore ang backup.",
 
-    // Prefix:AppImportSuno - Scope:.suno LP import results and errors
-    tstAppImportSunoFailed:                 "Could not import .suno file", // TODO: translate to tl
-    tstAppImportSunoGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tl
+    // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
+    tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to tl
+    tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tl
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "I-save ang dokumento",
@@ -21874,6 +22029,7 @@ const TRANSLATIONS = {
     tipHdrExportProj:                       "I-export",
     tipHdrExportCards:                      "I-export ang mga card",
     tipHdrExportAi:                         "I-export ang mga AI template",
+    btnHdrExportAmlp:                       "I-export ang LP file",
     btnHdrExportBackup:                     "Database Backup",
     tipHdrSettings:                         "Mga Setting",
     tipHdrHelp:                             "Tulong",

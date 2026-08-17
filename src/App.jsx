@@ -8,7 +8,7 @@ import { useState, useEffect, useRef, useImperativeHandle, forwardRef } from "re
 import React from "react";
 import { createPortal } from "react-dom";
 import * as XLSX from "xlsx";
-import { useT, getT, LANGUAGES, LANG_LOCALE } from "./i18n";
+import { useT, getT, LANGUAGES, LANG_LOCALE } from "./i18n-gen";
 import yaiolLogo from "./assets/yaiol-logo.svg";
 import { SONG_LANGUAGES, getLangName } from "./languages";
 import {
@@ -193,15 +193,23 @@ async function importFromJson(file, apiFetch, setCards, setProjects, showToast, 
   }
 }
 
-async function importFromSuno(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId) {
+async function importFromAmlp(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, targetProjectId) {
+  return importAmlpText(await file.text(), apiFetch, setCards, setProjects, showToast, t, activeEnvId, targetProjectId);
+}
+
+// The one .amlp import path — used by the Import button (a picked File), by a .amlp opened from
+// the desktop (text handed over by the main process) and by a file dropped on the window. Same
+// endpoint, same toasts, same environment rules, so the three entries can never drift.
+// targetProjectId = the project the user is currently in; the tracks are added to it. Null (no
+// project open, or several selected) means the LP brings its own project, named after its TITLE.
+async function importAmlpText(text, apiFetch, setCards, setProjects, showToast, t, activeEnvId, targetProjectId) {
   try {
-    const text = await file.text();
-    const result = await apiFetch("/import-suno", {
+    const result = await apiFetch("/import-amlp", {
       method: "POST",
-      body: JSON.stringify({ text, targetEnvId: activeEnvId }),
+      body: JSON.stringify({ text, targetEnvId: activeEnvId, targetProjectId: targetProjectId || null }),
     });
     if (result.error) {
-      const msg = result.error === "globalEnv" ? t("tstAppImportSunoGlobalEnv") : t("tstAppImportSunoFailed");
+      const msg = result.error === "globalEnv" ? t("tstAppImportAmlpGlobalEnv") : t("tstAppImportAmlpFailed");
       showToast("❌ " + msg, 6000);
       return;
     }
@@ -211,8 +219,55 @@ async function importFromSuno(file, apiFetch, setCards, setProjects, showToast, 
     showToast(`✅ ${r.projectName}: ${r.cardsCreated} ${t("msgAppImportJSONCardsCreated")}`);
   } catch (err) {
     // Never surface the raw response body (a 404/500 can be a full HTML page) — log it, toast a clean line.
-    console.error(".suno import failed:", err.message);
-    showToast("❌ " + t("tstAppImportSunoFailed"), 6000);
+    console.error(".amlp import failed:", err.message);
+    showToast("❌ " + t("tstAppImportAmlpFailed"), 6000);
+  }
+}
+
+// A Suno link anywhere in the clipboard — either the share stub (suno.com/s/<code>) or the
+// canonical song URL. Matched loosely because a copied link often arrives with text around it.
+const SUNO_LINK_RE = /https?:\/\/(?:www\.)?suno\.com\/(?:s\/[A-Za-z0-9_-]+|song\/[0-9a-fA-F-]{36})/;
+
+// Expand a Suno share stub (suno.com/s/<code>) into the canonical suno.com/song/<uuid>.
+// Anything else — a canonical link already, an unreachable Suno — comes back unchanged, so
+// callers can always use the return value.
+async function resolveSunoLink(href) {
+  if (!/^https?:\/\/(?:www\.)?suno\.com\/s\//i.test(href)) return href;
+  try {
+    const resolved = await apiFetch("/resolve-suno-share", { method: "POST", body: JSON.stringify({ url: href }) });
+    return resolved.url || href;
+  } catch (err) {
+    console.error("Suno share resolve failed:", err.message);
+    return href;
+  }
+}
+
+// Build a draft song card out of a Suno link sitting in the clipboard — name, sort number,
+// style, lyrics, date and the link itself. Returns null whenever the clipboard holds no Suno
+// link or Suno can't be reached, so the caller just opens an empty card as before.
+async function sunoDraftFromClipboard() {
+  try {
+    const clip = await apiFetch("/clipboard");
+    const found = (clip.text || "").match(SUNO_LINK_RE)?.[0];
+    if (!found) return null;
+    const href = await resolveSunoLink(found);
+    if (!href.includes("/song/")) return null;   // share stub that never resolved
+    const data = await apiFetch("/fetch-suno-lyrics", { method: "POST", body: JSON.stringify({ url: href }) });
+    // "10-Sanctus" → sort number 10 + name "Sanctus"; a title without that prefix is the name.
+    const numbered = (data.title || "").match(/^\s*(\d{1,4})\s*[-–—]\s*(.+)$/);
+    const ms = data.date ? Date.parse(data.date) : NaN;
+    return {
+      type: "song",
+      name: (numbered ? numbered[2] : data.title || "").trim(),
+      sortNumber: numbered ? String(parseInt(numbered[1], 10)) : "",
+      style: data.style || "",
+      lyrics: data.lyrics || "",
+      date: Number.isNaN(ms) ? Date.now() : ms,
+      urls: [{ id: `suno-${Date.now()}`, label: "suno", href }],
+    };
+  } catch (err) {
+    console.error("Suno clipboard draft failed:", err.message);
+    return null;
   }
 }
 
@@ -397,6 +452,10 @@ export default function App() {
   const [activeType, setActiveType]         = useState(null);
   const [activeProject, setActiveProject]   = useState(null); // null | UNLINKED_KEY
   const [activeProjectIds, setActiveProjectIds] = useState([]); // regular folder multi-selection
+  // "The folder you are in" — the one selected project, or null when none (or several) are
+  // selected. Every .amlp import targets it: the tracks are added to that project instead of the
+  // LP creating its own.
+  const openProjectId = activeProjectIds.length === 1 ? activeProjectIds[0] : null;
   const [search, setSearch]               = useState("");
   const [translationsIndex, setTranslationsIndex] = useState({});
   const [selectedTags, setSelectedTags]   = useState([]);
@@ -408,6 +467,10 @@ export default function App() {
   const [showWarningNoPublished, setShowWarningNoPublished] = useState(false);
   const [modalOpen, setModalOpen]         = useState(false);
   const [editingCard, setEditingCard] = useState(null);
+  // Unsaved card the New button pre-fills from a Suno link in the clipboard. Kept apart from
+  // editingCard on purpose: handleSave branches on editingCard, and a draft has no id yet.
+  const [draftCard, setDraftCard]         = useState(null);
+  const [draftFetching, setDraftFetching] = useState(false);
   const [copiedId, setCopiedId]           = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [settingsOpen, setSettingsOpen]   = useState(false);
@@ -521,6 +584,36 @@ export default function App() {
   useEffect(() => {
     checkForUpdate({ appId: pkg.name, alias: STORAGE_PREFIX, currentVersion: APP_VERSION })
       .then(u => { if (u) setUpdateInfo(u); });
+  }, []);
+
+  // A .amlp opened from the desktop — the main process parks the file and focuses this window;
+  // we collect it here and run the ordinary import. Checked on launch AND on every window focus,
+  // because a double-click while the app is already running arrives as a focus, not a start.
+  // /pending-open hands the file over once and forgets it, so re-checking is free.
+  useEffect(() => {
+    if (!activeEnvId) return;   // wait for the environment list — the import needs a target
+    const collect = async () => {
+      try {
+        const pending = await apiFetch("/pending-open");
+        if (pending?.text) await importAmlpText(pending.text, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId);
+      } catch (err) {
+        console.error("pending .amlp check failed:", err.message);
+      }
+    };
+    collect();
+    window.addEventListener("focus", collect);
+    return () => window.removeEventListener("focus", collect);
+  }, [activeEnvId, openProjectId]); // eslint-disable-line react-hooks/exhaustive-deps
+
+  // Dropping a .amlp anywhere on the window imports it, into the project you are in.
+  // ⚠ CLAUDE: the window-level preventDefault is load-bearing, not tidiness — without it Electron
+  // NAVIGATES to a dropped file (a file:// URL sails past the will-navigate guard, which only
+  // redirects non-file:// links to the browser) and the app is replaced by the file's contents.
+  useEffect(() => {
+    const swallow = (e) => { if (e.dataTransfer?.types?.includes("Files")) e.preventDefault(); };
+    window.addEventListener("dragover", swallow);
+    window.addEventListener("drop", swallow);
+    return () => { window.removeEventListener("dragover", swallow); window.removeEventListener("drop", swallow); };
   }, []);
 
   // Sync tag color overrides every render so CardItems always see current values
@@ -819,6 +912,56 @@ export default function App() {
     });
   };
 
+  // Export the open project (or every song, when none is open) as one .amlp LP file — the
+  // inverse of the import, written server-side so the grammar lives in exactly one place.
+  const exportAmlp = async () => {
+    // What you see is what you export: the songs ticked in the view, or — with nothing ticked —
+    // every song currently listed (so the active project, search and filters all apply).
+    // Intersecting with `filtered` drops a selection left behind outside the current view.
+    const inView = selectedIds.length ? filtered.filter(c => selectedIds.includes(c.id)) : filtered;
+    const cardIds = inView.filter(c => c.type === "song").map(c => c.id);
+    try {
+      const result = await apiFetch("/export-amlp", {
+        method: "POST",
+        body: JSON.stringify({ cardIds, projectId: openProjectId, title: t("ttlOsdSaveDoc") }),
+      });
+      if (result.error === "noSongs") return showToast("❌ " + t("msgAppExportAmlpNone"), 6000);
+      if (!result.canceled) showToast(`✅ ${result.songs} ${t("msgAppExportAmlpSongs")}`);
+    } catch (err) {
+      showToast("❌ " + err.message, 6000);
+    }
+  };
+
+  // Closing always drops the Suno draft — a draft left behind would silently re-fill the next
+  // new card with the previous song.
+  const closeCardModal = () => { setModalOpen(false); setDraftCard(null); };
+
+  // New card — shared by the header + button and Ctrl+N. A Suno link in the clipboard pre-fills
+  // the card; anything else opens it empty.
+  const openNewCard = async () => {
+    if (draftFetching) return;
+    setEditingCard(null);
+    setDraftFetching(true);
+    const draft = await sunoDraftFromClipboard();
+    setDraftFetching(false);
+    setDraftCard(draft);
+    setModalOpen(true);
+  };
+
+  // Ctrl+N / Cmd+N — the same action as the + button. Held back while any dialog is up, so it
+  // can never stack a second card dialog over the one being edited.
+  useEffect(() => {
+    const onKeyDown = (e) => {
+      if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return;
+      if (e.key !== "n" && e.key !== "N") return;
+      if (modalOpen || settingsOpen || projectModalOpen || docCreateOpen || bulkTagOpen || batchTranslateOpen) return;
+      e.preventDefault();
+      openNewCard();
+    };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [modalOpen, settingsOpen, projectModalOpen, docCreateOpen, bulkTagOpen, batchTranslateOpen, draftFetching]); // eslint-disable-line react-hooks/exhaustive-deps
+
   const handleSave = async (data) => {
     try {
       if (editingCard) {
@@ -873,7 +1016,7 @@ export default function App() {
         }
         showToast(t("tstAppCardCreated"));
       }
-      setModalOpen(false);
+      closeCardModal();
     } catch (err) { showToast("❌ " + err.message); }
   };
 
@@ -1413,7 +1556,14 @@ export default function App() {
   );
 
   return (
-    <div className="app-root" style={s.root}>
+    <div className="app-root" style={s.root}
+      onDragOver={(e) => { if (e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } }}
+      onDrop={(e) => {
+        const file = [...(e.dataTransfer?.files || [])].find(f => /\.amlp$/i.test(f.name));
+        if (!file) return;   // internal drags (project rows, cards) carry their own types — leave them alone
+        e.preventDefault();
+        importFromAmlp(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId);
+      }}>
       <style>{buildCss()}</style>
 
       {/* ── Update banner ── */}
@@ -1525,15 +1675,19 @@ export default function App() {
             <Menu anchorRef={exportBtnRef} open={exportMenuOpen} onClose={() => setExportMenuOpen(false)} align="right">
               <MenuItem icon={<Upload />} label={activeProj ? `${t("tipHdrExportProj")} "${activeProj.name}"` : t("tipHdrExportCards")}
                 onClick={async () => { const proj = activeProj || null; const ep = proj ? cards.filter(p => proj.cardIds.includes(p.id)) : cards; const epr = proj ? [proj] : projects; await exportToJson(ep, epr, proj?.name || null, t("ttlOsdSaveDoc")); }} />
+              <MenuItem icon={<FileMusic />} label={t("btnHdrExportAmlp")} onClick={exportAmlp} />
               <MenuItem icon={<Sparkles />} label={t("tipHdrExportAi")} onClick={() => exportAiToJson(t("ttlOsdSaveDoc"))} />
               <MenuItem icon={<Database />} label={t("btnHdrExportBackup")} onClick={() => exportBackupToJson(cards, projects, environments, t("ttlOsdSaveDoc"))} />
             </Menu>
           </div>
 
-          <input ref={jsonRef} type="file" accept=".json,.suno" style={{ display: "none" }}
-            onChange={(e) => { const file = e.target.files?.[0]; if (file) { if (/\.suno$/i.test(file.name)) importFromSuno(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId); else importFromJson(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, setEnvironments, setImportErrors); } e.target.value = ""; }} />
-          <button className="btn icon primary" onClick={() => { setEditingCard(null); setModalOpen(true); }} title={t("btnHdrNew")}>
-            <Plus />
+          <input ref={jsonRef} type="file" accept=".json,.amlp" style={{ display: "none" }}
+            onChange={(e) => { const file = e.target.files?.[0]; if (file) { if (/\.amlp$/i.test(file.name)) importFromAmlp(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId); else importFromJson(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, setEnvironments, setImportErrors); } e.target.value = ""; }} />
+          {/* New card — when the clipboard holds a Suno link, the card opens pre-filled from it
+              (name, number, style, lyrics, date, link); otherwise it opens empty as always. */}
+          <button className="btn icon primary" disabled={draftFetching} title={`${t("btnHdrNew")} (Ctrl+N)`}
+            onClick={openNewCard}>
+            {draftFetching ? <RotateCcw className="spinner" /> : <Plus />}
           </button>
         </div>
         {/* Only the standard source·help·settings group is pushed right; everything else left. */}
@@ -2150,7 +2304,7 @@ export default function App() {
 
       {/* Modals */}
       {modalOpen && (
-        <CardModal card={editingCard} allCards={cards} langKey={langKey} apiPort={getApiPort()} txtSettingsAiApiKey={txtSettingsAiApiKey} txtSettingsAiLimitsVocal={txtSettingsAiLimitsVocal} txtSettingsAiLimitsMusic={txtSettingsAiLimitsMusic} txtSettingsAiStyleThreshold={txtSettingsAiStyleThreshold} txtSettingsAiLyricsThreshold={txtSettingsAiLyricsThreshold} txtSettingsAiStyleWordThreshold={txtSettingsAiStyleWordThreshold}
+        <CardModal card={editingCard} draft={draftCard} allCards={cards} langKey={langKey} apiPort={getApiPort()} txtSettingsAiApiKey={txtSettingsAiApiKey} txtSettingsAiLimitsVocal={txtSettingsAiLimitsVocal} txtSettingsAiLimitsMusic={txtSettingsAiLimitsMusic} txtSettingsAiStyleThreshold={txtSettingsAiStyleThreshold} txtSettingsAiLyricsThreshold={txtSettingsAiLyricsThreshold} txtSettingsAiStyleWordThreshold={txtSettingsAiStyleWordThreshold}
           allExistingTags={[...new Set(cards.flatMap((p) => p.tags))].sort()}
           activeProject={activeProjectIds.length === 1 ? activeProjectIds[0] : null} projects={projects}
           txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites} aiDefaultTemplates={aiDefaultTemplates} tglSettingsAiTemplatesMode={tglSettingsAiTemplatesMode}
@@ -2166,7 +2320,7 @@ export default function App() {
               setCards(prev => prev.map(p => p.id === id ? updated : p));
               showToast("✅ " + t("tstPnlProjectMadeGlobal"));
             } catch (err) { showToast("❌ " + err.message); }
-          }} types={types} onSave={handleSave} onClose={() => setModalOpen(false)} showToast={showToast}
+          }} types={types} onSave={handleSave} onClose={closeCardModal} showToast={showToast}
           onUpdateTranslationsIndex={(cardId, list) => setTranslationsIndex(prev => ({ ...prev, [cardId]: list.map(x => x.content).join("\n") }))} />
       )}
 
@@ -4512,32 +4666,37 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
   );
 }
 
-function CardModal({ card, allExistingTags, allCards, types, langKey, apiPort, txtSettingsAiApiKey, txtSettingsAiLimitsVocal, txtSettingsAiLimitsMusic, txtSettingsAiStyleThreshold, txtSettingsAiLyricsThreshold, txtSettingsAiStyleWordThreshold, activeProject, projects, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, aiDefaultTemplates, tglSettingsAiTemplatesMode, onSetDefaultTemplate, globalEnvId, onMakeGlobal, onSave, onClose, showToast, onUpdateTranslationsIndex }) {
+function CardModal({ card, draft, allExistingTags, allCards, types, langKey, apiPort, txtSettingsAiApiKey, txtSettingsAiLimitsVocal, txtSettingsAiLimitsMusic, txtSettingsAiStyleThreshold, txtSettingsAiLyricsThreshold, txtSettingsAiStyleWordThreshold, activeProject, projects, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, aiDefaultTemplates, tglSettingsAiTemplatesMode, onSetDefaultTemplate, globalEnvId, onMakeGlobal, onSave, onClose, showToast, onUpdateTranslationsIndex }) {
   const t = useT(langKey);
   // Fall back to static TYPES if not passed (shouldn't happen but safe)
   if (!types) types = buildTypes(DEFAULT_TYPE_COLORS);
   const rowsBonus = card ? UIDLG.textareaRowsEditBonus : 0;
-  const [type, setType]                   = useState(card?.type || "song");
-  const [name, setName]                   = useState(card?.name || "");
-  const [sortNumber, setSortNumber]       = useState(card?.sortNumber != null ? String(card.sortNumber) : "");
-  const [desc, setDesc]                   = useState(card?.desc || "");
-  const [note, setNote]                   = useState(card?.note || "");
-  const [style, setStyle]                 = useState(card?.style || "");
-  const [lyrics, setLyrics]               = useState(card?.lyrics || "");
-  const [tagInput, setTagInput]           = useState(card?.tags?.join(", ") || "");
-  const [linkedCards, setLinkedCards] = useState(card?.linkedCards || []);
+  // ⚠ CLAUDE: `init` seeds the FIELDS only (an existing card, or the Suno draft the New button
+  // built from the clipboard). Everything that asks "is this an existing card?" — the title,
+  // the Create/Save label, the duplicate/global actions — must keep testing `card`, not `init`,
+  // or a draft would present itself as an edit of a card that was never saved.
+  const init = card || draft || null;
+  const [type, setType]                   = useState(init?.type || "song");
+  const [name, setName]                   = useState(init?.name || "");
+  const [sortNumber, setSortNumber]       = useState(init?.sortNumber != null ? String(init.sortNumber) : "");
+  const [desc, setDesc]                   = useState(init?.desc || "");
+  const [note, setNote]                   = useState(init?.note || "");
+  const [style, setStyle]                 = useState(init?.style || "");
+  const [lyrics, setLyrics]               = useState(init?.lyrics || "");
+  const [tagInput, setTagInput]           = useState(init?.tags?.join(", ") || "");
+  const [linkedCards, setLinkedCards] = useState(init?.linkedCards || []);
   const [errors, setErrors]               = useState({});
-  const [urls, setUrls]                   = useState(card?.urls || []);
+  const [urls, setUrls]                   = useState(init?.urls || []);
   const [newUrlHref, setNewUrlHref]       = useState("");
   const [newUrlLabel, setNewUrlLabel]     = useState("");
-  const [mediaPath, setMediaPath]         = useState(card?.mediaPath || "");
+  const [mediaPath, setMediaPath]         = useState(init?.mediaPath || "");
   const [sunoFetching, setSunoFetching]   = useState(false);
   const [nameSuggestions, setNameSuggestions] = useState([]);
   const [showAiModal, setShowAiModal]     = useState(false);
   const [aiModalTask, setAiModalTask]     = useState("music");
   const [aiModalInitLimit, setAiModalInitLimit] = useState(txtSettingsAiLimitsMusic || 700);
-  const [aiTweaks, setAiTweaks]           = useState(card?.aiTweaks || {});
-  const [dateVal, setDateVal]             = useState(() => card?.date ? new Date(card.date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10));
+  const [aiTweaks, setAiTweaks]           = useState(init?.aiTweaks || {});
+  const [dateVal, setDateVal]             = useState(() => init?.date ? new Date(init.date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10));
   // Clear suggestions and reset limit when type changes
   const handleTypeChange = (newType) => {
     setType(newType); setNameSuggestions([]); setMvTab("desc");
@@ -4548,7 +4707,7 @@ function CardModal({ card, allExistingTags, allCards, types, langKey, apiPort, t
   const [linkSearch, setLinkSearch] = useState("");
   const [songTab, setSongTab] = useState("desc");
   const [mvTab, setMvTab] = useState("desc");
-  const [srcLang, setSrcLang] = useState(card?.lang || "");
+  const [srcLang, setSrcLang] = useState(init?.lang || "");
   const [srcLangSearch, setSrcLangSearch] = useState("");
   // ── Wizard state ──
   const [wizardStep, setWizardStep] = useState(null);
@@ -4833,7 +4992,11 @@ function CardModal({ card, allExistingTags, allCards, types, langKey, apiPort, t
 
   const handleAddUrl = async () => {
     if (!newUrlHref.trim()) return;
-    const href = newUrlHref.trim().startsWith("http") ? newUrlHref.trim() : "https://" + newUrlHref.trim();
+    let href = newUrlHref.trim().startsWith("http") ? newUrlHref.trim() : "https://" + newUrlHref.trim();
+    // A Suno share link (suno.com/s/<code>) is only a redirect stub — expand it to the canonical
+    // suno.com/song/<uuid> so the song state, the lyrics fetch and the media-provenance link all
+    // see the same URL. Suno unreachable → keep the share link, which still opens fine.
+    href = await resolveSunoLink(href);
     // Auto-detect label from URL
     let autoLabel = newUrlLabel.trim();
     if (!autoLabel) {

@@ -19,6 +19,8 @@ The core idea is that prompts are reusable building blocks, not one-off text. Yo
 - **A real workspace** - organize hundreds of cards in nested projects and separate environments, with search, tags and filters; grid or list view, multiple sort modes.
 - **Lyric translation** - translate any song's lyrics into other languages, by hand or with AI, and keep every version on the card.
 - **Media linking and export** - link audio files to songs, hand off to the LRC editor, and export to JSON, XLSX or DOCX (import from a JSON snapshot).
+- **Cards from a link** - copy a song link from Suno and hit New: the card opens filled in with its title, number, style, lyrics and date.
+- **Open an LP file** - double-click a `.amlp` prompt file and it lands as a project with one Song card per track; Export writes one back out.
 - Dark and light themes, 3 fonts, 50 languages (including RTL).
 
 ---

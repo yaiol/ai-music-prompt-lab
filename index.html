@@ -5,7 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Electron</title>
     <style>
-      body { margin: 0; background: #0d0d14; }
+      /* ⚠ CLAUDE: no `background` here. This paints BEFORE React mounts, and a hardcoded dark
+         value showed a black window while the app's default theme is light — the other nine apps
+         set nothing at all. Pre-paint colour is not ours to invent; it belongs to the theme
+         tokens in the CSS catalog. */
+      body { margin: 0; }
     </style>
   </head>
   <body>
