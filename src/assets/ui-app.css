@@ -131,7 +131,7 @@
   transition: background .12s, border-color .12s, color .12s;
 }
 .btn      { gap: 6px; color: var(--text); }                          /* text button — padding from the base */
-.btn.icon { gap: 5px; min-width: 30px; padding: 0; color: var(--text-dim); }   /* icon button — a 30px square (grows only for a count badge); padding reset from the base */
+.btn.icon { gap: 5px; min-width: 30px; padding: 0; color: var(--text-dim); position: relative; }   /* relative = the containing block for a `.count.over`; inert otherwise */   /* icon button — a 30px square (grows only for a count badge); padding reset from the base */
 .btn:hover:not(:disabled) { background: var(--s-hov); color: var(--text); }   /* hover fill from the SURFACE (bar/dialog/panel/body bind --s-hov); icon buttons brighten to --text */
 .btn:disabled, .opt-btn:disabled { opacity: .4; cursor: not-allowed; }
 /* ⚠ CLAUDE: the icon never shrinks — a width-constrained .btn.icon (forced to bar width in a
@@ -386,6 +386,25 @@ button.chip:hover { opacity: .8; }
   font-size: 11px; font-weight: 600;
   background: var(--accent); color: #fff;
   border-radius: 999px; padding: 0 6px; min-width: 16px; text-align: center;
+}
+
+/* Count ON the icon (`.count.over`) — the same job as .count, how many are waiting, but placed
+   INSIDE the icon square instead of beside it. Use it when the button must KEEP its geometry: a
+   plain .count is an inline pill, so it widens `.btn.icon` (which is documented as growing for
+   exactly that) — and a column of icon buttons stops lining up the moment one of them is wider.
+   ⚠ CLAUDE: no fill and no pill here. At this size a filled badge is a blob, and the glyph behind it
+   already carries the meaning; the digit is an annotation ON that glyph. INK, not the button's
+   colour — the number is DATA (how many), not state (what kind), and the button's own colour is
+   what says the state. A token, so the dark theme flips it like everything else.
+   The absolute positioning needs a containing block, which is why `.btn.icon` is relative below —
+   inert on its own, so it costs nothing for the buttons that carry no count. Seed: apps-cockpit's
+   buffered-commits button. */
+.count.over {
+  position: absolute; right: 1px; bottom: -1px;
+  background: none; color: var(--text);
+  font-size: 9px; font-weight: 700; line-height: 1;
+  padding: 0; min-width: 0;
+  pointer-events: none;
 }
 
 /* Colour swatch — the clickable colour square (colorpicker launcher + palette cells).
