@@ -1,4 +1,4 @@
-// app-icon tag for icons-cockpit (do not remove): data-icon="yaiol:ai-music-prompt-lab" -> res/icons/custom/apps/ai-music-prompt-lab.svg
+// data-icon="yaiol:ai-music-prompt-lab"
 import { app, BrowserWindow, shell, dialog, clipboard } from "electron";
 import path from "path";
 import fs from "fs";
