@@ -47,6 +47,11 @@
   --warn:            #c47a13;
   --ok:              #2d9669;
   --star:            #e0a81e;   /* favourite / default marker (gold) */
+  /* Domain identity colours — a concept's own hue, used per-instance on a .dlp-icon (the
+     dialog-icon rule: colour is semantic per instance) and on the sidebar pseudo-row that
+     stands for that concept. NOT surfaces: a control never paints itself with these. */
+  --tag:             #7b52d8;   /* tags (Untagged row, Tag dialog) */
+  --env:             #1f8f8f;   /* environments (Move-to-environment dialog) */
   --shadow:          0 4px 16px rgba(20,22,40,.10);
   --gradient:        linear-gradient(90deg, #7c6fff, #ff6eb4, #4dc8c8, #a78bfa, transparent); /* [GUI Standard: gradient] */
 }
@@ -81,5 +86,10 @@
   --warn:            #ffb86b;
   --ok:              #6bd29a;
   --star:            #f0c040;   /* favourite / default marker (gold) */
+  /* Domain identity colours — a concept's own hue, used per-instance on a .dlp-icon (the
+     dialog-icon rule: colour is semantic per instance) and on the sidebar pseudo-row that
+     stands for that concept. NOT surfaces: a control never paints itself with these. */
+  --tag:             #a78bfa;   /* tags (Untagged row, Tag dialog) */
+  --env:             #4dc8c8;   /* environments (Move-to-environment dialog) */
   --shadow:          0 4px 16px rgba(0,0,0,.35);
 }

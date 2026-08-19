@@ -2740,6 +2740,11 @@ function startServer(callback) {
     return candidates.find(p => { try { return fs.existsSync(p); } catch { return false; } }) || null;
   }
 
+  // A muted LRC button in the renderer means "LRC Editor is not installed" — the renderer can't
+  // stat the filesystem, so it asks here. Cheap enough to re-ask on every window focus, which is
+  // what makes installing LRC Editor mid-session light the buttons up without a restart.
+  api.get("/lrc-editor-installed", (req, res) => res.json({ installed: !!findLrcEditorPath() }));
+
   api.post("/api/check-lrc", (req, res) => {
     const { mediaPath } = req.body;
     if (!mediaPath) return res.json({ exists: false });

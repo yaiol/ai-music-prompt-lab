@@ -445,6 +445,9 @@ export default function App() {
   const [exportMenuOpen, setExportMenuOpen] = useState(false);
   const [cards, setCards]               = useState([]);
   const [lrcExists, setLrcExists]         = useState({});
+  // Starts true so a failed probe degrades to the old always-enabled button rather than muting a
+  // working one; the real answer lands a few ms later.
+  const [lrcEditorInstalled, setLrcEditorInstalled] = useState(true);
   const [mediaExists, setMediaExists]     = useState({});
   const [projects, setProjects]           = useState([]);
   const [loading, setLoading]             = useState(true);
@@ -721,6 +724,9 @@ export default function App() {
         .then(r => r.json()).then(j => [s.id, j.exists]).catch(() => [s.id, false])
     )).then(pairs => setLrcExists(Object.fromEntries(pairs)));
   };
+  const refreshLrcEditorInstalled = () => {
+    fetch(`${API}/lrc-editor-installed`).then(r => r.json()).then(j => setLrcEditorInstalled(!!j.installed)).catch(() => {});
+  };
   const refreshMediaExists = (list) => {
     const withMedia = (list || cards).filter(p => p.mediaPath);
     if (!withMedia.length) { setMediaExists({}); return; }
@@ -728,8 +734,9 @@ export default function App() {
       .then(r => r.json()).then(j => setMediaExists(j.results || {})).catch(() => setMediaExists({}));
   };
   useEffect(() => { if (!loading) { refreshLrcExists(); refreshMediaExists(); } }, [cards, loading]);
+  useEffect(() => { refreshLrcEditorInstalled(); }, []);
   useEffect(() => {
-    const onFocus = () => { if (!loading) { refreshLrcExists(); refreshMediaExists(); } };
+    const onFocus = () => { refreshLrcEditorInstalled(); if (!loading) { refreshLrcExists(); refreshMediaExists(); } };
     window.addEventListener('focus', onFocus);
     return () => window.removeEventListener('focus', onFocus);
   }, [loading, cards]);
@@ -1929,9 +1936,9 @@ export default function App() {
               const isActive = activeProject === UNTAGGED_KEY;
               return (
                 <button onClick={() => { setActiveProject(UNTAGGED_KEY); setActiveProjectIds([]); setActiveType(null); setSelectedTags([]); }} className={"lv-item" + (isActive ? " active" : "")}>
-                  <Tag color="#a78bfa" />
+                  <Tag color="var(--tag)" />
                   <span className="lv-item-name" style={{ flex: 1 }}>{t("lblPnlProjectUntagged")}</span>
-                  <span className="lv-item-badge" style={{ background: "#1e1a2e", color: "#a78bfa" }}>{untaggedCount}</span>
+                  <span className="lv-item-badge" style={{ background: "color-mix(in srgb, var(--tag) 14%, transparent)", color: "var(--tag)" }}>{untaggedCount}</span>
                 </button>
               );
             })()}
@@ -2117,7 +2124,7 @@ export default function App() {
                         mode="media" onSetMedia={handleSetMediaPath} onClearMedia={(id) => handleSetMediaPath(id, "")}
                         onEdit={(p) => { setEditingCard(p); setModalOpen(true); }}
                         isPlaying={playerMedia?.cardId === song.id && globalPlaying} txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites}
-                        apiPort={getApiPort()} langKey={langKey} lrcExists={!!lrcExists[song.id]} mediaExists={mediaExists[song.id] !== false}
+                        apiPort={getApiPort()} langKey={langKey} lrcExists={!!lrcExists[song.id]} lrcEditorInstalled={lrcEditorInstalled} mediaExists={mediaExists[song.id] !== false}
                         allCards={cards} clrSettingsTags={clrSettingsTags} onFav={toggleFav} copiedId={copiedId}
                         onCopy={(p, mode) => copy(p, mode)} onDelete={(id) => setDeleteConfirm(id)}
                         onRemoveFromProject={activeProjectIds.length === 1 ? (projId, songId) => removeFromProject(projId, songId) : null}
@@ -2194,7 +2201,7 @@ export default function App() {
                         onEdit={(p) => { setEditingCard(p); setModalOpen(true); }}
                         isPlaying={playerMedia?.cardId === song.id && globalPlaying}
                         txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites} langKey={langKey} mediaExists={mediaExists[song.id] !== false}
-                        apiPort={getApiPort()} lrcExists={!!lrcExists[song.id]}
+                        apiPort={getApiPort()} lrcExists={!!lrcExists[song.id]} lrcEditorInstalled={lrcEditorInstalled}
                         clrSettingsTags={clrSettingsTags} onFav={toggleFav} copiedId={copiedId}
                         onCopy={(p, mode) => copy(p, mode)} onDelete={(id) => setDeleteConfirm(id)}
                         onRemoveFromProject={activeProjectIds.length === 1 ? (projId, songId) => removeFromProject(projId, songId) : null}
@@ -2272,7 +2279,7 @@ export default function App() {
                     anyDragging={!!draggingId}
                     isSelected={selectedIds.includes(p.id)}
                     activeProjectId={activeProjectIds.length === 1 ? activeProjectIds[0] : null}
-                    apiPort={getApiPort()} lrcExists={!!lrcExists[p.id]} mediaExists={mediaExists[p.id] !== false}
+                    apiPort={getApiPort()} lrcExists={!!lrcExists[p.id]} lrcEditorInstalled={lrcEditorInstalled} mediaExists={mediaExists[p.id] !== false}
                     urlSchema={urlSchema} linkSchema={linkSchema}
                     txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites}
                     isPlaying={playerMedia?.cardId === p.id && globalPlaying}
@@ -2394,7 +2401,7 @@ export default function App() {
           <div className="dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) closeModal(); }}>
             <div className="dlp" style={{ maxWidth: isCards ? 380 : 320 }}>
               <button className="dl-close" onClick={closeModal}><X /></button>
-              <ArrowUpDown color="#4dc8c8" className="dlp-icon" />
+              <ArrowUpDown color="var(--env)" className="dlp-icon" />
               <p className="dlp-title">{t("ttlDlgMoveEnv")}{isCards ? ` (${selectedIds.length})` : ""}</p>
               <div className="dlp-body">
                 <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
@@ -2457,7 +2464,7 @@ export default function App() {
           <div className="dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) { setBulkTagOpen(false); setBulkTagInput(""); } }}>
             <div className="dlp" style={{ maxWidth: 340 }}>
               <button className="dl-close" onClick={() => { setBulkTagOpen(false); setBulkTagInput(""); }}><X /></button>
-              <Tag color="#a78bfa" className="dlp-icon" />
+              <Tag color="var(--tag)" className="dlp-icon" />
               <p className="dlp-title">{t("ttlDlgTags")} ({bulkScope})</p>
               <div className="dlp-body">
               <div style={{ width: "100%" }}>
@@ -3024,7 +3031,7 @@ function ProjectItem({ proj, isActive, isDropTarget, draggingId, langKey, totalC
           e.dataTransfer.effectAllowed = "move";
           const ghost = document.createElement("div");
           ghost.innerText = "📁 " + proj.name;
-          ghost.style.cssText = `position:fixed;top:-200px;left:0;padding:6px 14px;background:#1a1a2e;color:${proj.color};border:1px solid ${proj.color};border-radius:8px;font-size:13px;font-family:inherit;white-space:nowrap;`;
+          ghost.style.cssText = `position:fixed;top:-200px;left:0;padding:6px 14px;background:var(--bg-elev);color:${proj.color};border:1px solid ${proj.color};border-radius:8px;font-size:13px;font-family:inherit;white-space:nowrap;`;
           document.body.appendChild(ghost);
           e.dataTransfer.setDragImage(ghost, 10, 20);
           setTimeout(() => { if (document.body.contains(ghost)) document.body.removeChild(ghost); }, 200);
@@ -3409,6 +3416,16 @@ function playBtnProps(mediaExists, isPlaying, accentColor, t) {
   };
 }
 
+// ── LRC Editor app mark — the icon of the app the "open in LRC Editor" button hands off to ──
+// App-specific, so it lives here and NOT in lib/ui-icons.jsx: that file is the shared catalog,
+// copied into every app, and a glyph only ampl renders would ship dead in all of them.
+// Glyph source: the LRC Editor app icon. No width/height — `.btn > svg` sizes it.
+const LrcEditorIcon = (props) => (
+  <svg data-icon="yaiol:lrc-editor" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false" {...props}>
+    <path d="M 80,-32.340937 V -772.34094 q 0,-24.75 17.63,-42.38 17.62,-17.62 42.37,-17.62 h 480 q 24.75,0 42.38,17.62 17.62,17.63 17.62,42.38 v 59 q -17,9 -32.36,21 -15.35,12 -27.64,27 v -107 H 140 v 596 l 74,-76 h 406 v -187 q 12.29,15 27.64,27 15.36,12 32.36,21 v 139 q 0,24.75 -17.62,42.37 -17.63,17.63 -42.38,17.63 H 240 Z M 240,-362.34094 h 160 v -60 H 240 Z m 519.88,-80 q -45.88,0 -77.88,-32.12 -32,-32.12 -32,-78 0,-45.88 32.06,-77.88 32.06,-32 77.86,-32 10.08,0 22.58,3 12.5,3 27.5,8 v -221 h 150 v 60 h -90 v 260 q 0,45.83 -32.12,77.92 -32.12,32.08 -78,32.08 z m -519.88,-40 h 280 v -60 H 240 Z m 0,-120 h 280 v -60 H 240 Z m -100,350 v -520 z" />
+  </svg>
+);
+
 // ── Lettered copy glyphs — a lucide "copy" icon with a T / S / L badge, one per copyable field ──
 // (title / style / lyrics). Single base so the three share one geometry; only the letter varies.
 const CopyLetter = ({ letter }) => (
@@ -3425,7 +3442,7 @@ const CopyLyrics = () => <CopyLetter letter="L" />;
 // ── SongListCard - single source for song rows across the list view and the three special views ──
 // mode: "list" = full card (checkbox + toolbar + lyrics/tags). "link" / "media" / "sort" = stripped
 // single-feature card — number + title + version + the feature's own control only, no generic buttons.
-function SongListCard({ song, types, langKey, apiPort, lrcExists, mediaExists, isPlaying, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, clrSettingsTags,
+function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInstalled, mediaExists, isPlaying, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, clrSettingsTags,
   onEdit, onPlay, onFav, onCopy, onDelete, onToggleSelect, onRemoveFromProject, copiedId,
   isSelected, activeProjectId, allCards, linkSchema, globalEnvId,
   isDragging, anyDragging, mode,
@@ -3577,14 +3594,14 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, mediaExists, i
                 {pb.icon}
               </button>
             ); })()}
-            <button className="btn icon small" style={{ visibility: isSong && song.mediaPath && cleanLyrics(song.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
+            <button className="btn icon small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && song.mediaPath && cleanLyrics(song.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
               onClick={() => fetch(`http://localhost:${apiPort}/launch-lrc-editor`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ mediaPath: song.mediaPath, lyrics: song.lyrics ? cleanLyrics(song.lyrics) : undefined }),
               })}
               title={t("tipCardOpenLrcEditor")}
               tabIndex={isSong && song.mediaPath ? 0 : -1}>
-              <Disc />
+              <LrcEditorIcon />
             </button>
             <button className="btn icon small subtle" style={{ color: song.favorite ? "var(--star)" : 'var(--text-mute)' }} onClick={() => onFav && onFav(song.id)}><Star fill={song.favorite ? "var(--star)" : "none"} /></button>
           </>}
@@ -3657,7 +3674,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, mediaExists, i
 }
 
 // ── CardItem ─────────────────────────────────────────────────────────────────
-function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSelected, activeProjectId, types, viewMode, langKey, urlSchema, linkSchema, apiPort, lrcExists, mediaExists, isPlaying, clrSettingsTags, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, globalEnvId, onCopy, onFav, onEdit, onDelete, onDragStart, onDragEnd, onLinkCard, onToggleSelect, onRemoveFromProject, onPlay }) {
+function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSelected, activeProjectId, types, viewMode, langKey, urlSchema, linkSchema, apiPort, lrcExists, lrcEditorInstalled, mediaExists, isPlaying, clrSettingsTags, txtSettingsCardsAiSites, txtSettingsCardsMusicSites, globalEnvId, onCopy, onFav, onEdit, onDelete, onDragStart, onDragEnd, onLinkCard, onToggleSelect, onRemoveFromProject, onPlay }) {
   const t = useT(langKey);
   if (!types) types = buildTypes(DEFAULT_TYPE_COLORS);
   cfg = cfg || types.music;
@@ -3746,7 +3763,7 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
   if (isList) {
     return (
       <SongListCard song={card} types={types} langKey={langKey} apiPort={apiPort}
-        lrcExists={lrcExists} mediaExists={mediaExists} isPlaying={isPlaying} txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites}
+        lrcExists={lrcExists} lrcEditorInstalled={lrcEditorInstalled} mediaExists={mediaExists} isPlaying={isPlaying} txtSettingsCardsAiSites={txtSettingsCardsAiSites} txtSettingsCardsMusicSites={txtSettingsCardsMusicSites}
         clrSettingsTags={clrSettingsTags} onEdit={onEdit} onPlay={onPlay} onFav={onFav} onCopy={onCopy} onDelete={onDelete}
         onToggleSelect={onToggleSelect} onRemoveFromProject={onRemoveFromProject} copiedId={copiedId}
         isSelected={isSelected} activeProjectId={activeProjectId} allCards={allCards}
@@ -3834,14 +3851,14 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
               {pb.icon}
             </button>
           ); })()}
-          <button className="btn icon small" style={{ visibility: isSong && card.mediaPath && cleanLyrics(card.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
+          <button className="btn icon small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && card.mediaPath && cleanLyrics(card.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
             onClick={() => fetch(`http://localhost:${apiPort}/launch-lrc-editor`, {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ mediaPath: card.mediaPath, lyrics: card.lyrics ? cleanLyrics(card.lyrics) : undefined }),
             })}
             title={t("tipCardOpenLrcEditor")}
             tabIndex={isSong && card.mediaPath ? 0 : -1}>
-            <Disc />
+            <LrcEditorIcon />
           </button>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
@@ -5453,10 +5470,10 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
             items={suggestions}
             itemKey={tag => tag}
             renderItem={tag => {
-              const color = getTagColor(tag) || "#888";
+              const color = getTagColor(tag);   // unset --chip → .chip's own neutral fallback
               const idx = tag.toLowerCase().indexOf(currentWord);
               const before = tag.slice(0, idx), match = tag.slice(idx, idx + currentWord.length), after = tag.slice(idx + currentWord.length);
-              return <span className="chip" style={{ "--chip": color }}>{before}<strong>{match}</strong>{after}</span>;
+              return <span className="chip" style={color ? { "--chip": color } : undefined}>{before}<strong>{match}</strong>{after}</span>;
             }}
             onPick={pickSuggestion}
           />
@@ -5588,7 +5605,7 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
               </div>
             )}
 
-            {wizardError && <div style={{ fontSize: 12, color: "var(--danger)", padding: "8px 12px", background: "#e74c3c18", borderRadius: 8 }}>{wizardError}</div>}
+            {wizardError && <div style={{ fontSize: 12, color: "var(--danger)", padding: "8px 12px", background: "color-mix(in srgb, var(--danger) 9%, transparent)", borderRadius: 8 }}>{wizardError}</div>}
 
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
               <button className="btn subtle" onClick={() => setWizardStep(null)}>
@@ -5650,7 +5667,7 @@ function buildCss() {
     body { margin: 0; background: var(--bg); font-family: 'Inter', system-ui, sans-serif; }
     /* ── Shared header (GUI Standard Rules 9 & 10): .barh-app-name + .barh-app-version are
        unscoped in ui-app.css (bg = --bar-bgd). Not redefined here. */
-    .act-btn:hover { border-color: #8888ff88 !important; color: var(--accent) !important; background: var(--bg-hov) !important; }
+    .act-btn:hover { border-color: var(--accent) !important; color: var(--accent) !important; background: var(--bg-hov) !important; }
     .act-btn-danger:hover { border-color: var(--danger) !important; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
     /* Splitters now use the shared <Splitter> (lib/ui-ctl-splitter.jsx) - its .app-splitter look is

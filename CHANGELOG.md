@@ -1,5 +1,20 @@
 # Changelog
 
+## 1.0.6 — 2026-08-19
+
+- Import a whole LP prompt file: an `.amlp` becomes a project with one Song card per track, carrying each track's title, number, description, style, lyrics, language and date — from the Import button, by dropping the file on the window, or by double-clicking it on the desktop. It lands in the project you have open, or brings its own when you have none
+- Export an LP file back out from the Export menu — the songs you have ticked, or everything the current view lists
+- LP prompt files now carry the `.amlp` extension (they were `.suno`)
+- New card from a Suno link: copy a song link and hit New (or Ctrl+N) — the card opens with its title, sort number, style, lyrics, date and URL already filled in
+- Ctrl+N opens a new card, matching the header's + button
+- The app starts faster and no longer flashes English before your own language: only the active language is loaded, and the window no longer paints black before the first render on a light theme
+- The "open in LRC Editor" button now shows the LRC Editor icon instead of the same disc glyph the media controls use
+- That button now greys out when LRC Editor is not installed — clicking it used to do nothing at all, with no explanation
+- The Untagged row's count badge and the project drag ghost follow the theme instead of staying dark on a light one
+- Replace the remaining hardcoded colours with theme tokens, adding `--tag` and `--env` for the tag and environment identity colours
+- Add cold-start instrumentation behind `YAIOL_STARTUP_LOG`
+- Adopt shared catalog v1 → v2 — on-icon count badges and popover form rows; neither is rendered here yet
+
 ## 1.0.5 — 2026-08-07
 - Menu submenus now open reliably — they were clipped out of sight and unreachable whenever the menu was long enough to scroll
 - Only one submenu stays on screen when sweeping down a menu, and it survives the pointer travelling from the row into it
