@@ -179,7 +179,7 @@ async function importFromJson(file, apiFetch, setCards, setProjects, showToast, 
     }
     const r = result.results;
     const parts = [];
-    if (r.cardsCreated)   parts.push(`${r.cardsCreated} ${t("msgAppImportJSONCardsCreated")}`);
+    if (r.cardsCreated)   parts.push(`${r.cardsCreated} ${t("msgAppImportCardsCreated")}`);
     if (r.cardsUpdated)   parts.push(`${r.cardsUpdated} ${t("msgAppImportJSONCardsUpdated")}`);
     if (r.cardsSkipped)   parts.push(`${r.cardsSkipped} ${t("msgAppImportJSONCardsUnchanged")}`);
     if (r.projectsCreated)  parts.push(`${r.projectsCreated} ${t("msgAppImportJSONProjectsCreated")}`);
@@ -216,7 +216,7 @@ async function importAmlpText(text, apiFetch, setCards, setProjects, showToast, 
     setCards(result.cards);
     setProjects(result.projects);
     const r = result.results;
-    showToast(`✅ ${r.projectName}: ${r.cardsCreated} ${t("msgAppImportJSONCardsCreated")}`);
+    showToast(`✅ ${r.projectName}: ${r.cardsCreated} ${t("msgAppImportCardsCreated")}`);
   } catch (err) {
     // Never surface the raw response body (a 404/500 can be a full HTML page) — log it, toast a clean line.
     console.error(".amlp import failed:", err.message);
@@ -242,34 +242,76 @@ async function resolveSunoLink(href) {
   }
 }
 
-// Build a draft song card out of a Suno link sitting in the clipboard — name, sort number,
-// style, lyrics, date and the link itself. Returns null whenever the clipboard holds no Suno
-// link or Suno can't be reached, so the caller just opens an empty card as before.
+// Turn a RESOLVED Suno song URL into a draft song card — name, sort number, style, lyrics,
+// date and the link itself. The two ways a song identifies itself (a link on the clipboard,
+// a Suno id in a media file's tags) both end here, so a card is filled in the same way whichever
+// door it came through. Returns null when the URL isn't a song page or Suno can't be reached.
+async function sunoDraftFromUrl(href) {
+  if (!href.includes("/song/")) return null;   // a share stub that never resolved
+  const data = await apiFetch("/fetch-suno-lyrics", { method: "POST", body: JSON.stringify({ url: href }) });
+  if (data.error) return null;                 // "gone" — deleted or private; there is no song here
+  // "10-Sanctus" → sort number 10 + name "Sanctus"; a title without that prefix is the name.
+  const numbered = (data.title || "").match(/^\s*(\d{1,4})\s*[-–—]\s*(.+)$/);
+  const ms = data.date ? Date.parse(data.date) : NaN;
+  return {
+    type: "song",
+    name: (numbered ? numbered[2] : data.title || "").trim(),
+    sortNumber: numbered ? String(parseInt(numbered[1], 10)) : "",
+    style: data.style || "",
+    lyrics: data.lyrics || "",
+    date: Number.isNaN(ms) ? Date.now() : ms,
+    urls: [{ id: `suno-${Date.now()}`, label: "suno", href }],
+  };
+}
+
+// Build a draft song card out of a Suno link sitting in the clipboard. Returns null whenever the
+// clipboard holds no Suno link or Suno can't be reached, so the caller just opens an empty card.
 async function sunoDraftFromClipboard() {
   try {
     const clip = await apiFetch("/clipboard");
     const found = (clip.text || "").match(SUNO_LINK_RE)?.[0];
     if (!found) return null;
-    const href = await resolveSunoLink(found);
-    if (!href.includes("/song/")) return null;   // share stub that never resolved
-    const data = await apiFetch("/fetch-suno-lyrics", { method: "POST", body: JSON.stringify({ url: href }) });
-    // "10-Sanctus" → sort number 10 + name "Sanctus"; a title without that prefix is the name.
-    const numbered = (data.title || "").match(/^\s*(\d{1,4})\s*[-–—]\s*(.+)$/);
-    const ms = data.date ? Date.parse(data.date) : NaN;
-    return {
-      type: "song",
-      name: (numbered ? numbered[2] : data.title || "").trim(),
-      sortNumber: numbered ? String(parseInt(numbered[1], 10)) : "",
-      style: data.style || "",
-      lyrics: data.lyrics || "",
-      date: Number.isNaN(ms) ? Date.now() : ms,
-      urls: [{ id: `suno-${Date.now()}`, label: "suno", href }],
-    };
+    return await sunoDraftFromUrl(await resolveSunoLink(found));
   } catch (err) {
     console.error("Suno clipboard draft failed:", err.message);
     return null;
   }
 }
+
+// Build a draft song card out of a media file the user dropped on the window. A file rendered by
+// Suno carries its song id in its own comment tag, which is the same provenance that stamps the
+// song URL onto a card when media is linked — so the card arrives filled in exactly as a pasted
+// link fills it. A file WITHOUT that tag still yields a card: an empty one already pointing at the
+// file, which is the useful half of the drop and never a dead end.
+async function sunoDraftFromMedia(mediaPath) {
+  // Without provenance the file name is the only thing that knows what this track is, and it is
+  // split on the same `NN-Title` pattern a Suno title uses — so a bulk drop never lands a row of
+  // nameless cards, and a single drop opens the editor with something already in the name box.
+  const stem = (mediaPath.split(/[\\/]/).pop() || "").replace(/\.[^.]+$/, "");
+  const numbered = stem.match(/^\s*(\d{1,4})\s*[-–—]\s*(.+)$/);
+  const linkedOnly = {
+    type: "song",
+    mediaPath,
+    name: (numbered ? numbered[2] : stem).trim(),
+    sortNumber: numbered ? String(parseInt(numbered[1], 10)) : "",
+  };
+  try {
+    const { id } = await apiFetch("/suno-id-from-media", { method: "POST", body: JSON.stringify({ mediaPath }) });
+    if (!id) return linkedOnly;   // not a Suno track at all — the file is still worth a card
+    const draft = await sunoDraftFromUrl(`https://suno.com/song/${id}`);
+    // ⚠ CLAUDE: a file that NAMES a song which no longer exists yields NOTHING — null, not
+    // linkedOnly. The two failures look alike and are opposite: "no id" means this is just some
+    // audio, while "id that 404s" means the song was deleted or made private, and building a card
+    // for it would quietly invent an entry for something that is not there.
+    return draft ? { ...draft, mediaPath } : null;
+  } catch (err) {
+    console.error("Suno media draft failed:", err.message);
+    return linkedOnly;
+  }
+}
+
+// (No extension list lives here. What counts as media is decided in ONE place, the main process —
+// see MEDIA_EXT_RE / POST /expand-media-drop. A copy here could only drift out of step with it.)
 
 function cleanLyrics(text) {
   return (text || "").replace(/\r/g, "").replace(/\[.*?\]/g, "").replace(/\(.*?\)/g, "").replace(/\n +/g, "\n").replace(/\n{3,}/g, "\n\n").replace(/^\n+/, "").replace(/\n+$/, "");
@@ -955,6 +997,59 @@ export default function App() {
     setModalOpen(true);
   };
 
+  // Several tracks dropped together are a BULK IMPORT, not an edit: each becomes a card straight
+  // away, in the order dropped, with no dialog in the way. (A single track still opens the editor —
+  // one drop is usually something you want to look at before it is saved.)
+  // Sequential on purpose: it preserves the dropped order and asks Suno for one song at a time
+  // rather than firing N scrapes at once.
+  const createCardsFromMedia = async (mediaPaths) => {
+    if (draftFetching) return;
+    setDraftFetching(true);
+    const projectId = activeProjectIds.length > 0 ? activeProjectIds[0] : null;
+    const made = [];
+    let gone = 0;
+    try {
+      for (const mediaPath of mediaPaths) {
+        const draft = await sunoDraftFromMedia(mediaPath);
+        if (!draft) { gone++; continue; }   // names a Suno song that 404s — create nothing for it
+        const { urls = [], ...fields } = draft;
+        const created = await apiFetch("/cards", { method: "POST", body: JSON.stringify({ id: generateId(), date: Date.now(), favorite: false, linkedCards: [], env: activeEnvId, ...fields }) });
+        for (const u of urls) {
+          await apiFetch(`/cards/${created.id}/urls`, { method: "POST", body: JSON.stringify({ href: u.href, label: u.label }) });
+        }
+        made.push({ ...created, urls, project: projectId });
+        if (projectId) {
+          const updated = await apiFetch(`/projects/${projectId}/cards`, { method: "POST", body: JSON.stringify({ cardId: created.id }) });
+          setProjects((prev) => prev.map((p) => p.id === projectId ? updated : p));
+        }
+      }
+      if (made.length) setCards((prev) => [...made, ...prev]);
+      if (made.length) showToast(`✅ ${made.length} ${t("msgAppImportCardsCreated")}`);
+      if (gone) showToast("⚠️ " + t("tstAppDropMediaSongGone").replace("{n}", gone), 6000);
+    } catch (err) {
+      // Whatever was created before the failure stays — report the shortfall rather than pretending.
+      if (made.length) setCards((prev) => [...made, ...prev]);
+      showToast("❌ " + err.message, 6000);
+    } finally {
+      setDraftFetching(false);
+    }
+  };
+
+  // A single dropped track becomes a Song card linked to that file — filled in from Suno when the
+  // file's tags say which song it is.
+  const openNewCardFromMedia = async (mediaPath) => {
+    if (draftFetching) return;
+    setEditingCard(null);
+    setDraftFetching(true);
+    const draft = await sunoDraftFromMedia(mediaPath);
+    setDraftFetching(false);
+    // The song this file names is gone from Suno — open nothing. An empty editor here would be an
+    // invitation to save a card for a track that no longer exists.
+    if (!draft) { showToast("⚠️ " + t("tstAppDropMediaSongGone").replace("{n}", 1), 6000); return; }
+    setDraftCard(draft);
+    setModalOpen(true);
+  };
+
   // Ctrl+N / Cmd+N — the same action as the + button. Held back while any dialog is up, so it
   // can never stack a second card dialog over the one being edited.
   useEffect(() => {
@@ -1566,10 +1661,27 @@ export default function App() {
     <div className="app-root" style={s.root}
       onDragOver={(e) => { if (e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } }}
       onDrop={(e) => {
-        const file = [...(e.dataTransfer?.files || [])].find(f => /\.amlp$/i.test(f.name));
-        if (!file) return;   // internal drags (project rows, cards) carry their own types — leave them alone
+        const files = [...(e.dataTransfer?.files || [])];
+        const lp = files.find(f => /\.amlp$/i.test(f.name));
+        if (lp) { e.preventDefault(); importFromAmlp(lp, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId); return; }
+        // Everything else that carries real files — tracks, FOLDERS of tracks, or a mix — goes to
+        // the main process to be turned into a list of media paths. ⚠ CLAUDE: do NOT filter by
+        // file name here first. A dropped folder arrives as a zero-byte entry with no extension,
+        // so a renderer-side extension test rejects it and folder drops silently do nothing;
+        // only the main process can look inside one. An internal drag (project rows, cards) never
+        // carries "Files", so this branch cannot swallow it.
+        if (!e.dataTransfer?.types?.includes("Files")) return;
         e.preventDefault();
-        importFromAmlp(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId);
+        const dropped = files.map(f => window.electronAPI?.getFilePath?.(f) || "").filter(Boolean);
+        if (!dropped.length) return;
+        (async () => {
+          const { paths = [] } = await apiFetch("/expand-media-drop", { method: "POST", body: JSON.stringify({ paths: dropped }) });
+          if (!paths.length) return;   // nothing playable in there — say nothing, do nothing
+          // One track → the editor, so you can look it over. Several → created straight away,
+          // because there is no sane way to show N dialogs and no reason to review a bulk import.
+          if (paths.length === 1) openNewCardFromMedia(paths[0]);
+          else createCardsFromMedia(paths);
+        })();
       }}>
       <style>{buildCss()}</style>
 

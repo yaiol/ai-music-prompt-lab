@@ -59,7 +59,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Invalid JSON backup file.",
     tstAppImportJSONJsonFailed:             "JSON import failed",
     ttlAppImportJSONWarnings:               "Import Warnings",
-    msgAppImportJSONCardsCreated:           "cards created",
+    msgAppImportCardsCreated:               "cards created",
     msgAppExportAmlpSongs:                  "songs exported",
     msgAppExportAmlpNone:                   "No songs to export",
     msgAppImportJSONCardsUpdated:           "cards updated",
@@ -73,6 +73,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file",
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.",
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} track(s) skipped — their Suno song no longer exists.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Save Document",
@@ -490,7 +493,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fichier de sauvegarde JSON invalide.",
     tstAppImportJSONJsonFailed:             "Échec de l'importation JSON",
     ttlAppImportJSONWarnings:               "Avertissements d'importation",
-    msgAppImportJSONCardsCreated:           "cartes créées",
+    msgAppImportCardsCreated:               "cartes créées",
     msgAppExportAmlpSongs:                  "morceaux exportés",
     msgAppExportAmlpNone:                   "Aucune chanson à exporter",
     msgAppImportJSONCardsUpdated:           "cartes mises à jour",
@@ -504,6 +507,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fr
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fr
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} pistes ignorées — leur chanson Suno n'existe plus.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Enregistrer le document",
@@ -920,7 +926,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ungültige JSON-Sicherungsdatei.",
     tstAppImportJSONJsonFailed:             "JSON-Import fehlgeschlagen",
     ttlAppImportJSONWarnings:               "Import-Warnungen",
-    msgAppImportJSONCardsCreated:           "Karten erstellt",
+    msgAppImportCardsCreated:               "Karten erstellt",
     msgAppExportAmlpSongs:                  "Lieder exportiert",
     msgAppExportAmlpNone:                   "Keine Songs zum Exportieren",
     msgAppImportJSONCardsUpdated:           "Karten aktualisiert",
@@ -934,6 +940,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to de
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to de
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} Titel übersprungen — ihr Suno-Song existiert nicht mehr.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Dokument speichern",
@@ -1350,7 +1359,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Archivo de copia de seguridad JSON inválido.",
     tstAppImportJSONJsonFailed:             "Error al importar JSON",
     ttlAppImportJSONWarnings:               "Avisos de importación",
-    msgAppImportJSONCardsCreated:           "tarjetas creadas",
+    msgAppImportCardsCreated:               "tarjetas creadas",
     msgAppExportAmlpSongs:                  "canciones exportadas",
     msgAppExportAmlpNone:                   "No hay canciones para exportar",
     msgAppImportJSONCardsUpdated:           "tarjetas actualizadas",
@@ -1364,6 +1373,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to es
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to es
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} pistas omitidas — su canción de Suno ya no existe.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Guardar documento",
@@ -1780,7 +1792,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Arquivo de backup JSON inválido.",
     tstAppImportJSONJsonFailed:             "Falha na importação JSON",
     ttlAppImportJSONWarnings:               "Avisos de importação",
-    msgAppImportJSONCardsCreated:           "cartões criados",
+    msgAppImportCardsCreated:               "cartões criados",
     msgAppExportAmlpSongs:                  "músicas exportadas",
     msgAppExportAmlpNone:                   "Nenhuma música para exportar",
     msgAppImportJSONCardsUpdated:           "cartões atualizados",
@@ -1794,6 +1806,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pt_BR
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_BR
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} faixas puladas — a música Suno delas não existe mais.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salvar documento",
@@ -2210,7 +2225,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ficheiro de cópia de segurança JSON inválido.",
     tstAppImportJSONJsonFailed:             "Falha na importação JSON",
     ttlAppImportJSONWarnings:               "Avisos de importação",
-    msgAppImportJSONCardsCreated:           "cartões criados",
+    msgAppImportCardsCreated:               "cartões criados",
     msgAppExportAmlpSongs:                  "músicas exportadas",
     msgAppExportAmlpNone:                   "Nenhuma música para exportar",
     msgAppImportJSONCardsUpdated:           "cartões atualizados",
@@ -2224,6 +2239,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pt_PT
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pt_PT
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} faixas ignoradas — a música Suno delas já não existe.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Guardar documento",
@@ -2640,7 +2658,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "无效的 JSON 备份文件。",
     tstAppImportJSONJsonFailed:             "JSON 导入失败",
     ttlAppImportJSONWarnings:               "导入警告",
-    msgAppImportJSONCardsCreated:           "已创建卡片",
+    msgAppImportCardsCreated:               "已创建卡片",
     msgAppExportAmlpSongs:                  "已导出歌曲",
     msgAppExportAmlpNone:                   "没有可导出的歌曲",
     msgAppImportJSONCardsUpdated:           "已更新卡片",
@@ -2654,6 +2672,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to zh_CN
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_CN
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} 首曲目已跳过 — 它们的 Suno 歌曲已不存在。",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "保存文档",
@@ -3070,7 +3091,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "無效的 JSON 備份檔案。",
     tstAppImportJSONJsonFailed:             "JSON 匯入失敗",
     ttlAppImportJSONWarnings:               "匯入警告",
-    msgAppImportJSONCardsCreated:           "已建立卡片",
+    msgAppImportCardsCreated:               "已建立卡片",
     msgAppExportAmlpSongs:                  "已匯出歌曲",
     msgAppExportAmlpNone:                   "沒有可匯出的歌曲",
     msgAppImportJSONCardsUpdated:           "已更新卡片",
@@ -3084,6 +3105,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to zh_TW
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to zh_TW
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} 首曲目已跳過 — 其 Suno 歌曲已不存在。",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "儲存檔案",
@@ -3500,7 +3524,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "無効なJSONバックアップファイル。",
     tstAppImportJSONJsonFailed:             "JSONインポート失敗",
     ttlAppImportJSONWarnings:               "インポート警告",
-    msgAppImportJSONCardsCreated:           "カード作成済み",
+    msgAppImportCardsCreated:               "カード作成済み",
     msgAppExportAmlpSongs:                  "曲をエクスポートしました",
     msgAppExportAmlpNone:                   "エクスポートする曲がありません",
     msgAppImportJSONCardsUpdated:           "カード更新済み",
@@ -3514,6 +3538,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ja
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ja
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} 曲がスキップされました — Suno の曲が存在しません。",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ドキュメントを保存",
@@ -3930,7 +3957,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Nieprawidłowy plik kopii zapasowej JSON.",
     tstAppImportJSONJsonFailed:             "Import JSON nieudany",
     ttlAppImportJSONWarnings:               "Ostrzeżenia importu",
-    msgAppImportJSONCardsCreated:           "utworzone karty",
+    msgAppImportCardsCreated:               "utworzone karty",
     msgAppExportAmlpSongs:                  "utwory wyeksportowane",
     msgAppExportAmlpNone:                   "Brak utworów do wyeksportowania",
     msgAppImportJSONCardsUpdated:           "zaktualizowane karty",
@@ -3944,6 +3971,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pl
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pl
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} utworów pominięto — ich piosenka Suno już nie istnieje.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Zapisz dokument",
@@ -4360,7 +4390,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Недійсний файл резервної копії JSON.",
     tstAppImportJSONJsonFailed:             "Помилка імпорту JSON",
     ttlAppImportJSONWarnings:               "Попередження імпорту",
-    msgAppImportJSONCardsCreated:           "створено карток",
+    msgAppImportCardsCreated:               "створено карток",
     msgAppExportAmlpSongs:                  "пісні експортовано",
     msgAppExportAmlpNone:                   "Немає пісень для експорту",
     msgAppImportJSONCardsUpdated:           "оновлено карток",
@@ -4374,6 +4404,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to uk
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to uk
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} треків пропущено — їхня пісня Suno більше не існує.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Зберегти документ",
@@ -4790,7 +4823,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "File di backup JSON non valido.",
     tstAppImportJSONJsonFailed:             "Importazione JSON fallita",
     ttlAppImportJSONWarnings:               "Avvisi di importazione",
-    msgAppImportJSONCardsCreated:           "carte create",
+    msgAppImportCardsCreated:               "carte create",
     msgAppExportAmlpSongs:                  "brani esportati",
     msgAppExportAmlpNone:                   "Nessun brano da esportare",
     msgAppImportJSONCardsUpdated:           "carte aggiornate",
@@ -4804,6 +4837,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to it
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to it
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} tracce saltate — il loro brano Suno non esiste più.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salva documento",
@@ -5220,7 +5256,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "ملف نسخ احتياطي JSON غير صالح.",
     tstAppImportJSONJsonFailed:             "فشل استيراد JSON",
     ttlAppImportJSONWarnings:               "تحذيرات الاستيراد",
-    msgAppImportJSONCardsCreated:           "بطاقات تم إنشاؤها",
+    msgAppImportCardsCreated:               "بطاقات تم إنشاؤها",
     msgAppExportAmlpSongs:                  "تم تصدير الأغاني",
     msgAppExportAmlpNone:                   "لا توجد أغاني للتصدير",
     msgAppImportJSONCardsUpdated:           "بطاقات تم تحديثها",
@@ -5234,6 +5270,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ar
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ar
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} مسارات تم تخطيها — أغنيتهم من Suno لم تعد موجودة.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "حفظ المستند",
@@ -5650,7 +5689,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ongeldig JSON-back-upbestand.",
     tstAppImportJSONJsonFailed:             "JSON-import mislukt",
     ttlAppImportJSONWarnings:               "Importwaarschuwingen",
-    msgAppImportJSONCardsCreated:           "kaarten aangemaakt",
+    msgAppImportCardsCreated:               "kaarten aangemaakt",
     msgAppExportAmlpSongs:                  "nummers geëxporteerd",
     msgAppExportAmlpNone:                   "Geen nummers om te exporteren",
     msgAppImportJSONCardsUpdated:           "kaarten bijgewerkt",
@@ -5664,6 +5703,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to nl
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nl
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} nummers overgeslagen — hun Suno-nummer bestaat niet meer.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Document opslaan",
@@ -6080,7 +6122,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ugyldig JSON-sikkerhetskopifil.",
     tstAppImportJSONJsonFailed:             "JSON-import mislyktes",
     ttlAppImportJSONWarnings:               "Importadvarsler",
-    msgAppImportJSONCardsCreated:           "kort opprettet",
+    msgAppImportCardsCreated:               "kort opprettet",
     msgAppExportAmlpSongs:                  "sanger eksportert",
     msgAppExportAmlpNone:                   "Ingen sanger å eksportere",
     msgAppImportJSONCardsUpdated:           "kort oppdatert",
@@ -6094,6 +6136,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to nb
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to nb
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} spor hoppet over — Suno-sangen deres finnes ikke lenger.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Lagre dokument",
@@ -6510,7 +6555,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ogiltig JSON-säkerhetskopieringsfil.",
     tstAppImportJSONJsonFailed:             "JSON-import misslyckades",
     ttlAppImportJSONWarnings:               "Importvarningar",
-    msgAppImportJSONCardsCreated:           "kort skapade",
+    msgAppImportCardsCreated:               "kort skapade",
     msgAppExportAmlpSongs:                  "låtar exporterade",
     msgAppExportAmlpNone:                   "Inga låtar att exportera",
     msgAppImportJSONCardsUpdated:           "kort uppdaterade",
@@ -6524,6 +6569,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sv
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sv
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} spår hoppades över — deras Suno-låt finns inte längre.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Spara dokument",
@@ -6940,7 +6988,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Geçersiz JSON yedekleme dosyası.",
     tstAppImportJSONJsonFailed:             "JSON içe aktarma başarısız",
     ttlAppImportJSONWarnings:               "İçe aktarma uyarıları",
-    msgAppImportJSONCardsCreated:           "kart oluşturuldu",
+    msgAppImportCardsCreated:               "kart oluşturuldu",
     msgAppExportAmlpSongs:                  "şarkılar dışa aktarıldı",
     msgAppExportAmlpNone:                   "Dışa aktarılacak şarkı yok",
     msgAppImportJSONCardsUpdated:           "kart güncellendi",
@@ -6954,6 +7002,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to tr
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tr
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} parça atlandı — Suno şarkıları artık mevcut değil.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Belgeyi kaydet",
@@ -7370,7 +7421,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ugyldig JSON-backup-fil.",
     tstAppImportJSONJsonFailed:             "JSON-import mislykkedes",
     ttlAppImportJSONWarnings:               "Importadvarsler",
-    msgAppImportJSONCardsCreated:           "kort oprettet",
+    msgAppImportCardsCreated:               "kort oprettet",
     msgAppExportAmlpSongs:                  "sange eksporteret",
     msgAppExportAmlpNone:                   "Ingen sange at eksportere",
     msgAppImportJSONCardsUpdated:           "kort opdateret",
@@ -7384,6 +7435,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to da
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to da
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} numre sprunget over — deres Suno-sang findes ikke længere.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Gem dokument",
@@ -7800,7 +7854,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Virheellinen JSON-varmuuskopiointitiedosto.",
     tstAppImportJSONJsonFailed:             "JSON-tuonti epäonnistui",
     ttlAppImportJSONWarnings:               "Tuontivaroitukset",
-    msgAppImportJSONCardsCreated:           "korttia luotu",
+    msgAppImportCardsCreated:               "korttia luotu",
     msgAppExportAmlpSongs:                  "kappaletta viety",
     msgAppExportAmlpNone:                   "Ei kappaleita vietäväksi",
     msgAppImportJSONCardsUpdated:           "korttia päivitetty",
@@ -7814,6 +7868,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fi
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fi
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} kappaletta ohitettu — niiden Suno-kappaletta ei enää ole.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Tallenna asiakirja",
@@ -8230,7 +8287,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Μη έγκυρο αρχείο JSON.",
     tstAppImportJSONJsonFailed:             "Η εισαγωγή JSON απέτυχε",
     ttlAppImportJSONWarnings:               "Προειδοποιήσεις εισαγωγής",
-    msgAppImportJSONCardsCreated:           "κάρτες δημιουργήθηκαν",
+    msgAppImportCardsCreated:               "κάρτες δημιουργήθηκαν",
     msgAppExportAmlpSongs:                  "τραγούδια εξήχθησαν",
     msgAppExportAmlpNone:                   "Δεν υπάρχουν τραγούδια για εξαγωγή",
     msgAppImportJSONCardsUpdated:           "κάρτες ενημερώθηκαν",
@@ -8244,6 +8301,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to el
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to el
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} κομμάτια παραλείφθηκαν — το τραγούδι τους στο Suno δεν υπάρχει πλέον.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Αποθήκευση εγγράφου",
@@ -8660,7 +8720,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "קובץ גיבוי JSON לא חוקי.",
     tstAppImportJSONJsonFailed:             "ייבוא JSON נכשל",
     ttlAppImportJSONWarnings:               "אזהרות ייבוא",
-    msgAppImportJSONCardsCreated:           "כרטיסים נוצרו",
+    msgAppImportCardsCreated:               "כרטיסים נוצרו",
     msgAppExportAmlpSongs:                  "שירים יוצאו",
     msgAppExportAmlpNone:                   "אין שירים לייצוא",
     msgAppImportJSONCardsUpdated:           "כרטיסים עודכנו",
@@ -8674,6 +8734,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to he
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to he
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} רצועות דולגו — שיר ה-Suno שלהם כבר לא קיים.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "שמור מסמך",
@@ -9090,7 +9153,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "잘못된 JSON 백업 파일.",
     tstAppImportJSONJsonFailed:             "JSON 가져오기 실패",
     ttlAppImportJSONWarnings:               "가져오기 경고",
-    msgAppImportJSONCardsCreated:           "카드 생성됨",
+    msgAppImportCardsCreated:               "카드 생성됨",
     msgAppExportAmlpSongs:                  "곡 내보내기 완료",
     msgAppExportAmlpNone:                   "내보낼 곡이 없습니다.",
     msgAppImportJSONCardsUpdated:           "카드 업데이트됨",
@@ -9104,6 +9167,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ko
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ko
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n}개 트랙 건너뜀 — 해당 Suno 노래가 더 이상 존재하지 않습니다.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "문서 저장",
@@ -9520,7 +9586,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fișier de rezervă JSON invalid.",
     tstAppImportJSONJsonFailed:             "Import JSON eșuat",
     ttlAppImportJSONWarnings:               "Avertismente import",
-    msgAppImportJSONCardsCreated:           "carduri create",
+    msgAppImportCardsCreated:               "carduri create",
     msgAppExportAmlpSongs:                  "melodii exportate",
     msgAppExportAmlpNone:                   "Nicio melodie de exportat",
     msgAppImportJSONCardsUpdated:           "carduri actualizate",
@@ -9534,6 +9600,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ro
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ro
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} piese sărite — melodia lor Suno nu mai există.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Salvează documentul",
@@ -9950,7 +10019,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "File sao lưu JSON không hợp lệ.",
     tstAppImportJSONJsonFailed:             "Nhập JSON thất bại",
     ttlAppImportJSONWarnings:               "Cảnh báo nhập khẩu",
-    msgAppImportJSONCardsCreated:           "thẻ đã tạo",
+    msgAppImportCardsCreated:               "thẻ đã tạo",
     msgAppExportAmlpSongs:                  "đã xuất bài hát",
     msgAppExportAmlpNone:                   "Không có bài hát nào để xuất",
     msgAppImportJSONCardsUpdated:           "thẻ đã cập nhật",
@@ -9964,6 +10033,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to vi
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to vi
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} bản nhạc đã bị bỏ qua — bài hát Suno của chúng không còn tồn tại.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Lưu tài liệu",
@@ -10380,7 +10452,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "فایل پشتیبان JSON نامعتبر است.",
     tstAppImportJSONJsonFailed:             "وارد کردن JSON ناموفق بود",
     ttlAppImportJSONWarnings:               "هشدارهای وارد کردن",
-    msgAppImportJSONCardsCreated:           "کارت‌های ایجاد شده",
+    msgAppImportCardsCreated:               "کارت‌های ایجاد شده",
     msgAppExportAmlpSongs:                  "آهنگ‌ها صادر شدند",
     msgAppExportAmlpNone:                   "آهنگی برای خروجی نیست",
     msgAppImportJSONCardsUpdated:           "کارت‌های به‌روز شده",
@@ -10394,6 +10466,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to fa
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to fa
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} آهنگ رد شد — آهنگ Suno آن‌ها دیگر وجود ندارد.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ذخیره سند",
@@ -10810,7 +10885,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Neplatný záložní soubor JSON.",
     tstAppImportJSONJsonFailed:             "Import JSON selhal",
     ttlAppImportJSONWarnings:               "Varování importu",
-    msgAppImportJSONCardsCreated:           "karet vytvořeno",
+    msgAppImportCardsCreated:               "karet vytvořeno",
     msgAppExportAmlpSongs:                  "skladby exportovány",
     msgAppExportAmlpNone:                   "Žádné skladby k exportu",
     msgAppImportJSONCardsUpdated:           "karet aktualizováno",
@@ -10824,6 +10899,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to cs
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to cs
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} skladeb přeskočeno — jejich píseň Suno již neexistuje.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Uložit dokument",
@@ -11240,7 +11318,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Nevažeća JSON sigurnosna kopija.",
     tstAppImportJSONJsonFailed:             "Uvoz JSON-a nije uspio",
     ttlAppImportJSONWarnings:               "Upozorenja uvoza",
-    msgAppImportJSONCardsCreated:           "kartice stvorene",
+    msgAppImportCardsCreated:               "kartice stvorene",
     msgAppExportAmlpSongs:                  "pjesme izvezene",
     msgAppExportAmlpNone:                   "Nema pjesama za izvoz",
     msgAppImportJSONCardsUpdated:           "kartice ažurirane",
@@ -11254,6 +11332,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hr
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hr
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} pjesama preskočeno — njihova Suno pjesma više ne postoji.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Spremi dokument",
@@ -11670,7 +11751,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fitxer de còpia de seguretat JSON no vàlid.",
     tstAppImportJSONJsonFailed:             "La importació JSON ha fallat",
     ttlAppImportJSONWarnings:               "Advertiments d'importació",
-    msgAppImportJSONCardsCreated:           "targetes creades",
+    msgAppImportCardsCreated:               "targetes creades",
     msgAppExportAmlpSongs:                  "cançons exportades",
     msgAppExportAmlpNone:                   "No hi ha cançons per exportar",
     msgAppImportJSONCardsUpdated:           "targetes actualitzades",
@@ -11684,6 +11765,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ca
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ca
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} pistes omeses — la seva cançó de Suno ja no existeix.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Desa el document",
@@ -12100,7 +12184,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "File backup JSON tidak valid.",
     tstAppImportJSONJsonFailed:             "Impor JSON gagal",
     ttlAppImportJSONWarnings:               "Peringatan impor",
-    msgAppImportJSONCardsCreated:           "kartu dibuat",
+    msgAppImportCardsCreated:               "kartu dibuat",
     msgAppExportAmlpSongs:                  "lagu diekspor",
     msgAppExportAmlpNone:                   "Tidak ada lagu untuk diekspor",
     msgAppImportJSONCardsUpdated:           "kartu diperbarui",
@@ -12114,6 +12198,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to id
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to id
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} trek dilewati — lagu Suno mereka tidak ada lagi.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Simpan dokumen",
@@ -12530,7 +12617,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fail sandaran JSON tidak sah.",
     tstAppImportJSONJsonFailed:             "Import JSON gagal",
     ttlAppImportJSONWarnings:               "Amaran import",
-    msgAppImportJSONCardsCreated:           "kad dicipta",
+    msgAppImportCardsCreated:               "kad dicipta",
     msgAppExportAmlpSongs:                  "lagu dieksport",
     msgAppExportAmlpNone:                   "Tiada lagu untuk dieksport",
     msgAppImportJSONCardsUpdated:           "kad dikemas kini",
@@ -12544,6 +12631,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ms
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ms
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} trek dilangkau — lagu Suno mereka tidak lagi wujud.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Simpan dokumen",
@@ -12960,7 +13050,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Недопустимый файл резервной копии JSON.",
     tstAppImportJSONJsonFailed:             "Импорт JSON не удался",
     ttlAppImportJSONWarnings:               "Предупреждения импорта",
-    msgAppImportJSONCardsCreated:           "создано карточек",
+    msgAppImportCardsCreated:               "создано карточек",
     msgAppExportAmlpSongs:                  "песни экспортированы",
     msgAppExportAmlpNone:                   "Нет песен для экспорта",
     msgAppImportJSONCardsUpdated:           "обновлено карточек",
@@ -12974,6 +13064,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ru
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ru
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} треков пропущено — их песня Suno больше не существует.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Сохранить документ",
@@ -13390,7 +13483,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "ไฟล์สำรองข้อมูล JSON ไม่ถูกต้อง",
     tstAppImportJSONJsonFailed:             "การนำเข้า JSON ล้มเหลว",
     ttlAppImportJSONWarnings:               "คำเตือนการนำเข้า",
-    msgAppImportJSONCardsCreated:           "สร้างการ์ดแล้ว",
+    msgAppImportCardsCreated:               "สร้างการ์ดแล้ว",
     msgAppExportAmlpSongs:                  "ส่งออกเพลงแล้ว",
     msgAppExportAmlpNone:                   "ไม่มีเพลงให้ส่งออก",
     msgAppImportJSONCardsUpdated:           "อัปเดตการ์ดแล้ว",
@@ -13404,6 +13497,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to th
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to th
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} แทร็กถูกข้าม — เพลง Suno ของพวกเขาไม่มีอยู่อีกต่อไป",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "บันทึกเอกสาร",
@@ -13820,7 +13916,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Անվավեր JSON պահուստային ֆայl:",
     tstAppImportJSONJsonFailed:             "JSON ներմուծումը ձախողվեց",
     ttlAppImportJSONWarnings:               "Ներմուծման նախազգուշացումներ",
-    msgAppImportJSONCardsCreated:           "քարտեր ստեղծված",
+    msgAppImportCardsCreated:               "քարտեր ստեղծված",
     msgAppExportAmlpSongs:                  "երգերն արտահանվեցին",
     msgAppExportAmlpNone:                   "Արտահանելու երգեր չկան",
     msgAppImportJSONCardsUpdated:           "քարտեր թարմացված",
@@ -13834,6 +13930,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hy
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hy
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} երգ բաց թողնվեց — նրանց Suno երգն այլևս գոյություն չունի։",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Պահել փաստաթուղթը",
@@ -14250,7 +14349,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Невалиден JSON резервен файл.",
     tstAppImportJSONJsonFailed:             "JSON импортирането е неуспешно",
     ttlAppImportJSONWarnings:               "Предупреждения при импорт",
-    msgAppImportJSONCardsCreated:           "създадени карти",
+    msgAppImportCardsCreated:               "създадени карти",
     msgAppExportAmlpSongs:                  "песни експортирани",
     msgAppExportAmlpNone:                   "Няма песни за експортиране",
     msgAppImportJSONCardsUpdated:           "актуализирани карти",
@@ -14264,6 +14363,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to bg
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bg
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} песни бяха пропуснати — тяхната Suno песен вече не съществува.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Запази документа",
@@ -14680,7 +14782,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Ficheiro de copia de seguridade JSON non válido.",
     tstAppImportJSONJsonFailed:             "Fallo na importación JSON",
     ttlAppImportJSONWarnings:               "Avisos de importación",
-    msgAppImportJSONCardsCreated:           "tarxetas creadas",
+    msgAppImportCardsCreated:               "tarxetas creadas",
     msgAppExportAmlpSongs:                  "cancións exportadas",
     msgAppExportAmlpNone:                   "Non hai cancións para exportar",
     msgAppImportJSONCardsUpdated:           "tarxetas actualizadas",
@@ -14694,6 +14796,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to gl
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to gl
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} pistas omitidas — a súa canción de Suno xa non existe.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Gardar documento",
@@ -15110,7 +15215,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Érvénytelen JSON mentési fájl.",
     tstAppImportJSONJsonFailed:             "A JSON importálása sikertelen",
     ttlAppImportJSONWarnings:               "Importálási figyelmeztetések",
-    msgAppImportJSONCardsCreated:           "kártya létrehozva",
+    msgAppImportCardsCreated:               "kártya létrehozva",
     msgAppExportAmlpSongs:                  "dalok exportálva",
     msgAppExportAmlpNone:                   "Nincsenek exportálható dalok",
     msgAppImportJSONCardsUpdated:           "kártya frissítve",
@@ -15124,6 +15229,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hu
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hu
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} szám átugorva — a Suno daluk már nem létezik.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Dokumentum mentése",
@@ -15540,7 +15648,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Neteisingas JSON atsarginės kopijos failas.",
     tstAppImportJSONJsonFailed:             "JSON importavimas nepavyko",
     ttlAppImportJSONWarnings:               "Importavimo įspėjimai",
-    msgAppImportJSONCardsCreated:           "kortelių sukurta",
+    msgAppImportCardsCreated:               "kortelių sukurta",
     msgAppExportAmlpSongs:                  "dainos eksportuotos",
     msgAppExportAmlpNone:                   "Nėra dainų eksportavimui",
     msgAppImportJSONCardsUpdated:           "kortelių atnaujinta",
@@ -15554,6 +15662,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to lt
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to lt
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} takeliai praleisti — jų Suno daina nebeegzistuoja.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Išsaugoti dokumentą",
@@ -15970,7 +16081,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Неважечки JSON резервен фајл.",
     tstAppImportJSONJsonFailed:             "JSON увозот не успеа",
     ttlAppImportJSONWarnings:               "Предупредувања при увоз",
-    msgAppImportJSONCardsCreated:           "креирани картички",
+    msgAppImportCardsCreated:               "креирани картички",
     msgAppExportAmlpSongs:                  "песни извезени",
     msgAppExportAmlpNone:                   "Нема песни за извоз",
     msgAppImportJSONCardsUpdated:           "ажурирани картички",
@@ -15984,6 +16095,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to mk
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mk
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} нумери прескокнати — нивната Suno песна повеќе не постои.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Зачувај документ",
@@ -16400,7 +16514,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Неважећи JSON резервни фајл.",
     tstAppImportJSONJsonFailed:             "JSON увоз није успео",
     ttlAppImportJSONWarnings:               "Упозорења при увозу",
-    msgAppImportJSONCardsCreated:           "картице креиране",
+    msgAppImportCardsCreated:               "картице креиране",
     msgAppExportAmlpSongs:                  "песме извезене",
     msgAppExportAmlpNone:                   "Нема песама за извоз",
     msgAppImportJSONCardsUpdated:           "картице ажуриране",
@@ -16414,6 +16528,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sr
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sr
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} нумера прескочено — њихова Suno песма више не постоји.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Сачувај документ",
@@ -16830,7 +16947,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Neplatný súbor zálohy JSON.",
     tstAppImportJSONJsonFailed:             "Importovanie JSON zlyhalo",
     ttlAppImportJSONWarnings:               "Upozornenia pri importe",
-    msgAppImportJSONCardsCreated:           "kariet vytvorených",
+    msgAppImportCardsCreated:               "kariet vytvorených",
     msgAppExportAmlpSongs:                  "skladby exportované",
     msgAppExportAmlpNone:                   "Žiadne skladby na export",
     msgAppImportJSONCardsUpdated:           "kariet aktualizovaných",
@@ -16844,6 +16961,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sk
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sk
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} skladieb preskočených — ich pieseň Suno už neexistuje.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Uložiť dokument",
@@ -17260,7 +17380,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Neveljavna varnostna kopija JSON.",
     tstAppImportJSONJsonFailed:             "Uvoz JSON ni uspel",
     ttlAppImportJSONWarnings:               "Opozorila pri uvozu",
-    msgAppImportJSONCardsCreated:           "kartice ustvarjene",
+    msgAppImportCardsCreated:               "kartice ustvarjene",
     msgAppExportAmlpSongs:                  "skladbe izvožene",
     msgAppExportAmlpNone:                   "Ni skladb za izvoz",
     msgAppImportJSONCardsUpdated:           "kartice posodobljene",
@@ -17274,6 +17394,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sl
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sl
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} skladb preskočenih — njihova skladba Suno ne obstaja več.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Shrani dokument",
@@ -17690,7 +17813,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "தவறான JSON காப்புப் பிரதி கோப்பு.",
     tstAppImportJSONJsonFailed:             "JSON இறக்குமதி தோல்வியடைந்தது",
     ttlAppImportJSONWarnings:               "இறக்குமதி எச்சரிக்கைகள்",
-    msgAppImportJSONCardsCreated:           "அட்டைகள் உருவாக்கப்பட்டன",
+    msgAppImportCardsCreated:               "அட்டைகள் உருவாக்கப்பட்டன",
     msgAppExportAmlpSongs:                  "பாடல்கள் ஏற்றுமதி செய்யப்பட்டன",
     msgAppExportAmlpNone:                   "ஏற்றுமதி செய்ய பாடல்கள் இல்லை",
     msgAppImportJSONCardsUpdated:           "அட்டைகள் புதுப்பிக்கப்பட்டன",
@@ -17704,6 +17827,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ta
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ta
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} தடங்கள் தவிர்க்கப்பட்டன — அவற்றின் Suno பாடல் இனி இல்லை.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ஆவணத்தை சேமி",
@@ -18120,7 +18246,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "अमान्य JSON बैकअप फ़ाइल।",
     tstAppImportJSONJsonFailed:             "JSON आयात विफल रहा",
     ttlAppImportJSONWarnings:               "आयात चेतावनियां",
-    msgAppImportJSONCardsCreated:           "कार्ड बनाए गए",
+    msgAppImportCardsCreated:               "कार्ड बनाए गए",
     msgAppExportAmlpSongs:                  "गाने निर्यात किए गए",
     msgAppExportAmlpNone:                   "निर्यात करने के लिए कोई गीत नहीं",
     msgAppImportJSONCardsUpdated:           "कार्ड अपडेट किए गए",
@@ -18134,6 +18260,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to hi
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to hi
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} ट्रैक छोड़े गए — उनका Suno गाना अब मौजूद नहीं है।",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "दस्तावेज़ सहेजें",
@@ -18550,7 +18679,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "অবৈধ JSON ব্যাকআপ ফাইল।",
     tstAppImportJSONJsonFailed:             "JSON আমদানি ব্যর্থ হয়েছে",
     ttlAppImportJSONWarnings:               "আমদানি সতর্কতা",
-    msgAppImportJSONCardsCreated:           "কার্ড তৈরি হয়েছে",
+    msgAppImportCardsCreated:               "কার্ড তৈরি হয়েছে",
     msgAppExportAmlpSongs:                  "গান এক্সপোর্ট করা হয়েছে",
     msgAppExportAmlpNone:                   "রপ্তানি করার জন্য কোনো গান নেই",
     msgAppImportJSONCardsUpdated:           "কার্ড আপডেট হয়েছে",
@@ -18564,6 +18693,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to bn
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to bn
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n}টি ট্র্যাক বাদ দেওয়া হয়েছে — তাদের Suno গানটি আর নেই।",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ডকুমেন্ট সংরক্ষণ করুন",
@@ -18980,7 +19112,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "غیر درست JSON بیک اپ فائل۔",
     tstAppImportJSONJsonFailed:             "JSON درآمد ناکام رہی",
     ttlAppImportJSONWarnings:               "درآمد کی تنبیہات",
-    msgAppImportJSONCardsCreated:           "کارڈز بنائے گئے",
+    msgAppImportCardsCreated:               "کارڈز بنائے گئے",
     msgAppExportAmlpSongs:                  "گانے ایکسپورٹ ہو گئے",
     msgAppExportAmlpNone:                   "برآمد کرنے کے لیے کوئی گانا نہیں",
     msgAppImportJSONCardsUpdated:           "کارڈز اپ ڈیٹ کیے گئے",
@@ -18994,6 +19126,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ur
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ur
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} ٹریک چھوڑ دیے گئے — ان کا سونو گانا اب موجود نہیں ہے۔",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "دستاویز محفوظ کریں",
@@ -19410,7 +19545,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Faili ya nakala ya hifadhi ya JSON si sahihi.",
     tstAppImportJSONJsonFailed:             "Uingizaji wa JSON umeshindwa",
     ttlAppImportJSONWarnings:               "Maonyo ya uingizaji",
-    msgAppImportJSONCardsCreated:           "kadi zimeundwa",
+    msgAppImportCardsCreated:               "kadi zimeundwa",
     msgAppExportAmlpSongs:                  "nyimbo zimehamishwa",
     msgAppExportAmlpNone:                   "Hakuna nyimbo za kusafirisha",
     msgAppImportJSONCardsUpdated:           "kadi zimesasishwa",
@@ -19424,6 +19559,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to sw
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to sw
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "Nyimbo {n} zilirukwa — wimbo wao wa Suno haupo tena.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Hifadhi hati",
@@ -19840,7 +19978,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "ਅਵੈਧ JSON ਬੈਕਅੱਪ ਫ਼ਾਈਲ।",
     tstAppImportJSONJsonFailed:             "JSON ਆਯਾਤ ਅਸਫਲ ਰਿਹਾ",
     ttlAppImportJSONWarnings:               "ਆਯਾਤ ਚੇਤਾਵਨੀਆਂ",
-    msgAppImportJSONCardsCreated:           "ਕਾਰਡ ਬਣਾਏ ਗਏ",
+    msgAppImportCardsCreated:               "ਕਾਰਡ ਬਣਾਏ ਗਏ",
     msgAppExportAmlpSongs:                  "ਗੀਤ ਐਕਸਪੋਰਟ ਕੀਤੇ ਗਏ",
     msgAppExportAmlpNone:                   "ਨਿਰਯਾਤ ਕਰਨ ਲਈ ਕੋਈ ਗੀਤ ਨਹੀਂ",
     msgAppImportJSONCardsUpdated:           "ਕਾਰਡ ਅੱਪਡੇਟ ਕੀਤੇ ਗਏ",
@@ -19854,6 +19992,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to pa
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to pa
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} ਟਰੈਕ ਛੱਡ ਦਿੱਤੇ ਗਏ — ਉਨ੍ਹਾਂ ਦਾ ਸੁਨੋ ਗੀਤ ਹੁਣ ਮੌਜੂਦ ਨਹੀਂ ਹੈ।",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "ਦਸਤਾਵੇਜ਼ ਸੁਰੱਖਿਅਤ ਕਰੋ",
@@ -20270,7 +20411,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fayil ɗin ajiyar JSON mara inganci.",
     tstAppImportJSONJsonFailed:             "Shigo da JSON ya kasa",
     ttlAppImportJSONWarnings:               "Gargaɗin shigo da",
-    msgAppImportJSONCardsCreated:           "an ƙirƙiri katunan",
+    msgAppImportCardsCreated:               "an ƙirƙiri katunan",
     msgAppExportAmlpSongs:                  "waƙoƙi an fitar",
     msgAppExportAmlpNone:                   "Babu waƙoƙi don fitarwa",
     msgAppImportJSONCardsUpdated:           "an sabunta katunan",
@@ -20284,6 +20425,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to ha
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to ha
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "An tsallake waƙoƙi {n} — waƙar Suno tasu ba ta wanzu.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Ajiye takarda",
@@ -20700,7 +20844,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Fáìlì ẹ̀dà JSON tí kò tọ́.",
     tstAppImportJSONJsonFailed:             "Gbígba JSON wọlé kùnà",
     ttlAppImportJSONWarnings:               "Àwọn ìkìlọ̀ gbígba wọlé",
-    msgAppImportJSONCardsCreated:           "awọn kaadi ti ṣẹda",
+    msgAppImportCardsCreated:               "awọn kaadi ti ṣẹda",
     msgAppExportAmlpSongs:                  "awọn orin ti ṣe ìkópa",
     msgAppExportAmlpNone:                   "Ko si orin lati fi ranṣẹ",
     msgAppImportJSONCardsUpdated:           "awọn kaadi ti ni imudojuiwọn",
@@ -20714,6 +20858,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to yo
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to yo
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "A foju pa orin {n} — orin Suno wọn ko si mọ.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "Fi iwe pamọ",
@@ -21130,7 +21277,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "చెల్లని JSON బ్యాకప్ ఫైల్.",
     tstAppImportJSONJsonFailed:             "JSON దిగుమతి విఫలమైంది",
     ttlAppImportJSONWarnings:               "దిగుమతి హెచ్చరికలు",
-    msgAppImportJSONCardsCreated:           "కార్డులు సృష్టించబడ్డాయి",
+    msgAppImportCardsCreated:               "కార్డులు సృష్టించబడ్డాయి",
     msgAppExportAmlpSongs:                  "పాటలు ఎగుమతి చేయబడ్డాయి",
     msgAppExportAmlpNone:                   "ఎగుమతి చేయడానికి పాటలు లేవు",
     msgAppImportJSONCardsUpdated:           "కార్డులు నవీకరించబడ్డాయి",
@@ -21144,6 +21291,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to te
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to te
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} ట్రాక్‌లు దాటవేయబడ్డాయి — వాటి Suno పాట ఇకపై లేదు.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "పత్రాన్ని సేవ్ చేయి",
@@ -21560,7 +21710,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "अवैध JSON बॅकअप फाइल.",
     tstAppImportJSONJsonFailed:             "JSON आयात अयशस्वी झाली",
     ttlAppImportJSONWarnings:               "आयात इशारे",
-    msgAppImportJSONCardsCreated:           "कार्ड्स तयार केले",
+    msgAppImportCardsCreated:               "कार्ड्स तयार केले",
     msgAppExportAmlpSongs:                  "गाणी निर्यात केली",
     msgAppExportAmlpNone:                   "निर्यात करण्यासाठी गाणी नाहीत",
     msgAppImportJSONCardsUpdated:           "कार्ड्स अद्यतनित केले",
@@ -21574,6 +21724,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to mr
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to mr
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} ट्रॅक वगळले — त्यांचे Suno गाणे आता अस्तित्वात नाही.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "दस्तऐवज जतन करा",
@@ -21990,7 +22143,7 @@ const TRANSLATIONS = {
     tstAppImportJSONJsonInvalid:            "Di-wastong JSON backup file.",
     tstAppImportJSONJsonFailed:             "Nabigo ang JSON import",
     ttlAppImportJSONWarnings:               "Mga babala sa pag-import",
-    msgAppImportJSONCardsCreated:           "mga card na nilikha",
+    msgAppImportCardsCreated:               "mga card na nilikha",
     msgAppExportAmlpSongs:                  "na-export ang mga kanta",
     msgAppExportAmlpNone:                   "Walang kanta na i-e-export",
     msgAppImportJSONCardsUpdated:           "mga card na na-update",
@@ -22004,6 +22157,9 @@ const TRANSLATIONS = {
     // Prefix:AppImportAmlp - Scope:.amlp LP import results and errors
     tstAppImportAmlpFailed:                 "Could not import .amlp file", // TODO: translate to tl
     tstAppImportAmlpGlobalEnv:              "Songs can't be imported into the Global environment — select another one first.", // TODO: translate to tl
+
+    // Prefix:AppDropMedia - Scope:dropping audio files on the window
+    tstAppDropMediaSongGone:                "{n} track ang nilaktawan — wala na ang kanilang Suno na kanta.",
 
     // Prefix:Osd - Scope:OS native dialog titles
     ttlOsdSaveDoc:                          "I-save ang dokumento",

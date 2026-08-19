@@ -26,6 +26,10 @@ const APP_NAME = pkg.productName;
 // Storage namespace - single source: package.json `storagePrefix`. Never hardcode a prefix.
 const STORAGE_PREFIX = pkg.storagePrefix;
 
+// What counts as a media file, in ONE place: the folder scanner and the drop expander must agree,
+// or a track the browse panel lists is a track a drop silently ignores.
+const MEDIA_EXT_RE = /\.(mp3|flac|wav|ogg|aac|m4a|opus|mp4|webm)$/i;
+
 // Fixed UUID for the Global environment - identical across all installations so
 // backup files can be shared between machines without env ID mismatches.
 const GLOBAL_ENV_ID = "00000000-0000-4000-8000-000000000000";
@@ -475,19 +479,40 @@ function startServer(callback) {
     res.status(201).json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(id)));
   });
 
-  // Read the Suno song id from a media file's comment tag ("made with suno; created=…; id=…").
+  // Read the Suno song id from a media file's comment tag
+  // ("made with suno; created=2026-08-04T09:52:08Z; id=bf16a683-…").
   // The flac's comment is scrubbed at tagging time, so fall back to the same-name sibling
   // (the wav keeps its comment as provenance — same rule as the suno-sync tool).
+  //
+  // ⚠ CLAUDE: scan `native` tags, NOT just `common.comment` — and never "simplify" back to the
+  // normalised view. Suno writes its provenance as a **TXXX:comment** frame (an ID3 USER-DEFINED
+  // text frame), and music-metadata does not map user-defined frames into `common.comment`, which
+  // is `undefined` on every Suno mp3. Reading only `common.comment` looked correct and silently
+  // found nothing on every file that plainly carries an id (verified against real files,
+  // 2026-08-19). `common.comment` stays first because it IS right for ordinary comment tags.
+  //
+  // The pattern matches `id=<uuid>` ALONE, deliberately - it mirrors suno-sync's proven
+  // parseSunoComment. Do not re-require a "made with suno" prefix ahead of it: nothing
+  // guarantees the prefix shares a line with the id, and a dot does not cross a newline.
+  const SUNO_ID_RE = /id=([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})/;
   async function readSunoId(mediaPath) {
     const mm = await import("music-metadata");
     const tryFile = async (p) => {
       if (!p || !fs.existsSync(p)) return null;
       try {
         const meta = await mm.parseFile(p, { duration: false, skipCovers: true });
-        for (const c of (meta.common.comment || [])) {
-          const text = typeof c === "string" ? c : (c?.text || "");
-          const m = text.match(/made with suno.*?\bid=([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})/i);
-          if (m) return m[1];
+        const texts = [];
+        for (const c of (meta.common.comment || [])) texts.push(typeof c === "string" ? c : (c?.text || ""));
+        for (const list of Object.values(meta.native || {})) {
+          for (const tag of (list || [])) {
+            if (!/comm|desc/i.test(tag.id || "")) continue;
+            const v = tag.value;
+            texts.push(typeof v === "string" ? v : (v?.text || v?.description || ""));
+          }
+        }
+        for (const text of texts) {
+          const m = String(text || "").match(SUNO_ID_RE);
+          if (m) return m[1].toLowerCase();
         }
       } catch (_) {}
       return null;
@@ -2019,17 +2044,25 @@ function startServer(callback) {
     const { url } = req.body;
     if (!url || !url.includes("suno.com/song/")) return res.status(400).json({ error: "Not a Suno song URL" });
     try {
-      const html = await new Promise((resolve, reject) => {
+      // ⚠ CLAUDE: the STATUS CODE is the answer to "does this song still exist" — do not drop it
+      // and parse the body regardless. A deleted or private song answers 404 with a perfectly
+      // parseable generic page (79 KB, og:title "Suno | AI Music"), so ignoring the status yields
+      // a plausible-looking empty scrape instead of "gone", and a card gets built for a song that
+      // is not there. Verified against a dead id, 2026-08-19.
+      const { status, html } = await new Promise((resolve, reject) => {
         const request = https.get(url, {
           headers: SCRAPE_HEADERS
         }, (response) => {
           let data = "";
           response.on("data", chunk => data += chunk);
-          response.on("end", () => resolve(data));
+          response.on("end", () => resolve({ status: response.statusCode, html: data }));
         });
         request.on("error", reject);
         request.setTimeout(15000, () => { request.destroy(); reject(new Error("Request timed out")); });
       });
+      // Reported as DATA on a 200, not thrown — same convention as /import-amlp's validation
+      // errors, so the renderer decides what to do instead of apiFetch throwing.
+      if (status < 200 || status >= 300) return res.json({ error: "gone", status });
 
       // Suno uses Next.js App Router RSC streaming.
       // Song data is double-encoded inside self.__next_f.push([1,"..."]) script tags.
@@ -2200,13 +2233,40 @@ function startServer(callback) {
     if (!folderPath) return res.status(400).json({ error: "path required" });
     try {
       const files = fs.readdirSync(folderPath)
-        .filter(f => /\.(mp3|flac|wav|ogg|aac|m4a|opus|mp4|webm)$/i.test(f))
+        .filter(f => MEDIA_EXT_RE.test(f))
         .sort()
         .map(f => ({ name: f, path: path.join(folderPath, f) }));
       res.json({ folder: folderPath, files });
     } catch (err) {
       res.status(400).json({ error: "Cannot read folder: " + err.message });
     }
+  });
+
+  // Turn what was dropped on the window into a flat, ordered list of media paths. A dropped FOLDER
+  // becomes the tracks inside it (recursively — dropping a folder means "everything in here"), a
+  // dropped file stays itself, and anything that is not media falls away.
+  //
+  // ⚠ CLAUDE: this HAS to live in the main process. The renderer receives `File` objects and has no
+  // filesystem: a dropped folder arrives as a zero-byte entry whose name carries no extension, so
+  // no amount of renderer-side filtering can see inside it. Depth is capped as a runaway guard, not
+  // a feature — a symlink loop or a dropped drive root would otherwise walk forever.
+  api.post("/expand-media-drop", (req, res) => {
+    const paths = Array.isArray(req.body?.paths) ? req.body.paths : [];
+    const out = [];
+    const walk = (p, depth) => {
+      let st;
+      try { st = fs.statSync(p); } catch (_) { return; }
+      if (st.isDirectory()) {
+        if (depth >= 8) return;
+        let entries = [];
+        try { entries = fs.readdirSync(p).sort(); } catch (_) { return; }
+        for (const name of entries) walk(path.join(p, name), depth + 1);
+      } else if (MEDIA_EXT_RE.test(p)) {
+        out.push(p);
+      }
+    };
+    for (const p of paths) walk(p, 0);
+    res.json({ paths: out });
   });
 
   api.get("/stream", (req, res) => {
@@ -2745,6 +2805,16 @@ function startServer(callback) {
   // what makes installing LRC Editor mid-session light the buttons up without a restart.
   api.get("/lrc-editor-installed", (req, res) => res.json({ installed: !!findLrcEditorPath() }));
 
+  // The Suno song id carried in a media file's own tags, for a file the user dropped on the
+  // window. Same reader (and same flac→wav sibling fallback) that stamps the song URL onto a
+  // card when media is linked — a dropped file and a linked file are the same provenance question.
+  api.post("/suno-id-from-media", async (req, res) => {
+    const { mediaPath } = req.body || {};
+    if (!mediaPath) return res.json({ id: null });
+    try { res.json({ id: await readSunoId(mediaPath) }); }
+    catch (_) { res.json({ id: null }); }
+  });
+
   api.post("/api/check-lrc", (req, res) => {
     const { mediaPath } = req.body;
     if (!mediaPath) return res.json({ exists: false });
@@ -2807,7 +2877,7 @@ function createWindow(port) {
     // while this app's default theme is light. No other app sets one; don't reintroduce it.
     title: APP_NAME,
     icon: path.join(__dirname, isDev ? '../public/app.ico' : '../dist/app.ico'),
-    webPreferences: { nodeIntegration: false, contextIsolation: true },
+    webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, "preload.js") },
     titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
   });
   mainWindow.setMenuBarVisibility(false);
