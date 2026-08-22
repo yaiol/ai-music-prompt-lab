@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.7 — 2026-08-22
+
+- Drop tracks on the window to create Song cards. One audio file opens the card editor filled in; several files — or a folder, at any depth — become cards straight away, in the order dropped, in the project you have open
+- A dropped track that Suno rendered arrives complete: title, sort number, style, lyrics, date and the song's link. One it didn't still becomes a card linked to the file, its name split on the `NN-Title` pattern
+- A dropped file naming a Suno song that has since been deleted or made private now creates nothing and reports how many were left out, rather than a card for a track that is no longer there
+- Linking a Suno-rendered **mp3** now adds the song's suno.com link to the card. Suno stores that provenance in a user-defined comment frame, which the app never read — so the link only ever appeared for flac and wav
+- A Suno page that answers 404 is treated as gone instead of scraped anyway. Suno serves a normal-looking generic page on a dead song, so the fetch used to succeed and produce a blank card
+- The preload script is now actually attached to the window — it was written but never loaded, so its bridge did nothing — and exposes `webUtils.getPathForFile`, which is how a dropped file's location is known
+- New toast string for skipped songs, translated in all 52 languages; the "cards created" string dropped `JSON` from its key now that it is not JSON-specific
+
 ## 1.0.6 — 2026-08-19
 
 - Import a whole LP prompt file: an `.amlp` becomes a project with one Song card per track, carrying each track's title, number, description, style, lyrics, language and date — from the Import button, by dropping the file on the window, or by double-clicking it on the desktop. It lands in the project you have open, or brings its own when you have none
