@@ -48,8 +48,12 @@ function cmpVersion(a, b) {
   return 0;
 }
 
+const isDevMachine = () =>
+  typeof navigator !== 'undefined' && / yaiol-dev\b/.test(navigator.userAgent || '');
+
 export async function checkForUpdate({ appId, alias, currentVersion, signal } = {}) {
   if (!appId || !alias || !currentVersion) return null;
+  if (isDevMachine()) return null;
   try {
     const res = await fetch(`${ENDPOINT}/${appId}/latest.json`, { cache: 'no-cache', signal });
     if (!res.ok) return null;
