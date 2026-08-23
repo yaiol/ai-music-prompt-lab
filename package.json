@@ -1,7 +1,7 @@
 {
   "name": "ai-music-prompt-lab",
   "productName": "AI Music Prompt Lab",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "license": "MIT",
   "description": "AI Prompt Manager — Vocal & Music",
   "private": true,
@@ -88,28 +88,28 @@
     ]
   },
   "dependencies": {
-    "better-sqlite3": "^12.11.1",
-    "brace-expansion": "^5.0.5",
-    "cors": "^2.8.5",
+    "better-sqlite3": "^13.0.3",
+    "brace-expansion": "^5.0.9",
+    "cors": "^2.8.6",
     "docx": "^9.7.1",
     "express": "^5.2.1",
-    "music-metadata": "^11.13.0",
+    "music-metadata": "^11.15.0",
     "path-to-regexp": "^8.4.2",
-    "picomatch": "^4.0.4",
+    "picomatch": "^4.0.5",
     "yaml": "^2.9.0"
   },
   "devDependencies": {
-    "@electron/rebuild": "^4.0.4",
-    "@vitejs/plugin-react": "^6.0.3",
-    "concurrently": "^10.0.3",
-    "electron": "^42.5.0",
+    "@electron/rebuild": "^4.2.0",
+    "@vitejs/plugin-react": "^6.1.0",
+    "concurrently": "^10.0.5",
+    "electron": "^43.4.1",
     "electron-builder": "^26.15.3",
-    "lucide-react": "^1.21.0",
-    "react": "^19.2.7",
-    "react-colorful": "^5.7.0",
-    "react-dom": "^19.2.7",
-    "vite": "^8.1.0",
-    "wait-on": "^9.0.10",
+    "lucide-react": "^1.33.0",
+    "react": "^19.2.8",
+    "react-colorful": "^5.8.0",
+    "react-dom": "^19.2.8",
+    "vite": "^8.2.2",
+    "wait-on": "^9.1.0",
     "xlsx": "^0.18.5"
   }
 }

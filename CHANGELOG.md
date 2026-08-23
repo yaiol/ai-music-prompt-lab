@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.8 — 2026-08-23
+
+- The folder picker reopens in the folder it last used instead of starting in Downloads, and remembers it across restarts — so pointing a project at its media folder, or importing a folder of tracks, lands where you were working
+- The header help button and the update banner's What's new / Download links open the page in the app's own language. They had been addressed through a four-language allowlist that silently sent every other UI language to English; they are now directory URLs in the app's language, and the site's own fallback decides what to serve
+- Update the dependencies — better-sqlite3 12 → 13, Electron 42 → 43, Vite 8.1 → 8.2, lucide-react 1.21 → 1.33, react-colorful 5.7 → 5.8, @electron/rebuild 4.0 → 4.2, music-metadata 11.13 → 11.15, plus patch bumps to React, @vitejs/plugin-react, concurrently, wait-on, cors, brace-expansion and picomatch
+- Rename `vite.config.js` to `vite.config.mjs` — the package declares no `type: module`, so the ESM config has to announce itself by extension
+
 ## 1.0.7 — 2026-08-22
 
 - Drop tracks on the window to create Song cards. One audio file opens the card editor filled in; several files — or a folder, at any depth — become cards straight away, in the order dropped, in the project you have open

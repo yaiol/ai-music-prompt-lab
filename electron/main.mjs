@@ -16,6 +16,7 @@ import { getLangName, SONG_LANGUAGES } from "./lang-helper.js";
 import { parseAmlp } from "./parse-amlp.js";
 import pkg from "../package.json" with { type: "json" };
 import { mark, dumpStartupTiming } from "./startup-timing.mjs";
+import { lastDir, rememberDir } from "./dialog-memory.mjs";
 mark("electron boot + module imports");
 
 // ESM has no __dirname - derive it from import.meta.url.
@@ -1880,8 +1881,10 @@ function startServer(callback) {
   // ── Folder dialog ─────────────────────────────────────────────────────────────
   api.get("/open-folder-dialog", async (req, res) => {
     const { canceled, filePaths } = await dialog.showOpenDialog(mainWindow, {
+      defaultPath: lastDir("open-folder"),
       properties: ["openDirectory"],
     });
+    if (!canceled) rememberDir("open-folder", filePaths[0]);
     res.json(canceled ? { path: null } : { path: filePaths[0] });
   });
 
