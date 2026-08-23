@@ -14,26 +14,18 @@
 //   { version }   - a newer version is available (the beacon is version-only)
 //
 // Endpoint: https://apps.yaiol.com/p/<appId>/latest.json (built by build-latest.js).
-// The "What's new" / "Download" page URLs are built by updatePageUrl() below -
+// The "What's new" / "Download" page URLs are built by releasesUrl() / downloadUrl() below -
 // the beacon carries no URLs and no notes; those live on the localized pages.
 // Skip-this-version is persisted in localStorage as `<alias>-skipUpdate`.
 
 const ENDPOINT = 'https://apps.yaiol.com/p';
 const SITE = 'https://apps.yaiol.com';
-// Languages the website is actually published in - apps localize into many
-// more, but the release pages only exist for these; fall back to en otherwise.
-const SITE_LANGS = ['en', 'fr', 'es', 'de'];
 const SKIP_KEY = (alias) => `${alias}-skipUpdate`;
 
-function siteLang(lang) {
-  const base = String(lang || 'en').toLowerCase().split('-')[0];
-  return SITE_LANGS.includes(base) ? base : 'en';
-}
-
-// Build the localized page URL a banner button opens. `page` is 'changelog'
-// (What's new) or 'download'. Both pages carry identical content by design.
-export function updatePageUrl(appId, lang, page) {
-  return `${SITE}/${siteLang(lang)}/p/${appId}/${page}.html`;
+// retrieve site url
+export function getUrl(appId, lang, page = '') {
+  const path = String(page).split('/').filter(Boolean).join('/');
+  return `${SITE}/${lang}/p/${appId}/${path ? path + '/' : ''}`;
 }
 
 // Compare semver-ish versions ("1.2.3" vs "1.2.10"). Returns >0 if a>b.

@@ -21,7 +21,7 @@ import {
   FileText, StickyNote, Disc, AlignLeft, FileMusic, RefreshCw, Wand2, Unlink
 } from "lucide-react";
 import pkg from '../package.json';
-import { checkForUpdate } from './lib/update-check';
+import { checkForUpdate, getUrl } from './lib/update-check';
 import { UpdateBanner } from './lib/ui-update-banner';
 import { AppHeader } from './lib/ui-header';
 import { GithubIcon } from './lib/ui-icons';
@@ -41,13 +41,6 @@ const STORAGE_PREFIX = pkg.storagePrefix;
 const APP_NAME    = pkg.productName;
 const APP_VERSION = pkg.version;
 
-// Help page URL - the id comes from package.json `name` (the canonical app id =
-// folder = apps.yaiol.com slug). At runtime the lang segment is swapped to the current
-// UI language; the help site falls back to EN for languages it does not publish, so any
-// code is safe to send.
-// CLAUDE: NEVER hardcode the slug here. A typed literal silently drifts from the id and
-// 404s the help button - it did, unnoticed, in two shipped apps until 2026-07-28.
-const HELP_URL = `https://apps.yaiol.com/en/p/${pkg.name}/help/`;
 // GitHub source - owner is constant (yaiol); repo name is the app id (pkg.name).
 const GITHUB_URL = `https://github.com/yaiol/${pkg.name}`;
 const UNLINKED_KEY  = "__unlinked__";
@@ -1815,7 +1808,7 @@ export default function App() {
           <button className="btn icon" onClick={() => window.open(GITHUB_URL, '_blank')} title="GitHub">
             <GithubIcon />
           </button>
-          <button className="btn icon" onClick={() => window.open(HELP_URL.replace('/en/p/', `/${langKey.replace(/_/g, '-')}/p/`), '_blank')} title={t("tipHdrHelp")}>
+          <button className="btn icon" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
             <HelpCircle />
           </button>
           <button className="btn icon" onClick={() => setSettingsOpen(true)} title={t("tipHdrSettings")}>

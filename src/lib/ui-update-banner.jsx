@@ -8,7 +8,7 @@
 // Controlled by the app's update state:
 //   info          — the object checkForUpdate() resolved ({ version }); null renders nothing
 //   appId         — pkg.name (builds the localized What's-new / Download page URLs)
-//   lang          — current UI language (updatePageUrl falls back to a site language)
+//   lang          — current UI language (the download page falls back to a site language)
 //   storagePrefix — pkg.storagePrefix (the `<prefix>-skipUpdate` localStorage key)
 //   t             — the app's translator; reads the five Prefix:Update keys
 //   onClose       — clears the banner (setUpdateInfo(null)); fired on both Skip and Dismiss
@@ -17,7 +17,7 @@
 // never edit the per-app copy; edit this canonical source and re-sync.
 // Import: `import { UpdateBanner } from './lib/ui-update-banner';`
 import React from 'react';
-import { updatePageUrl, skipUpdate } from './update-check';
+import { getUrl, skipUpdate } from './update-check';
 
 const CloseIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -28,15 +28,15 @@ const CloseIcon = () => (
 
 export function UpdateBanner({ info, appId, lang, storagePrefix, t, onClose }) {
   if (!info) return null;
-  const open = (page) => window.open(updatePageUrl(appId, lang, page), '_blank');
+  const open = (url) => window.open(url, '_blank');
   const skip = () => { skipUpdate(storagePrefix, info.version); onClose(); };
   return (
     <div className="update-banner">
       <div className="update-banner-row">
         <span className="update-banner-label">{t('lblUpdateAvailable')} v{info.version}</span>
-        <button className="update-banner-link" onClick={() => open('changelog')}>{t('lnkUpdateWhatsNew')}</button>
+        <button className="update-banner-link" onClick={() => open(getUrl(appId, lang, 'help/releases'))}>{t('lnkUpdateWhatsNew')}</button>
         <span className="update-banner-spacer" />
-        <button className="update-banner-download" onClick={() => open('download')}>{t('btnUpdateDownload')}</button>
+        <button className="update-banner-download" onClick={() => open(getUrl(appId, lang, 'download'))}>{t('btnUpdateDownload')}</button>
         <button className="update-banner-link skip" onClick={skip}>{t('lnkUpdateSkip')}</button>
         <button className="update-banner-dismiss" onClick={onClose} title={t('tipUpdateDismiss')} aria-label={t('tipUpdateDismiss')}>
           <CloseIcon />
