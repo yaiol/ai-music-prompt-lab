@@ -24,6 +24,12 @@ export function Combobox({
   placeholder = '', autoFocus = false, inputClassName = 'input', inputStyle,
   items = [], itemKey = (_it, i) => i, renderItem = (it) => it, itemActive = () => false,
   onPick, renderHeader,
+  // Optional SECTION LABELS inside the list: return a string for an item that is
+  // a header row and it renders as the shared `.menu-label` (the same class Menu
+  // uses on this pop surface) instead of a pickable `.pop-item`. Header rows are
+  // skipped by ↑/↓ and can never be picked. Default marks nothing, so existing
+  // consumers are untouched.
+  itemHeader = () => null,
 }) {
   const [open, setOpenRaw] = useState(false);
   const [hi, setHi] = useState(-1);   // keyboard-highlighted row index (-1 = none)
@@ -32,11 +38,22 @@ export function Combobox({
   const close = useCallback(() => setOpen(false), [setOpen]);
   const showList = open && (items.length > 0 || !!renderHeader);
 
+  // Next pickable row in a direction, stepping over header rows. Returns null at
+  // either end — ArrowDown then stays put, ArrowUp falls back to -1 (no row).
+  const pickable = (from, dir) => {
+    for (let i = from + dir; i >= 0 && i < items.length; i += dir) {
+      if (itemHeader(items[i]) == null) return i;
+    }
+    return null;
+  };
+
   const handleKeyDown = (e) => {
     if (open && items.length) {
-      if (e.key === 'ArrowDown') { e.preventDefault(); setHi(h => Math.min(h + 1, items.length - 1)); return; }
-      if (e.key === 'ArrowUp')   { e.preventDefault(); setHi(h => Math.max(h - 1, -1)); return; }
-      if (e.key === 'Enter' && hi >= 0 && hi < items.length) { e.preventDefault(); onPick?.(items[hi]); close(); return; }
+      if (e.key === 'ArrowDown') { e.preventDefault(); setHi(h => pickable(h, +1) ?? h); return; }
+      if (e.key === 'ArrowUp')   { e.preventDefault(); setHi(h => pickable(h, -1) ?? -1); return; }
+      if (e.key === 'Enter' && hi >= 0 && hi < items.length && itemHeader(items[hi]) == null) {
+        e.preventDefault(); onPick?.(items[hi]); close(); return;
+      }
     }
     onKeyDown?.(e);   // Enter with no highlight (and every other key) is the consumer's
   };
@@ -52,23 +69,35 @@ export function Combobox({
         value={value}
         onChange={(e) => { onChange?.(e.target.value); setHi(-1); if (!open) setOpen(true); }}
         onFocus={(e) => { setOpen(true); onFocus?.(e); }}
+        /* ⚠ CLAUDE: opening on focus ALONE strands the field after a pick —
+           picking closes the list but leaves the input focused, so the next
+           click fires no focus event and the list stays shut; the user has to
+           click away and back. A mousedown on the anchor is exempt from the
+           popover's click-away, so reopening here cannot fight it. */
+        onMouseDown={() => { if (!open) setOpen(true); }}
         onBlur={(e) => { onBlur?.(e); }}   /* click-away/pick (via Popover) handle close; blur must not race the pick */
         onKeyDown={handleKeyDown}
       />
       <Popover anchorRef={inputRef} open={showList} onClose={close} minWidthAnchor maxHeight={220}>
         {renderHeader?.({ close })}
-        {items.map((it, i) => (
-          <button
-            type="button"
-            key={itemKey(it, i)}
-            ref={i === hi ? (el) => el?.scrollIntoView({ block: 'nearest' }) : null}
-            className={`pop-item${itemActive(it) ? ' active' : ''}${i === hi ? ' hi' : ''}`}
-            onMouseEnter={() => setHi(i)}
-            onMouseDown={(e) => { e.preventDefault(); onPick?.(it); close(); }}
-          >
-            {renderItem(it)}
-          </button>
-        ))}
+        {items.map((it, i) => {
+          const header = itemHeader(it);
+          if (header != null) {
+            return <div key={itemKey(it, i)} className="menu-label">{header}</div>;
+          }
+          return (
+            <button
+              type="button"
+              key={itemKey(it, i)}
+              ref={i === hi ? (el) => el?.scrollIntoView({ block: 'nearest' }) : null}
+              className={`pop-item${itemActive(it) ? ' active' : ''}${i === hi ? ' hi' : ''}`}
+              onMouseEnter={() => setHi(i)}
+              onMouseDown={(e) => { e.preventDefault(); onPick?.(it); close(); }}
+            >
+              {renderItem(it)}
+            </button>
+          );
+        })}
       </Popover>
     </>
   );

@@ -160,8 +160,12 @@
       icon + label pills, exactly ONE `.active`. The theme picker (Dark/Light) AND any labelled selector
       (e.g. ampl's prompt-type row) are the SAME control. .opt-btn shares the .btn base above; adds only
       its deltas. Active colour is the accent, per-instance overridable via an inline `--accent`. ── */
+/* A row of option buttons. They stretch to fill it; a row that must stay CONTENT-SIZED (options
+   beside other controls, not a form row of their own) sets `--opt-btn-flex: 0 0 auto` on itself
+   — the token is the base's, so no one re-declares the button's geometry to get there. A row whose
+   labels are CODES rather than words sets `--opt-btn-font` to the mono stack the same way. */
 .opt-btns { display: flex; gap: 12px; }
-.opt-btn { flex: 1; gap: 8px; color: var(--text-dim); }   /* an option button IS a .btn (base) — here only: stretch to fill the row + default-dim + icon↔label gap */
+.opt-btn { flex: var(--opt-btn-flex, 1); gap: 8px; color: var(--text-dim); font-family: var(--opt-btn-font, inherit); }   /* an option button IS a .btn (base) — here only: stretch to fill the row + default-dim + icon↔label gap */
 .opt-btn svg { width: 16px; height: 16px; }
 .opt-btn:hover { color: var(--text); border-color: var(--text-dim); }
 /* Active — accent border + text + a 14% accent tint (same canonical active fill as .btn.icon.active /
@@ -344,6 +348,9 @@
   width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
 }
 
+/* The Knob (`.knob*`) moved out of the core into `ui-ctl-knob.css` (2026-09-05):
+   it skins an optional control, and now travels with it — see CLAUDE-ui-standards-v2.md → "Core vs optional control". */
+
 /* Hint — the ONE muted description text (under a label/control, a section note, a status line).
    Prose, so it inherits Inter (never JetBrains Mono). Used on ANY surface (dialog, bar, panel).
    Add `.mono` ONLY for code-like content (a filename, a token, a timecode) — never a sentence. */
@@ -480,23 +487,42 @@ button.chip:hover { opacity: .8; }
 /* ─── 2.5 Tabs — a standard nav control (dialogs today; usable on any surface) ── */
 
 /* Tab bar — tabs use their OWN height, independent of the control height. Colours are global
-   (text-dim → text → accent), so tabs work on any surface with no surface role binding. */
-.tabs { display: flex; border-bottom: 1px solid var(--border); flex-shrink: 0; }
+   (text-dim → text → accent), so tabs work on any surface with no surface role binding.
+   The BASE owns both edges a strip can be marked on — bottom (the row) and right (the vertical
+   rail) — as tokens: the edge width, the active mark width and the 1px overlap that lets the mark
+   cover the strip's border. A variant only switches which edge is on; it draws no shape. */
+.tabs {
+  display: flex; flex-direction: var(--tabs-axis, row); flex-shrink: 0;
+  border-bottom: var(--tabs-edge-b, 1px) solid var(--border);
+  border-right: var(--tabs-edge-r, 0) solid var(--border);
+}
 .tab {
   display: flex; align-items: center; gap: 6px;
   height: 30px; padding: 0 16px;          /* tab height — tune here, decoupled from controls */
   box-sizing: border-box;
   background: none; border: none;
-  border-bottom: 2px solid transparent;
-  margin-bottom: -1px;
+  border-bottom: var(--tab-mark-b, 2px) solid transparent;
+  border-right: var(--tab-mark-r, 0) solid transparent;
+  margin-bottom: var(--tab-ov-b, -1px); margin-right: var(--tab-ov-r, 0);
   color: var(--text-dim);
   cursor: pointer;
   font-family: inherit; font-size: 13px; font-weight: 500;
   transition: color .12s, border-color .12s;
 }
 .tab:hover { color: var(--text); }
-.tab.active { color: var(--accent); border-bottom-color: var(--accent); font-weight: 700; }
+.tab.active { color: var(--accent); border-color: var(--accent); font-weight: 700; }
 .tab > svg { width: 14px; height: 14px; flex-shrink: 0; }   /* tab icon sized by the control, not a size= prop */
+/* Vertical rail — the SAME tabs stacked down a left edge, the active mark on the edge that
+   touches the content (right). Tokens only: the tab's height, padding and type are the row's,
+   and the shapes are the base's. For a body where height is scarce. */
+.tabs.vertical {
+  --tabs-axis: column; --tabs-edge-b: 0; --tabs-edge-r: 1px;
+  --tab-mark-b: 0; --tab-mark-r: 2px; --tab-ov-b: 0; --tab-ov-r: -1px;
+  align-self: stretch;
+}
+
+/* The step grid (`.stepgrid*`) moved out of the core into `ui-ctl-stepgrid.css` (2026-09-05):
+   one app renders it, and it was 12 KB of the 62 KB every app carries — see CLAUDE-ui-standards-v2.md → "Core vs optional control". */
 
 /* ═══════════════════════════════════════════════════════════════════════════
    3. UPDATE BANNER  — "a new version is available" strip (lib/ui-update-banner.jsx)
