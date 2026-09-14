@@ -19,7 +19,7 @@
 </div>
 
 <h3 align="center">
-  <a href="https://apps.yaiol.com/en/p/ai-music-prompt-lab/">Website</a>
+  <a href="https://apps.yaiol.com/p/ai-music-prompt-lab/">Website</a>
   <span>&nbsp;·&nbsp;</span>
   <a href="#install">Install</a>
   <span>&nbsp;·&nbsp;</span>
@@ -31,7 +31,7 @@
 </h3>
 
 <div align="center">
-  <sub><a href="https://apps.yaiol.com/en/p/ai-music-prompt-lab/help/"><b>Help in 28 languages</b></a></sub>
+  <sub><a href="https://apps.yaiol.com/p/ai-music-prompt-lab/help/"><b>Help in 28 languages</b></a></sub>
 </div>
 
 <!-- /readme:nav -->
@@ -80,10 +80,10 @@ The core idea is that prompts are reusable building blocks, not one-off text. Yo
 
 | | |
 |---|---|
-| **User manual** | [Read it online](https://apps.yaiol.com/en/p/ai-music-prompt-lab/help/) |
+| **User manual** | [Read it online](https://apps.yaiol.com/p/ai-music-prompt-lab/help/) |
 | **Printable PDF** | attached to each [release](../../releases/latest) |
-| **What's new** | [Release notes](https://apps.yaiol.com/en/p/ai-music-prompt-lab/help/releases/) |
-| **Product page** | [apps.yaiol.com](https://apps.yaiol.com/en/p/ai-music-prompt-lab/) |
+| **What's new** | [Release notes](https://apps.yaiol.com/p/ai-music-prompt-lab/help/releases/) |
+| **Product page** | [apps.yaiol.com](https://apps.yaiol.com/p/ai-music-prompt-lab/) |
 
 ---
 
