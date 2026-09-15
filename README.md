@@ -46,10 +46,27 @@
 
 ## Install
 
-| Windows | macOS | Linux |
-|:---:|:---:|:---:|
-| [![Windows](https://img.shields.io/badge/Windows-.exe-5a4fff?style=for-the-badge&logo=windows&logoColor=white)](../../releases/latest) | [![macOS](https://img.shields.io/badge/macOS-.dmg-5a4fff?style=for-the-badge&logo=apple&logoColor=white)](../../releases/latest) | [![Linux](https://img.shields.io/badge/Linux-.AppImage-5a4fff?style=for-the-badge&logo=linux&logoColor=white)](../../releases/latest) |
-| x64 installer | Intel and Apple Silicon | portable AppImage |
+<div align="center">
+
+<table align="center">
+<tr>
+<th align="center">Windows</th>
+<th align="center">macOS</th>
+<th align="center">Linux</th>
+</tr>
+<tr>
+<td align="center"><a href="../../releases/latest"><img src="https://img.shields.io/badge/Windows-.exe-5a4fff?style=for-the-badge&amp;logo=windows&amp;logoColor=white" alt="Windows"></a></td>
+<td align="center"><a href="../../releases/latest"><img src="https://img.shields.io/badge/macOS-.dmg-5a4fff?style=for-the-badge&amp;logo=apple&amp;logoColor=white" alt="macOS"></a></td>
+<td align="center"><a href="../../releases/latest"><img src="https://img.shields.io/badge/Linux-.AppImage-5a4fff?style=for-the-badge&amp;logo=linux&amp;logoColor=white" alt="Linux"></a></td>
+</tr>
+<tr>
+<td align="center">x64 installer</td>
+<td align="center">Intel and Apple Silicon</td>
+<td align="center">portable AppImage</td>
+</tr>
+</table>
+
+</div>
 
 > **Windows note:** SmartScreen may warn on first launch because the app is not code-signed. Click "More info", then "Run anyway".
 
