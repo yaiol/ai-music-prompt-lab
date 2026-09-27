@@ -1,5 +1,23 @@
 # Changelog
 
+## 1.0.9 — 2026-09-27
+
+- Settings is now a full-window page with a side rail of tabs instead of a dialog. The header's settings button opens and closes it, and Esc leaves it. The app stays loaded underneath, so a playing track keeps playing
+- Song, Music and Vocal cards gain two fields on their Style tab: **Reference artist** and **Reference complement**. They record what the style is aiming at: the act, plus an LP, song, era or genre that narrows it. They are kept apart from the style text because Suno removes contemporary artist names. Backups, environment copies and `.amlp` files (`REFERENCE ARTIST:` / `REFERENCE COMPLEMENT:`) all carry them
+- `.amlp` files can give a track its own `LANG:` that overrides the file's language, and can include `TITLE (xx):` / `LYRICS (xx):` blocks. Import turns those blocks into the song's translations, and export writes them back out, along with a track's `LANG:` when it differs from the file's
+- New Media setting, off by default: when a FLAC is linked, the Suno song id moves out of its COMMENT tag into a dedicated `AMLP_ID` tag. Pasting a Suno link onto a card writes the id into the linked FLAC when the file has none, which is the only way to identify a Suno Studio export, since Suno strips the id on export. Only that one metadata block is rewritten: audio and cover art are copied through unchanged, WAV files are never touched, and an id already in the file is never overwritten by a pasted link
+- A card now holds at most one Suno link. Adding another replaces it, and linking a file whose Suno id differs corrects the card's link instead of adding a second one, which is what made a card export as the wrong song
+- Bulk delete no longer leaves every card on screen until a reload when one of them fails. Cards that could not be deleted stay selected and the notice gives the reason, and a card that was already gone counts as deleted. Deleting a card or a project also removes it from the selection, so a later bulk action no longer asks for cards that are gone
+- A failed `.amlp` import now says what went wrong: no tracks found, a file that could not be read, or the server's own one-line reason
+- Notices raised while a dialog is open show above it instead of blurred behind it
+- Copying a card into another environment keeps its description and note, which were dropped before
+- Dropdown fields reopen on the next click after a pick, without clicking away first
+- Input fields use a lighter background in the dark theme
+- The header and About show the build number after the version, and the installer file name carries it too
+- The custom icons (LRC Editor, and the copy title/style/lyrics glyphs) are built from editable SVG files via vite-plugin-svgr
+- README rewritten, with a screenshot, install notes and an architecture overview
+- New strings translated in all 52 languages
+
 ## 1.0.8 — 2026-08-23
 
 - The folder picker reopens in the folder it last used instead of starting in Downloads, and remembers it across restarts — so pointing a project at its media folder, or importing a folder of tracks, lands where you were working

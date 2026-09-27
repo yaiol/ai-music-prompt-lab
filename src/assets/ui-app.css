@@ -25,7 +25,7 @@
    SECTIONS below:
      1. App                 1.1 App frame · 1.2 Overlays (file-drop, toast)
      2. Standard controls   2.1 Buttons · 2.2 Fields (+hint) · 2.3 Pills & badges · 2.4 Menu · 2.5 Tabs
-     3. Update banner   4. Bars   5. Dialogs & modals   6. Panel
+     3. Update banner   4. Bars   5. Dialogs & modals   6. Panel   7. Settings view
    ────────────────────────────────────────────────────────────────────────── */
 
 
@@ -84,7 +84,14 @@
 @keyframes toastIn { from { opacity: 0; transform: translateX(-50%) translateY(8px); } to { opacity: 1; transform: translateX(-50%) translateY(0); } }
 .toast {
   position: fixed; bottom: var(--toast-bottom, 28px); left: 50%; transform: translateX(-50%);
-  z-index: 200;
+  /* ⚠ CLAUDE: MUST sit above .dl-backdrop (1000) and .pop-surface (1000). It was 200 — below both —
+     so every notice fired while a dialog was open rendered UNDER the backdrop and was read through
+     its blur(5px): dimmed, smeared, unreadable. Nothing about the notice was wrong, including plain
+     successes like "Copied" from inside a card dialog; they were simply painted behind a frosted
+     sheet. A stacking order nobody chose, not a design decision (found 2026-09-07). A notice that
+     cannot be read is not a notice — if a value here ever has to drop below 1000, the toast has to
+     stop being the channel first. */
+  z-index: 1200;
   background: var(--accent);
   border: 1px solid var(--accent);
   border-radius: 30px;
@@ -807,6 +814,8 @@ button.chip:hover { opacity: .8; }
 
 /* ── About tab ─────────────────────────────────────────────────────────────── */
 .dlg-about         { display: flex; gap: 24px; align-items: flex-start; }
+.dlg-about-logo    { width: 120px; height: auto; flex-shrink: 0; }
+.dlg-about-text    { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
 .dlg-about-id      { color: var(--text); font-size: 14px; }
 .dlg-about-desc    { color: var(--text); font-size: 14px; line-height: 1.7; }
 .dlg-about-version { color: var(--text-dim); font-size: 11px; margin-top: 4px; }
@@ -837,6 +846,52 @@ button.chip:hover { opacity: .8; }
 .pnl-toggle.on { background: var(--accent); border-color: var(--accent); color: #fff; }
 .pnl-toggle-left  { border-left: none;  border-radius: 0 6px 6px 0; }
 .pnl-toggle-right { border-right: none; border-radius: 6px 0 0 6px; }
+
+
+/* ═══════════════════════════════════════════════════════════════════════════
+   7. SETTINGS VIEW  — the full-window settings page (lib/ui-settings.jsx)
+   ═══════════════════════════════════════════════════════════════════════════ */
+
+/* Settings is a VIEW, not a dialog: it takes everything below the header — it covers the app's
+   content region (.app-main, the one position:relative region) and the footer bars are hidden
+   while it is open — and the app underneath stays mounted. Built only from existing parts: the rail is a .pnl side region holding the
+   catalog .tabs.vertical, the page is a .dlg-form (dialog field context without the modal
+   frame) on the dialog surface, so every settings field looks exactly as it did in the dialog.
+   z-index: above the app's own content, BELOW .dl-backdrop / .pop-surface (1000) and .toast
+   (1200) - a confirm or popover opened from a settings tab must still land on top. Every app
+   mounts it through the shared component - never hand-build the markup. */
+.stg-view { position: absolute; inset: 0; z-index: 500; display: flex; background: var(--dlg-bgd); }
+/* While the page is open (<html>.stg-open, set by the component) the footer bars are hidden, so the
+   page takes everything below the header. display:none, never unmounted — a footer may own the
+   playing <audio> (lrce, ampl). A flow footer's space goes to .app-main (flex:1), so the page reaches
+   the window bottom; a portaled one (ampl's player) is simply no longer drawn over it. On <html>
+   rather than .app-root precisely because of that portal. */
+.stg-open .barh-footer, .stg-open .bar-status { display: none; }
+/* …and the header goes INERT, as it was under the dialog's backdrop: its controls act on the view the
+   page is covering, so none of them may fire while it is open. The one exception is the app's own
+   settings button, marked .stg-toggle, which closes the page. Dimmed exactly as .btn:disabled, so it
+   reads as "not now" rather than broken. */
+.stg-open :is(.barh-header, .barh-subbar) :is(button, input, select, textarea, a, [role="button"]):not(.stg-toggle) {
+  pointer-events: none; opacity: .4;
+}
+.stg-rail {
+  display: flex; flex-direction: column; flex-shrink: 0; min-width: 200px;
+  border-right: 1px solid var(--border);
+}
+/* The rail draws the full-height edge; the strip's own edge is switched off and the active mark
+   keeps its 1px overlap, so it paints over the rail's border (tokens only, no new shape). */
+.stg-rail > .tabs.vertical { --tabs-edge-r: 0; }
+.stg-head { display: flex; align-items: center; gap: 4px; padding: 16px 12px 12px 8px; }
+.stg-body { flex: 1; min-width: 0; overflow-y: auto; padding: 24px 32px; }
+/* The page is full-window, the CONTROLS are not: a select or a two-button theme row stretched across
+   1600px reads as broken, not as spacious. One readable column, left-aligned under the rail. */
+.stg-page { max-width: 600px; }
+/* Option rows on the page (Theme) keep their label width instead of splitting the column — the
+   catalog token, as ai-music-seed's articulation pills use it. */
+.stg-page .opt-btns { --opt-btn-flex: 0 0 auto; }
+/* Same for a select: undo the dialog form's width:100% so the native control sizes to its longest
+   option (Language: the widest of the 50 language names), as a select does by default. */
+.stg-page .select { width: auto; align-self: flex-start; }   /* align-self: a .dlg-field is a flex column, which stretches its children whatever their width says */
 
 /* ── PENDING / not yet catalogued ─────────────────────────────────────────────
    Flat toolbar (.barf) — a dense row of BORDERLESS icon buttons (an editor / formatting toolbar).

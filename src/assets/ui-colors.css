@@ -63,18 +63,18 @@
   --bg-elev:         #161821;           /* @palette live=#161821 debug=#0000ff */
   --bg-row:          #1c1f2a;   
   --bg-hov:          #232634;           /* base — body/list hover */
-  --bg-input:        #0d0d14;           /* [GUI Standard: editable-field background — ampl reference] */
+  --bg-input:        #1f1f1f;           /* [GUI Standard: editable-field background — ampl reference] */
 
   --bar-bgd:         #0d0d14;           /* @palette live=#0d0d14 debug=#ff1493 */
-  --bar-inp:         #0d0d14;           /* @palette live=#0d0d14 debug=#ffb6c1 */
+  --bar-inp:         #1f1f1f;           /* @palette live=#1f1f1f debug=#ffb6c1 */
   --bar-hov:         #232634;           /* @palette live=#232634 debug=#ff8c00 */
 
   --dlg-bgd:         #282828;           /* @palette live=#282828 debug=#ffff00 */
-  --dlg-inp:         #0d0d14;           /* @palette live=#0d0d14 debug=#ffff99 */
+  --dlg-inp:         #1f1f1f;           /* @palette live=#1f1f1f debug=#ffff99 */
   --dlg-hov:         #232634;           /* @palette live=#232634 debug=#9400d3 */
 
   --pnl-bgd:         #1c1f2a;           /* @palette live=#1c1f2a debug=#99d9ea */
-  --pnl-inp:         #0d0d14;           /* @palette live=#0d0d14 debug=#00ffff */  /* placeholder — tune when wired */
+  --pnl-inp:         #1f1f1f;           /* @palette live=#1f1f1f debug=#00ffff */  /* placeholder — tune when wired */
   --pnl-hov:         #232634;           /* @palette live=#232634 debug=#ff00ff */  /* placeholder — tune when wired */
 
   --border:          #2a2d3a;

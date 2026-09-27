@@ -14,6 +14,7 @@ import { Document, Packer, Paragraph, TextRun, ImageRun, AlignmentType } from "d
 import { fileURLToPath } from "node:url";
 import { getLangName, SONG_LANGUAGES } from "./lang-helper.js";
 import { parseAmlp } from "./parse-amlp.js";
+import { readFlacFields, getField, writeFlacFields } from "./flac-tags.mjs";
 import pkg from "../package.json" with { type: "json" };
 import { mark, dumpStartupTiming } from "./startup-timing.mjs";
 import { lastDir, rememberDir } from "./dialog-memory.mjs";
@@ -80,6 +81,13 @@ function startServer(callback) {
       cad_order      INTEGER,
       cad_desc       TEXT NOT NULL DEFAULT '',
       cad_style      TEXT NOT NULL DEFAULT '',
+      -- What the style is aiming at: the act it evokes, and whatever narrows it (an LP, a song,
+      -- an era, a genre). Authoring reference only — deliberately NOT part of cad_style, because
+      -- Suno scrubs contemporary artist names, so the style line has to describe the fingerprint
+      -- instead of naming it. "ref" here is the abbreviation this table uses throughout
+      -- (cad_desc, cad_envid); the concept is spelled "reference" everywhere else.
+      cad_ref_artist     TEXT NOT NULL DEFAULT '',
+      cad_ref_complement TEXT NOT NULL DEFAULT '',
       cad_lang       TEXT NOT NULL DEFAULT '',
       cad_lyrics     TEXT NOT NULL DEFAULT '',
       cad_ai_tweaks  TEXT NOT NULL DEFAULT '{}',
@@ -407,6 +415,8 @@ function startServer(callback) {
       desc:          row.cad_desc || '',
       note:          row.cad_note || '',
       style:         row.cad_style,
+      referenceArtist:     row.cad_ref_artist || '',
+      referenceComplement: row.cad_ref_complement || '',
       lyrics:        row.cad_lyrics || '',
       tags:          JSON.parse(row.cad_tags || '[]'),
       favorite:      row.cad_favorite === 1,
@@ -468,15 +478,15 @@ function startServer(callback) {
   });
 
   api.post("/cards", (req, res) => {
-    const { id, type, name, desc = '', note = '', style = '', lyrics = '', tags = [], favorite = false, date, linkedCards = [], sortNumber = '', mediaPath = '', env } = req.body;
+    const { id, type, name, desc = '', note = '', style = '', referenceArtist = '', referenceComplement = '', lyrics = '', tags = [], favorite = false, date, linkedCards = [], sortNumber = '', mediaPath = '', env } = req.body;
     if (!id || !type || !name) return res.status(400).json({ error: "Missing fields" });
     const targetEnv = env || defaultEnvId;
     if ((type === 'song_l' || type === 'song_e' || type === 'song') && targetEnv === globalEnvId)
       return res.status(400).json({ error: "Songs cannot be added to Global environment" });
     db.transaction(() => {
       const version = nextCardVersion(name, type);
-      db.prepare(`INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
-        .run(id, name, version, type, desc, note, style, lyrics, JSON.stringify(tags), favorite ? 1 : 0, date || Date.now(), toOrderInt(sortNumber), mediaPath, targetEnv);
+      db.prepare(`INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
+        .run(id, name, version, type, desc, note, style, referenceArtist, referenceComplement, lyrics, JSON.stringify(tags), favorite ? 1 : 0, date || Date.now(), toOrderInt(sortNumber), mediaPath, targetEnv);
       const ins = db.prepare("INSERT OR IGNORE INTO card_link (cal_cadid_parent,cal_cadid_child) VALUES (?,?)");
       for (const c of linkedCards) ins.run(id, c);
     })();
@@ -509,9 +519,20 @@ function startServer(callback) {
         for (const c of (meta.common.comment || [])) texts.push(typeof c === "string" ? c : (c?.text || ""));
         for (const list of Object.values(meta.native || {})) {
           for (const tag of (list || [])) {
-            if (!/comm|desc/i.test(tag.id || "")) continue;
+            const key = String(tag.id || "");
             const v = tag.value;
-            texts.push(typeof v === "string" ? v : (v?.text || v?.description || ""));
+            const s = typeof v === "string" ? v : (v?.text || v?.description || "");
+            // ⚠ CLAUDE: AMLP_ID is where the id lives once it has been moved out of
+            // COMMENT. Miss it and a migrated file reads as having no id at all -
+            // no song link, no pre-fill, and the file looks unidentified.
+            // Its value is "<service>:<uuid>", so SUNO_ID_RE cannot match it.
+            if (/^amlp_id$/i.test(key)) {
+              const m = s.match(/^suno:([0-9a-fA-F-]{36})$/);
+              if (m) return m[1].toLowerCase();
+              continue;
+            }
+            if (!/comm|desc/i.test(key)) continue;
+            texts.push(s);
           }
         }
         for (const text of texts) {
@@ -533,10 +554,70 @@ function startServer(callback) {
     return id;
   }
 
+  // ── Moving the Suno id into its own tag ──────────────────────────────────────
+  // The id belongs in AMLP_ID, not in COMMENT: a dedicated field can be stripped
+  // when making share copies, while COMMENT stays free for text meant to be read.
+  // It is MOVED, never copied - a copy left in COMMENT would ship anyway, which
+  // defeats the point.
+  //
+  // Opt-in via the Media setting, and off by default, because this REWRITES the
+  // user's master file. Nothing here ever runs unless they asked for it.
+
+  // Move COMMENT's id into AMLP_ID on one file. Returns a short reason string.
+  // Writing is done by flac-tags.mjs rather than an external tool: it rewrites
+  // one metadata block and copies the audio and the cover art through untouched,
+  // so nothing has to be installed and nothing is re-encoded.
+  function moveSunoIdToAmlpTag(mediaPath) {
+    // ⚠ CLAUDE: NEVER write to a .wav. The wav in 10-original is the untouched
+    // original and the only reason a lost id can be recovered at all.
+    if (/\.wav$/i.test(mediaPath)) return "skipped-wav";
+    if (!/\.flac$/i.test(mediaPath)) return "not-flac";
+    if (!fs.existsSync(mediaPath)) return "missing";
+
+    const tags = readFlacFields(mediaPath);
+    if (!tags) return "unreadable";
+    if (getField(tags, "AMLP_ID")) return "already-tagged";
+    const m = getField(tags, "COMMENT").match(SUNO_ID_RE);
+    if (!m) return "no-id";
+
+    const res = writeFlacFields(mediaPath, { AMLP_ID: `suno:${m[1].toLowerCase()}`, COMMENT: "" });
+    return res === "ok" ? "moved" : res;
+  }
+
+  // Stamp an id that exists nowhere in the file, taken from a link pasted on the
+  // card. This is the ONLY way a Suno Studio export can ever be identified: Suno
+  // strips the id on export, so neither the flac nor its original wav has one.
+  function writeSunoIdFromLink(mediaPath, linkId) {
+    if (/\.wav$/i.test(mediaPath)) return "skipped-wav";
+    if (!/\.flac$/i.test(mediaPath)) return "not-flac";
+    if (!fs.existsSync(mediaPath)) return "missing";
+
+    const tags = readFlacFields(mediaPath);
+    if (!tags) return "unreadable";
+
+    // ⚠ CLAUDE: the FILE outranks a pasted link. A link is typed by hand and has
+    // already been pasted onto the wrong card once; an id already in the file came
+    // from Suno itself. So a disagreement is REPORTED, never overwritten - losing a
+    // correct id to a stray paste is unrecoverable, while a refusal is not.
+    const existing = getField(tags, "AMLP_ID");
+    if (existing) return existing === `suno:${linkId}` ? "already-tagged" : "conflict-amlp";
+    const com = getField(tags, "COMMENT");
+    const comId = (com.match(SUNO_ID_RE) || [])[1];
+    if (comId && comId.toLowerCase() !== linkId) return "conflict-comment";
+
+    // Only clear COMMENT when it is Suno's own provenance string or carries this
+    // very id. Anything else in there is the user's text and must survive.
+    const changes = { AMLP_ID: `suno:${linkId}` };
+    if (comId || /^\s*made with suno/i.test(com)) changes.COMMENT = "";
+
+    const res = writeFlacFields(mediaPath, changes);
+    return res === "ok" ? "written" : res;
+  }
+
   api.put("/cards/:id", async (req, res) => {
     const { id } = req.params;
     if (!db.prepare("SELECT cad_id FROM card WHERE cad_id=?").get(id)) return res.status(404).json({ error: "Not found" });
-    const { type, name, desc, note, style, lyrics, tags, favorite, linkedCards, sortNumber, mediaPath, aiTweaks, lang, env, date } = req.body;
+    const { type, name, desc, note, style, referenceArtist, referenceComplement, lyrics, tags, favorite, linkedCards, sortNumber, mediaPath, aiTweaks, lang, env, date } = req.body;
     const prevMediaPath = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(id).cad_media_path;
     db.transaction(() => {
       const current = db.prepare("SELECT cad_name,cad_type FROM card WHERE cad_id=?").get(id);
@@ -544,8 +625,8 @@ function startServer(callback) {
       const effectiveType = type ?? current.cad_type;
       const newVersion = ((name && name !== current.cad_name) || (type && type !== current.cad_type))
         ? nextCardVersion(effectiveName, effectiveType, id) : null;
-      db.prepare(`UPDATE card SET cad_name=COALESCE(?,cad_name),cad_type=COALESCE(?,cad_type),cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=COALESCE(?,cad_style),cad_lyrics=COALESCE(?,cad_lyrics),cad_tags=COALESCE(?,cad_tags),cad_favorite=COALESCE(?,cad_favorite),cad_order=COALESCE(?,cad_order),cad_media_path=COALESCE(?,cad_media_path),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_lang=COALESCE(?,cad_lang),cad_envid=COALESCE(?,cad_envid),cad_date=COALESCE(?,cad_date)${newVersion ? ",cad_version=?" : ""} WHERE cad_id=?`)
-        .run(name??null, type??null, desc!==undefined?desc:null, note!==undefined?note:null, style??null, lyrics??null, tags!==undefined?JSON.stringify(tags):null, favorite!==undefined?(favorite?1:0):null, sortNumber!==undefined?toOrderInt(sortNumber):null, mediaPath!==undefined?mediaPath:null, aiTweaks!==undefined?JSON.stringify(aiTweaks):null, lang??null, env??null, date??null, ...(newVersion ? [newVersion] : []), id);
+      db.prepare(`UPDATE card SET cad_name=COALESCE(?,cad_name),cad_type=COALESCE(?,cad_type),cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=COALESCE(?,cad_style),cad_ref_artist=COALESCE(?,cad_ref_artist),cad_ref_complement=COALESCE(?,cad_ref_complement),cad_lyrics=COALESCE(?,cad_lyrics),cad_tags=COALESCE(?,cad_tags),cad_favorite=COALESCE(?,cad_favorite),cad_order=COALESCE(?,cad_order),cad_media_path=COALESCE(?,cad_media_path),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_lang=COALESCE(?,cad_lang),cad_envid=COALESCE(?,cad_envid),cad_date=COALESCE(?,cad_date)${newVersion ? ",cad_version=?" : ""} WHERE cad_id=?`)
+        .run(name??null, type??null, desc!==undefined?desc:null, note!==undefined?note:null, style??null, referenceArtist!==undefined?referenceArtist:null, referenceComplement!==undefined?referenceComplement:null, lyrics??null, tags!==undefined?JSON.stringify(tags):null, favorite!==undefined?(favorite?1:0):null, sortNumber!==undefined?toOrderInt(sortNumber):null, mediaPath!==undefined?mediaPath:null, aiTweaks!==undefined?JSON.stringify(aiTweaks):null, lang??null, env??null, date??null, ...(newVersion ? [newVersion] : []), id);
       if (linkedCards !== undefined) {
         db.prepare("DELETE FROM card_link WHERE cal_cadid_parent=?").run(id);
         const ins = db.prepare("INSERT OR IGNORE INTO card_link (cal_cadid_parent,cal_cadid_child) VALUES (?,?)");
@@ -554,11 +635,31 @@ function startServer(callback) {
     })();
     // Media newly linked → if the file carries Suno provenance, add the Suno song URL.
     if (mediaPath && mediaPath !== prevMediaPath) {
+      // Opt-in, off by default: move the id out of COMMENT into AMLP_ID. Done
+      // BEFORE reading the id below so the read sees the file's final state.
+      if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] === "1") {
+        const moved = moveSunoIdToAmlpTag(mediaPath);
+        if (!["moved", "no-id", "already-tagged", "skipped-wav", "not-flac"].includes(moved)) {
+          console.warn(`AMLP_ID not written for ${mediaPath}: ${moved}`);
+        }
+      }
       const sunoId = await readSunoId(mediaPath);
       if (sunoId) {
         const href = `https://suno.com/song/${sunoId}`;
-        const exists = db.prepare("SELECT url_id FROM url WHERE url_parent_id=? AND url_type='cad' AND url_href=?").get(id, href);
-        if (!exists) {
+        const sunoRows = db.prepare(
+          "SELECT url_id,url_href FROM url WHERE url_parent_id=? AND url_type='cad' AND url_href LIKE '%suno.com/song/%' ORDER BY url_order"
+        ).all(id);
+        const already = sunoRows.some(r => r.url_href === href);
+        if (!already && sunoRows.length) {
+          // ⚠ CLAUDE: UPDATE the card's link, do not add a second one. The file is
+          // authoritative, so linking it CORRECTS a card that disagrees. Appending
+          // instead is what left one card carrying two Suno links - one of them
+          // another track's - which then exported as the wrong song.
+          db.prepare("UPDATE url SET url_href=? WHERE url_id=?").run(href, sunoRows[0].url_id);
+          if (sunoRows.length > 1) {
+            console.warn(`card ${id} has ${sunoRows.length} Suno links; corrected the first, left the rest`);
+          }
+        } else if (!already) {
           const maxOrder = db.prepare("SELECT COALESCE(MAX(url_order),0) AS m FROM url WHERE url_parent_id=? AND url_type='cad'").get(id).m;
           db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)")
             .run(crypto.randomUUID(), id, "cad", "Suno", href, maxOrder + 1);
@@ -802,8 +903,8 @@ function startServer(callback) {
               const childData = db.prepare("SELECT * FROM card WHERE cad_id=?").get(childId);
               const newId = crypto.randomUUID();
               const newVersion = nextCardVersion(childData.cad_name, childData.cad_type);
-              db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_ai_tweaks,cad_lang,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-                .run(newId, childData.cad_name, newVersion, childData.cad_type, childData.cad_desc || '', childData.cad_note || '', childData.cad_style, childData.cad_lyrics, childData.cad_tags, childData.cad_favorite, Date.now(), childData.cad_order, childData.cad_media_path, childData.cad_ai_tweaks, childData.cad_lang, targetEnvId);
+              db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_ai_tweaks,cad_lang,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+                .run(newId, childData.cad_name, newVersion, childData.cad_type, childData.cad_desc || '', childData.cad_note || '', childData.cad_style, childData.cad_ref_artist || '', childData.cad_ref_complement || '', childData.cad_lyrics, childData.cad_tags, childData.cad_favorite, Date.now(), childData.cad_order, childData.cad_media_path, childData.cad_ai_tweaks, childData.cad_lang, targetEnvId);
               // Copy translations
               const translations = db.prepare("SELECT * FROM card_translation WHERE cat_cadid=?").all(childId);
               for (const tr of translations) {
@@ -901,8 +1002,10 @@ function startServer(callback) {
             const childData = db.prepare("SELECT * FROM card WHERE cad_id=?").get(childId);
             const newId = crypto.randomUUID();
             const newVersion = nextCardVersion(childData.cad_name, childData.cad_type);
-            db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_style,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_ai_tweaks,cad_lang,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-              .run(newId, childData.cad_name, newVersion, childData.cad_type, childData.cad_style, childData.cad_lyrics, childData.cad_tags, childData.cad_favorite, Date.now(), childData.cad_order, childData.cad_media_path, childData.cad_ai_tweaks, childData.cad_lang, targetEnvId);
+            // Copies the whole card, not a chosen subset — a field left out here is data the
+            // user silently loses the moment a shared style card is duplicated into another env.
+            db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_ai_tweaks,cad_lang,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+              .run(newId, childData.cad_name, newVersion, childData.cad_type, childData.cad_desc || '', childData.cad_note || '', childData.cad_style, childData.cad_ref_artist || '', childData.cad_ref_complement || '', childData.cad_lyrics, childData.cad_tags, childData.cad_favorite, Date.now(), childData.cad_order, childData.cad_media_path, childData.cad_ai_tweaks, childData.cad_lang, targetEnvId);
             const translations = db.prepare("SELECT * FROM card_translation WHERE cat_cadid=?").all(childId);
             for (const tr of translations) {
               db.prepare("INSERT INTO card_translation (cat_id,cat_cadid,cat_name,cat_lang,cat_lyrics,cat_date) VALUES (?,?,?,?,?,?)").run(crypto.randomUUID(), newId, tr.cat_name, tr.cat_lang, tr.cat_lyrics, tr.cat_date);
@@ -1154,20 +1257,22 @@ function startServer(callback) {
           if (existing) {
             const changed = p.type !== existing.cad_type || p.name !== existing.cad_name
                          || p.style !== existing.cad_style || (p.lyrics || '') !== existing.cad_lyrics
+                         || (p.referenceArtist || '') !== (existing.cad_ref_artist || '')
+                         || (p.referenceComplement || '') !== (existing.cad_ref_complement || '')
                          || tags !== existing.cad_tags || fav !== existing.cad_favorite
                          || toOrderInt(p.order) !== existing.cad_order;
             const cardEnv = isBackup ? (p.env ? (envIdMap[p.env] ?? p.env) : defaultEnvId) : targetEnvId;
             if (changed) {
-              db.prepare("UPDATE card SET cad_type=?,cad_name=?,cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=?,cad_lyrics=?,cad_tags=?,cad_favorite=?,cad_media_path=?,cad_order=?,cad_lang=COALESCE(?,cad_lang),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_prjid=COALESCE(?,cad_prjid),cad_envid=? WHERE cad_id=?")
-                .run(p.type, p.name, p.desc || null, p.note || null, p.style, p.lyrics || '', tags, fav, p.media || '', toOrderInt(p.order), p.lang || null, p.aiTweaks ? JSON.stringify(p.aiTweaks) : null, p.project || null, cardEnv, p.id);
+              db.prepare("UPDATE card SET cad_type=?,cad_name=?,cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=?,cad_ref_artist=COALESCE(?,cad_ref_artist),cad_ref_complement=COALESCE(?,cad_ref_complement),cad_lyrics=?,cad_tags=?,cad_favorite=?,cad_media_path=?,cad_order=?,cad_lang=COALESCE(?,cad_lang),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_prjid=COALESCE(?,cad_prjid),cad_envid=? WHERE cad_id=?")
+                .run(p.type, p.name, p.desc || null, p.note || null, p.style, p.referenceArtist || null, p.referenceComplement || null, p.lyrics || '', tags, fav, p.media || '', toOrderInt(p.order), p.lang || null, p.aiTweaks ? JSON.stringify(p.aiTweaks) : null, p.project || null, cardEnv, p.id);
               results.cardsUpdated++;
             } else { results.cardsSkipped++; }
           } else {
             const cardEnv = isBackup ? (p.env ? (envIdMap[p.env] ?? p.env) : defaultEnvId) : targetEnvId;
             // ⚠ CLAUDE: non-backup insert uses a fresh UUID - the original UUID may belong to a different env
             effectiveCardId = isBackup ? p.id : crypto.randomUUID();
-            db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_media_path,cad_order,cad_lang,cad_ai_tweaks,cad_prjid,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-              .run(effectiveCardId, p.name, p.version || 1, p.type, p.desc || '', p.note || '', p.style, p.lyrics || '', tags, fav, p.date || Date.now(), p.media || '', toOrderInt(p.order), p.lang || '', p.aiTweaks ? JSON.stringify(p.aiTweaks) : '{}', p.project || null, cardEnv);
+            db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_media_path,cad_order,cad_lang,cad_ai_tweaks,cad_prjid,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
+              .run(effectiveCardId, p.name, p.version || 1, p.type, p.desc || '', p.note || '', p.style, p.referenceArtist || '', p.referenceComplement || '', p.lyrics || '', tags, fav, p.date || Date.now(), p.media || '', toOrderInt(p.order), p.lang || '', p.aiTweaks ? JSON.stringify(p.aiTweaks) : '{}', p.project || null, cardEnv);
             results.cardsCreated++;
           }
           // Translations
@@ -1355,7 +1460,7 @@ function startServer(callback) {
     // .amlp DATE is "YYYY-MM-DD"; fall back to now if absent/unparseable.
     const parsedDate = header.date ? Date.parse(header.date) : NaN;
     const baseDate   = Number.isNaN(parsedDate) ? Date.now() : parsedDate;
-    const results = { projectName: projName, cardsCreated: 0, tracks: tracks.length };
+    const results = { projectName: projName, cardsCreated: 0, translationsCreated: 0, tracks: tracks.length };
 
     try {
       db.transaction(() => {
@@ -1364,17 +1469,29 @@ function startServer(callback) {
           db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path) VALUES (?,?,?,?,?,?,?,?)")
             .run(projId, projName, "#7c6fff", baseDate, projVersion, null, cardEnvId, '');
         }
-        const ins = db.prepare("INSERT INTO card(cad_id,cad_envid,cad_prjid,cad_name,cad_version,cad_type,cad_order,cad_desc,cad_style,cad_lang,cad_lyrics,cad_ai_tweaks,cad_media_path,cad_note,cad_tags,cad_favorite,cad_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
+        const ins = db.prepare("INSERT INTO card(cad_id,cad_envid,cad_prjid,cad_name,cad_version,cad_type,cad_order,cad_desc,cad_style,cad_ref_artist,cad_ref_complement,cad_lang,cad_lyrics,cad_ai_tweaks,cad_media_path,cad_note,cad_tags,cad_favorite,cad_date) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)");
         const insUrl = db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)");
+        const insTr  = db.prepare("INSERT INTO card_translation (cat_id,cat_cadid,cat_lang,cat_name,cat_lyrics,cat_date) VALUES (?,?,?,?,?,?)");
         for (const t of tracks) {
           const cardId  = crypto.randomUUID();
           const name    = t.title || `Track ${String(t.num).padStart(2, '0')}`;
           const version = nextCardVersion(name, 'song');
-          ins.run(cardId, cardEnvId, projId, name, version, 'song', toOrderInt(t.num), t.description || '', t.style || '', langCode, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
+          // A track may state its own LANG (an LP can sing a different language per track);
+          // the header LANG is the fallback — also when the track names a language ampl
+          // doesn't list ("Old Norse"), where resolving would otherwise yield no code at all.
+          const trackLang = (t.lang && sunoLangToCode(t.lang)) || langCode;
+          ins.run(cardId, cardEnvId, projId, name, version, 'song', toOrderInt(t.num), t.description || '', t.style || '', t.referenceArtist || '', t.referenceComplement || '', trackLang, t.lyrics || '', '{}', '', '', '[]', 0, baseDate);
           // A track's URL (written by the Suno Bridge extension when it saves the song) becomes
           // the card's link — which is also what turns the song's colour state to *created*.
           const href = (t.url || '').trim();
           if (/^https?:\/\//i.test(href)) insUrl.run(crypto.randomUUID(), cardId, "cad", songUrlLabel(href), href, 1);
+          // "TITLE (en):" / "LYRICS (en):" blocks land in card_translation, the same table
+          // the in-app translator writes — an imported gloss is indistinguishable from one
+          // made in ampl. UNIQUE(cad,lang) holds because the parser merges per language.
+          for (const tr of t.translations || []) {
+            insTr.run(crypto.randomUUID(), cardId, tr.lang, tr.title || '', tr.lyrics || '', baseDate);
+            results.translationsCreated++;
+          }
           results.cardsCreated++;
         }
       })();
@@ -1620,9 +1737,36 @@ function startServer(callback) {
   api.post("/cards/:id/urls", (req, res) => {
     const { label, href } = req.body;
     if (!href) return res.status(400).json({ error: "href required" });
-    const id = crypto.randomUUID();
-    const order = db.prepare("SELECT COUNT(*) as n FROM url WHERE url_parent_id=?").get(req.params.id).n;
-    db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)").run(id, req.params.id, 'cad', label || "", href, order);
+    // ⚠ CLAUDE: a card may hold AT MOST ONE Suno link - the link IS the song's
+    // identity, so a second one is never a second fact, only a contradiction.
+    // Adding one REPLACES the existing row. Allowing two is what let a card carry
+    // another track's id, which then exported as the wrong song.
+    const incomingSuno = /suno\.com\/song\/[0-9a-fA-F-]{36}/.test(String(href));
+    const existingSuno = incomingSuno
+      ? db.prepare("SELECT url_id FROM url WHERE url_parent_id=? AND url_type='cad' AND url_href LIKE '%suno.com/song/%' ORDER BY url_order").get(req.params.id)
+      : null;
+    if (existingSuno) {
+      db.prepare("UPDATE url SET url_href=?, url_label=COALESCE(NULLIF(?,''),url_label) WHERE url_id=?")
+        .run(href, label || "", existingSuno.url_id);
+    } else {
+      const id = crypto.randomUUID();
+      const order = db.prepare("SELECT COUNT(*) as n FROM url WHERE url_parent_id=?").get(req.params.id).n;
+      db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)").run(id, req.params.id, 'cad', label || "", href, order);
+    }
+    // Opt-in: a Suno link pasted onto a card whose media is linked stamps the id
+    // into the file. For a Suno Studio export this is the only source of the id -
+    // Suno strips it on export, so it is in neither the flac nor the wav.
+    // ⚠ The uuid is taken as exactly 36 chars: a share link carries a ?sh=... suffix.
+    if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] === "1") {
+      const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
+      const media = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(req.params.id)?.cad_media_path;
+      if (linkId && media) {
+        const r = writeSunoIdFromLink(media, linkId.toLowerCase());
+        if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
+          console.warn(`AMLP_ID not written for ${media}: ${r}`);
+        }
+      }
+    }
     res.json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(req.params.id)));
   });
 
@@ -2529,7 +2673,9 @@ function startServer(callback) {
   // The exact inverse of POST /import-amlp: a project (or the whole song list) back out as one
   // LP file. ⚠ CLAUDE: the grammar spec is app/node/suno-sync/main/README.md — header fields
   // inline, per-track fields value-below, and LYRICS LAST in each track (it runs to the next
-  // "=== PROMPT ===", so a field written after it would be read back as lyric text).
+  // "=== PROMPT ===", so a field written after it would be read back as lyric text). The one
+  // thing allowed after LYRICS is the translation block ("TITLE (xx):" / "LYRICS (xx):"),
+  // whose key shape is the only one the reader accepts as an end to a lyrics block.
   api.post("/export-amlp", async (req, res) => {
     try {
       // The renderer decides WHAT to export — the songs selected in the view, or everything
@@ -2569,6 +2715,7 @@ function startServer(callback) {
       // ("Latín" on a Spanish UI) would export a file whose language silently fails to import.
       const langCode = songs.find(s => s.lang)?.lang || "";
       const linkedStyles = db.prepare("SELECT cad_style FROM card WHERE cad_id IN (SELECT cal_cadid_child FROM card_link WHERE cal_cadid_parent=?)");
+      const songTranslations = db.prepare("SELECT cat_lang, cat_name, cat_lyrics FROM card_translation WHERE cat_cadid=? ORDER BY cat_lang");
 
       const out = [
         `TITLE: ${lpName}`,
@@ -2592,8 +2739,21 @@ function startServer(callback) {
           `DESCRIPTION:`, song.desc || "", ``,
           `STYLE:`, styles.join("\n"), ``,
         );
+        // What the style was aiming at — reference only, never merged into STYLE.
+        if (song.referenceArtist)    out.push(`REFERENCE ARTIST:`, song.referenceArtist, ``);
+        if (song.referenceComplement) out.push(`REFERENCE COMPLEMENT:`, song.referenceComplement, ``);
+        // Only when this song sings something other than the header language — an LP with one
+        // language throughout stays free of per-track LANG noise.
+        if (song.lang && song.lang !== langCode) out.push(`LANG:`, getLangName(song.lang, "en"), ``);
         if (aiUrl) out.push(`URL:`, aiUrl.href, ``);
         out.push(`LYRICS:`, song.lyrics || "", ``);
+        // Translations last: "LYRICS (xx)" runs to the next translation key or the next
+        // "=== PROMPT ===", so nothing may follow the final one inside a track.
+        for (const tr of songTranslations.all(song.id)) {
+          if (!tr.cat_name && !tr.cat_lyrics) continue;
+          if (tr.cat_name)   out.push(`TITLE (${tr.cat_lang}):`,  tr.cat_name,   ``);
+          if (tr.cat_lyrics) out.push(`LYRICS (${tr.cat_lang}):`, tr.cat_lyrics, ``);
+        }
       });
 
       fs.writeFileSync(filePath, out.join("\n"), "utf8");

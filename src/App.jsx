@@ -9,12 +9,11 @@ import React from "react";
 import { createPortal } from "react-dom";
 import * as XLSX from "xlsx";
 import { useT, getT, LANGUAGES, LANG_LOCALE } from "./i18n-gen";
-import yaiolLogo from "./assets/yaiol-logo.svg";
 import { SONG_LANGUAGES, getLangName } from "./languages";
 import {
   Mic2, Music, Music2, Search, X, Star, Settings, HelpCircle, Plus, Copy, Save, TextCursor, Pencil, Trash2,
   Check, ChevronDown, ChevronUp, Link2, CalendarArrowDown, CalendarArrowUp, ArrowDownAZ, ArrowDownZA,
-  Sun, Moon, Plug, RotateCcw, ArrowUpDown, FolderOpen, Folder, FolderPlus, FolderUp,
+  Plug, RotateCcw, ArrowUpDown, FolderOpen, Folder, FolderPlus, FolderUp,
   Download, LayoutGrid, LayoutList, CheckSquare, Square, Upload, ChevronLeft, ChevronRight,
   Sparkles, ScrollText, ExternalLink, Globe, Tag, MoreVertical, Play, Pause, Pipette, CircleDashed,
   Volume1, Volume2, VolumeX, Shuffle, Repeat, Repeat2, FileSpreadsheet, FilePlus, Languages, Database, AlertTriangle,
@@ -25,6 +24,18 @@ import { checkForUpdate, getUrl } from './lib/update-check';
 import { UpdateBanner } from './lib/ui-update-banner';
 import { AppHeader } from './lib/ui-header';
 import { GithubIcon } from './lib/ui-icons';
+import { SettingsView } from './lib/ui-settings';
+// Custom icons are EDITABLE .svg FILES in src/assets - `?react` (vite-plugin-svgr) turns one into
+// a real React component at build time, so the file stays open in Inkscape and nothing is pasted
+// into a .jsx. ⚠ CLAUDE: `?react` for EVERY icon, never <img> - it is what lets `currentColor`
+// inherit the button's colour AND what puts the icon under the catalog's `.btn > svg` sizing.
+// Only genuinely custom marks belong here; a lucide glyph is imported from lucide-react.
+// The mark of the app the "open in LRC Editor" button hands off to.
+import LrcEditorIcon from './assets/icon-yaiol-lrc-editor.svg?react';
+// The three lettered copy glyphs (title / style / lyrics) - one copy icon carrying a T / S / L.
+import CopyTitle     from './assets/icon-yaiol-copy-title.svg?react';
+import CopyStyle     from './assets/icon-yaiol-copy-style.svg?react';
+import CopyLyrics    from './assets/icon-yaiol-copy-lyrics.svg?react';
 import { Splitter } from './lib/ui-ctl-splitter';
 import { NumberField } from './lib/ui-ctl-numberfield';
 import { ColorPicker } from './lib/ui-ctl-colorpicker';
@@ -40,6 +51,11 @@ const STORAGE_PREFIX = pkg.storagePrefix;
 // ─── App identity - single source of truth for the app name ──────────────────
 const APP_NAME    = pkg.productName;
 const APP_VERSION = pkg.version;
+// The full build IDENTITY shown to the user: the release version plus the build counter (the 4th
+// segment a buffered commit bumps), or just the release version on a clean release build.
+// ⚠ CLAUDE: APP_VERSION itself stays plain 3-part semver and must NOT absorb this - the update
+// check compares it against the published beacon, and a 4-part string is not semver. Display only.
+const APP_VERSION_BUILD = pkg.build?.buildNumber ? `${pkg.version}.${pkg.build.buildNumber}` : pkg.version;
 
 // GitHub source - owner is constant (yaiol); repo name is the app id (pkg.name).
 const GITHUB_URL = `https://github.com/yaiol/${pkg.name}`;
@@ -55,7 +71,7 @@ const API = `http://localhost:${getApiPort()}`;
 // ─── Dialog layout constants — local, non-CSS values (textarea rows, tab heights) ────
 const UIDLG = {
   textareaRowsDescNote:       13,            // textarea rows for desc and note (all card types)
-  textareaRowsStyle:          11,            // textarea rows for style (all card types)
+  textareaRowsStyle:          7,             // textarea rows for style (all card types) — shorter than desc/lyrics: the style tab also carries the reference artist/complement row
   textareaRowsLyrics:         11,            // textarea rows for lyrics (song)
   textareaRowsTranslation:    9,             // textarea rows for translation content
   textareaRowsEditBonus:      2,             // extra rows added when editing an existing card
@@ -67,12 +83,12 @@ const UIDLG = {
 const accentDefault = () => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
 
 const TYPE_LABEL_KEYS = {
-  note:     "lblDlgSettingsColorNote",
-  music:    "lblDlgSettingsColorMusic",
-  vocal: "lblDlgSettingsColorVocal",
-  SongStateUndefined:   "lblDlgSettingsColorSongUndefined",
-  SongStateCreated:   "lblDlgSettingsColorSongCreated",
-  SongStatePublished:   "lblDlgSettingsColorSongPublished",
+  note:     "lblStgColorNote",
+  music:    "lblStgColorMusic",
+  vocal: "lblStgColorVocal",
+  SongStateUndefined:   "lblStgColorSongUndefined",
+  SongStateCreated:   "lblStgColorSongCreated",
+  SongStatePublished:   "lblStgColorSongPublished",
 };
 
 const DEFAULT_TYPE_COLORS = {
@@ -141,7 +157,11 @@ function getTagColor(tag) {
 
 async function apiFetch(path, opts = {}) {
   const res = await fetch(`${API}${path}`, { headers: { "Content-Type": "application/json" }, ...opts });
-  if (!res.ok) throw new Error(await res.text());
+  // ⚠ CLAUDE: the STATUS travels with the error. Throwing the body alone made every failure look
+  // alike, so a caller could not tell "the server refused" from "it was already gone" — and a
+  // DELETE of a card that no longer exists (404) is the second one: the end state asked for is
+  // the state the server is already in.
+  if (!res.ok) { const err = new Error(await res.text()); err.status = res.status; throw err; }
   return res.json();
 }
 
@@ -202,7 +222,9 @@ async function importAmlpText(text, apiFetch, setCards, setProjects, showToast, 
       body: JSON.stringify({ text, targetEnvId: activeEnvId, targetProjectId: targetProjectId || null }),
     });
     if (result.error) {
-      const msg = result.error === "globalEnv" ? t("tstAppImportAmlpGlobalEnv") : t("tstAppImportAmlpFailed");
+      // Each validation failure is a different problem with a different fix — collapsing them
+      // into one line leaves the user with nothing to act on.
+      const msg = t(AMLP_IMPORT_ERRORS[result.error] || "tstAppImportAmlpFailed");
       showToast("❌ " + msg, 6000);
       return;
     }
@@ -211,10 +233,28 @@ async function importAmlpText(text, apiFetch, setCards, setProjects, showToast, 
     const r = result.results;
     showToast(`✅ ${r.projectName}: ${r.cardsCreated} ${t("msgAppImportCardsCreated")}`);
   } catch (err) {
-    // Never surface the raw response body (a 404/500 can be a full HTML page) — log it, toast a clean line.
     console.error(".amlp import failed:", err.message);
-    showToast("❌ " + t("tstAppImportAmlpFailed"), 6000);
+    const reason = amlpImportReason(err.message);
+    showToast("❌ " + t("tstAppImportAmlpFailed") + (reason ? " — " + reason : ""), 8000);
   }
+}
+
+// Which 200 { error } code maps to which toast. The endpoint returns these as data, not throws.
+const AMLP_IMPORT_ERRORS = {
+  globalEnv: "tstAppImportAmlpGlobalEnv",
+  noTracks:  "tstAppImportAmlpNoTracks",
+  parse:     "tstAppImportAmlpParse",
+};
+
+// A server error is information the user needs — "no such column: cad_ref_artist" tells them
+// what to fix, "Could not import" tells them nothing. But apiFetch throws with the RAW response
+// body, and a 404/500 body can be a whole HTML page. So take a reason only when the body is the
+// JSON { error } this endpoint actually sends, and cap it to one short line.
+function amlpImportReason(body) {
+  try {
+    const reason = JSON.parse(body)?.error;
+    return typeof reason === "string" ? reason.trim().split("\n")[0].slice(0, 120) : "";
+  } catch { return ""; }
 }
 
 // A Suno link anywhere in the clipboard — either the share stub (suno.com/s/<code>) or the
@@ -403,7 +443,7 @@ async function exportToJson(cards, projects, projectName = null, title = "Save J
     version: APP_VERSION,
     date: new Date().toISOString(),
     cards: cards.map(p => ({
-      id: p.id, type: p.type, name: p.name, version: p.version || 1, order: p.sortNumber ?? null, desc: p.desc || '', note: p.note || '', style: p.style, lyrics: p.lyrics || '',
+      id: p.id, type: p.type, name: p.name, version: p.version || 1, order: p.sortNumber ?? null, desc: p.desc || '', note: p.note || '', style: p.style, referenceArtist: p.referenceArtist || '', referenceComplement: p.referenceComplement || '', lyrics: p.lyrics || '',
       tags: p.tags, favorite: p.favorite, date: p.date || null,
       lang: p.lang || '',
       aiTweaks: p.aiTweaks || {},
@@ -452,7 +492,7 @@ async function exportBackupToJson(cards, projects, environments, title = "Save J
     date: new Date().toISOString(),
     environments: environments.map(e => ({ id: e.id, name: e.name, order: e.order, isGlobal: e.isGlobal })),
     cards: cards.map(p => ({
-      id: p.id, type: p.type, name: p.name, version: p.version || 1, order: p.sortNumber ?? null, desc: p.desc || '', note: p.note || '', style: p.style, lyrics: p.lyrics || '',
+      id: p.id, type: p.type, name: p.name, version: p.version || 1, order: p.sortNumber ?? null, desc: p.desc || '', note: p.note || '', style: p.style, referenceArtist: p.referenceArtist || '', referenceComplement: p.referenceComplement || '', lyrics: p.lyrics || '',
       tags: p.tags, favorite: p.favorite, date: p.date || null,
       lang: p.lang || '',
       aiTweaks: p.aiTweaks || {},
@@ -512,7 +552,6 @@ export default function App() {
   const [copiedId, setCopiedId]           = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [settingsOpen, setSettingsOpen]   = useState(false);
-  const [tabSettingsActive, setTabSettingsActive]     = useState("display");
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [docCreateOpen, setDocCreateOpen]       = useState(false);
   const [docCreateSettings, setDocCreateSettings] = useState(() => {
@@ -529,6 +568,9 @@ export default function App() {
   const [rootDropOver, setRootDropOver] = useState(false);
   const [deleteProjectConfirm, setDeleteProjectConfirm] = useState(null);
   const [deleteProjectCards, setDeleteProjectCards]     = useState(false);
+  // Off by default on purpose: writing AMLP_ID modifies the linked master file,
+  // so it stays opt-in rather than something a fresh install starts doing.
+  const [useAmlpIdTag, setUseAmlpIdTag] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-use-amlp-id`) === "1");
   const [importFolderPending, setImportFolderPending] = useState(null); // { projectId, path }
   const [sidebarOpen, setSidebarOpen]     = useState(true);
   const [sidebarWidth, setSidebarWidth]   = useState(() => parseInt(localStorage.getItem(`${STORAGE_PREFIX}-sidebar-width`) || "220"));
@@ -660,7 +702,7 @@ export default function App() {
 
   const _rawTypes = buildTypes(clrSettingsCardsColors);
   const types = {
-    note:        { ..._rawTypes.note,        label: t("lblDlgSettingsColorNote") },
+    note:        { ..._rawTypes.note,        label: t("lblStgColorNote") },
     music:       { ..._rawTypes.music,       label: t("lblAppTypeMusic") },
     vocal:       { ..._rawTypes.vocal,       label: t("lblAppTypeVocal") },
     SongStateUndefined:  { ..._rawTypes.SongStateUndefined,  label: t("lblAppTypeSong") },
@@ -670,6 +712,7 @@ export default function App() {
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-proj-sort`, projectSort); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-proj-sort`]: projectSort }) }); }, [projectSort]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-proj-sort-dir`, projectSortDir); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-proj-sort-dir`]: projectSortDir }) }); }, [projectSortDir]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-view`, viewMode); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-view`]: viewMode }) }); }, [viewMode]);
+  useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-use-amlp-id`, useAmlpIdTag ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-use-amlp-id`]: useAmlpIdTag ? "1" : "0" }) }); }, [useAmlpIdTag]);
   useEffect(() => { document.documentElement.setAttribute("data-theme", themeName); localStorage.setItem(`${STORAGE_PREFIX}-theme`, themeName); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-theme`]: themeName }) }); }, [themeName]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort`, sortBy); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-sort`]: sortBy }) }); }, [sortBy]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort-dir`, sortDir); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-sort-dir`]: sortDir }) }); }, [sortDir]);
@@ -1049,13 +1092,13 @@ export default function App() {
     const onKeyDown = (e) => {
       if (!(e.ctrlKey || e.metaKey) || e.shiftKey || e.altKey) return;
       if (e.key !== "n" && e.key !== "N") return;
-      if (modalOpen || settingsOpen || projectModalOpen || docCreateOpen || bulkTagOpen || batchTranslateOpen) return;
+      if (modalOpen || projectModalOpen || docCreateOpen || bulkTagOpen || batchTranslateOpen) return;
       e.preventDefault();
       openNewCard();
     };
     window.addEventListener("keydown", onKeyDown);
     return () => window.removeEventListener("keydown", onKeyDown);
-  }, [modalOpen, settingsOpen, projectModalOpen, docCreateOpen, bulkTagOpen, batchTranslateOpen, draftFetching]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [modalOpen, projectModalOpen, docCreateOpen, bulkTagOpen, batchTranslateOpen, draftFetching]); // eslint-disable-line react-hooks/exhaustive-deps
 
   const handleSave = async (data) => {
     try {
@@ -1149,12 +1192,27 @@ export default function App() {
           }
         }
       }
-      await Promise.all(selectedIds.map(id => apiFetch(`/cards/${id}`, { method: "DELETE" })));
-      setCards(prev => prev.filter(p => !selectedIds.includes(p.id)));
-      setProjects(prev => prev.map(pr => ({ ...pr, cardIds: pr.cardIds.filter(pid => !selectedIds.includes(pid)) })));
-      showToast(`${selectedIds.length} ${t("tstAppCardDeleted")}`);
-      setSelectedIds([]);
+      // ⚠ CLAUDE: allSettled, NOT Promise.all. With Promise.all a single rejection skipped every
+      // line below it — so the cards really were deleted on the server while the screen went on
+      // showing them until a reload, and the selection was never cleared either. One card that
+      // could not be deleted must not cost the other twenty-five their bookkeeping.
+      const results = await Promise.allSettled(selectedIds.map(id => apiFetch(`/cards/${id}`, { method: "DELETE" })));
+      // A 404 is not a failure HERE: it means the card is already gone, which is what was asked
+      // for. Only a real refusal keeps the card selected so it can be retried.
+      const failed = selectedIds.filter((_, i) =>
+        results[i].status === "rejected" && results[i].reason?.status !== 404);
+      const gone = new Set(selectedIds.filter(id => !failed.includes(id)));
+
+      setCards(prev => prev.filter(p => !gone.has(p.id)));
+      setProjects(prev => prev.map(pr => ({ ...pr, cardIds: pr.cardIds.filter(pid => !gone.has(pid)) })));
+      setSelectedIds(failed);
       setBulkDeleteConfirm(false);
+      if (failed.length) {
+        const why = results.find(r => r.status === "rejected" && r.reason?.status !== 404)?.reason?.message || "";
+        showToast(`❌ ${gone.size} ${t("tstAppCardDeleted")} — ${failed.length} ${t("tstAppBulkDeleteFailed")}${why ? ": " + why : ""}`, 8000);
+      } else {
+        showToast(`${gone.size} ${t("tstAppCardDeleted")}`);
+      }
     } catch (err) { showToast("❌ " + err.message); }
   };
 
@@ -1437,6 +1495,24 @@ export default function App() {
   const selectAll  = () => setSelectedIds(filtered.map(p => p.id));
   const clearSelection = () => { setSelectedIds([]); setBulkTagOpen(false); setBulkTagInput(""); };
 
+  // ⚠ CLAUDE: THE INVARIANT — a selected id that no longer exists is not a selection.
+  // Enforced here, once, and deliberately NOT at each call site: the selection is a list of ids,
+  // so EVERY path that removes a card has to remember to prune it, and two of them did not
+  // (handleDelete, and handleDeleteProject with its cards). A stale id is invisible until you act
+  // on the selection — delete one card from its own row while 26 are selected, then hit the
+  // toolbar delete, and the bulk asks the server for a card that is already gone. `cards` is the
+  // complete list (GET /cards returns every card, not the active environment's), so filtering
+  // against it can never drop a live selection. Returning `prev` unchanged when nothing was
+  // stale is what keeps this from looping. (2026-09-07)
+  useEffect(() => {
+    setSelectedIds(prev => {
+      if (!prev.length) return prev;
+      const live = new Set(cards.map(c => c.id));
+      const kept = prev.filter(id => live.has(id));
+      return kept.length === prev.length ? prev : kept;
+    });
+  }, [cards]);
+
   // ── Drag handlers ────────────────────────────────────────────────────────────
   const handleDragStart = (e, cardId) => {
     // If dragging a selected card, drag all selected; otherwise just this one
@@ -1682,7 +1758,7 @@ export default function App() {
       <UpdateBanner info={updateInfo} appId={pkg.name} lang={langKey} storagePrefix={STORAGE_PREFIX} t={t} onClose={() => setUpdateInfo(null)} />
 
       {/* Header */}
-      <AppHeader appName={APP_NAME} appVersion={APP_VERSION}>
+      <AppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD}>
         <div className="search barh-search" style={{ maxWidth: 300 }}>
           <span className="search-glyph"><Search /></span>
           <input className="search-input" placeholder={t("plhHdrSearch")} value={search}
@@ -1811,7 +1887,7 @@ export default function App() {
           <button className="btn icon" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
             <HelpCircle />
           </button>
-          <button className="btn icon" onClick={() => setSettingsOpen(true)} title={t("tipHdrSettings")}>
+          <button className={`btn icon stg-toggle ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(o => !o)} title={t("tipHdrSettings")} aria-pressed={settingsOpen}>
             <Settings />
           </button>
         </div>
@@ -1824,6 +1900,158 @@ export default function App() {
           with flex-direction:row so .app-main's column default doesn't stack it; the
           player footer is a fixed portal, not a flow child. */}
       <div className="app-main" style={{ display: "flex", flex: 1, minHeight: 0, flexDirection: "row" }}>
+        {settingsOpen && (
+          <SettingsView
+            t={t} appName={APP_NAME} appVersion={APP_VERSION_BUILD} languages={LANGUAGES}
+            lang={langKey} setLang={setLangKey} theme={themeName} setTheme={setThemeName}
+            tabs={[
+              { key: "colors", label: t("tabStgCards"), icon: Pipette, content: (
+                <>
+                  <div className="dlg-field" style={{ gap: 20 }}>
+                    <label className="dlg-field-label">{t("lblStgCardsColors")}</label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                      {Object.entries(types).map(([key, typ]) => {
+                        const { Icon: TIcon } = typ;
+                        return (
+                          <div key={key} style={{ display: "flex", flexDirection: "column", gap: 8, padding: "4px 0" }}>
+                            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                              <div style={{ display: "flex", alignItems: "center", gap: 7, width: 120, fontSize: 13, color: typ.accent, fontWeight: 600, flexShrink: 0 }}>
+                                <TIcon className="icon-inline" color={typ.accent} />{t(TYPE_LABEL_KEYS[key] || key)}
+                              </div>
+                              <ColorPicker color={clrSettingsCardsColors[key]} onChange={(c) => setClrSettingsCardsColors(prev => ({ ...prev, [key]: c }))} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
+                              <button className="btn subtle" onClick={() => setClrSettingsCardsColors(prev => ({ ...prev, [key]: DEFAULT_TYPE_COLORS[key] }))} style={{ marginLeft: "auto" }}>{t("btnStgCardsReset")}</button>
+                            </div>
+                          </div>
+                        );
+                      })}
+                    </div>
+                    <div className="dlg-field">
+                      <label className="dlg-field-label">{t("lblStgCardsAiSites")}</label>
+                      <input className="input" value={txtSettingsCardsAiSites} onChange={e => setTxtSettingsCardsAiSites(e.target.value)} placeholder="udio, suno, producer, tunee" />
+                    </div>
+                    <div className="dlg-field">
+                      <label className="dlg-field-label">{t("lblStgCardsMusicSites")}</label>
+                      <input className="input" value={txtSettingsCardsMusicSites} onChange={e => setTxtSettingsCardsMusicSites(e.target.value)} placeholder="soundcloud" />
+                    </div>
+                  </div>
+                </>
+              ) },
+              { key: "tags", label: t("tabStgTags"), icon: Tag, content: (
+                <>
+                  <TagColorsTab s={s} t={t} clrSettingsTags={clrSettingsTags} setClrSettingsTags={setClrSettingsTags} allTags={[...new Set(cards.flatMap(p => p.tags))].sort()} />
+                </>
+              ) },
+              { key: "media", label: t("tabStgMedia"), icon: FileMusic, content: (
+                <>
+                  <div className="dlg-field">
+                    <label className="check-label">
+                      <input type="checkbox" className="check-box" checked={useAmlpIdTag} onChange={(e) => setUseAmlpIdTag(e.target.checked)} />
+                      <span>{t("lblStgMediaAmlpId")}</span>
+                    </label>
+                    <p className="hint">{t("msgStgMediaAmlpId")}</p>
+                  </div>
+                </>
+              ) },
+              { key: "ai", label: t("tabStgAi"), icon: Sparkles, content: (
+                <>
+                  {/* API Key */}
+                  <div className="dlg-field">
+                    <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Sparkles className="icon-inline" />{t("lblStgAiApiKey")}</label>
+                    <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <input type="password" className="input" placeholder={t("plhStgAiApiKey")}
+                          value={txtSettingsAiApiKey}
+                          onChange={(e) => { setTxtSettingsAiApiKey(e.target.value); localStorage.setItem(`${STORAGE_PREFIX}-gemini-key`, e.target.value); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: e.target.value }) }); }}
+                          style={{ flex: 1, fontFamily: "monospace" }}
+                        />
+                        {txtSettingsAiApiKey && (
+                          <button onClick={() => { setTxtSettingsAiApiKey(""); localStorage.removeItem(`${STORAGE_PREFIX}-gemini-key`); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: "" }) }); }} className="btn">{t("btnStgAiApiKeyClear")}</button>
+                        )}
+                      </div>
+                      {txtSettingsAiApiKey
+                        ? <p className="hint" style={{ color: "var(--ok)" }}>{t("msgStgAiApiKeyEnabled")}</p>
+                        : <p className="hint">{t("msgStgAiApiKeyGetKey")}</p>
+                      }
+                    </div>
+                  </div>
+    
+                  {/* Default interface mode */}
+                  <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiTemplates")}</label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
+                      <span className="hint" style={{ flex: 1 }}>{t("lblStgAiTemplatesMode")} - {t("btnStgAiTemplatesModeSimple")} / {t("btnStgAiTemplatesModeExpert")}</span>
+                      <div className="barh-grp">
+                        {[{ v: false, label: t("btnStgAiTemplatesModeSimple") }, { v: true, label: t("btnStgAiTemplatesModeExpert") }].map((opt) => (
+                          <button key={String(opt.v)} onClick={() => { setTglSettingsAiTemplatesMode(opt.v); localStorage.setItem(`${STORAGE_PREFIX}-ai-expert-mode`, opt.v ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-expert-mode`]: opt.v ? "1" : "0" }) }); }}
+                            className={`btn${tglSettingsAiTemplatesMode === opt.v ? " active" : ""}`}>
+                            {opt.label}
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+    
+                  {/* Character limits */}
+                  <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiLimits")}</label>
+                    <div style={{ display: "flex", gap: 12 }}>
+                      {[
+                        [t("lblStgAiLimitsMusic"),    txtSettingsAiLimitsMusic,    v => { setTxtSettingsAiLimitsMusic(v);    localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-music`,    v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-music`]:    v }) }); }, 100, 3000, 50],
+                        [t("lblStgAiLimitsVocal"), txtSettingsAiLimitsVocal, v => { setTxtSettingsAiLimitsVocal(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-vocal`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-vocal`]: v }) }); }, 100, 3000, 50],
+                      ].map(([label, val, save, min, max, step]) => (
+                        <div key={label} style={{ flexShrink: 0 }}>
+                          <label className="hint" style={{ display: "block", marginBottom: 6 }}>{label}</label>
+                          <NumberField min={min} max={max} step={step} value={val} width={90} onChange={save} />
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+    
+                  {/* Warn limit */}
+                  <div className="dlg-field" style={{ paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiStyleThreshold")}</label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <NumberField min={100} max={5000} step={50} value={txtSettingsAiStyleThreshold} width={90}
+                        onChange={v => { setTxtSettingsAiStyleThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-warn-limit`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-warn-limit`]: v }) }); }} />
+                      <p className="hint">{t("msgStgAiStyleThresholdDesc")}</p>
+                    </div>
+                  </div>
+    
+                  {/* Style word threshold */}
+                  <div className="dlg-field" style={{ paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiStyleWordThreshold")}</label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <NumberField min={10} max={1000} step={10} value={txtSettingsAiStyleWordThreshold} width={90}
+                        onChange={v => { setTxtSettingsAiStyleWordThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-style-word-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-style-word-threshold`]: v }) }); }} />
+                      <p className="hint">{t("msgStgAiStyleWordThresholdDesc")}</p>
+                    </div>
+                  </div>
+    
+                  {/* Song lyric threshold */}
+                  <div className="dlg-field" style={{ paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiLyricsThreshold")}</label>
+                    <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                      <NumberField min={500} max={20000} step={50} value={txtSettingsAiLyricsThreshold} width={90}
+                        onChange={v => { setTxtSettingsAiLyricsThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-lyric-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-lyric-threshold`]: v }) }); }} />
+                      <p className="hint">{t("msgStgAiLyricsThresholdDesc")}</p>
+                    </div>
+                  </div>
+    
+                  {/* History */}
+                  <div className="dlg-field" style={{ paddingTop: 16 }}>
+                    <label className="dlg-field-label">{t("lblStgAiHistory")}</label>
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+                      <p className="hint">{JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}-ai-history`) || "[]").length} {t("lblStgAiHistoryCount")}</p>
+                      <button className="btn subtle" onClick={() => { localStorage.removeItem(`${STORAGE_PREFIX}-ai-history`); showToast(t("tstStgAiHistoryCleared")); }}>{t("btnStgAiHistoryClear")}</button>
+                    </div>
+                  </div>
+                </>
+              ) },
+            ]}
+            aboutExtra={<div className="dlg-about-version">{t("msgStgAboutLocalDb")}</div>}
+            onClose={() => setSettingsOpen(false)}
+          />
+        )}
 
         {/* Sidebar */}
         {sidebarOpen && (
@@ -2850,203 +3078,6 @@ export default function App() {
         );
       })()}
 
-      {settingsOpen && (() => {
-        return (
-        <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setSettingsOpen(false); }}>
-          <div className="dlg" style={{ maxWidth: 500 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
-
-            {/* Header */}
-            <div className="dlg-head">
-              <h2 className="dlg-title"><Settings />{t("ttlDlgSettings")}</h2>
-              <button className="dl-close" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setSettingsOpen(false)}><X /></button>
-            </div>
-
-            {/* Tabs */}
-            <div className="tabs" style={{ padding: "0 24px" }}>
-              {[{ key: "display", label: t("tabDlgSettingsDisplay"), icon: Sun }, { key: "colors", label: t("tabDlgSettingsCards"), icon: Pipette }, { key: "tags", label: t("tabDlgSettingsTags"), icon: Tag }, { key: "ai", label: t("tabDlgSettingsAi"), icon: Sparkles }, { key: "about", label: t("tabDlgSettingsAbout"), icon: ScrollText }].map(({ key, label, icon: TabIcon }) => {
-                const active = tabSettingsActive === key;
-                return (
-                  <button key={key} onClick={() => setTabSettingsActive(key)} className={`tab${active ? " active" : ""}`}>
-                    <TabIcon />{label}
-                  </button>
-                );
-              })}
-            </div>
-
-            {/* Tab content - grid stacks all panels in one cell; active panel wins via zIndex+background (DLG-8) */}
-            <div className="dlg-body" style={{ flex: 1, display: "grid" }}>
-
-              <div style={{ gridArea: '1/1', visibility: tabSettingsActive === "display" ? 'visible' : 'hidden', zIndex: tabSettingsActive === "display" ? 1 : 0, background: "var(--dlg-bgd)", transition: 'none' }}>
-                {/* Language */}
-                <div className="dlg-field" style={{ paddingTop: 20 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsDisplayLang")}</label>
-                  <select value={langKey} onChange={(e) => setLangKey(e.target.value)} className="select">
-                    {LANGUAGES.map(({ key, label }) => (
-                      <option key={key} value={key}>{label}</option>
-                    ))}
-                  </select>
-                </div>
-
-                {/* Theme */}
-                <div className="dlg-field divider">
-                  <label className="dlg-field-label">{t("lblDlgSettingsDisplayTheme")}</label>
-                  <div className="opt-btns">
-                    {[{ key: "dark", Icon: Moon, i18n: "btnDlgSettingsDisplayThemeDark" }, { key: "light", Icon: Sun, i18n: "btnDlgSettingsDisplayThemeLight" }].map(({ key, Icon: TIcon, i18n }) => { const label = t(i18n);
-                      const active = themeName === key;
-                      return (
-                        <button key={key} onClick={() => setThemeName(key)} className={`opt-btn${active ? " active" : ""}`}>
-                          <TIcon /><span>{label}</span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
-
-              </div>
-
-              <div style={{ gridArea: '1/1', visibility: tabSettingsActive === "colors" ? 'visible' : 'hidden', zIndex: tabSettingsActive === "colors" ? 1 : 0, background: "var(--dlg-bgd)", transition: 'none' }}>
-                <div className="dlg-field" style={{ paddingTop: 20, gap: 20 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsCardsColors")}</label>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                    {Object.entries(types).map(([key, typ]) => {
-                      const { Icon: TIcon } = typ;
-                      return (
-                        <div key={key} style={{ display: "flex", flexDirection: "column", gap: 8, padding: "4px 0" }}>
-                          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-                            <div style={{ display: "flex", alignItems: "center", gap: 7, width: 120, fontSize: 13, color: typ.accent, fontWeight: 600, flexShrink: 0 }}>
-                              <TIcon className="icon-inline" color={typ.accent} />{t(TYPE_LABEL_KEYS[key] || key)}
-                            </div>
-                            <ColorPicker color={clrSettingsCardsColors[key]} onChange={(c) => setClrSettingsCardsColors(prev => ({ ...prev, [key]: c }))} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-                            <button className="btn subtle" onClick={() => setClrSettingsCardsColors(prev => ({ ...prev, [key]: DEFAULT_TYPE_COLORS[key] }))} style={{ marginLeft: "auto" }}>{t("btnDlgSettingsCardsReset")}</button>
-                          </div>
-                        </div>
-                      );
-                    })}
-                  </div>
-                  <div className="dlg-field">
-                    <label className="dlg-field-label">{t("lblDlgSettingsCardsAiSites")}</label>
-                    <input className="input" value={txtSettingsCardsAiSites} onChange={e => setTxtSettingsCardsAiSites(e.target.value)} placeholder="udio, suno, producer, tunee" />
-                  </div>
-                  <div className="dlg-field">
-                    <label className="dlg-field-label">{t("lblDlgSettingsCardsMusicSites")}</label>
-                    <input className="input" value={txtSettingsCardsMusicSites} onChange={e => setTxtSettingsCardsMusicSites(e.target.value)} placeholder="soundcloud" />
-                  </div>
-                </div>
-              </div>
-
-              <div style={{ gridArea: '1/1', visibility: tabSettingsActive === "tags" ? 'visible' : 'hidden', zIndex: tabSettingsActive === "tags" ? 1 : 0, background: "var(--dlg-bgd)", transition: 'none' }}>
-                <TagColorsTab s={s} t={t} clrSettingsTags={clrSettingsTags} setClrSettingsTags={setClrSettingsTags} allTags={[...new Set(cards.flatMap(p => p.tags))].sort()} />
-              </div>
-
-              <div className="dlg-about" style={{ gridArea: '1/1', visibility: tabSettingsActive === "about" ? 'visible' : 'hidden', zIndex: tabSettingsActive === "about" ? 1 : 0, background: "var(--dlg-bgd)", transition: 'none' }}>
-                <img src={yaiolLogo} alt="Yaiol" style={{ width: 120, height: "auto", flexShrink: 0 }} />
-                <div style={{ display: "flex", flexDirection: "column", gap: 6, minWidth: 0 }}>
-                  <div className="dlg-about-id">{APP_NAME} <b>v{APP_VERSION}</b> by yaiol</div>
-                  <div className="dlg-about-desc">{t("msgDlgSettingsAboutDesc")}</div>
-                  <div className="dlg-about-version">{t("msgDlgSettingsAboutLocalDb")}</div>
-                </div>
-              </div>
-
-              <div style={{ gridArea: '1/1', visibility: tabSettingsActive === "ai" ? 'visible' : 'hidden', zIndex: tabSettingsActive === "ai" ? 1 : 0, background: "var(--dlg-bgd)", transition: 'none' }}>
-                {/* API Key */}
-                <div className="dlg-field" style={{ paddingTop: 20 }}>
-                  <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Sparkles className="icon-inline" />{t("lblDlgSettingsAiApiKey")}</label>
-                  <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                    <div style={{ display: "flex", gap: 8 }}>
-                      <input type="password" className="input" placeholder={t("plhDlgSettingsAiApiKey")}
-                        value={txtSettingsAiApiKey}
-                        onChange={(e) => { setTxtSettingsAiApiKey(e.target.value); localStorage.setItem(`${STORAGE_PREFIX}-gemini-key`, e.target.value); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: e.target.value }) }); }}
-                        style={{ flex: 1, fontFamily: "monospace" }}
-                      />
-                      {txtSettingsAiApiKey && (
-                        <button onClick={() => { setTxtSettingsAiApiKey(""); localStorage.removeItem(`${STORAGE_PREFIX}-gemini-key`); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: "" }) }); }} className="btn">{t("btnDlgSettingsAiApiKeyClear")}</button>
-                      )}
-                    </div>
-                    {txtSettingsAiApiKey
-                      ? <p className="hint" style={{ color: "var(--ok)" }}>{t("msgDlgSettingsAiApiKeyEnabled")}</p>
-                      : <p className="hint">{t("msgDlgSettingsAiApiKeyGetKey")}</p>
-                    }
-                  </div>
-                </div>
-
-                {/* Default interface mode */}
-                <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiTemplates")}</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                    <span className="hint" style={{ flex: 1 }}>{t("lblDlgSettingsAiTemplatesMode")} - {t("btnDlgSettingsAiTemplatesModeSimple")} / {t("btnDlgSettingsAiTemplatesModeExpert")}</span>
-                    <div className="barh-grp">
-                      {[{ v: false, label: t("btnDlgSettingsAiTemplatesModeSimple") }, { v: true, label: t("btnDlgSettingsAiTemplatesModeExpert") }].map((opt) => (
-                        <button key={String(opt.v)} onClick={() => { setTglSettingsAiTemplatesMode(opt.v); localStorage.setItem(`${STORAGE_PREFIX}-ai-expert-mode`, opt.v ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-expert-mode`]: opt.v ? "1" : "0" }) }); }}
-                          className={`btn${tglSettingsAiTemplatesMode === opt.v ? " active" : ""}`}>
-                          {opt.label}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Character limits */}
-                <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiLimits")}</label>
-                  <div style={{ display: "flex", gap: 12 }}>
-                    {[
-                      [t("lblDlgSettingsAiLimitsMusic"),    txtSettingsAiLimitsMusic,    v => { setTxtSettingsAiLimitsMusic(v);    localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-music`,    v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-music`]:    v }) }); }, 100, 3000, 50],
-                      [t("lblDlgSettingsAiLimitsVocal"), txtSettingsAiLimitsVocal, v => { setTxtSettingsAiLimitsVocal(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-vocal`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-vocal`]: v }) }); }, 100, 3000, 50],
-                    ].map(([label, val, save, min, max, step]) => (
-                      <div key={label} style={{ flexShrink: 0 }}>
-                        <label className="hint" style={{ display: "block", marginBottom: 6 }}>{label}</label>
-                        <NumberField min={min} max={max} step={step} value={val} width={90} onChange={save} />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Warn limit */}
-                <div className="dlg-field" style={{ paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiStyleThreshold")}</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <NumberField min={100} max={5000} step={50} value={txtSettingsAiStyleThreshold} width={90}
-                      onChange={v => { setTxtSettingsAiStyleThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-warn-limit`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-warn-limit`]: v }) }); }} />
-                    <p className="hint">{t("msgDlgSettingsAiStyleThresholdDesc")}</p>
-                  </div>
-                </div>
-
-                {/* Style word threshold */}
-                <div className="dlg-field" style={{ paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiStyleWordThreshold")}</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <NumberField min={10} max={1000} step={10} value={txtSettingsAiStyleWordThreshold} width={90}
-                      onChange={v => { setTxtSettingsAiStyleWordThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-style-word-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-style-word-threshold`]: v }) }); }} />
-                    <p className="hint">{t("msgDlgSettingsAiStyleWordThresholdDesc")}</p>
-                  </div>
-                </div>
-
-                {/* Song lyric threshold */}
-                <div className="dlg-field" style={{ paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiLyricsThreshold")}</label>
-                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                    <NumberField min={500} max={20000} step={50} value={txtSettingsAiLyricsThreshold} width={90}
-                      onChange={v => { setTxtSettingsAiLyricsThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-lyric-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-lyric-threshold`]: v }) }); }} />
-                    <p className="hint">{t("msgDlgSettingsAiLyricsThresholdDesc")}</p>
-                  </div>
-                </div>
-
-                {/* History */}
-                <div className="dlg-field" style={{ paddingTop: 16 }}>
-                  <label className="dlg-field-label">{t("lblDlgSettingsAiHistory")}</label>
-                  <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                    <p className="hint">{JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}-ai-history`) || "[]").length} {t("lblDlgSettingsAiHistoryCount")}</p>
-                    <button className="btn subtle" onClick={() => { localStorage.removeItem(`${STORAGE_PREFIX}-ai-history`); showToast(t("tstDlgSettingsAiHistoryCleared")); }}>{t("btnDlgSettingsAiHistoryClear")}</button>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-        </div>
-        );
-      })()}
-
       {bulkDeleteConfirm && (() => {
         const orphanedSongs = getOrphanedSongs(selectedIds);
         return (
@@ -3178,13 +3209,13 @@ function TagColorsTab({ s, t, clrSettingsTags, setClrSettingsTags, allTags }) {
   return (
     <div style={{ paddingTop: 20 }}>
       <div className="dlg-field">
-        <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Tag className="icon-inline" />{t("ttlDlgSettingsTagColors")}</label>
-        <p className="hint" style={{ marginBottom: 12 }}>{t("msgDlgSettingsTagColorsDesc")}</p>
+        <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Tag className="icon-inline" />{t("ttlStgTagColors")}</label>
+        <p className="hint" style={{ marginBottom: 12 }}>{t("msgStgTagColorsDesc")}</p>
         {/* Add row */}
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12, position: "relative" }}>
           <div style={{ flex: 1 }}>
             <Combobox
-              placeholder={t("plhDlgSettingsTagColor")}
+              placeholder={t("plhStgTagColor")}
               value={input}
               onChange={setInput}
               onKeyDown={(e) => { if (e.key === "Enter") add(); }}
@@ -3195,18 +3226,18 @@ function TagColorsTab({ s, t, clrSettingsTags, setClrSettingsTags, allTags }) {
             />
           </div>
           <ColorPicker color={pendingColor} onChange={setPendingColor} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-          <button className="btn primary" onClick={add}>{t("btnDlgSettingsTagColorAdd")}</button>
+          <button className="btn primary" onClick={add}>{t("btnStgTagColorAdd")}</button>
         </div>
         {/* Override list - maxHeight cap prevents the grid cell from growing unboundedly (DLG-8 Part 2) */}
         <div style={{ maxHeight: 260, overflowY: "auto" }}>
         {overrides.length === 0
-          ? <p className="hint">{t("msgDlgSettingsTagColorEmpty")}</p>
+          ? <p className="hint">{t("msgStgTagColorEmpty")}</p>
           : <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {overrides.map(([tag, color]) => (
                 <div key={tag} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 10px", borderRadius: 7, border: `1px solid var(--border-strong)`, background: 'var(--bg-input)' }}>
                   <span style={{ flex: 1, fontSize: 12, color, fontWeight: 600 }}>{tag}</span>
                   <ColorPicker color={color} onChange={(c) => update(tag, c)} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-                  <button className="btn icon small subtle" onClick={() => remove(tag)} title={t("tipDlgSettingsTagColorRemove")}><X /></button>
+                  <button className="btn icon small subtle" onClick={() => remove(tag)} title={t("tipStgTagColorRemove")}><X /></button>
                 </div>
               ))}
             </div>
@@ -3521,28 +3552,6 @@ function playBtnProps(mediaExists, isPlaying, accentColor, t) {
   };
 }
 
-// ── LRC Editor app mark — the icon of the app the "open in LRC Editor" button hands off to ──
-// App-specific, so it lives here and NOT in lib/ui-icons.jsx: that file is the shared catalog,
-// copied into every app, and a glyph only ampl renders would ship dead in all of them.
-// Glyph source: the LRC Editor app icon. No width/height — `.btn > svg` sizes it.
-const LrcEditorIcon = (props) => (
-  <svg data-icon="yaiol:lrc-editor" viewBox="0 -960 960 960" fill="currentColor" aria-hidden="true" focusable="false" {...props}>
-    <path d="M 80,-32.340937 V -772.34094 q 0,-24.75 17.63,-42.38 17.62,-17.62 42.37,-17.62 h 480 q 24.75,0 42.38,17.62 17.62,17.63 17.62,42.38 v 59 q -17,9 -32.36,21 -15.35,12 -27.64,27 v -107 H 140 v 596 l 74,-76 h 406 v -187 q 12.29,15 27.64,27 15.36,12 32.36,21 v 139 q 0,24.75 -17.62,42.37 -17.63,17.63 -42.38,17.63 H 240 Z M 240,-362.34094 h 160 v -60 H 240 Z m 519.88,-80 q -45.88,0 -77.88,-32.12 -32,-32.12 -32,-78 0,-45.88 32.06,-77.88 32.06,-32 77.86,-32 10.08,0 22.58,3 12.5,3 27.5,8 v -221 h 150 v 60 h -90 v 260 q 0,45.83 -32.12,77.92 -32.12,32.08 -78,32.08 z m -519.88,-40 h 280 v -60 H 240 Z m 0,-120 h 280 v -60 H 240 Z m -100,350 v -520 z" />
-  </svg>
-);
-
-// ── Lettered copy glyphs — a lucide "copy" icon with a T / S / L badge, one per copyable field ──
-// (title / style / lyrics). Single base so the three share one geometry; only the letter varies.
-const CopyLetter = ({ letter }) => (
-  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect width="14" height="14" x="8" y="8" rx="2" ry="2" />
-    <path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2" />
-    <text x="11.7" y="18.8" fontSize="10.67" fontFamily="Arial, sans-serif" fill="currentColor" strokeWidth="0.6">{letter}</text>
-  </svg>
-);
-const CopyTitle  = () => <CopyLetter letter="T" />;
-const CopyStyle  = () => <CopyLetter letter="S" />;
-const CopyLyrics = () => <CopyLetter letter="L" />;
 
 // ── SongListCard - single source for song rows across the list view and the three special views ──
 // mode: "list" = full card (checkbox + toolbar + lyrics/tags). "link" / "media" / "sort" = stripped
@@ -4563,15 +4572,15 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
       <div className="dlg" style={{ width: 520, maxWidth: "95vw" }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
         <div className="dlg-body" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h3 className="dlg-title" style={{ margin: 0 }}><Sparkles color={'var(--accent)'} />{t("lblDlgSettingsAiTemplates")}</h3>
+          <h3 className="dlg-title" style={{ margin: 0 }}><Sparkles color={'var(--accent)'} />{t("lblStgAiTemplates")}</h3>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <button className="btn" onClick={() => setExpertMode(v => !v)}>{expertMode ? t("btnDlgSettingsAiTemplatesModeSimple") : t("btnDlgSettingsAiTemplatesModeExpert")}</button>
+            <button className="btn" onClick={() => setExpertMode(v => !v)}>{expertMode ? t("btnStgAiTemplatesModeSimple") : t("btnStgAiTemplatesModeExpert")}</button>
             <button className="dl-close" onClick={() => { onSaveTweaks(buildTweaks()); onClose(); }}><X /></button>
           </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <label className="dlg-field-label" style={{ flexShrink: 0 }}>{t("lblDlgSettingsAiTemplatesMode")}</label>
+          <label className="dlg-field-label" style={{ flexShrink: 0 }}>{t("lblStgAiTemplatesMode")}</label>
           <select value={selectedTemplateId || ""} onChange={e => handleTemplateChange(e.target.value)}
             className="select" style={{ flex: 1 }}>
             {templates.map(tpl => <option key={tpl.id} value={tpl.id}>{tpl.name}</option>)}
@@ -4804,6 +4813,8 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
   const [desc, setDesc]                   = useState(init?.desc || "");
   const [note, setNote]                   = useState(init?.note || "");
   const [style, setStyle]                 = useState(init?.style || "");
+  const [referenceArtist, setReferenceArtist]         = useState(init?.referenceArtist || "");
+  const [referenceComplement, setReferenceComplement] = useState(init?.referenceComplement || "");
   const [lyrics, setLyrics]               = useState(init?.lyrics || "");
   const [tagInput, setTagInput]           = useState(init?.tags?.join(", ") || "");
   const [linkedCards, setLinkedCards] = useState(init?.linkedCards || []);
@@ -5078,7 +5089,7 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
     if (Object.keys(e).length) { setErrors(e); return; }
     const tags = tagInput.split(",").map((tk) => tk.trim().toLowerCase()).filter(Boolean);
     const date = dateVal ? new Date(dateVal).getTime() : (card?.date || Date.now());
-    onSave({ type, name: name.trim(), sortNumber: sortNumber.trim(), desc: desc.trim(), note: note.trim(), style: style.trim(), lyrics: lyrics.trim(), tags, linkedCards, urls, mediaPath, favorite: card?.favorite || false, aiTweaks, date, translations });
+    onSave({ type, name: name.trim(), sortNumber: sortNumber.trim(), desc: desc.trim(), note: note.trim(), style: style.trim(), referenceArtist: referenceArtist.trim(), referenceComplement: referenceComplement.trim(), lyrics: lyrics.trim(), tags, linkedCards, urls, mediaPath, favorite: card?.favorite || false, aiTweaks, date, translations });
   };
 
   const projectCardIds = activeProject && activeProject !== "__unlinked__"
@@ -5088,6 +5099,27 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
     (p.type === "vocal" || p.type === "music") &&
     p.id !== card?.id &&
     (projectCardIds === null || projectCardIds.includes(p.id) || linkedCards.includes(p.id))
+  );
+
+  // What the style is aiming at: the act it evokes, plus whatever narrows it — an LP, a song,
+  // an era, a genre. The complement is deliberately vague; no content-noun fits all of those.
+  // Written once and used by BOTH style tabs (song, and music/vocal) — the style line means the
+  // same thing wherever it lives. Reference only, never merged into the style text: Suno scrubs
+  // contemporary artist names, which is the whole reason the style line describes the
+  // fingerprint instead of naming it.
+  const referenceFields = (
+    <div style={{ display: "flex", gap: 6 }}>
+      <div className="dlg-field" style={{ flex: 1 }}>
+        <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceArtist")}</label>
+        <input className="input" placeholder={t("plhDlgCardReferenceArtist")}
+          value={referenceArtist} onChange={(e) => setReferenceArtist(e.target.value)} />
+      </div>
+      <div className="dlg-field" style={{ flex: 2 }}>
+        <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceComplement")}</label>
+        <input className="input" placeholder={t("plhDlgCardReferenceComplement")}
+          value={referenceComplement} onChange={(e) => setReferenceComplement(e.target.value)} />
+      </div>
+    </div>
   );
 
   const fetchLyrics = async (targetUrl) => {
@@ -5297,6 +5329,7 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
             </div>
           )}
           {songTab === "style" && <>
+            {referenceFields}
             <div className="dlg-field">
               <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
               <textarea className="textarea"
@@ -5509,7 +5542,8 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                 value={note} onChange={(e) => setNote(e.target.value)} />
             </div>
           )}
-          {mvTab === "style" && (
+          {mvTab === "style" && (<>
+            {referenceFields}
             <div className="dlg-field">
               <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
               <textarea className="textarea"
@@ -5535,7 +5569,7 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                 </div>
               )}
             </div>
-          )}
+          </>)}
           {mvTab === "links" && <>
             <div className="dlg-field">
               <label className="dlg-field-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Globe className="icon-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>

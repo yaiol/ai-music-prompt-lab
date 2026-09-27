@@ -1,7 +1,7 @@
 {
   "name": "ai-music-prompt-lab",
   "productName": "AI Music Prompt Lab",
-  "version": "1.0.8",
+  "version": "1.0.9",
   "license": "MIT",
   "description": "AI Prompt Manager — Vocal & Music",
   "private": true,
@@ -59,7 +59,8 @@
       "createStartMenuShortcut": true,
       "menuCategory": "yaiol",
       "shortcutName": "AI Music Prompt Lab",
-      "uninstallDisplayName": "yaiol AI Music Prompt Lab"
+      "uninstallDisplayName": "yaiol AI Music Prompt Lab",
+      "artifactName": "${productName} Setup ${buildVersion}.${ext}"
     },
     "mac": {
       "target": "dmg",
@@ -100,6 +101,7 @@
   },
   "devDependencies": {
     "@electron/rebuild": "^4.2.0",
+    "@svgr/plugin-svgo": "^8.1.0",
     "@vitejs/plugin-react": "^6.1.0",
     "concurrently": "^10.0.5",
     "electron": "^43.4.1",
@@ -109,6 +111,7 @@
     "react-colorful": "^5.8.0",
     "react-dom": "^19.2.8",
     "vite": "^8.2.2",
+    "vite-plugin-svgr": "^5.2.0",
     "wait-on": "^9.1.0",
     "xlsx": "^0.18.5"
   }
