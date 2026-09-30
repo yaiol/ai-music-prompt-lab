@@ -110,7 +110,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Help",
     btnHdrNew:                              "New",
     lblHdrSelected:                         "selected",
-    btnHdrSelectAll:                        "Select all",
+    btnHdrSelectAll:                        "All",
     btnHdrClearSelection:                   "Clear",
     btnHdrUnlink:                           "Unlink",
     plhDlgTagsInput:                        "tag1, tag2, tag3...",
@@ -180,6 +180,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Use AMLP_ID tag",
     msgStgMediaAmlpId:                      "Store the song id in the file's own AMLP_ID tag when a media file is linked, instead of leaving it in the comment.",
+    lblStgMediaRenameOnSortDefault:         "Rename media on sort by default",
+    msgStgMediaRenameOnSortDefault:         "Sets the starting value of the Rename media on sort option in the Sort view. Renaming rewrites the leading number of each linked file on disk.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Theme",
@@ -557,7 +559,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Aide",
     btnHdrNew:                              "Nouveau",
     lblHdrSelected:                         "sélectionné(s)",
-    btnHdrSelectAll:                        "Tout sélectionner",
+    btnHdrSelectAll:                        "Tout",
     btnHdrClearSelection:                   "Effacer",
     btnHdrUnlink:                           "Délier",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -627,6 +629,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Utiliser la balise AMLP_ID",
     msgStgMediaAmlpId:                      "Stocker l'ID de la chanson dans la propre balise AMLP_ID du fichier lorsqu'un fichier média est lié, au lieu de le laisser dans le commentaire.",
+    lblStgMediaRenameOnSortDefault:         "Renommer les médias lors du tri par défaut",
+    msgStgMediaRenameOnSortDefault:         "Définit la valeur initiale de l'option « Renommer les médias lors du tri » dans la vue de tri. Le renommage réécrit le numéro principal de chaque fichier lié sur le disque.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Thème",
@@ -1003,7 +1007,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Hilfe",
     btnHdrNew:                              "Neu",
     lblHdrSelected:                         "ausgewählt",
-    btnHdrSelectAll:                        "Alle auswählen",
+    btnHdrSelectAll:                        "Alle",
     btnHdrClearSelection:                   "Auswahl aufheben",
     btnHdrUnlink:                           "Trennen",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -1073,6 +1077,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID-Tag verwenden",
     msgStgMediaAmlpId:                      "Die Song-ID im eigenen AMLP_ID-Tag der Datei speichern, wenn eine Mediendatei verknüpft wird, anstatt sie im Kommentar zu belassen.",
+    lblStgMediaRenameOnSortDefault:         "Medien beim Sortieren standardmäßig umbenennen",
+    msgStgMediaRenameOnSortDefault:         "Legt den Startwert der Option „Medien beim Sortieren umbenennen“ in der Sortieransicht fest. Das Umbenennen überschreibt die führende Nummer jeder verknüpften Datei auf der Festplatte.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Thema",
@@ -1449,7 +1455,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ayuda",
     btnHdrNew:                              "Nuevo",
     lblHdrSelected:                         "seleccionado(s)",
-    btnHdrSelectAll:                        "Seleccionar todo",
+    btnHdrSelectAll:                        "Todos",
     btnHdrClearSelection:                   "Limpiar",
     btnHdrUnlink:                           "Desvincular",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -1519,6 +1525,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
     msgStgMediaAmlpId:                      "Almacenar el ID de la canción en la propia etiqueta AMLP_ID del archivo cuando se vincula un archivo multimedia, en lugar de dejarlo en el comentario.",
+    lblStgMediaRenameOnSortDefault:         "Renombrar medios al ordenar por defecto",
+    msgStgMediaRenameOnSortDefault:         "Establece el valor inicial de la opción «Renombrar medios al ordenar» en la vista de ordenación. El cambio de nombre reescribe el número principal de cada archivo vinculado en el disco.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -1895,7 +1903,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "selecionado(s)",
-    btnHdrSelectAll:                        "Selecionar tudo",
+    btnHdrSelectAll:                        "Todos",
     btnHdrClearSelection:                   "Limpar",
     btnHdrUnlink:                           "Desvincular",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -1965,6 +1973,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Usar tag AMLP_ID",
     msgStgMediaAmlpId:                      "Armazenar o ID da música na própria tag AMLP_ID do arquivo quando um arquivo de mídia for vinculado, em vez de deixá-lo no comentário.",
+    lblStgMediaRenameOnSortDefault:         "Renomear mídia ao ordenar por padrão",
+    msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opção Renomear mídia ao ordenar na visualização de Ordenação. A renomeação reescreve o número principal de cada arquivo vinculado no disco.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -2341,7 +2351,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "selecionado(s)",
-    btnHdrSelectAll:                        "Selecionar tudo",
+    btnHdrSelectAll:                        "Todos",
     btnHdrClearSelection:                   "Limpar",
     btnHdrUnlink:                           "Desligar",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -2411,6 +2421,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
     msgStgMediaAmlpId:                      "Armazenar o ID da música na própria etiqueta AMLP_ID do ficheiro quando um ficheiro multimédia é ligado, em vez de o deixar no comentário.",
+    lblStgMediaRenameOnSortDefault:         "Mudar o nome dos ficheiros multimédia ao ordenar por predefinição",
+    msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opção Mudar o nome dos ficheiros multimédia ao ordenar na vista de Ordenação. A mudança de nome reescreve o número principal de cada ficheiro ligado no disco.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -2787,7 +2799,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "帮助",
     btnHdrNew:                              "新建",
     lblHdrSelected:                         "已选择",
-    btnHdrSelectAll:                        "全选",
+    btnHdrSelectAll:                        "全部",
     btnHdrClearSelection:                   "清除",
     btnHdrUnlink:                           "取消链接",
     plhDlgTagsInput:                        "标签1, 标签2, 标签3…",
@@ -2857,6 +2869,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "使用 AMLP_ID 标签",
     msgStgMediaAmlpId:                      "当媒体文件被链接时，将歌曲 ID 存储在文件自身的 AMLP_ID 标签中，而不是留在注释中。",
+    lblStgMediaRenameOnSortDefault:         "默认按排序重命名媒体",
+    msgStgMediaRenameOnSortDefault:         "设置排序视图中“按排序重命名媒体”选项的初始值。重命名会重写磁盘上每个链接文件的前导编号。",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "主题",
@@ -3233,7 +3247,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "說明",
     btnHdrNew:                              "新增",
     lblHdrSelected:                         "已選取",
-    btnHdrSelectAll:                        "全選",
+    btnHdrSelectAll:                        "全部",
     btnHdrClearSelection:                   "清除",
     btnHdrUnlink:                           "取消連結",
     plhDlgTagsInput:                        "標籤1, 標籤2, 標籤3…",
@@ -3303,6 +3317,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "使用 AMLP_ID 標籤",
     msgStgMediaAmlpId:                      "當媒體檔案被連結時，將歌曲 ID 儲存在檔案本身的 AMLP_ID 標籤中，而不是留在註解中。",
+    lblStgMediaRenameOnSortDefault:         "預設依排序重新命名媒體",
+    msgStgMediaRenameOnSortDefault:         "設定排序檢視中「依排序重新命名媒體」選項的起始值。重新命名會重寫磁碟上每個連結檔案的前導編號。",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "主題",
@@ -3679,7 +3695,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "ヘルプ",
     btnHdrNew:                              "新規",
     lblHdrSelected:                         "件選択中",
-    btnHdrSelectAll:                        "すべて選択",
+    btnHdrSelectAll:                        "すべて",
     btnHdrClearSelection:                   "クリア",
     btnHdrUnlink:                           "リンク解除",
     plhDlgTagsInput:                        "タグ1, タグ2, タグ3…",
@@ -3749,6 +3765,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_IDタグを使用",
     msgStgMediaAmlpId:                      "メディアファイルがリンクされた際、曲のIDをコメントに残す代わりに、ファイル自身のAMLP_IDタグに保存します。",
+    lblStgMediaRenameOnSortDefault:         "並べ替え時にメディアをデフォルトで名前変更",
+    msgStgMediaRenameOnSortDefault:         "並べ替えビューの「並べ替え時にメディアを名前変更」オプションの初期値を設定します。名前変更により、ディスク上の各リンクファイルの先頭番号が書き換えられます。",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "テーマ",
@@ -4125,7 +4143,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Pomoc",
     btnHdrNew:                              "Nowy",
     lblHdrSelected:                         "zaznaczono",
-    btnHdrSelectAll:                        "Zaznacz wszystko",
+    btnHdrSelectAll:                        "Wszystkie",
     btnHdrClearSelection:                   "Wyczyść",
     btnHdrUnlink:                           "Odłącz",
     plhDlgTagsInput:                        "etykieta1, etykieta2, etykieta3…",
@@ -4195,6 +4213,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Użyj tagu AMLP_ID",
     msgStgMediaAmlpId:                      "Zapisz identyfikator utworu we własnym tagu AMLP_ID pliku po połączeniu pliku multimedialnego, zamiast pozostawiać go w komentarzu.",
+    lblStgMediaRenameOnSortDefault:         "Domyślnie zmieniaj nazwy multimediów podczas sortowania",
+    msgStgMediaRenameOnSortDefault:         "Ustawia początkową wartość opcji „Zmieniaj nazwy multimediów podczas sortowania” w widoku sortowania. Zmiana nazwy przepisuje początkowy numer każdego połączonego pliku na dysku.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Motyw",
@@ -4571,7 +4591,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Довідка",
     btnHdrNew:                              "Новий",
     lblHdrSelected:                         "вибрано",
-    btnHdrSelectAll:                        "Вибрати все",
+    btnHdrSelectAll:                        "Усі",
     btnHdrClearSelection:                   "Очистити",
     btnHdrUnlink:                           "Від'єднати",
     plhDlgTagsInput:                        "тег1, тег2, тег3…",
@@ -4641,6 +4661,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Використовувати тег AMLP_ID",
     msgStgMediaAmlpId:                      "Зберігати ідентифікатор пісні у власному тегу AMLP_ID файлу, коли медіафайл пов'язано, замість залишати його в коментарі.",
+    lblStgMediaRenameOnSortDefault:         "Перейменовувати медіа за замовчуванням під час сортування",
+    msgStgMediaRenameOnSortDefault:         "Встановлює початкове значення опції «Перейменовувати медіа під час сортування» у вікні сортування. Перейменування перезаписує початковий номер кожного пов'язаного файлу на диску.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Тема",
@@ -5017,7 +5039,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Aiuto",
     btnHdrNew:                              "Nuovo",
     lblHdrSelected:                         "selezionato/i",
-    btnHdrSelectAll:                        "Seleziona tutto",
+    btnHdrSelectAll:                        "Tutti",
     btnHdrClearSelection:                   "Cancella",
     btnHdrUnlink:                           "Scollega",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -5087,6 +5109,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Usa tag AMLP_ID",
     msgStgMediaAmlpId:                      "Memorizza l'ID del brano nel tag AMLP_ID del file quando un file multimediale è collegato, invece di lasciarlo nel commento.",
+    lblStgMediaRenameOnSortDefault:         "Rinomina i media all'ordinamento per impostazione predefinita",
+    msgStgMediaRenameOnSortDefault:         "Imposta il valore iniziale dell'opzione «Rinomina i media all'ordinamento» nella vista Ordina. La ridenominazione riscrive il numero iniziale di ogni file collegato sul disco.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -5463,7 +5487,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "مساعدة",
     btnHdrNew:                              "جديد",
     lblHdrSelected:                         "محدد",
-    btnHdrSelectAll:                        "تحديد الكل",
+    btnHdrSelectAll:                        "الكل",
     btnHdrClearSelection:                   "مسح",
     btnHdrUnlink:                           "إلغاء الربط",
     plhDlgTagsInput:                        "وسم1، وسم2، وسم3…",
@@ -5533,6 +5557,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "استخدام وسم AMLP_ID",
     msgStgMediaAmlpId:                      "تخزين معرّف الأغنية في وسم AMLP_ID الخاص بالملف عند ربط ملف وسائط، بدلاً من تركه في التعليق.",
+    lblStgMediaRenameOnSortDefault:         "إعادة تسمية الوسائط عند الفرز افتراضيًا",
+    msgStgMediaRenameOnSortDefault:         "يحدد القيمة الأولية لخيار «إعادة تسمية الوسائط عند الفرز» في عرض الفرز. تعيد عملية إعادة التسمية كتابة الرقم الرئيسي لكل ملف مرتبط على القرص.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "المظهر",
@@ -5909,7 +5935,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Hulp",
     btnHdrNew:                              "Nieuw",
     lblHdrSelected:                         "geselecteerd",
-    btnHdrSelectAll:                        "Alles selecteren",
+    btnHdrSelectAll:                        "Alles",
     btnHdrClearSelection:                   "Selectie wissen",
     btnHdrUnlink:                           "Ontkoppelen",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -5979,6 +6005,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID-tag gebruiken",
     msgStgMediaAmlpId:                      "Sla de song-ID op in de eigen AMLP_ID-tag van het bestand wanneer een mediabestand is gekoppeld, in plaats van deze in de opmerking te laten.",
+    lblStgMediaRenameOnSortDefault:         "Media standaard hernoemen bij sorteren",
+    msgStgMediaRenameOnSortDefault:         "Stelt de startwaarde in van de optie 'Media hernoemen bij sorteren' in de sorteerweergave. Hernoemen herschrijft het voorloopnummer van elk gekoppeld bestand op schijf.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Thema",
@@ -6355,7 +6383,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Hjelp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valgt",
-    btnHdrSelectAll:                        "Velg alle",
+    btnHdrSelectAll:                        "Alle",
     btnHdrClearSelection:                   "Fjern utvalg",
     btnHdrUnlink:                           "Koble fra",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -6425,6 +6453,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Bruk AMLP_ID-tagg",
     msgStgMediaAmlpId:                      "Lagre sang-ID-en i filens egen AMLP_ID-tagg når en mediefil er koblet, i stedet for å la den stå i kommentaren.",
+    lblStgMediaRenameOnSortDefault:         "Gi medier nytt navn ved sortering som standard",
+    msgStgMediaRenameOnSortDefault:         "Angir startverdien for alternativet «Gi medier nytt navn ved sortering» i sorteringsvisningen. Navneendring omskriver det ledende nummeret for hver koblet fil på disken.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -6801,7 +6831,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Hjälp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valda",
-    btnHdrSelectAll:                        "Välj alla",
+    btnHdrSelectAll:                        "Alla",
     btnHdrClearSelection:                   "Rensa urval",
     btnHdrUnlink:                           "Koppla loss",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -6871,6 +6901,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Använd AMLP_ID-tagg",
     msgStgMediaAmlpId:                      "Lagra låt-ID:t i filens egen AMLP_ID-tagg när en mediefil länkas, istället för att lämna det i kommentaren.",
+    lblStgMediaRenameOnSortDefault:         "Byt namn på media vid sortering som standard",
+    msgStgMediaRenameOnSortDefault:         "Anger startvärdet för alternativet ”Byt namn på media vid sortering” i sorteringsvyn. Namnbytet skriver om det inledande numret för varje länkad fil på disken.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -7247,7 +7279,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Yardım",
     btnHdrNew:                              "Yeni",
     lblHdrSelected:                         "seçildi",
-    btnHdrSelectAll:                        "Tümünü Seç",
+    btnHdrSelectAll:                        "Tümü",
     btnHdrClearSelection:                   "Temizle",
     btnHdrUnlink:                           "Bağlantıyı Kes",
     plhDlgTagsInput:                        "etiket1, etiket2, etiket3…",
@@ -7317,6 +7349,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID etiketini kullan",
     msgStgMediaAmlpId:                      "Bir medya dosyası bağlandığında şarkı kimliğini yorumda bırakmak yerine, dosyanın kendi AMLP_ID etiketinde saklayın.",
+    lblStgMediaRenameOnSortDefault:         "Varsayılan olarak sıralamada medyayı yeniden adlandır",
+    msgStgMediaRenameOnSortDefault:         "Sıralama görünümündeki 'Sıralamada medyayı yeniden adlandır' seçeneğinin başlangıç değerini ayarlar. Yeniden adlandırma, diskteki her bağlantılı dosyanın baştaki numarasını yeniden yazar.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -7693,7 +7727,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Hjælp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valgt",
-    btnHdrSelectAll:                        "Vælg alle",
+    btnHdrSelectAll:                        "Alle",
     btnHdrClearSelection:                   "Ryd udvalg",
     btnHdrUnlink:                           "Fjern forbindelse",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -7763,6 +7797,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Brug AMLP_ID-tag",
     msgStgMediaAmlpId:                      "Gem sang-id'et i filens egen AMLP_ID-tag, når en mediefil er linket, i stedet for at lade det stå i kommentaren.",
+    lblStgMediaRenameOnSortDefault:         "Omdøb medier ved sortering som standard",
+    msgStgMediaRenameOnSortDefault:         "Indstiller startværdien for indstillingen 'Omdøb medier ved sortering' i sorteringsvisningen. Omdøbning omskriver det ledende nummer for hver tilknyttet fil på disken.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -8139,7 +8175,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ohje",
     btnHdrNew:                              "Uusi",
     lblHdrSelected:                         "valittu",
-    btnHdrSelectAll:                        "Valitse kaikki",
+    btnHdrSelectAll:                        "Kaikki",
     btnHdrClearSelection:                   "Tyhjennä",
     btnHdrUnlink:                           "Poista linkitys",
     plhDlgTagsInput:                        "tunniste1, tunniste2, tunniste3…",
@@ -8209,6 +8245,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Käytä AMLP_ID-tunnistetta",
     msgStgMediaAmlpId:                      "Tallenna kappaleen tunnus tiedoston omaan AMLP_ID-tunnisteeseen, kun mediatiedosto linkitetään, sen sijaan että se jätettäisiin kommenttiin.",
+    lblStgMediaRenameOnSortDefault:         "Nimeä media uudelleen lajittelun yhteydessä oletuksena",
+    msgStgMediaRenameOnSortDefault:         "Asettaa Lajittelu-näkymän 'Nimeä media uudelleen lajittelun yhteydessä' -asetuksen aloitusarvon. Uudelleennimeäminen kirjoittaa uudelleen jokaisen linkitetyn tiedoston etunumeron levylle.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Teema",
@@ -8585,7 +8623,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Βοήθεια",
     btnHdrNew:                              "Νέο",
     lblHdrSelected:                         "επιλεγμένα",
-    btnHdrSelectAll:                        "Επιλογή όλων",
+    btnHdrSelectAll:                        "Όλα",
     btnHdrClearSelection:                   "Εκκαθάριση",
     btnHdrUnlink:                           "Αποσύνδεση",
     plhDlgTagsInput:                        "ετικέτα1, ετικέτα2, ετικέτα3…",
@@ -8655,6 +8693,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Χρήση ετικέτας AMLP_ID",
     msgStgMediaAmlpId:                      "Αποθήκευση του αναγνωριστικού τραγουδιού στην ετικέτα AMLP_ID του ίδιου του αρχείου όταν συνδέεται ένα αρχείο πολυμέσων, αντί να παραμένει στο σχόλιο.",
+    lblStgMediaRenameOnSortDefault:         "Μετονομασία πολυμέσων κατά την ταξινόμηση από προεπιλογή",
+    msgStgMediaRenameOnSortDefault:         "Ορίζει την αρχική τιμή της επιλογής «Μετονομασία πολυμέσων κατά την ταξινόμηση» στην προβολή Ταξινόμηση. Η μετονομασία ξαναγράφει τον αρχικό αριθμό κάθε συνδεδεμένου αρχείου στο δίσκο.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Θέμα",
@@ -9031,7 +9071,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "עזרה",
     btnHdrNew:                              "חדש",
     lblHdrSelected:                         "נבחרו",
-    btnHdrSelectAll:                        "בחר הכל",
+    btnHdrSelectAll:                        "הכל",
     btnHdrClearSelection:                   "נקה",
     btnHdrUnlink:                           "נתק",
     plhDlgTagsInput:                        "תגית1, תגית2, תגית3…",
@@ -9101,6 +9141,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "השתמש בתגית AMLP_ID",
     msgStgMediaAmlpId:                      "שמור את מזהה השיר בתגית AMLP_ID של הקובץ עצמו כאשר קובץ מדיה מקושר, במקום להשאירו בתגית ההערה.",
+    lblStgMediaRenameOnSortDefault:         "שנה שם מדיה במיון כברירת מחדל",
+    msgStgMediaRenameOnSortDefault:         "מגדיר את ערך ההתחלה של האפשרות 'שנה שם מדיה במיון' בתצוגת המיון. שינוי שם כותב מחדש את המספר המוביל של כל קובץ מקושר בדיסק.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "ערכת נושא",
@@ -9477,7 +9519,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "도움말",
     btnHdrNew:                              "새로 만들기",
     lblHdrSelected:                         "개 선택됨",
-    btnHdrSelectAll:                        "모두 선택",
+    btnHdrSelectAll:                        "모두",
     btnHdrClearSelection:                   "지우기",
     btnHdrUnlink:                           "연결 해제",
     plhDlgTagsInput:                        "태그1, 태그2, 태그3…",
@@ -9547,6 +9589,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID 태그 사용",
     msgStgMediaAmlpId:                      "미디어 파일이 연결될 때 노래 ID를 댓글에 남기는 대신 파일 자체의 AMLP_ID 태그에 저장합니다.",
+    lblStgMediaRenameOnSortDefault:         "정렬 시 미디어 이름 기본값으로 변경",
+    msgStgMediaRenameOnSortDefault:         "정렬 보기에서 '정렬 시 미디어 이름 변경' 옵션의 시작 값을 설정합니다. 이름 변경은 디스크에 있는 각 연결된 파일의 선행 번호를 다시 작성합니다.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "테마",
@@ -9923,7 +9967,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ajutor",
     btnHdrNew:                              "Nou",
     lblHdrSelected:                         "selectat(e)",
-    btnHdrSelectAll:                        "Selectează tot",
+    btnHdrSelectAll:                        "Toate",
     btnHdrClearSelection:                   "Golire",
     btnHdrUnlink:                           "Deconectează",
     plhDlgTagsInput:                        "etichetă1, etichetă2, etichetă3…",
@@ -9993,6 +10037,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Utilizează eticheta AMLP_ID",
     msgStgMediaAmlpId:                      "Stocați ID-ul melodiei în propria etichetă AMLP_ID a fișierului atunci când un fișier media este legat, în loc să-l lăsați în comentariu.",
+    lblStgMediaRenameOnSortDefault:         "Redenumire media la sortare implicit",
+    msgStgMediaRenameOnSortDefault:         "Setează valoarea inițială a opțiunii «Redenumire media la sortare» în vizualizarea Sortare. Redenumirea rescrie numărul principal al fiecărui fișier legat de pe disc.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Temă",
@@ -10369,7 +10415,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Trợ giúp",
     btnHdrNew:                              "Mới",
     lblHdrSelected:                         "đã chọn",
-    btnHdrSelectAll:                        "Chọn tất cả",
+    btnHdrSelectAll:                        "Tất cả",
     btnHdrClearSelection:                   "Xóa",
     btnHdrUnlink:                           "Hủy liên kết",
     plhDlgTagsInput:                        "thẻ1, thẻ2, thẻ3…",
@@ -10439,6 +10485,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Sử dụng thẻ AMLP_ID",
     msgStgMediaAmlpId:                      "Lưu ID bài hát vào thẻ AMLP_ID riêng của tệp khi tệp phương tiện được liên kết, thay vì để nó trong phần bình luận.",
+    lblStgMediaRenameOnSortDefault:         "Mặc định đổi tên phương tiện khi sắp xếp",
+    msgStgMediaRenameOnSortDefault:         "Đặt giá trị ban đầu của tùy chọn Đổi tên phương tiện khi sắp xếp trong chế độ xem Sắp xếp. Việc đổi tên sẽ ghi lại số dẫn đầu của mỗi tệp được liên kết trên đĩa.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Giao diện",
@@ -10815,7 +10863,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "راهنما",
     btnHdrNew:                              "جدید",
     lblHdrSelected:                         "انتخاب شده",
-    btnHdrSelectAll:                        "انتخاب همه",
+    btnHdrSelectAll:                        "همه",
     btnHdrClearSelection:                   "پاک‌کردن",
     btnHdrUnlink:                           "جدا کردن",
     plhDlgTagsInput:                        "برچسب۱، برچسب۲، برچسب۳…",
@@ -10885,6 +10933,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "استفاده از برچسب AMLP_ID",
     msgStgMediaAmlpId:                      "هنگام پیوند دادن یک فایل رسانه‌ای، شناسه آهنگ را به جای قرار دادن در بخش نظرات، در برچسب AMLP_ID خود فایل ذخیره کنید.",
+    lblStgMediaRenameOnSortDefault:         "تغییر نام رسانه هنگام مرتب‌سازی به صورت پیش‌فرض",
+    msgStgMediaRenameOnSortDefault:         "مقدار اولیه گزینه «تغییر نام رسانه هنگام مرتب‌سازی» را در نمای مرتب‌سازی تنظیم می‌کند. تغییر نام، شماره پیشرو هر فایل مرتبط را روی دیسک بازنویسی می‌کند.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "تم",
@@ -11261,7 +11311,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Nápověda",
     btnHdrNew:                              "Nový",
     lblHdrSelected:                         "vybráno",
-    btnHdrSelectAll:                        "Vybrat vše",
+    btnHdrSelectAll:                        "Všechny",
     btnHdrClearSelection:                   "Vymazat",
     btnHdrUnlink:                           "Odpojit",
     plhDlgTagsInput:                        "štítek1, štítek2, štítek3…",
@@ -11331,6 +11381,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Použít značku AMLP_ID",
     msgStgMediaAmlpId:                      "Uložit ID skladby do vlastní značky AMLP_ID souboru, když je mediální soubor propojen, namísto ponechání v komentáři.",
+    lblStgMediaRenameOnSortDefault:         "Přejmenovat média při řazení ve výchozím nastavení",
+    msgStgMediaRenameOnSortDefault:         "Nastaví počáteční hodnotu možnosti „Přejmenovat média při řazení“ v zobrazení Řazení. Přejmenování přepíše úvodní číslo každého propojeného souboru na disku.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Motiv",
@@ -11707,7 +11759,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Pomoć",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "odabrano",
-    btnHdrSelectAll:                        "Odaberi sve",
+    btnHdrSelectAll:                        "Sve",
     btnHdrClearSelection:                   "Očisti",
     btnHdrUnlink:                           "Odveži",
     plhDlgTagsInput:                        "oznaka1, oznaka2, oznaka3…",
@@ -11777,6 +11829,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Koristi AMLP_ID oznaku",
     msgStgMediaAmlpId:                      "Pohranite ID pjesme u vlastitu AMLP_ID oznaku datoteke kada je medijska datoteka povezana, umjesto da je ostavite u komentaru.",
+    lblStgMediaRenameOnSortDefault:         "Preimenuj medije pri sortiranju po zadano",
+    msgStgMediaRenameOnSortDefault:         "Postavlja početnu vrijednost opcije „Preimenuj medije pri sortiranju“ u prikazu Sortiranje. Preimenovanje prepisuje vodeći broj svake povezane datoteke na disku.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -12153,7 +12207,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Nou",
     lblHdrSelected:                         "seleccionat",
-    btnHdrSelectAll:                        "Seleccionar tot",
+    btnHdrSelectAll:                        "Tots",
     btnHdrClearSelection:                   "Esborra",
     btnHdrUnlink:                           "Desvincular",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -12223,6 +12277,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Utilitza l'etiqueta AMLP_ID",
     msgStgMediaAmlpId:                      "Emmagatzema l'ID de la cançó a la pròpia etiqueta AMLP_ID del fitxer quan s'enllaça un fitxer multimèdia, en lloc de deixar-lo al comentari.",
+    lblStgMediaRenameOnSortDefault:         "Canvia el nom dels mitjans en ordenar per defecte",
+    msgStgMediaRenameOnSortDefault:         "Estableix el valor inicial de l'opció «Canvia el nom dels mitjans en ordenar» a la vista d'ordenació. El canvi de nom reescriu el número principal de cada fitxer enllaçat al disc.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -12599,7 +12655,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Bantuan",
     btnHdrNew:                              "Baru",
     lblHdrSelected:                         "dipilih",
-    btnHdrSelectAll:                        "Pilih semua",
+    btnHdrSelectAll:                        "Semua",
     btnHdrClearSelection:                   "Hapus",
     btnHdrUnlink:                           "Putuskan tautan",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -12669,6 +12725,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Gunakan tag AMLP_ID",
     msgStgMediaAmlpId:                      "Simpan ID lagu di tag AMLP_ID file itu sendiri saat file media ditautkan, alih-alih membiarkannya di komentar.",
+    lblStgMediaRenameOnSortDefault:         "Ganti nama media saat diurutkan secara default",
+    msgStgMediaRenameOnSortDefault:         "Mengatur nilai awal opsi Ganti nama media saat diurutkan di tampilan Urutkan. Mengganti nama akan menulis ulang nomor awal setiap file tertaut di disk.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -13045,7 +13103,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Bantuan",
     btnHdrNew:                              "Baharu",
     lblHdrSelected:                         "dipilih",
-    btnHdrSelectAll:                        "Pilih semua",
+    btnHdrSelectAll:                        "Semua",
     btnHdrClearSelection:                   "Kosongkan",
     btnHdrUnlink:                           "Nyahpaut",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -13115,6 +13173,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Guna tag AMLP_ID",
     msgStgMediaAmlpId:                      "Simpan ID lagu dalam tag AMLP_ID fail itu sendiri apabila fail media dipautkan, bukannya membiarkannya dalam komen.",
+    lblStgMediaRenameOnSortDefault:         "Namakan semula media semasa isihan secara lalai",
+    msgStgMediaRenameOnSortDefault:         "Menetapkan nilai permulaan pilihan Namakan semula media semasa isihan dalam paparan Isihan. Penamaan semula menulis semula nombor utama setiap fail terpaut pada cakera.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -13491,7 +13551,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Справка",
     btnHdrNew:                              "Новый",
     lblHdrSelected:                         "выбрано",
-    btnHdrSelectAll:                        "Выбрать все",
+    btnHdrSelectAll:                        "Все",
     btnHdrClearSelection:                   "Очистить",
     btnHdrUnlink:                           "Отвязать",
     plhDlgTagsInput:                        "тег1, тег2, тег3…",
@@ -13561,6 +13621,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Использовать тег AMLP_ID",
     msgStgMediaAmlpId:                      "Сохранять ID песни в собственном теге AMLP_ID файла при связывании медиафайла, вместо того чтобы оставлять его в комментарии.",
+    lblStgMediaRenameOnSortDefault:         "Переименовывать медиа при сортировке по умолчанию",
+    msgStgMediaRenameOnSortDefault:         "Устанавливает начальное значение параметра «Переименовывать медиа при сортировке» в представлении сортировки. Переименование перезаписывает начальный номер каждого связанного файла на диске.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Тема",
@@ -13937,7 +13999,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "วิธีใช้",
     btnHdrNew:                              "ใหม่",
     lblHdrSelected:                         "ที่เลือก",
-    btnHdrSelectAll:                        "เลือกทั้งหมด",
+    btnHdrSelectAll:                        "ทั้งหมด",
     btnHdrClearSelection:                   "ล้าง",
     btnHdrUnlink:                           "ยกเลิกการเชื่อมโยง",
     plhDlgTagsInput:                        "แท็ก1, แท็ก2, แท็ก3…",
@@ -14007,6 +14069,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "ใช้แท็ก AMLP_ID",
     msgStgMediaAmlpId:                      "จัดเก็บ ID เพลงในแท็ก AMLP_ID ของไฟล์เองเมื่อมีการเชื่อมโยงไฟล์สื่อ แทนที่จะปล่อยไว้ในความคิดเห็น",
+    lblStgMediaRenameOnSortDefault:         "เปลี่ยนชื่อสื่อเมื่อจัดเรียงตามค่าเริ่มต้น",
+    msgStgMediaRenameOnSortDefault:         "ตั้งค่าเริ่มต้นของตัวเลือก 'เปลี่ยนชื่อสื่อเมื่อจัดเรียง' ในมุมมองการจัดเรียง การเปลี่ยนชื่อจะเขียนทับหมายเลขนำหน้าของแต่ละไฟล์ที่เชื่อมโยงบนดิสก์",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "ธีม",
@@ -14383,7 +14447,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Օգնություն",
     btnHdrNew:                              "Նոր",
     lblHdrSelected:                         "ընտրված",
-    btnHdrSelectAll:                        "Ընտրել բոլորը",
+    btnHdrSelectAll:                        "Բոլորը",
     btnHdrClearSelection:                   "Մաքրել",
     btnHdrUnlink:                           "Անջատել",
     plhDlgTagsInput:                        "պիտակ1, պիտակ2, պիտակ3…",
@@ -14453,6 +14517,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Օգտագործել AMLP_ID պիտակը",
     msgStgMediaAmlpId:                      "Երգի ID-ն պահել ֆայլի սեփական AMLP_ID պիտակում, երբ մեդիա ֆայլը կապված է, այլ ոչ թե թողնել մեկնաբանության մեջ։",
+    lblStgMediaRenameOnSortDefault:         "Լռելյայն վերանվանել մեդիան տեսակավորման ժամանակ",
+    msgStgMediaRenameOnSortDefault:         "Սահմանում է «Վերանվանել մեդիան տեսակավորման ժամանակ» տարբերակի սկզբնական արժեքը Տեսակավորման տեսքում: Վերանվանումը վերագրում է յուրաքանչյուր կապակցված ֆայլի առաջատար համարը սկավառակի վրա:",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Թեմա",
@@ -14829,7 +14895,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Справка",
     btnHdrNew:                              "Нов",
     lblHdrSelected:                         "избрани",
-    btnHdrSelectAll:                        "Избери всички",
+    btnHdrSelectAll:                        "Всички",
     btnHdrClearSelection:                   "Изчисти",
     btnHdrUnlink:                           "Откачи",
     plhDlgTagsInput:                        "етикет1, етикет2, етикет3…",
@@ -14899,6 +14965,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Използвай AMLP_ID таг",
     msgStgMediaAmlpId:                      "Съхранявайте ID на песента в собствения AMLP_ID таг на файла, когато медиен файл е свързан, вместо да го оставяте в коментара.",
+    lblStgMediaRenameOnSortDefault:         "Преименуване на медия при сортиране по подразбиране",
+    msgStgMediaRenameOnSortDefault:         "Задава началната стойност на опцията „Преименуване на медия при сортиране“ в изгледа за сортиране. Преименуването презаписва водещия номер на всеки свързан файл на диска.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Тема",
@@ -15275,7 +15343,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Axuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "seleccionados",
-    btnHdrSelectAll:                        "Seleccionar todo",
+    btnHdrSelectAll:                        "Todos",
     btnHdrClearSelection:                   "Limpar",
     btnHdrUnlink:                           "Desvincular",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -15345,6 +15413,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
     msgStgMediaAmlpId:                      "Almacenar o ID da canción na propia etiqueta AMLP_ID do ficheiro cando se vincula un ficheiro multimedia, en lugar de deixalo no comentario.",
+    lblStgMediaRenameOnSortDefault:         "Renomear medios ao ordenar por defecto",
+    msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opción «Renomear medios ao ordenar» na vista de ordenación. O cambio de nome reescribe o número principal de cada ficheiro vinculado no disco.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -15721,7 +15791,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Súgó",
     btnHdrNew:                              "Új",
     lblHdrSelected:                         "kijelölve",
-    btnHdrSelectAll:                        "Összes kijelölése",
+    btnHdrSelectAll:                        "Összes",
     btnHdrClearSelection:                   "Törlés",
     btnHdrUnlink:                           "Leválasztás",
     plhDlgTagsInput:                        "címke1, címke2, címke3…",
@@ -15791,6 +15861,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID címke használata",
     msgStgMediaAmlpId:                      "A dal azonosítóját a fájl saját AMLP_ID címkéjében tárolja, amikor egy médiafájl hivatkozva van, ahelyett, hogy a megjegyzésben hagyná.",
+    lblStgMediaRenameOnSortDefault:         "Média átnevezése rendezéskor alapértelmezetten",
+    msgStgMediaRenameOnSortDefault:         "Beállítja a „Média átnevezése rendezéskor” opció kezdőértékét a Rendezés nézetben. Az átnevezés felülírja az egyes kapcsolt fájlok vezető számát a lemezen.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Téma",
@@ -16167,7 +16239,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Pagalba",
     btnHdrNew:                              "Naujas",
     lblHdrSelected:                         "pasirinkta",
-    btnHdrSelectAll:                        "Pasirinkti viską",
+    btnHdrSelectAll:                        "Visi",
     btnHdrClearSelection:                   "Išvalyti",
     btnHdrUnlink:                           "Atsaistyti",
     plhDlgTagsInput:                        "žyma1, žyma2, žyma3…",
@@ -16237,6 +16309,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Naudoti AMLP_ID žymę",
     msgStgMediaAmlpId:                      "Išsaugoti dainos ID paties failo AMLP_ID žymoje, kai medijos failas yra susietas, užuot palikus jį komentare.",
+    lblStgMediaRenameOnSortDefault:         "Pervardyti mediją rūšiuojant pagal numatytuosius nustatymus",
+    msgStgMediaRenameOnSortDefault:         "Nustato parinkties „Pervardyti mediją rūšiuojant“ pradinę reikšmę rūšiavimo rodinyje. Pervardijimas perrašo kiekvieno susieto failo pradinį numerį diske.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -16613,7 +16687,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Помош",
     btnHdrNew:                              "Нов",
     lblHdrSelected:                         "избрани",
-    btnHdrSelectAll:                        "Избери ги сите",
+    btnHdrSelectAll:                        "Сите",
     btnHdrClearSelection:                   "Исчисти",
     btnHdrUnlink:                           "Одврзи",
     plhDlgTagsInput:                        "ознака1, ознака2, ознака3…",
@@ -16683,6 +16757,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Користи AMLP_ID ознака",
     msgStgMediaAmlpId:                      "Зачувајте го ID-то на песната во сопствената AMLP_ID ознака на датотеката кога медиумска датотека е поврзана, наместо да го оставите во коментарот.",
+    lblStgMediaRenameOnSortDefault:         "Преименувај медиум при сортирање по стандард",
+    msgStgMediaRenameOnSortDefault:         "Ја поставува почетната вредност на опцијата „Преименувај медиум при сортирање“ во приказот Сортирање. Преименувањето го препишува водечкиот број на секоја поврзана датотека на дискот.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Тема",
@@ -17059,7 +17135,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Помоћ",
     btnHdrNew:                              "Ново",
     lblHdrSelected:                         "изабрано",
-    btnHdrSelectAll:                        "Изабери све",
+    btnHdrSelectAll:                        "Сви",
     btnHdrClearSelection:                   "Обриши",
     btnHdrUnlink:                           "Одвежи",
     plhDlgTagsInput:                        "ознака1, ознака2, ознака3…",
@@ -17129,6 +17205,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Користи AMLP_ID ознаку",
     msgStgMediaAmlpId:                      "Сачувајте ID песме у сопственој AMLP_ID ознаци датотеке када је медијска датотека повезана, уместо да је остављате у коментару.",
+    lblStgMediaRenameOnSortDefault:         "Преименуј медије при сортирању подразумевано",
+    msgStgMediaRenameOnSortDefault:         "Поставља почетну вредност опције „Преименуј медије при сортирању“ у приказу Сортирање. Преименовање преписује водећи број сваке повезане датотеке на диску.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Тема",
@@ -17505,7 +17583,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Nápoveda",
     btnHdrNew:                              "Nový",
     lblHdrSelected:                         "vybrané",
-    btnHdrSelectAll:                        "Vybrať všetko",
+    btnHdrSelectAll:                        "Všetky",
     btnHdrClearSelection:                   "Vymazať",
     btnHdrUnlink:                           "Odpojiť",
     plhDlgTagsInput:                        "štítok1, štítok2, štítok3…",
@@ -17575,6 +17653,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Použiť značku AMLP_ID",
     msgStgMediaAmlpId:                      "Uložiť ID skladby do vlastnej značky AMLP_ID súboru, keď je mediálny súbor prepojený, namiesto ponechania v komentári.",
+    lblStgMediaRenameOnSortDefault:         "Predvolene premenovať médiá pri triedení",
+    msgStgMediaRenameOnSortDefault:         "Nastaví počiatočnú hodnotu možnosti „Premenovať médiá pri triedení“ v zobrazení Triedenie. Premenovanie prepíše úvodné číslo každého prepojeného súboru na disku.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Téma",
@@ -17951,7 +18031,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Pomoč",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "izbranih",
-    btnHdrSelectAll:                        "Izberi vse",
+    btnHdrSelectAll:                        "Vsi",
     btnHdrClearSelection:                   "Počisti",
     btnHdrUnlink:                           "Odveži",
     plhDlgTagsInput:                        "oznaka1, oznaka2, oznaka3…",
@@ -18021,6 +18101,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Uporabi oznako AMLP_ID",
     msgStgMediaAmlpId:                      "Shrani ID pesmi v lastno oznako AMLP_ID datoteke, ko je medijska datoteka povezana, namesto da jo pustite v komentarju.",
+    lblStgMediaRenameOnSortDefault:         "Privzeto preimenuj medije ob razvrščanju",
+    msgStgMediaRenameOnSortDefault:         "Nastavi začetno vrednost možnosti „Preimenuj medije ob razvrščanju“ v pogledu Razvrščanje. Preimenovanje prepiše vodilno številko vsake povezane datoteke na disku.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",
@@ -18397,7 +18479,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "உதவி",
     btnHdrNew:                              "புதியது",
     lblHdrSelected:                         "தேர்ந்தெடுக்கப்பட்டவை",
-    btnHdrSelectAll:                        "அனைத்தையும் தேர்ந்தெடு",
+    btnHdrSelectAll:                        "அனைத்தும்",
     btnHdrClearSelection:                   "அழி",
     btnHdrUnlink:                           "இணைப்பை நீக்கு",
     plhDlgTagsInput:                        "குறி1, குறி2, குறி3…",
@@ -18467,6 +18549,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID குறிச்சொல்லைப் பயன்படுத்து",
     msgStgMediaAmlpId:                      "ஒரு மீடியா கோப்பு இணைக்கப்படும்போது, பாடல் ஐடியை கருத்துப் பகுதியில் விடாமல், கோப்பின் சொந்த AMLP_ID குறிச்சொல்லில் சேமிக்கவும்.",
+    lblStgMediaRenameOnSortDefault:         "இயல்புநிலையாக வரிசைப்படுத்தும் போது மீடியாவை மறுபெயரிடு",
+    msgStgMediaRenameOnSortDefault:         "வரிசைப்படுத்துதல் காட்சியில் உள்ள 'வரிசைப்படுத்தும் போது மீடியாவை மறுபெயரிடு' விருப்பத்தின் தொடக்க மதிப்பை அமைக்கிறது. மறுபெயரிடுவது வட்டில் உள்ள ஒவ்வொரு இணைக்கப்பட்ட கோப்பின் தொடக்க எண்ணையும் மீண்டும் எழுதும்.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "தீம்",
@@ -18843,7 +18927,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "सहायता",
     btnHdrNew:                              "नया",
     lblHdrSelected:                         "चयनित",
-    btnHdrSelectAll:                        "सभी चुनें",
+    btnHdrSelectAll:                        "सभी",
     btnHdrClearSelection:                   "साफ़ करें",
     btnHdrUnlink:                           "अनलिंक करें",
     plhDlgTagsInput:                        "टैग1, टैग2, टैग3…",
@@ -18913,6 +18997,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID टैग का उपयोग करें",
     msgStgMediaAmlpId:                      "जब कोई मीडिया फ़ाइल लिंक की जाती है, तो गाने की आईडी को टिप्पणी में छोड़ने के बजाय फ़ाइल के अपने AMLP_ID टैग में संग्रहीत करें।",
+    lblStgMediaRenameOnSortDefault:         "डिफ़ॉल्ट रूप से सॉर्ट करने पर मीडिया का नाम बदलें",
+    msgStgMediaRenameOnSortDefault:         "सॉर्ट व्यू में 'सॉर्ट करने पर मीडिया का नाम बदलें' विकल्प का प्रारंभिक मान सेट करता है। नाम बदलने से डिस्क पर प्रत्येक लिंक की गई फ़ाइल का अग्रणी नंबर फिर से लिखा जाता है।",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "थीम",
@@ -19289,7 +19375,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "সাহায্য",
     btnHdrNew:                              "নতুন",
     lblHdrSelected:                         "নির্বাচিত",
-    btnHdrSelectAll:                        "সব নির্বাচন করুন",
+    btnHdrSelectAll:                        "সব",
     btnHdrClearSelection:                   "মুছুন",
     btnHdrUnlink:                           "আনলিঙ্ক করুন",
     plhDlgTagsInput:                        "ট্যাগ১, ট্যাগ২, ট্যাগ৩…",
@@ -19359,6 +19445,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID ট্যাগ ব্যবহার করুন",
     msgStgMediaAmlpId:                      "যখন একটি মিডিয়া ফাইল লিঙ্ক করা হয়, তখন গানের আইডি মন্তব্য বিভাগে না রেখে ফাইলের নিজস্ব AMLP_ID ট্যাগে সংরক্ষণ করুন।",
+    lblStgMediaRenameOnSortDefault:         "ডিফল্টরূপে সাজানোর সময় মিডিয়া পুনঃনামকরণ করুন",
+    msgStgMediaRenameOnSortDefault:         "সাজানো ভিউতে 'সাজানোর সময় মিডিয়া পুনঃনামকরণ করুন' বিকল্পের প্রারম্ভিক মান সেট করে। পুনঃনামকরণ ডিস্কে প্রতিটি লিঙ্ক করা ফাইলের অগ্রণী সংখ্যা পুনরায় লেখে।",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "থিম",
@@ -19735,7 +19823,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "مدد",
     btnHdrNew:                              "نیا",
     lblHdrSelected:                         "منتخب",
-    btnHdrSelectAll:                        "سب منتخب کریں",
+    btnHdrSelectAll:                        "تمام",
     btnHdrClearSelection:                   "صاف کریں",
     btnHdrUnlink:                           "لنک ہٹائیں",
     plhDlgTagsInput:                        "ٹیگ۱، ٹیگ۲، ٹیگ۳…",
@@ -19805,6 +19893,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID ٹیگ استعمال کریں",
     msgStgMediaAmlpId:                      "جب کوئی میڈیا فائل منسلک کی جاتی ہے، تو گانے کی ID کو تبصرے میں چھوڑنے کے بجائے فائل کے اپنے AMLP_ID ٹیگ میں محفوظ کریں۔",
+    lblStgMediaRenameOnSortDefault:         "ترتیب دینے پر میڈیا کا نام بطور ڈیفالٹ تبدیل کریں",
+    msgStgMediaRenameOnSortDefault:         "ترتیب ویو میں 'ترتیب دینے پر میڈیا کا نام تبدیل کریں' آپشن کی ابتدائی قدر سیٹ کرتا ہے۔ نام کی تبدیلی ڈسک پر ہر منسلک فائل کے ابتدائی نمبر کو دوبارہ لکھتی ہے۔",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "تھیم",
@@ -20181,7 +20271,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Msaada",
     btnHdrNew:                              "Mpya",
     lblHdrSelected:                         "zilizochaguliwa",
-    btnHdrSelectAll:                        "Chagua zote",
+    btnHdrSelectAll:                        "Zote",
     btnHdrClearSelection:                   "Futa",
     btnHdrUnlink:                           "Ondoa muunganiko",
     plhDlgTagsInput:                        "lebo1, lebo2, lebo3…",
@@ -20251,6 +20341,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Tumia lebo ya AMLP_ID",
     msgStgMediaAmlpId:                      "Hifadhi kitambulisho cha wimbo katika lebo ya AMLP_ID ya faili yenyewe wakati faili ya media imeunganishwa, badala ya kuiacha kwenye maoni.",
+    lblStgMediaRenameOnSortDefault:         "Badilisha jina la media wakati wa kupanga kwa chaguo-msingi",
+    msgStgMediaRenameOnSortDefault:         "Huweka thamani ya kuanzia ya chaguo la Badilisha jina la media wakati wa kupanga katika mwonekano wa Kupanga. Kubadilisha jina huandika upya nambari inayoongoza ya kila faili iliyounganishwa kwenye diski.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Mandhari",
@@ -20627,7 +20719,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "ਮਦਦ",
     btnHdrNew:                              "ਨਵਾਂ",
     lblHdrSelected:                         "ਚੁਣੇ ਗਏ",
-    btnHdrSelectAll:                        "ਸਭ ਚੁਣੋ",
+    btnHdrSelectAll:                        "ਸਾਰੇ",
     btnHdrClearSelection:                   "ਸਾਫ਼ ਕਰੋ",
     btnHdrUnlink:                           "ਅਨਲਿੰਕ ਕਰੋ",
     plhDlgTagsInput:                        "ਟੈਗ1, ਟੈਗ2, ਟੈਗ3…",
@@ -20697,6 +20789,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID ਟੈਗ ਵਰਤੋ",
     msgStgMediaAmlpId:                      "ਜਦੋਂ ਕੋਈ ਮੀਡੀਆ ਫਾਈਲ ਲਿੰਕ ਕੀਤੀ ਜਾਂਦੀ ਹੈ, ਤਾਂ ਗੀਤ ਦੀ ID ਨੂੰ ਟਿੱਪਣੀ ਵਿੱਚ ਛੱਡਣ ਦੀ ਬਜਾਏ ਫਾਈਲ ਦੇ ਆਪਣੇ AMLP_ID ਟੈਗ ਵਿੱਚ ਸਟੋਰ ਕਰੋ।",
+    lblStgMediaRenameOnSortDefault:         "ਮੂਲ ਰੂਪ ਵਿੱਚ ਛਾਂਟਣ 'ਤੇ ਮੀਡੀਆ ਦਾ ਨਾਮ ਬਦਲੋ",
+    msgStgMediaRenameOnSortDefault:         "ਛਾਂਟਣ ਦ੍ਰਿਸ਼ ਵਿੱਚ 'ਛਾਂਟਣ 'ਤੇ ਮੀਡੀਆ ਦਾ ਨਾਮ ਬਦਲੋ' ਵਿਕਲਪ ਦਾ ਸ਼ੁਰੂਆਤੀ ਮੁੱਲ ਸੈੱਟ ਕਰਦਾ ਹੈ। ਨਾਮ ਬਦਲਣ ਨਾਲ ਡਿਸਕ 'ਤੇ ਹਰੇਕ ਲਿੰਕ ਕੀਤੀ ਫਾਈਲ ਦਾ ਮੋਹਰੀ ਨੰਬਰ ਦੁਬਾਰਾ ਲਿਖਿਆ ਜਾਂਦਾ ਹੈ।",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "ਥੀਮ",
@@ -21073,7 +21167,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Taimako",
     btnHdrNew:                              "Sabo",
     lblHdrSelected:                         "da aka zaɓa",
-    btnHdrSelectAll:                        "Zaɓi duka",
+    btnHdrSelectAll:                        "Duk",
     btnHdrClearSelection:                   "Share",
     btnHdrUnlink:                           "Cire haɗi",
     plhDlgTagsInput:                        "alama1, alama2, alama3…",
@@ -21143,6 +21237,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Yi amfani da tag ɗin AMLP_ID",
     msgStgMediaAmlpId:                      "Ajiye ID ɗin waƙar a cikin tag ɗin AMLP_ID na fayil ɗin lokacin da aka haɗa fayil ɗin kafofin watsa labarai, maimakon barin shi a cikin sharhi.",
+    lblStgMediaRenameOnSortDefault:         "Sake suna kafofin watsa labarai akan rarrabawa ta tsoho",
+    msgStgMediaRenameOnSortDefault:         "Yana saita ƙimar farawa na zaɓin Sake suna kafofin watsa labarai akan rarrabawa a cikin ra'ayin Rarrabawa. Sake suna yana sake rubuta lambar jagora ta kowane fayil mai alaƙa akan diski.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Jigo",
@@ -21519,7 +21615,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Iranlọwọ",
     btnHdrNew:                              "Tuntun",
     lblHdrSelected:                         "tí a yàn",
-    btnHdrSelectAll:                        "Yan gbogbo",
+    btnHdrSelectAll:                        "Gbogbo",
     btnHdrClearSelection:                   "Fọ́ kúrò",
     btnHdrUnlink:                           "Yọ ìsopọ̀",
     plhDlgTagsInput:                        "àmì1, àmì2, àmì3…",
@@ -21589,6 +21685,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Lo tag AMLP_ID",
     msgStgMediaAmlpId:                      "Fi ID orin pamọ sinu tag AMLP_ID ti faili funrarẹ nigbati faili media ba sopọ, dipo ki o fi silẹ ninu asọye.",
+    lblStgMediaRenameOnSortDefault:         "Tun orukọ media pada lori tito lẹsẹẹsẹ nipasẹ aiyipada",
+    msgStgMediaRenameOnSortDefault:         "Ṣeto iye ibẹrẹ ti aṣayan Tun orukọ media pada lori tito lẹsẹẹsẹ ni wiwo tito lẹsẹẹsẹ. Titun orukọ tun kọ nọmba asiwaju ti faili ti o ni asopọ kọọkan lori disiki.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Àkọlé",
@@ -21965,7 +22063,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "సహాయం",
     btnHdrNew:                              "కొత్తది",
     lblHdrSelected:                         "ఎంచుకున్నవి",
-    btnHdrSelectAll:                        "అన్నీ ఎంచుకోండి",
+    btnHdrSelectAll:                        "అన్నీ",
     btnHdrClearSelection:                   "క్లియర్",
     btnHdrUnlink:                           "అన్‌లింక్ చేయండి",
     plhDlgTagsInput:                        "ట్యాగ్1, ట్యాగ్2, ట్యాగ్3…",
@@ -22035,6 +22133,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID ట్యాగ్‌ని ఉపయోగించండి",
     msgStgMediaAmlpId:                      "మీడియా ఫైల్ లింక్ చేయబడినప్పుడు, పాట IDని వ్యాఖ్యలో వదిలివేయకుండా, ఫైల్ యొక్క స్వంత AMLP_ID ట్యాగ్‌లో నిల్వ చేయండి.",
+    lblStgMediaRenameOnSortDefault:         "డిఫాల్ట్‌గా క్రమబద్ధీకరించినప్పుడు మీడియా పేరు మార్చండి",
+    msgStgMediaRenameOnSortDefault:         "క్రమబద్ధీకరణ వీక్షణలో క్రమబద్ధీకరించినప్పుడు మీడియా పేరు మార్చండి ఎంపిక యొక్క ప్రారంభ విలువను సెట్ చేస్తుంది. పేరు మార్చడం డిస్క్‌లోని ప్రతి లింక్ చేయబడిన ఫైల్ యొక్క ప్రధాన సంఖ్యను తిరిగి వ్రాస్తుంది.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "థీమ్",
@@ -22411,7 +22511,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "मदत",
     btnHdrNew:                              "नवीन",
     lblHdrSelected:                         "निवडलेले",
-    btnHdrSelectAll:                        "सर्व निवडा",
+    btnHdrSelectAll:                        "सर्व",
     btnHdrClearSelection:                   "साफ करा",
     btnHdrUnlink:                           "अनलिंक करा",
     plhDlgTagsInput:                        "टॅग1, टॅग2, टॅग3…",
@@ -22481,6 +22581,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "AMLP_ID टॅग वापरा",
     msgStgMediaAmlpId:                      "जेव्हा मीडिया फाइल लिंक केली जाते, तेव्हा गाण्याची आयडी टिप्पणीमध्ये ठेवण्याऐवजी फाइलच्या स्वतःच्या AMLP_ID टॅगमध्ये साठवा.",
+    lblStgMediaRenameOnSortDefault:         "डीफॉल्टनुसार क्रमवारी लावताना मीडियाचे नाव बदला",
+    msgStgMediaRenameOnSortDefault:         "क्रमवारी दृश्यातील 'क्रमवारी लावताना मीडियाचे नाव बदला' पर्यायाचे प्रारंभिक मूल्य सेट करते. नाव बदलल्याने डिस्कवरील प्रत्येक लिंक केलेल्या फाइलचा अग्रगण्य क्रमांक पुन्हा लिहिला जातो.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "थीम",
@@ -22857,7 +22959,7 @@ const TRANSLATIONS = {
     tipHdrHelp:                             "Tulong",
     btnHdrNew:                              "Bago",
     lblHdrSelected:                         "napili",
-    btnHdrSelectAll:                        "Piliin lahat",
+    btnHdrSelectAll:                        "Lahat",
     btnHdrClearSelection:                   "I-clear",
     btnHdrUnlink:                           "I-unlink",
     plhDlgTagsInput:                        "tag1, tag2, tag3…",
@@ -22927,6 +23029,8 @@ const TRANSLATIONS = {
     // Prefix:StgMedia - Scope:settings view (Media tab)
     lblStgMediaAmlpId:                      "Gamitin ang AMLP_ID tag",
     msgStgMediaAmlpId:                      "Iimbak ang ID ng kanta sa sariling AMLP_ID tag ng file kapag naka-link ang isang media file, sa halip na iwanan ito sa komento.",
+    lblStgMediaRenameOnSortDefault:         "Palitan ang pangalan ng media sa pag-sort bilang default",
+    msgStgMediaRenameOnSortDefault:         "Itinatakda ang panimulang halaga ng opsyong Palitan ang pangalan ng media sa pag-sort sa view ng Pag-sort. Ang pagpapalit ng pangalan ay muling isinusulat ang nangungunang numero ng bawat naka-link na file sa disk.",
 
     // Prefix:StgDisplay - Scope:settings view (Display tab)
     lblStgDisplayTheme:                     "Tema",

@@ -583,7 +583,8 @@ export default function App() {
   const [mediaLinkFolder, setMediaLinkFolder] = useState("");
   const [mediaLinkFiles,  setMediaLinkFiles]  = useState([]);
   const [hideLinkedMedia, setHideLinkedMedia] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-hide-linked-media`) === "1");
-  const [renameMediaOnSort, setRenameMediaOnSort] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-sort-rename-media`) === "1");
+  const [renameMediaOnSortDefault, setRenameMediaOnSortDefault] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-sort-rename-media-default`) === "1");
+  const [renameMediaOnSort, setRenameMediaOnSort] = useState(renameMediaOnSortDefault);
   const [dragMediaFile,   setDragMediaFile]   = useState(null); // { name, path }
   const isLinkResizingRef = useRef(false);
   const linkResizeStartX  = useRef(0);
@@ -595,6 +596,7 @@ export default function App() {
   const [bulkDeleteConfirm, setBulkDeleteConfirm] = useState(false);
   const [unlinkConfirm, setUnlinkConfirm] = useState(false);
   const [bulkTagOpen, setBulkTagOpen]         = useState(false);
+  const [tagTarget, setTagTarget]             = useState(null); // { ids, scope } — the cards the tag dialog acts on, fixed at open
   const [importErrors, setImportErrors]       = useState(null);
   const [bulkTagInput, setBulkTagInput]       = useState("");
   const [viewMode, setViewMode]           = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-view`) || "grid");
@@ -647,11 +649,12 @@ export default function App() {
   const [renameEnvValue, setRenameEnvValue]         = useState("");
   const [newEnvInput, setNewEnvInput]               = useState(null);
   const [moveEnvMode, setMoveEnvMode]               = useState(null); // null | "folder" | "cards"
+  const [moveFolderId, setMoveFolderId]             = useState(null); // the project a "folder" move acts on, fixed at open
   const [moveTargetEnvId, setMoveTargetEnvId]       = useState("");
   const [moveTargetProjectId, setMoveTargetProjectId] = useState("");
   const [moveCardWarning, setMoveCardWarning]   = useState(null); // [{id,name}] or null
   const [batchTranslateOpen, setBatchTranslateOpen]           = useState(false);
-  const [batchTranslateSource, setBatchTranslateSource]     = useState(null); // "project" | "selection"
+  const [batchTranslateIds, setBatchTranslateIds]           = useState([]); // the cards the translate dialog acts on, fixed at open
   const [batchTranslateLang, setBatchTranslateLang]           = useState("");
   const [batchTranslateLangSearch, setBatchTranslateLangSearch] = useState("");
   const [batchTranslateLangOpen, setBatchTranslateLangOpen]   = useState(false);
@@ -713,6 +716,7 @@ export default function App() {
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-proj-sort-dir`, projectSortDir); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-proj-sort-dir`]: projectSortDir }) }); }, [projectSortDir]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-view`, viewMode); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-view`]: viewMode }) }); }, [viewMode]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-use-amlp-id`, useAmlpIdTag ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-use-amlp-id`]: useAmlpIdTag ? "1" : "0" }) }); }, [useAmlpIdTag]);
+  useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort-rename-media-default`, renameMediaOnSortDefault ? "1" : "0"); setRenameMediaOnSort(renameMediaOnSortDefault); }, [renameMediaOnSortDefault]);
   useEffect(() => { document.documentElement.setAttribute("data-theme", themeName); localStorage.setItem(`${STORAGE_PREFIX}-theme`, themeName); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-theme`]: themeName }) }); }, [themeName]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort`, sortBy); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-sort`]: sortBy }) }); }, [sortBy]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort-dir`, sortDir); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-sort-dir`]: sortDir }) }); }, [sortDir]);
@@ -1219,7 +1223,7 @@ export default function App() {
   const handleBulkTag = async (input, action) => {
     const tags = input.split(",").map(t => t.trim().toLowerCase()).filter(Boolean);
     if (!tags.length) return;
-    const targets = cards.filter(p => bulkCardIds.includes(p.id));
+    const targets = cards.filter(p => tagTarget.ids.includes(p.id));
     try {
       const toUpdate = targets.filter(p =>
         action === "add" ? tags.some(tg => !p.tags.includes(tg)) : tags.some(tg => p.tags.includes(tg))
@@ -1292,9 +1296,7 @@ export default function App() {
     if (!txtSettingsAiApiKey || !batchTranslateLang) return;
     const lang = batchTranslateLang;
     const targetLangName = getLangName(lang, 'en');
-    const pool = batchTranslateSource === "selection"
-      ? cards.filter(p => selectedIds.includes(p.id))
-      : sourceCards;
+    const pool = cards.filter(p => batchTranslateIds.includes(p.id));
     const projCards = pool.filter(p => p.type === "song" && p.lyrics?.trim());
     const toTranslate = [];
     for (const card of projCards) {
@@ -1422,34 +1424,17 @@ export default function App() {
     } catch (err) { showToast("❌ " + err.message); }
   };
 
-  // ── Bulk actions — ONE button per action, two targets. Selection wins; otherwise the
-  // active single project. Tag / Translate / Unlink act on the target's CARDS; Delete and
-  // Move keep their folder-level meaning on a project (delete the project, move the folder
-  // + its cards). Greyed when there is neither a selection nor a single active project. ──
-  const bulkOnSelection = selectedIds.length > 0;
-  const bulkProject = activeProjectIds.length === 1 ? projects.find(p => p.id === activeProjectIds[0]) : null;
-  const bulkEnabled = bulkOnSelection || !!bulkProject;
-  // The card set Tag/Translate/Unlink operate on (selection, else all of the active
-  // project — sourceCards is the project's cards, recursively including sub-projects,
-  // the same set the existing project-Translate uses).
-  const bulkCardIds = bulkOnSelection ? selectedIds : (bulkProject ? sourceCards.map(c => c.id) : []);
-  // Human scope shown in every bulk-action dialog: "8 selected" or "74 · Project Name".
-  const bulkScope = bulkOnSelection
-    ? `${bulkCardIds.length} ${t("lblHdrSelected")}`
-    : `${bulkCardIds.length} · ${bulkProject?.name || ""}`;
-
-  // Unlink a set of cards from a project (each individually). Used by the unified Unlink —
-  // removes bulkCardIds from the active project. Runs after the unlink confirm.
+  // Unlink the SELECTED cards from the open project (each individually). Runs after the unlink confirm.
   const handleBulkUnlink = async () => {
     const projectId = activeProjectIds[0];
     if (!projectId) return;
     try {
-      await Promise.all(bulkCardIds.map(id => apiFetch(`/projects/${projectId}/cards/${id}`, { method: "DELETE" })));
-      setProjects(prev => prev.map(p => p.id === projectId ? { ...p, cardIds: p.cardIds.filter(id => !bulkCardIds.includes(id)) } : p));
-      setCards(prev => prev.map(p => bulkCardIds.includes(p.id) ? { ...p, project: null } : p));
+      await Promise.all(selectedIds.map(id => apiFetch(`/projects/${projectId}/cards/${id}`, { method: "DELETE" })));
+      setProjects(prev => prev.map(p => p.id === projectId ? { ...p, cardIds: p.cardIds.filter(id => !selectedIds.includes(id)) } : p));
+      setCards(prev => prev.map(p => selectedIds.includes(p.id) ? { ...p, project: null } : p));
       showToast(t("tstAppRemovedFromProject"));
       setUnlinkConfirm(false);
-      if (bulkOnSelection) clearSelection();
+      clearSelection();
     } catch (err) { showToast("❌ " + err.message); }
   };
 
@@ -1531,6 +1516,15 @@ export default function App() {
 
   // Sort view — move draggedId to before/after targetId within orderedIds, then renumber the
   // whole sequence sortNumber = 1..N and persist in one bulk call.
+  // Scroll a list while something is dragged over it and the pointer nears its top or bottom edge, so a
+  // song can be carried past what is on screen (23 → 01 in one drag). dragover repeats while the
+  // pointer is held still, so the scroll keeps going; the closer to the edge, the faster.
+  const dragAutoScroll = (e) => {
+    const el = e.currentTarget, r = el.getBoundingClientRect(), zone = 80;
+    if (e.clientY < r.top + zone) el.scrollTop -= Math.ceil((r.top + zone - e.clientY) / zone * 20);
+    else if (e.clientY > r.bottom - zone) el.scrollTop += Math.ceil((e.clientY - (r.bottom - zone)) / zone * 20);
+  };
+
   const handleSortReorder = async (orderedIds, draggedId, targetId, pos) => {
     if (!draggedId || !targetId || draggedId === targetId) return;
     const list = orderedIds.filter(id => id !== draggedId);
@@ -1575,7 +1569,7 @@ export default function App() {
   const mediaLinkedCount = mediaLinkFiles.filter(isMediaLinked).length;
   const visibleMediaFiles = hideLinkedMedia ? mediaLinkFiles.filter(f => !isMediaLinked(f)) : mediaLinkFiles;
   const toggleHideLinkedMedia = () => setHideLinkedMedia(v => { const n = !v; localStorage.setItem(`${STORAGE_PREFIX}-hide-linked-media`, n ? "1" : "0"); return n; });
-  const toggleRenameMediaOnSort = () => setRenameMediaOnSort(v => { const n = !v; localStorage.setItem(`${STORAGE_PREFIX}-sort-rename-media`, n ? "1" : "0"); return n; });
+  const toggleRenameMediaOnSort = () => setRenameMediaOnSort(v => !v);
 
   const handleToggleFinalized = async () => {
     if (!activeProj) return;
@@ -1637,6 +1631,9 @@ export default function App() {
     }
     showToast(`✅ ${linked} ${t("tstAppMediaAutoLinked")}`);
   };
+
+  // Play / pause a song from its own card (link, media and sort views share this).
+  const playSong = (p) => { if (!p.mediaPath) return; if (playerMedia?.cardId === p.id) { globalPlayerRef.current?.togglePlay(); return; } setPlayerMedia({ path: p.mediaPath, cardName: p.name, cardId: p.id }); setPlaylist([]); };
 
   const s = makeStyles();
   const activeProj = activeProjectIds.length === 1 ? envProjects.find(p => p.id === activeProjectIds[0]) : null;
@@ -1710,6 +1707,22 @@ export default function App() {
   // must be null when empty. This is the shared sub-bar rule (mirror it wherever a subBar is passed).
   const tagBar = (allTags.length === 0 && selectedIds.length === 0) ? null : (
     <>
+      {/* Delete the selected cards — first in the strip, present only while cards are selected. */}
+      {selectedIds.length > 0 && (
+        <button className="btn icon small subtle" onClick={() => { setTagTarget({ ids: selectedIds, scope: `${selectedIds.length} ${t("lblHdrSelected")}` }); setBulkTagInput(""); setBulkTagOpen(true); }} title={t("tipSbrTag")} aria-label={t("tipSbrTag")}><Tag /></button>
+      )}
+      {selectedIds.length > 0 && (
+        <button className="btn icon small subtle" onClick={() => { setBatchTranslateIds(selectedIds); setBatchTranslateLang(""); setBatchTranslateLangSearch(""); setBatchTranslateOpen(true); }} title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")}><Languages /></button>
+      )}
+      {selectedIds.length > 0 && activeProjectIds.length === 1 && (
+        <button className="btn icon small subtle" onClick={() => setUnlinkConfirm(true)} title={t("tipSbrUnlink")} aria-label={t("tipSbrUnlink")}><Unlink /></button>
+      )}
+      {selectedIds.length > 0 && (
+        <button className="btn icon small subtle" onClick={() => { setMoveEnvMode("cards"); setMoveTargetEnvId(""); setMoveTargetProjectId(""); }} title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")}><FolderUp /></button>
+      )}
+      {selectedIds.length > 0 && (
+        <button className="btn icon small subtle" onClick={() => setBulkDeleteConfirm(true)} title={t("tipCardDelete")} aria-label={t("tipCardDelete")} style={{ color: "var(--danger)" }}><Trash2 /></button>
+      )}
       {allTags.map((tag) => {
         const color = clrSettingsTags[tag] || getTagColor(tag);
         const active = selectedTags.includes(tag);
@@ -1950,6 +1963,13 @@ export default function App() {
                     </label>
                     <p className="hint">{t("msgStgMediaAmlpId")}</p>
                   </div>
+                  <div className="dlg-field">
+                    <label className="check-label">
+                      <input type="checkbox" className="check-box" checked={renameMediaOnSortDefault} onChange={(e) => setRenameMediaOnSortDefault(e.target.checked)} />
+                      <span>{t("lblStgMediaRenameOnSortDefault")}</span>
+                    </label>
+                    <p className="hint">{t("msgStgMediaRenameOnSortDefault")}</p>
+                  </div>
                 </>
               ) },
               { key: "ai", label: t("tabStgAi"), icon: Sparkles, content: (
@@ -2089,7 +2109,6 @@ export default function App() {
                 const sidebarSelProj = activeProjectIds.length === 1 ? projects.find(p => p.id === activeProjectIds[0]) : null;
                 const sidebarDim = { opacity: 0.3, pointerEvents: "none" };
                 const sidebarHasPlaylist = sidebarSelProj?.urls?.some(u => { try { const h = new URL(u.href).hostname.toLowerCase(); return txtSettingsCardsMusicSites.split(",").some(s => h.includes(s.trim().toLowerCase())); } catch (_) { return false; } });
-                const sidebarFolderEnvOptions = environments.filter(e => e.id !== activeEnvId && !e.isGlobal);
                 const dimSel = !sidebarSelProj;
                 return (<>
                   {/* Sort group */}
@@ -2097,29 +2116,13 @@ export default function App() {
                     {sidebarBtn((projectSort === "date" && projectSortDir === "asc") ? <CalendarArrowUp /> : <CalendarArrowDown />, () => { if (projectSort === "date") setProjectSortDir(d => d === "asc" ? "desc" : "asc"); else { setProjectSort("date"); setProjectSortDir("desc"); } }, projectSort === "date", "Sort by date", false)}
                     {sidebarBtn((projectSort === "name" && projectSortDir === "desc") ? <ArrowDownZA /> : <ArrowDownAZ />, () => { if (projectSort === "name") setProjectSortDir(d => d === "asc" ? "desc" : "asc"); else { setProjectSort("name"); setProjectSortDir("asc"); } }, projectSort === "name", "Sort by name", false)}
                   </div>
-                  {/* Project management — new folder / import / edit / sync URLs (act on the selected project) */}
+                  {/* Project management — new folder / sync URLs (act on the selected project). Per-project
+                      import / edit / tag / translate / move / delete live on the project row; per-card
+                      tag / translate / unlink / move / delete live on the selection strip. */}
                   <div className="barv-grp">
                     {sidebarBtn(<FolderPlus />, () => { const sel = activeProjectIds.length === 1 ? activeProjectIds[0] : null; setNewFolderParentId(sel); setEditingProject(null); setProjectModalOpen(true); }, false, t("tipSbrNewProject"), false)}
-                    {sidebarBtn(<FolderOpen />, () => handleImportFolder(sidebarSelProj.id), false, t("tipSbrImportFolder"), dimSel)}
-                    {sidebarBtn(<Pencil />, () => { setEditingProject(sidebarSelProj); setProjectModalOpen(true); }, false, t("btnCardEdit"), dimSel)}
                     {sidebarBtn(<RefreshCw />, () => handleSyncMusicUrls(sidebarSelProj.id), false, t("tipSbrSyncUrls"), dimSel || !sidebarHasPlaylist)}
                   </div>
-                  {/* Bulk card actions — ONE button each; acts on the selected cards, else all
-                      cards of the active project. Greyed when neither. Delete/Move keep their
-                      folder meaning on a project (delete the project; move the folder + cards). */}
-                  <div className="barv-grp">
-                    {sidebarBtn(<Tag />, () => { setBulkTagOpen(true); setBulkTagInput(""); }, bulkTagOpen, t("tipSbrTag"), !bulkEnabled)}
-                    {sidebarBtn(<Languages />, () => { setBatchTranslateOpen(v => !v); setBatchTranslateLang(""); setBatchTranslateLangSearch(""); setBatchTranslateSource(bulkOnSelection ? "selection" : "project"); }, batchTranslateOpen, t("tipSbrTranslate"), !bulkEnabled)}
-                    {sidebarBtn(<FolderUp />, () => { if (bulkOnSelection) { setMoveEnvMode(m => m === "cards" ? null : "cards"); setMoveTargetEnvId(""); setMoveTargetProjectId(""); } else { setMoveEnvMode(m => m === "folder" ? null : "folder"); setMoveTargetEnvId(""); } }, !!moveEnvMode, t("tipSbrMoveEnv"), !bulkEnabled)}
-                    {sidebarBtn(<Unlink />, () => setUnlinkConfirm(true), false, t("tipSbrUnlink"), !(activeProjectIds.length === 1 && bulkCardIds.length > 0))}
-                  </div>
-                  {/* Delete — a single self-framed danger .btn.icon: deletes the project, or the selected cards. */}
-                  <div style={{ ...(!bulkEnabled ? sidebarDim : {}) }}>
-                    <button onClick={() => { if (bulkOnSelection) setBulkDeleteConfirm(true); else { setDeleteProjectCards(false); setDeleteProjectConfirm(bulkProject.id); } }} title={t("tipCardDelete")} className="btn icon" style={{ color: "var(--danger)" }}>
-                      <Trash2 />
-                    </button>
-                  </div>
-                  {/* Move folder modal - rendered at root level, see below */}
                   {/* Excel + doc */}
                   <div className="barv-grp">
                     {sidebarBtn(<FileSpreadsheet />, () => { const proj = activeProj || null; const ep = proj ? cards.filter(p => proj.cardIds.includes(p.id)) : cards; const epr = proj ? [proj] : projects; exportToExcel(ep, epr, proj?.name || null, t("ttlOsdSaveDoc"), API); }, false, activeProj ? `${t("tipSbrExportExcel")} "${activeProj.name}"` : t("tipSbrExportExcel"), false)}
@@ -2334,6 +2337,12 @@ export default function App() {
                               setActiveType(null);
                             }
                           }}
+                          onTag={() => { const ids = [...collectAllCardIds(proj.id)]; setTagTarget({ ids, scope: `${ids.length} · ${proj.name}` }); setBulkTagInput(""); setBulkTagOpen(true); }}
+                          onTranslate={() => { setBatchTranslateIds([...collectAllCardIds(proj.id)]); setBatchTranslateLang(""); setBatchTranslateLangSearch(""); setBatchTranslateOpen(true); }}
+                          onMove={() => { setMoveFolderId(proj.id); setMoveEnvMode("folder"); setMoveTargetEnvId(""); }}
+                          onImport={() => handleImportFolder(proj.id)}
+                          onEdit={() => { setEditingProject(proj); setProjectModalOpen(true); }}
+                          onDelete={() => { setDeleteProjectCards(false); setDeleteProjectConfirm(proj.id); }}
                           onDrop={(ids) => ids.forEach(id => addToProject(proj.id, id))}
                           langKey={langKey}
                         />
@@ -2420,7 +2429,7 @@ export default function App() {
                 <ArrowUpDown className="icon-inline" color={'var(--text-mute)'} />
                 <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)' }}>{t("lblPnlSortSongs")} ({sortViewSongs.length})</span>
               </div>
-              <div style={{ flex: 1, overflowY: "auto", padding: "12px 14px", paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 8 }}>
+              <div onDragOver={dragAutoScroll} style={{ flex: 1, overflowY: "auto", padding: "12px 14px", paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 8 }}>
                 {loading ? (
                   <div className="empty"><RotateCcw className="spinner" /></div>
                 ) : sortViewSongs.length === 0 ? (
@@ -2429,6 +2438,7 @@ export default function App() {
                   sortViewSongs.map((song, i) => (
                     <SongListCard key={song.id} song={song} types={types} anyDragging={!!draggingId} allCards={cards}
                       mode="sort" isDragging={draggingId === song.id} isLast={i === sortViewSongs.length - 1} locked={projLocked}
+                      isPlaying={playerMedia?.cardId === song.id && globalPlaying} mediaExists={mediaExists[song.id] !== false} onPlay={playSong}
                       onReorder={(draggedId, targetId, pos) => handleSortReorder(sortViewSongs.map(x => x.id), draggedId, targetId, pos)}
                       onDragStart={(e, id) => { setDraggingId(id); e.dataTransfer.setData("cardId", id); e.dataTransfer.effectAllowed = "move"; }}
                       onDragEnd={handleDragEnd}
@@ -2463,7 +2473,7 @@ export default function App() {
                         onRemoveFromProject={activeProjectIds.length === 1 ? (projId, songId) => removeFromProject(projId, songId) : null}
                         activeProjectId={activeProjectIds.length === 1 ? activeProjectIds[0] : null}
                         linkSchema={linkSchema} globalEnvId={globalEnvId}
-                        onPlay={(p) => { if (!p.mediaPath) return; if (playerMedia?.cardId === p.id) { globalPlayerRef.current?.togglePlay(); return; } setPlayerMedia({ path: p.mediaPath, cardName: p.name, cardId: p.id }); setPlaylist([]); }} />
+                        onPlay={playSong} />
                     ))
                   )}
                 </div>
@@ -2540,7 +2550,7 @@ export default function App() {
                         onRemoveFromProject={activeProjectIds.length === 1 ? (projId, songId) => removeFromProject(projId, songId) : null}
                         activeProjectId={activeProjectIds.length === 1 ? activeProjectIds[0] : null}
                         linkSchema={linkSchema} globalEnvId={globalEnvId}
-                        onPlay={(p) => { if (!p.mediaPath) return; if (playerMedia?.cardId === p.id) { globalPlayerRef.current?.togglePlay(); return; } setPlayerMedia({ path: p.mediaPath, cardName: p.name, cardId: p.id }); setPlaylist([]); }} />
+                        onPlay={playSong} />
                     ))
                   )}
                 </div>
@@ -2715,7 +2725,7 @@ export default function App() {
       {moveEnvMode && (() => {
         const isCards = moveEnvMode === "cards";
         const isFolder = moveEnvMode === "folder";
-        const folderProj = isFolder && activeProjectIds.length === 1 ? projects.find(p => p.id === activeProjectIds[0]) : null;
+        const folderProj = isFolder ? projects.find(p => p.id === moveFolderId) : null;
         if (isFolder && !folderProj) return null;
         if (isCards && selectedIds.length === 0) return null;
         const selectionHasSong = isCards && selectedIds.some(id => { const p = cards.find(x => x.id === id); return p && (p.type === "song_l" || p.type === "song_e" || p.type === "song"); });
@@ -2781,8 +2791,8 @@ export default function App() {
         );
       })()}
 
-      {/* Bulk tag modal — targets the selection, or all cards of the active project. */}
-      {bulkTagOpen && bulkEnabled && (() => {
+      {/* Bulk tag modal — targets the cards captured in tagTarget: the selection, or one project's cards. */}
+      {bulkTagOpen && tagTarget && (() => {
         const allTags = [...new Set(cards.flatMap(p => p.tags))].sort();
         const tokens = bulkTagInput.split(",");
         const currentToken = tokens[tokens.length - 1].trim().toLowerCase();
@@ -2790,7 +2800,7 @@ export default function App() {
         const suggestions = currentToken.length > 0
           ? allTags.filter(tg => tg.includes(currentToken) && tg !== currentToken && !enteredTags.includes(tg))
           : [];
-        const selectedCards = cards.filter(p => bulkCardIds.includes(p.id));
+        const selectedCards = cards.filter(p => tagTarget.ids.includes(p.id));
         const tagsOnAll  = allTags.filter(tg => selectedCards.every(p => p.tags.includes(tg)));
         const tagsOnSome = allTags.filter(tg => selectedCards.some(p => p.tags.includes(tg)) && !tagsOnAll.includes(tg));
         return (
@@ -2798,7 +2808,7 @@ export default function App() {
             <div className="dlp" style={{ maxWidth: 340 }}>
               <button className="dl-close" onClick={() => { setBulkTagOpen(false); setBulkTagInput(""); }}><X /></button>
               <Tag color="var(--tag)" className="dlp-icon" />
-              <p className="dlp-title">{t("ttlDlgTags")} ({bulkScope})</p>
+              <p className="dlp-title">{t("ttlDlgTags")} ({tagTarget.scope})</p>
               <div className="dlp-body">
               <div style={{ width: "100%" }}>
                 <Combobox
@@ -2921,7 +2931,7 @@ export default function App() {
             <button className="dl-close" onClick={() => setUnlinkConfirm(false)}><X /></button>
             <Unlink color="var(--warn)" className="dlp-icon" />
             <p className="dlp-title">{t("cfmDlgUnlinkTitle")}</p>
-            <p className="dlp-sub">{t("cfmDlgUnlinkSub")} — {bulkScope}</p>
+            <p className="dlp-sub">{t("cfmDlgUnlinkSub")} — {selectedIds.length} {t("lblHdrSelected")}</p>
             <div className="dlp-foot">
               <button className="btn subtle" onClick={() => setUnlinkConfirm(false)}>{t("btnGlbCancel")}</button>
               <button className="btn primary" style={{ "--accent": "var(--warn)", "--accent-hov": "color-mix(in srgb, var(--warn) 82%, black)" }} onClick={handleBulkUnlink}><Unlink style={{ marginRight: 6 }} />{t("btnHdrUnlink")}</button>
@@ -3146,12 +3156,13 @@ export default function App() {
 }
 
 // ── ProjectItem ────────────────────────────────────────────────────────────────
-function ProjectItem({ proj, isActive, isDropTarget, draggingId, langKey, totalCount, onSelect, onDrop, onDragProjectStart, onDragProjectEnd }) {
+function ProjectItem({ proj, isActive, isDropTarget, draggingId, langKey, totalCount, onSelect, onTag, onTranslate, onMove, onImport, onEdit, onDelete, onDrop, onDragProjectStart, onDragProjectEnd }) {
+  const t = useT(langKey);
   const [dragOver, setDragOver] = useState(false);
   const s = makeStyles();
 
   return (
-    <div style={{ display: "flex", alignItems: "center", margin: "1px 4px", position: "relative" }}
+    <div className="proj-item" style={{ display: "flex", alignItems: "center", margin: "1px 4px", position: "relative" }}
       onDragOver={(e) => { if (draggingId) { e.preventDefault(); setDragOver(true); } }}
       onDragLeave={(e) => { if (!e.currentTarget.contains(e.relatedTarget)) setDragOver(false); }}
       onDrop={(e) => {
@@ -3183,6 +3194,17 @@ function ProjectItem({ proj, isActive, isDropTarget, draggingId, langKey, totalC
         <span className="lv-item-name" style={{ flex: 1 }}>{proj.name}{proj.version > 1 && <span style={{ fontSize: 9, fontWeight: 700, color: proj.color, border: `1px solid ${proj.color}55`, borderRadius: 4, padding: '1px 4px', marginLeft: 4, opacity: 0.85 }}>v{proj.version}</span>}</span>
         <span className="lv-item-badge">{totalCount ?? proj.cardIds.length}</span>
       </button>
+      {/* Row actions — absent until the row is hovered, then floated over the count badge so the
+          name never moves. A sibling of the select button (never inside it), so a click here never
+          selects the project. */}
+      <div className="proj-acts">
+        <button className="btn icon small subtle" title={t("btnCardEdit")} aria-label={t("btnCardEdit")} onClick={onEdit}><Pencil /></button>
+        <button className="btn icon small subtle" title={t("tipSbrTag")} aria-label={t("tipSbrTag")} onClick={onTag}><Tag /></button>
+        <button className="btn icon small subtle" title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")} onClick={onTranslate}><Languages /></button>
+        <button className="btn icon small subtle" title={t("tipSbrImportFolder")} aria-label={t("tipSbrImportFolder")} onClick={onImport}><FolderOpen /></button>
+        <button className="btn icon small subtle" title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")} onClick={onMove}><FolderUp /></button>
+        <button className="btn icon small subtle" title={t("tipCardDelete")} aria-label={t("tipCardDelete")} onClick={onDelete}><Trash2 /></button>
+      </div>
     </div>
   );
 }
@@ -3680,6 +3702,15 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
     </div>
   );
 
+  // The play button is shared by the full list card and the sort card. A locked (finalized) card is
+  // inert, but listening is not editing — so the button alone stays clickable.
+  const pb = playBtnProps(mediaExists, isPlaying, cfg.accent, t);
+  const playButton = (
+    <button className="btn icon small" style={{ visibility: song.mediaPath ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent", pointerEvents: "auto" }} onClick={() => !pb.disabled && onPlay && onPlay(song)} title={pb.title} tabIndex={song.mediaPath ? 0 : -1}>
+      {pb.icon}
+    </button>
+  );
+
   return (
     <div
       style={{ ...s.card, "--card-accent": cfg.accent, opacity: isDragging ? 0.5 : 1, cursor: "grab", flexDirection: "row", alignItems: "center", gap: 12, padding: "10px 16px", ...(isSelected ? { borderColor: 'var(--accent)' + "88", background: 'var(--bg-elev)' } : {}), ...overStyle, ...(mode === "sort" ? { position: "relative" } : {}), ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
@@ -3703,11 +3734,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
             <button className="btn icon small" onClick={() => onEdit(song)} title={t("tipCardEdit")}>
               <Pencil />
             </button>
-            {(() => { const pb = playBtnProps(mediaExists, isPlaying, cfg.accent, t); return (
-              <button className="btn icon small" style={{ visibility: song.mediaPath ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent" }} onClick={() => !pb.disabled && onPlay && onPlay(song)} title={pb.title} tabIndex={song.mediaPath ? 0 : -1}>
-                {pb.icon}
-              </button>
-            ); })()}
+            {playButton}
             <button className="btn icon small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && song.mediaPath && cleanLyrics(song.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
               onClick={() => fetch(`http://localhost:${apiPort}/launch-lrc-editor`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
@@ -3719,6 +3746,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
             </button>
             <button className="btn icon small subtle" style={{ color: song.favorite ? "var(--star)" : 'var(--text-mute)' }} onClick={() => onFav && onFav(song.id)}><Star fill={song.favorite ? "var(--star)" : "none"} /></button>
           </>}
+          {mode === "sort" && playButton}
           <h3 style={{ ...s.cardTitle, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 15, color: cfg.accent, flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 4 }}>{song.sortNumber != null ? `${String(song.sortNumber).padStart(2, "0")}-${song.name}` : song.name}<span style={{ fontSize: 9, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>v{song.version || 1}</span></h3>
           {!isSpecial && song.lang && <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-mute)', border: `1px solid var(--border)`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>{song.lang}</span>}
         </div>
@@ -5812,5 +5840,9 @@ function buildCss() {
     /* Splitters now use the shared <Splitter> (lib/ui-ctl-splitter.jsx) - its .app-splitter look is
        self-injected; the old .sidebar-resize rules were removed (this app is the reference). */
     .card-item:hover { border-color: var(--card-accent) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transform: translateY(-2px); }
+    /* Project-row actions: absent until the row is hovered, then floated at the row's right edge
+       over the count badge (the same hover-reveal the release cockpit's grid rows use). */
+    .proj-acts { display: none; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); align-items: center; gap: 2px; padding: 1px; border-radius: 6px; background: var(--bg-hov); }
+    .proj-item:hover .proj-acts { display: flex; }
   `;
 }

@@ -614,6 +614,23 @@ function startServer(callback) {
     return res === "ok" ? "written" : res;
   }
 
+  // Keep the embedded track number equal to the file's new position, so a player that
+  // sorts by the tag agrees with one that sorts by the NN- filename prefix. The value's
+  // own shape survives: zero-padding ("03") and a "/total" suffix are kept as found.
+  // Returns "written", "unchanged", or a short reason. FLAC only, like every tag write here.
+  function writeTrackNumberTag(mediaPath, position) {
+    if (!/\.flac$/i.test(mediaPath)) return "not-flac";
+    const tags = readFlacFields(mediaPath);
+    if (!tags) return "unreadable";
+    const old = getField(tags, "TRACKNUMBER");
+    const m = old.match(/^\s*(\d+)(\s*\/.*)?$/);
+    const digits = m && m[1].startsWith("0") ? m[1].length : 1;
+    const next = String(position).padStart(digits, "0") + (m?.[2] || "");
+    if (next === old) return "unchanged";
+    const res = writeFlacFields(mediaPath, { TRACKNUMBER: next });
+    return res === "ok" ? "written" : res;
+  }
+
   api.put("/cards/:id", async (req, res) => {
     const { id } = req.params;
     if (!db.prepare("SELECT cad_id FROM card WHERE cad_id=?").get(id)) return res.status(404).json({ error: "Not found" });
@@ -672,7 +689,8 @@ function startServer(callback) {
   // Bulk reorder — assign cad_order = position (1-based) for the given id sequence.
   // Used by the sort view to renumber a project's songs after a drag-to-insert.
   // When renameMedia is set, also rewrite each linked media file's leading "NN-" prefix to
-  // match its new order (e.g. 07-Title.flac → 05-Title.flac), keeping the file on disk in sync.
+  // match its new order (e.g. 07-Title.flac → 05-Title.flac), and the embedded track number
+  // of a FLAC too, keeping the file on disk in sync.
   api.post("/cards/reorder", (req, res) => {
     const { ids, renameMedia } = req.body;
     if (!Array.isArray(ids)) return res.status(400).json({ error: "ids array required" });
@@ -689,8 +707,22 @@ function startServer(callback) {
         const dir = path.dirname(mp), ext = path.extname(mp);
         const stripped = path.basename(mp, ext).replace(/^\s*\d+\s*[-_.]?\s*/, "");
         const newPath = path.join(dir, String(i + 1).padStart(2, "0") + "-" + stripped + ext);
-        if (newPath === mp || fs.existsSync(newPath)) return; // skip no-op and collisions
-        try { fs.renameSync(mp, newPath); updPath.run(newPath, id); } catch { /* leave path as-is on failure */ }
+        let current = mp;
+        if (newPath !== mp && !fs.existsSync(newPath)) { // skip no-op and collisions
+          try { fs.renameSync(mp, newPath); updPath.run(newPath, id); current = newPath; } catch { /* leave path as-is on failure */ }
+          // ⚠ CLAUDE: the lyrics file is found by swapping the media extension for .lrc (see /api/check-lrc),
+          // so it must move with the media or the song reads as having no .lrc.
+          if (current === newPath) {
+            const oldLrc = mp.replace(/\.[^.]+$/, ".lrc"), newLrc = newPath.replace(/\.[^.]+$/, ".lrc");
+            if (fs.existsSync(oldLrc) && !fs.existsSync(newLrc)) {
+              try { fs.renameSync(oldLrc, newLrc); } catch (err) { console.warn(`LRC not renamed for ${oldLrc}: ${err.message}`); }
+            }
+          }
+        }
+        // The tag follows the position, not the filename: a collision that left the name
+        // behind must not leave the tag behind too.
+        const tagged = writeTrackNumberTag(current, i + 1);
+        if (tagged !== "written" && tagged !== "unchanged" && tagged !== "not-flac") console.warn(`Track number not written for ${current}: ${tagged}`);
       });
     }
     res.json(ids.map(id => db.prepare("SELECT * FROM card WHERE cad_id=?").get(id)).filter(Boolean).map(rowToCard));

@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.10 — 2026-09-30
+
+- Reordering songs with **Rename media on sort** now carries the order into more than the file name. The song's `.lrc` lyrics file is renamed with it, so a lyrics file no longer becomes orphaned and the song no longer reads as having no lyrics file. A FLAC's embedded track number is also rewritten to its new position, keeping any zero-padding and any `/total` suffix. It is written even when the file name could not change because the target name was already taken, and a file whose tag already matches is not rewritten
+- New Media setting, **Rename media on sort by default**, sets the starting value of the Sort view's Rename media on sort checkbox. That checkbox is now per session and starts from the setting each time, instead of remembering its last state
+- Dragging a song in the Sort view now scrolls the list when the pointer nears its top or bottom edge, so a song can be carried to the first or last position in one drag. Before, anything off screen could only be reached in two steps
+- Each song card in the Sort view has a play button, so you can listen while ordering. It stays usable on a finalized project, where the rest of the view is locked
+- Actions now sit at the level of what they act on. Hovering a project row shows its own toolbar: edit, tag, translate, import folder, move to another environment and delete, without selecting the project first. While cards are selected, the strip above the list carries tag, translate, unlink from the project, move to another environment and delete for those cards. The left-hand bar keeps only the actions on the whole list: sort, new folder, sync music URLs, export to Excel and create a document
+- Tag, Translate and Move each used to act on the selection or else on the whole open project, and Delete on the project when nothing was selected. Each now acts on exactly the target you started it from, and unlink no longer offers to remove every card of a project when nothing is selected
+- The strip's **Select all** chip now reads **All**
+
 ## 1.0.9 — 2026-09-27
 
 - Settings is now a full-window page with a side rail of tabs instead of a dialog. The header's settings button opens and closes it, and Esc leaves it. The app stays loaded underneath, so a playing track keeps playing
