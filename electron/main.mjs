@@ -65,6 +65,87 @@ function startServer(callback) {
     fs.writeFileSync(settingsPath, JSON.stringify(data, null, 2), "utf8");
   }
 
+  // ── Stored paths: Absolute | Relative ───────────────────────────────────────
+  // ONE global setting decides how EVERY stored path is written — each card's media file
+  // (cad_media_path) and each project's media folder (prj_path). Absolute: the full path, as the app
+  // always did. Relative: the part below the media root, so moving a whole library to another drive
+  // is one change; a path outside the root stays absolute (the one possible mix).
+  // ⚠ CLAUDE: the conversion lives at the DB boundary ONLY — rowToCard()/rowToProject() resolve on the
+  // way out and every write of those two columns runs toStoredMedia() on the way in, so the rest of
+  // the app (playback, FLAC tagging, .lrc, the sort rename, exports) keeps seeing the absolute path it
+  // always did. A card's path never depends on its project (cards move between projects freely).
+  // ⚠ The mode is changed ONLY through applyMediaPaths(), which rewrites the stored values AND flips the
+  // setting in one step, after the user accepted auditMediaPaths(). Nothing else may touch the setting:
+  // a mode that disagrees with what is stored is exactly the mixed state this design exists to prevent.
+  const MEDIA_MODE_KEY = `${STORAGE_PREFIX}-media-mode`;
+  const MEDIA_ROOT_KEY = `${STORAGE_PREFIX}-media-root`;
+  let mediaCfg;
+  function mediaPaths() {
+    if (!mediaCfg) {
+      const s = readSettings();
+      mediaCfg = { mode: s[MEDIA_MODE_KEY] === "relative" ? "relative" : "absolute", root: String(s[MEDIA_ROOT_KEY] || "").trim() };
+    }
+    return mediaCfg;
+  }
+  function setMediaPaths(cfg) {
+    mediaCfg = cfg;
+    const s = readSettings();
+    s[MEDIA_MODE_KEY] = cfg.mode;
+    if (cfg.root) s[MEDIA_ROOT_KEY] = cfg.root; else delete s[MEDIA_ROOT_KEY];
+    writeSettings(s);
+  }
+  // The root that is IN FORCE: empty in Absolute mode, even when a root is remembered for next time.
+  const mediaRoot = () => (mediaPaths().mode === "relative" ? mediaPaths().root : "");
+  // The part of `abs` below `root`, or null when it is not under it (another drive included).
+  function relativeToRoot(abs, root = mediaRoot()) {
+    if (!root || !abs || !path.isAbsolute(abs)) return null;
+    const rel = path.relative(root, abs);
+    return rel && !rel.startsWith("..") && !path.isAbsolute(rel) ? rel : null;
+  }
+  const toStoredMedia = (p) => (!p || !path.isAbsolute(p)) ? p : (relativeToRoot(p) ?? p);
+  const fromStoredMedia = (s) => (!s || path.isAbsolute(s)) ? s : (mediaRoot() ? path.join(mediaRoot(), s) : s);
+
+  // What a switch WOULD do, counted and not written — shown to the user, who accepts before
+  // applyMediaPaths() runs. `target` is { mode, root }. The four kinds:
+  //   toRelative  absolute → relative under the new root; rewrite / outside (stay absolute) / missing
+  //   toAbsolute  relative → written out in full; rewrite / missing
+  //   changeRoot  nothing is rewritten (the library moved): how many files resolve under the old and the new root
+  //   none        nothing to do
+  function planMediaPaths(target) {
+    const cur = mediaPaths();
+    const kind = cur.mode === "absolute" && target.mode === "relative" ? "toRelative"
+      : cur.mode === "relative" && target.mode === "absolute" ? "toAbsolute"
+      : cur.mode === "relative" && target.mode === "relative" && target.root !== cur.root ? "changeRoot" : "none";
+    const rows = {
+      cards: db.prepare("SELECT cad_id AS id, cad_name AS name, cad_media_path AS p FROM card WHERE cad_media_path != ''").all(),
+      projects: db.prepare("SELECT prj_id AS id, prj_name AS name, prj_path AS p FROM project WHERE prj_path != ''").all(),
+    };
+    const out = { kind, mode: target.mode, root: target.root };
+    for (const [name, list] of Object.entries(rows)) {
+      // `notFound` names the files behind the `missing` / not-found-under-the-new-root counts, so the
+      // user can see WHICH ones (capped: it is a screenful to read, not an export).
+      const c = { total: list.length, rewrite: 0, outside: 0, missing: 0, relative: 0, foundOld: 0, foundNew: 0, writes: [], notFound: [], outsideList: [] };
+      const lose = (r, where) => { if (c.notFound.length < 300) c.notFound.push({ name: r.name, path: where }); };
+      for (const r of list) {
+        const isAbs = path.isAbsolute(r.p);
+        if (!isAbs) c.relative++;
+        if (kind === "toRelative" && isAbs) {
+          const rel = relativeToRoot(r.p, target.root);
+          if (rel) { c.rewrite++; c.writes.push([rel, r.id]); }
+          else { c.outside++; if (c.outsideList.length < 300) c.outsideList.push({ name: r.name, path: r.p }); }
+        }
+        if (kind === "toAbsolute" && !isAbs) { c.rewrite++; c.writes.push([path.join(cur.root, r.p), r.id]); }
+        if (kind !== "changeRoot" && !fs.existsSync(fromStoredMedia(r.p))) { c.missing++; lose(r, fromStoredMedia(r.p)); }
+        if (kind === "changeRoot" && !isAbs) {
+          if (fs.existsSync(path.join(cur.root, r.p))) c.foundOld++;
+          if (fs.existsSync(path.join(target.root, r.p))) c.foundNew++; else lose(r, path.join(target.root, r.p));
+        }
+      }
+      out[name] = c;
+    }
+    return out;
+  }
+
   const db = new Database(dbPath);
   db.pragma("foreign_keys = ON");
   mark("sqlite opened");
@@ -425,7 +506,7 @@ function startServer(callback) {
       linkedCards: links.map(l => l.cal_cadid_child),
       urls:          urls.map(u => ({ id: u.url_id, label: u.url_label, href: u.url_href })),
       sortNumber:    row.cad_order ?? null,
-      mediaPath:     row.cad_media_path || '',
+      mediaPath:     fromStoredMedia(row.cad_media_path || ''),
       aiTweaks:      JSON.parse(row.cad_ai_tweaks || '{}'),
       lang:          row.cad_lang || '',
       env:           row.cad_envid || '',
@@ -446,7 +527,7 @@ function startServer(callback) {
       cardIds: items.map(p => p.cad_id),
       urls:      urls.map(u => ({ id: u.url_id, label: u.url_label, href: u.url_href })),
       env:       row.prj_env || '',
-      path:      row.prj_path || '',
+      path:      fromStoredMedia(row.prj_path || ''),
       finalized: !!row.prj_finalized,
     };
   }
@@ -486,7 +567,7 @@ function startServer(callback) {
     db.transaction(() => {
       const version = nextCardVersion(name, type);
       db.prepare(`INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)`)
-        .run(id, name, version, type, desc, note, style, referenceArtist, referenceComplement, lyrics, JSON.stringify(tags), favorite ? 1 : 0, date || Date.now(), toOrderInt(sortNumber), mediaPath, targetEnv);
+        .run(id, name, version, type, desc, note, style, referenceArtist, referenceComplement, lyrics, JSON.stringify(tags), favorite ? 1 : 0, date || Date.now(), toOrderInt(sortNumber), toStoredMedia(mediaPath), targetEnv);
       const ins = db.prepare("INSERT OR IGNORE INTO card_link (cal_cadid_parent,cal_cadid_child) VALUES (?,?)");
       for (const c of linkedCards) ins.run(id, c);
     })();
@@ -635,7 +716,7 @@ function startServer(callback) {
     const { id } = req.params;
     if (!db.prepare("SELECT cad_id FROM card WHERE cad_id=?").get(id)) return res.status(404).json({ error: "Not found" });
     const { type, name, desc, note, style, referenceArtist, referenceComplement, lyrics, tags, favorite, linkedCards, sortNumber, mediaPath, aiTweaks, lang, env, date } = req.body;
-    const prevMediaPath = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(id).cad_media_path;
+    const prevMediaPath = fromStoredMedia(db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(id).cad_media_path);
     db.transaction(() => {
       const current = db.prepare("SELECT cad_name,cad_type FROM card WHERE cad_id=?").get(id);
       const effectiveName = name ?? current.cad_name;
@@ -643,7 +724,7 @@ function startServer(callback) {
       const newVersion = ((name && name !== current.cad_name) || (type && type !== current.cad_type))
         ? nextCardVersion(effectiveName, effectiveType, id) : null;
       db.prepare(`UPDATE card SET cad_name=COALESCE(?,cad_name),cad_type=COALESCE(?,cad_type),cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=COALESCE(?,cad_style),cad_ref_artist=COALESCE(?,cad_ref_artist),cad_ref_complement=COALESCE(?,cad_ref_complement),cad_lyrics=COALESCE(?,cad_lyrics),cad_tags=COALESCE(?,cad_tags),cad_favorite=COALESCE(?,cad_favorite),cad_order=COALESCE(?,cad_order),cad_media_path=COALESCE(?,cad_media_path),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_lang=COALESCE(?,cad_lang),cad_envid=COALESCE(?,cad_envid),cad_date=COALESCE(?,cad_date)${newVersion ? ",cad_version=?" : ""} WHERE cad_id=?`)
-        .run(name??null, type??null, desc!==undefined?desc:null, note!==undefined?note:null, style??null, referenceArtist!==undefined?referenceArtist:null, referenceComplement!==undefined?referenceComplement:null, lyrics??null, tags!==undefined?JSON.stringify(tags):null, favorite!==undefined?(favorite?1:0):null, sortNumber!==undefined?toOrderInt(sortNumber):null, mediaPath!==undefined?mediaPath:null, aiTweaks!==undefined?JSON.stringify(aiTweaks):null, lang??null, env??null, date??null, ...(newVersion ? [newVersion] : []), id);
+        .run(name??null, type??null, desc!==undefined?desc:null, note!==undefined?note:null, style??null, referenceArtist!==undefined?referenceArtist:null, referenceComplement!==undefined?referenceComplement:null, lyrics??null, tags!==undefined?JSON.stringify(tags):null, favorite!==undefined?(favorite?1:0):null, sortNumber!==undefined?toOrderInt(sortNumber):null, mediaPath!==undefined?toStoredMedia(mediaPath):null, aiTweaks!==undefined?JSON.stringify(aiTweaks):null, lang??null, env??null, date??null, ...(newVersion ? [newVersion] : []), id);
       if (linkedCards !== undefined) {
         db.prepare("DELETE FROM card_link WHERE cal_cadid_parent=?").run(id);
         const ins = db.prepare("INSERT OR IGNORE INTO card_link (cal_cadid_parent,cal_cadid_child) VALUES (?,?)");
@@ -702,14 +783,14 @@ function startServer(callback) {
       const updPath = db.prepare("UPDATE card SET cad_media_path=? WHERE cad_id=?");
       ids.forEach((id, i) => {
         const row = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(id);
-        const mp = row?.cad_media_path;
+        const mp = fromStoredMedia(row?.cad_media_path);
         if (!mp || !fs.existsSync(mp)) return;
         const dir = path.dirname(mp), ext = path.extname(mp);
         const stripped = path.basename(mp, ext).replace(/^\s*\d+\s*[-_.]?\s*/, "");
         const newPath = path.join(dir, String(i + 1).padStart(2, "0") + "-" + stripped + ext);
         let current = mp;
         if (newPath !== mp && !fs.existsSync(newPath)) { // skip no-op and collisions
-          try { fs.renameSync(mp, newPath); updPath.run(newPath, id); current = newPath; } catch { /* leave path as-is on failure */ }
+          try { fs.renameSync(mp, newPath); updPath.run(toStoredMedia(newPath), id); current = newPath; } catch { /* leave path as-is on failure */ }
           // ⚠ CLAUDE: the lyrics file is found by swapping the media extension for .lrc (see /api/check-lrc),
           // so it must move with the media or the song reads as having no .lrc.
           if (current === newPath) {
@@ -744,7 +825,7 @@ function startServer(callback) {
     if (!id || !name) return res.status(400).json({ error: "Missing fields" });
     const version = nextProjectVersion(name);
     const targetEnv = env || defaultEnvId;
-    db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path,prj_finalized) VALUES (?,?,?,?,?,?,?,?,?)").run(id, name, color, date || Date.now(), version, parentId, targetEnv, projPath, finalized ? 1 : 0);
+    db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path,prj_finalized) VALUES (?,?,?,?,?,?,?,?,?)").run(id, name, color, date || Date.now(), version, parentId, targetEnv, toStoredMedia(projPath), finalized ? 1 : 0);
     if (urls.length) {
       const ins = db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)");
       urls.forEach((u, i) => ins.run(crypto.randomUUID(), id, 'prj', u.label || '', u.href, i));
@@ -759,36 +840,50 @@ function startServer(callback) {
     const hasParentId = "parentId" in req.body;
     const hasPath = "path" in req.body;
     const hasFinalized = "finalized" in req.body;
-    const current = db.prepare("SELECT prj_name FROM project WHERE prj_id=?").get(id);
+    const current = db.prepare("SELECT prj_name, prj_path FROM project WHERE prj_id=?").get(id);
     const newVersion = (name && name !== current.prj_name) ? nextProjectVersion(name, id) : null;
-    db.prepare(`UPDATE project SET prj_name=COALESCE(?,prj_name),prj_color=COALESCE(?,prj_color),prj_date=COALESCE(?,prj_date)${newVersion ? ",prj_version=?" : ""}${hasParentId ? ",prj_parent=?" : ""}${hasPath ? ",prj_path=?" : ""}${hasFinalized ? ",prj_finalized=?" : ""} WHERE prj_id=?`).run(name??null, color??null, date??null, ...(newVersion ? [newVersion] : []), ...(hasParentId ? [parentId] : []), ...(hasPath ? [projPath] : []), ...(hasFinalized ? [finalized ? 1 : 0] : []), id);
+    db.prepare(`UPDATE project SET prj_name=COALESCE(?,prj_name),prj_color=COALESCE(?,prj_color),prj_date=COALESCE(?,prj_date)${newVersion ? ",prj_version=?" : ""}${hasParentId ? ",prj_parent=?" : ""}${hasPath ? ",prj_path=?" : ""}${hasFinalized ? ",prj_finalized=?" : ""} WHERE prj_id=?`).run(name??null, color??null, date??null, ...(newVersion ? [newVersion] : []), ...(hasParentId ? [parentId] : []), ...(hasPath ? [toStoredMedia(projPath)] : []), ...(hasFinalized ? [finalized ? 1 : 0] : []), id);
 
-    // Auto-relocate orphaned media when project path changes
+    // Re-point the cards whose file is gone when the project's media folder changes. Only cards whose
+    // file is MISSING are touched, so a card that still works is never moved by a folder edit. Two
+    // passes, the exact one first:
+    //   1. the folder was renamed or moved: a file that sat under the OLD folder is looked for at the
+    //      same sub-path under the NEW one (this is what makes a folder rename one edit);
+    //   2. whatever is still missing is matched by file name anywhere below the new folder.
     let relocated = 0;
     if (hasPath && projPath && fs.existsSync(projPath)) {
       const projectCards = db.prepare("SELECT cad_id, cad_media_path FROM card WHERE cad_prjid=? AND cad_media_path != ''").all(id);
-      const orphans = projectCards.filter(p => !fs.existsSync(p.cad_media_path));
+      let orphans = projectCards.map(p => ({ id: p.cad_id, abs: fromStoredMedia(p.cad_media_path) })).filter(p => !fs.existsSync(p.abs));
       if (orphans.length) {
-        // Scan new folder recursively, index by lowercase filename
-        const fileIndex = new Map();
-        const scanDir = (dir) => {
-          try {
-            for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-              if (entry.isDirectory()) scanDir(path.join(dir, entry.name));
-              else if (!fileIndex.has(entry.name.toLowerCase())) fileIndex.set(entry.name.toLowerCase(), path.join(dir, entry.name));
-            }
-          } catch {}
-        };
-        scanDir(projPath);
         const update = db.prepare("UPDATE card SET cad_media_path = ? WHERE cad_id = ?");
-        const txn = db.transaction(() => {
-          for (const p of orphans) {
-            const filename = path.basename(p.cad_media_path).toLowerCase();
-            const newPath = fileIndex.get(filename);
-            if (newPath) { update.run(newPath, p.cad_id); relocated++; }
+        const repoint = (p, to) => { update.run(toStoredMedia(to), p.id); relocated++; };
+        db.transaction(() => {
+          const oldFolder = fromStoredMedia(current.prj_path);
+          if (oldFolder) {
+            orphans = orphans.filter(p => {
+              const rel = relativeToRoot(p.abs, oldFolder);
+              const to = rel && path.join(projPath, rel);
+              if (to && fs.existsSync(to)) { repoint(p, to); return false; }
+              return true;
+            });
           }
-        });
-        txn();
+          if (!orphans.length) return;
+          // Scan new folder recursively, index by lowercase filename
+          const fileIndex = new Map();
+          const scanDir = (dir) => {
+            try {
+              for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+                if (entry.isDirectory()) scanDir(path.join(dir, entry.name));
+                else if (!fileIndex.has(entry.name.toLowerCase())) fileIndex.set(entry.name.toLowerCase(), path.join(dir, entry.name));
+              }
+            } catch {}
+          };
+          scanDir(projPath);
+          for (const p of orphans) {
+            const newPath = fileIndex.get(path.basename(p.abs).toLowerCase());
+            if (newPath) repoint(p, newPath);
+          }
+        })();
       }
     }
 
@@ -1296,7 +1391,7 @@ function startServer(callback) {
             const cardEnv = isBackup ? (p.env ? (envIdMap[p.env] ?? p.env) : defaultEnvId) : targetEnvId;
             if (changed) {
               db.prepare("UPDATE card SET cad_type=?,cad_name=?,cad_desc=COALESCE(?,cad_desc),cad_note=COALESCE(?,cad_note),cad_style=?,cad_ref_artist=COALESCE(?,cad_ref_artist),cad_ref_complement=COALESCE(?,cad_ref_complement),cad_lyrics=?,cad_tags=?,cad_favorite=?,cad_media_path=?,cad_order=?,cad_lang=COALESCE(?,cad_lang),cad_ai_tweaks=COALESCE(?,cad_ai_tweaks),cad_prjid=COALESCE(?,cad_prjid),cad_envid=? WHERE cad_id=?")
-                .run(p.type, p.name, p.desc || null, p.note || null, p.style, p.referenceArtist || null, p.referenceComplement || null, p.lyrics || '', tags, fav, p.media || '', toOrderInt(p.order), p.lang || null, p.aiTweaks ? JSON.stringify(p.aiTweaks) : null, p.project || null, cardEnv, p.id);
+                .run(p.type, p.name, p.desc || null, p.note || null, p.style, p.referenceArtist || null, p.referenceComplement || null, p.lyrics || '', tags, fav, toStoredMedia(p.media || ''), toOrderInt(p.order), p.lang || null, p.aiTweaks ? JSON.stringify(p.aiTweaks) : null, p.project || null, cardEnv, p.id);
               results.cardsUpdated++;
             } else { results.cardsSkipped++; }
           } else {
@@ -1304,7 +1399,7 @@ function startServer(callback) {
             // ⚠ CLAUDE: non-backup insert uses a fresh UUID - the original UUID may belong to a different env
             effectiveCardId = isBackup ? p.id : crypto.randomUUID();
             db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_desc,cad_note,cad_style,cad_ref_artist,cad_ref_complement,cad_lyrics,cad_tags,cad_favorite,cad_date,cad_media_path,cad_order,cad_lang,cad_ai_tweaks,cad_prjid,cad_envid) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)")
-              .run(effectiveCardId, p.name, p.version || 1, p.type, p.desc || '', p.note || '', p.style, p.referenceArtist || '', p.referenceComplement || '', p.lyrics || '', tags, fav, p.date || Date.now(), p.media || '', toOrderInt(p.order), p.lang || '', p.aiTweaks ? JSON.stringify(p.aiTweaks) : '{}', p.project || null, cardEnv);
+              .run(effectiveCardId, p.name, p.version || 1, p.type, p.desc || '', p.note || '', p.style, p.referenceArtist || '', p.referenceComplement || '', p.lyrics || '', tags, fav, p.date || Date.now(), toStoredMedia(p.media || ''), toOrderInt(p.order), p.lang || '', p.aiTweaks ? JSON.stringify(p.aiTweaks) : '{}', p.project || null, cardEnv);
             results.cardsCreated++;
           }
           // Translations
@@ -1350,13 +1445,13 @@ function startServer(callback) {
           let effectiveProjId = proj.id; // may be replaced with new UUID for non-backup inserts
           if (existing) {
             const projEnv = isBackup ? (proj.env ? (envIdMap[proj.env] ?? proj.env) : defaultEnvId) : targetEnvId;
-            db.prepare("UPDATE project SET prj_name=?,prj_color=?,prj_parent=?,prj_env=?,prj_path=?,prj_finalized=? WHERE prj_id=?").run(proj.name, proj.color || "#7c6fff", proj.parent || null, projEnv, proj.path || '', proj.finalized ? 1 : 0, proj.id);
+            db.prepare("UPDATE project SET prj_name=?,prj_color=?,prj_parent=?,prj_env=?,prj_path=?,prj_finalized=? WHERE prj_id=?").run(proj.name, proj.color || "#7c6fff", proj.parent || null, projEnv, toStoredMedia(proj.path || ''), proj.finalized ? 1 : 0, proj.id);
             results.projectsUpdated++;
           } else {
             const projEnv = isBackup ? (proj.env ? (envIdMap[proj.env] ?? proj.env) : defaultEnvId) : targetEnvId;
             // ⚠ CLAUDE: non-backup insert uses a fresh UUID - the original UUID may belong to a different env
             effectiveProjId = isBackup ? proj.id : crypto.randomUUID();
-            db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path,prj_finalized) VALUES (?,?,?,?,?,?,?,?,?)").run(effectiveProjId, proj.name, proj.color || "#7c6fff", proj.date || Date.now(), proj.version || 1, proj.parent || null, projEnv, proj.path || '', proj.finalized ? 1 : 0);
+            db.prepare("INSERT INTO project (prj_id,prj_name,prj_color,prj_date,prj_version,prj_parent,prj_env,prj_path,prj_finalized) VALUES (?,?,?,?,?,?,?,?,?)").run(effectiveProjId, proj.name, proj.color || "#7c6fff", proj.date || Date.now(), proj.version || 1, proj.parent || null, projEnv, toStoredMedia(proj.path || ''), proj.finalized ? 1 : 0);
             results.projectsCreated++;
           }
           // ⚠ CLAUDE: project membership is stored on the card (cad_prjid), not in a link table.
@@ -1760,6 +1855,52 @@ function startServer(callback) {
     res.json(updated);
   });
 
+  // ── Stored paths (see the block beside readSettings) ──────────────────────────
+  // ⚠ CLAUDE: three endpoints, and the order is the contract: GET the state, POST /audit to COUNT what a
+  // switch would do (writes nothing), POST to APPLY it. The renderer shows the audit and only calls the
+  // last one after the user accepted. The setting is never written by POST /settings.
+  api.get("/media-paths", (req, res) => res.json({ mode: mediaPaths().mode, root: mediaPaths().root }));
+
+  // Validate a requested { mode, root } and normalise the root. Returns { target } or { error }.
+  function readMediaTarget(body) {
+    const mode = body.mode === "relative" ? "relative" : "absolute";
+    let root = String(body.root || "").trim();
+    if (mode === "relative") {
+      if (!root || !path.isAbsolute(root)) return { error: "notAbsolute" };
+      root = path.normalize(root);
+      if (root.length > 3) root = root.replace(/[\\/]+$/, "");
+    } else if (!root) root = mediaPaths().root; // Absolute keeps the remembered root, so flipping back is one click
+    return { target: { mode, root } };
+  }
+
+  api.post("/media-paths/audit", (req, res) => {
+    const { target, error } = readMediaTarget(req.body || {});
+    if (error) return res.json({ error });
+    const plan = planMediaPaths(target);
+    for (const k of ["cards", "projects"]) delete plan[k].writes;
+    res.json(plan);
+  });
+
+  api.post("/media-paths", (req, res) => {
+    const { target, error } = readMediaTarget(req.body || {});
+    if (error) return res.json({ error });
+    const plan = planMediaPaths(target);
+    // ⚠ CLAUDE: Relative means EVERY stored path is relative to the root. A path outside the root cannot
+    // be, so the switch is REFUSED here, not merely disabled in the dialog — applying it would leave the
+    // mixed state this setting exists to prevent. The user picks a root that contains every file, or
+    // moves the files, and tries again.
+    const outside = plan.kind === "toRelative" ? plan.cards.outside + plan.projects.outside : 0;
+    if (outside) return res.json({ error: "outsideRoot", outside });
+    db.transaction(() => {
+      const updCard = db.prepare("UPDATE card SET cad_media_path=? WHERE cad_id=?");
+      const updProj = db.prepare("UPDATE project SET prj_path=? WHERE prj_id=?");
+      for (const [v, id] of plan.cards.writes) updCard.run(v, id);
+      for (const [v, id] of plan.projects.writes) updProj.run(v, id);
+      setMediaPaths(target);
+    })();
+    res.json({ mode: target.mode, root: target.root, rewritten: plan.cards.rewrite + plan.projects.rewrite });
+  });
+
   // ── Card URLs ───────────────────────────────────────────────────────────────
   api.get("/cards/:id/urls", (req, res) => {
     const rows = db.prepare("SELECT * FROM url WHERE url_parent_id=? ORDER BY url_order").all(req.params.id);
@@ -1791,7 +1932,7 @@ function startServer(callback) {
     // ⚠ The uuid is taken as exactly 36 chars: a share link carries a ?sh=... suffix.
     if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] === "1") {
       const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
-      const media = db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(req.params.id)?.cad_media_path;
+      const media = fromStoredMedia(db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(req.params.id)?.cad_media_path);
       if (linkId && media) {
         const r = writeSunoIdFromLink(media, linkId.toLowerCase());
         if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
@@ -2094,7 +2235,7 @@ function startServer(callback) {
         const version = nextCardVersion(name, resolvedType);
         const order = db.prepare("SELECT COUNT(*) as n FROM card").get().n;
         db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_style,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path) VALUES (?,?,?,?,?,?,?,?,?,?)")
-          .run(id, name, version, resolvedType, "", "[]", 0, Date.now(), sortNumber, mediaPath);
+          .run(id, name, version, resolvedType, "", "[]", 0, Date.now(), sortNumber, toStoredMedia(mediaPath));
 
         if (projectId) {
           db.prepare("UPDATE card SET cad_prjid=? WHERE cad_id=?").run(projectId, id);
@@ -2528,7 +2669,7 @@ function startServer(callback) {
         const proj = db.prepare("SELECT prj_name, prj_path FROM project WHERE prj_id = ?").get(projectIds[0]);
         if (proj) {
           defaultName = proj.prj_name.replace(/[\\/:*?"<>|]/g, "_");
-          if (proj.prj_path) defaultDir = proj.prj_path;
+          if (proj.prj_path) defaultDir = fromStoredMedia(proj.prj_path);
         }
       }
 
@@ -2728,7 +2869,7 @@ function startServer(callback) {
         if (proj) {
           lpName = proj.prj_name;
           lpDate = new Date(proj.prj_date || Date.now()).toISOString().slice(0, 10);
-          if (proj.prj_path) defaultDir = proj.prj_path;
+          if (proj.prj_path) defaultDir = fromStoredMedia(proj.prj_path);
         }
       }
       if (!lpDate) lpDate = new Date().toISOString().slice(0, 10);
@@ -2827,7 +2968,7 @@ function startServer(callback) {
         const proj = db.prepare("SELECT prj_name, prj_path FROM project WHERE prj_id = ?").get(projectIds[0]);
         if (proj) {
           defaultName = proj.prj_name.replace(/[\\/:*?"<>|]/g, "_");
-          if (proj.prj_path) defaultDir = proj.prj_path;
+          if (proj.prj_path) defaultDir = fromStoredMedia(proj.prj_path);
         }
       }
 
@@ -2928,7 +3069,7 @@ function startServer(callback) {
         const proj = db.prepare("SELECT prj_name, prj_path FROM project WHERE prj_id = ?").get(projectIds[0]);
         if (proj) {
           defaultName = proj.prj_name.replace(/[\\/:*?"<>|]/g, "_");
-          if (proj.prj_path) defaultDir = proj.prj_path;
+          if (proj.prj_path) defaultDir = fromStoredMedia(proj.prj_path);
         }
       }
 

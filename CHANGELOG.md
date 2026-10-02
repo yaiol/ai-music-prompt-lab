@@ -1,5 +1,12 @@
 # Changelog
 
+## 1.0.11 — 2026-10-02
+
+- New Media setting, **Stored paths**: Absolute (the default, as before) or Relative. Relative stores each linked file's path, and each project's media folder, from a **media root folder** you choose. Moving your whole library to another drive then means changing the root in one place, not relinking every card. Switching shows an audit first: how many paths will be rewritten, and which files are already missing. Nothing is written until you accept, and going back to Absolute converts everything back the same way. Relative needs every path to lie inside the root, so the switch is refused while any file is outside it, and the audit lists which ones
+- Changing the root while in Relative mode rewrites nothing: the stored paths simply resolve under the new root, and the audit shows how many of your files are found there before you accept
+- Editing a project's media folder now re-points only the cards whose file is missing, and tries the same sub-path under the new folder first. Renaming a folder on disk is therefore one edit on the project, and a card whose file still works is never moved by a folder edit. Files are still matched by name anywhere below the new folder when the sub-path doesn't exist
+- JSON backups write media paths and project folders relative to the root while in Relative mode, so a backup moves to another machine without relocating anything
+
 ## 1.0.10 — 2026-09-30
 
 - Reordering songs with **Rename media on sort** now carries the order into more than the file name. The song's `.lrc` lyrics file is renamed with it, so a lyrics file no longer becomes orphaned and the song no longer reads as having no lyrics file. A FLAC's embedded track number is also rewritten to its new position, keeping any zero-padding and any `/total` suffix. It is written even when the file name could not change because the target name was already taken, and a file whose tag already matches is not rewritten

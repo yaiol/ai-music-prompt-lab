@@ -431,7 +431,20 @@ async function saveJsonFile(snapshot, defaultPath, title = "Save JSON") {
   });
 }
 
+// A card's file as a backup carries it: relative to the media root when it lies under it, so the
+// backup moves to another machine without a relocation step. The app itself always holds absolute paths.
+async function mediaForBackup() {
+  const { mode, root } = await fetch(`${API}/media-paths`).then(r => r.json()).catch(() => ({}));
+  const base = mode === "relative" ? (root || "").replace(/\\/g, "/").replace(/\/+$/, "").toLowerCase() : "";
+  return (p) => {
+    if (!p || !base) return p || '';
+    const n = p.replace(/\\/g, "/");
+    return n.toLowerCase().startsWith(base + "/") ? n.slice(base.length + 1) : p;
+  };
+}
+
 async function exportToJson(cards, projects, projectName = null, title = "Save JSON") {
+  const portable = await mediaForBackup();
   const translationsMap = {};
   await Promise.all(cards.map(async (p) => {
     try {
@@ -450,14 +463,14 @@ async function exportToJson(cards, projects, projectName = null, title = "Save J
       project: p.project || null,
       cards: p.linkedCards || [],
       urls: p.urls || [],
-      media: p.mediaPath || '',
+      media: portable(p.mediaPath),
       ...(translationsMap[p.id] ? { translations: translationsMap[p.id] } : {}),
     })),
     projects: projects.map(proj => ({
       id: proj.id, name: proj.name, version: proj.version || 1, color: proj.color,
       date: proj.date || null, parent: proj.parentId || null, cards: proj.cardIds,
       urls: proj.urls || [],
-      path: proj.path || '',
+      path: portable(proj.path),
       finalized: proj.finalized || false,
     })),
   };
@@ -479,6 +492,7 @@ async function exportAiToJson(title = "Save JSON") {
 }
 
 async function exportBackupToJson(cards, projects, environments, title = "Save JSON") {
+  const portable = await mediaForBackup();
   const translationsMap = {};
   await Promise.all(cards.map(async (p) => {
     try {
@@ -498,7 +512,7 @@ async function exportBackupToJson(cards, projects, environments, title = "Save J
       aiTweaks: p.aiTweaks || {},
       cards: p.linkedCards || [],
       urls: p.urls || [],
-      media: p.mediaPath || '',
+      media: portable(p.mediaPath),
       env: p.env || '',
       ...(translationsMap[p.id] ? { translations: translationsMap[p.id] } : {}),
     })),
@@ -506,7 +520,7 @@ async function exportBackupToJson(cards, projects, environments, title = "Save J
       id: proj.id, name: proj.name, version: proj.version || 1, color: proj.color,
       date: proj.date || null, parent: proj.parentId || null, cards: proj.cardIds, env: proj.env || '',
       urls: proj.urls || [],
-      path: proj.path || '',
+      path: portable(proj.path),
       finalized: proj.finalized || false,
     })),
   };
@@ -597,6 +611,10 @@ export default function App() {
   const [unlinkConfirm, setUnlinkConfirm] = useState(false);
   const [bulkTagOpen, setBulkTagOpen]         = useState(false);
   const [tagTarget, setTagTarget]             = useState(null); // { ids, scope } — the cards the tag dialog acts on, fixed at open
+  const [mediaPaths, setMediaPaths]           = useState({ mode: "absolute", root: "" }); // how stored paths are written (a server-side setting)
+  const [mediaRootDraft, setMediaRootDraft]   = useState("");   // the root typed in the Settings field; nothing happens until Enter or the folder picker
+  const [mediaAudit, setMediaAudit]           = useState(null); // the audit shown before a switch is applied
+  useEffect(() => { apiFetch("/media-paths").then(r => { setMediaPaths(r); setMediaRootDraft(r.root || ""); }).catch(() => {}); }, []);
   const [importErrors, setImportErrors]       = useState(null);
   const [bulkTagInput, setBulkTagInput]       = useState("");
   const [viewMode, setViewMode]           = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-view`) || "grid");
@@ -1438,6 +1456,45 @@ export default function App() {
     } catch (err) { showToast("❌ " + err.message); }
   };
 
+  // Stored paths: Absolute | Relative. The setting lives on the server (it decides how the database is
+  // written), and it NEVER changes without the user accepting an audit first: every change goes
+  // askMediaPaths() (counts, writes nothing) -> the audit dialog -> applyMediaPaths().
+  const askMediaPaths = async (mode, root) => {
+    try {
+      const a = await apiFetch("/media-paths/audit", { method: "POST", body: JSON.stringify({ mode, root }) });
+      if (a.error) { showToast("⚠️ " + t("tstStgMediaRootInvalid")); setMediaRootDraft(mediaPaths.root); return; }
+      if (a.kind === "none") return;
+      setMediaAudit(a);
+    } catch (err) { showToast("❌ " + err.message); }
+  };
+  // Leaving the audit forgets the folder that was just proposed: otherwise a wrong pick stays in the
+  // field and the next click on Relative re-audits it instead of asking for a folder again.
+  const closeMediaAudit = () => { setMediaAudit(null); setMediaRootDraft(mediaPaths.root); };
+  const applyMediaPaths = async () => {
+    const a = mediaAudit;
+    setMediaAudit(null);
+    try {
+      const r = await apiFetch("/media-paths", { method: "POST", body: JSON.stringify({ mode: a.mode, root: a.root }) });
+      if (r.error === "outsideRoot") { showToast("⚠️ " + t("msgDlgMediaPathsBlocked").replace("{n}", r.outside), 6000); return; }
+      if (r.error) { showToast("⚠️ " + t("tstStgMediaRootInvalid")); return; }
+      setMediaPaths({ mode: r.mode, root: r.root }); setMediaRootDraft(r.root);
+      const [freshCards, freshProjects] = await Promise.all([apiFetch("/cards"), apiFetch("/projects")]);
+      setCards(freshCards); setProjects(freshProjects);
+      showToast("✅ " + t("tstStgMediaPathsApplied"));
+    } catch (err) { showToast("❌ " + err.message); }
+  };
+  // Pick the root with the folder dialog, then audit the switch to (or the move of) Relative.
+  const chooseMediaRoot = async () => {
+    try { const { path } = await apiFetch("/open-folder-dialog"); if (path) { setMediaRootDraft(path); askMediaPaths("relative", path); } }
+    catch (err) { showToast("❌ " + err.message); }
+  };
+  const chooseMediaMode = (mode) => {
+    if (mode === mediaPaths.mode) return;
+    if (mode === "absolute") askMediaPaths("absolute", mediaPaths.root);
+    else if (mediaRootDraft.trim() || mediaPaths.root) askMediaPaths("relative", mediaRootDraft.trim() || mediaPaths.root);
+    else chooseMediaRoot();   // Relative needs a root: ask for it first
+  };
+
   const handleImportFolder = async (projectId) => {
     try {
       const { path } = await apiFetch("/open-folder-dialog");
@@ -1956,6 +2013,26 @@ export default function App() {
               ) },
               { key: "media", label: t("tabStgMedia"), icon: FileMusic, content: (
                 <>
+                  <div className="dlg-field">
+                    <label className="dlg-field-label">{t("lblStgMediaPaths")}</label>
+                    <div className="barh-grp">
+                      {[["absolute", t("btnStgMediaPathsAbsolute")], ["relative", t("btnStgMediaPathsRelative")]].map(([mode, label]) => (
+                        <button key={mode} onClick={() => chooseMediaMode(mode)} className={`btn icon${mediaPaths.mode === mode ? " active" : ""}`} style={{ flex: 1, justifyContent: "center" }}>{label}</button>
+                      ))}
+                    </div>
+                    <p className="hint">{t("msgStgMediaPaths")}</p>
+                  </div>
+                  {mediaPaths.mode === "relative" && (
+                    <div className="dlg-field">
+                      <label className="dlg-field-label">{t("lblStgMediaRoot")}</label>
+                      <div style={{ display: "flex", gap: 8 }}>
+                        <input className="input" style={{ flex: 1 }} value={mediaRootDraft} onChange={(e) => setMediaRootDraft(e.target.value)}
+                          onKeyDown={(e) => { if (e.key === "Enter") askMediaPaths("relative", mediaRootDraft.trim()); }} />
+                        <button className="btn icon" onClick={chooseMediaRoot} title={t("tipStgMediaRootChoose")}><FolderOpen /></button>
+                      </div>
+                      <p className="hint">{t("msgStgMediaRoot")}</p>
+                    </div>
+                  )}
                   <div className="dlg-field">
                     <label className="check-label">
                       <input type="checkbox" className="check-box" checked={useAmlpIdTag} onChange={(e) => setUseAmlpIdTag(e.target.checked)} />
@@ -2925,6 +3002,55 @@ export default function App() {
       )}
 
       {/* Unlink confirm — remove the target cards (selection, else all of the project) from the active project. */}
+      {/* Stored-paths audit — what a switch WOULD do, shown before anything is written. Accept applies it. */}
+      {mediaAudit && (() => {
+        const a = mediaAudit;
+        const title = a.kind === "toRelative" ? t("ttlDlgMediaPathsRelative") : a.kind === "toAbsolute" ? t("ttlDlgMediaPathsAbsolute") : t("ttlDlgMediaPathsRoot");
+        const template = a.kind === "toRelative" ? t("msgDlgMediaPathsToRelative") : a.kind === "toAbsolute" ? t("msgDlgMediaPathsToAbsolute") : t("msgDlgMediaPathsChangeRoot");
+        const line = (c) => Object.entries(c).reduce((s, [k, v]) => s.split(`{${k}}`).join(v), template);
+        // Relative means EVERY path is relative to the root, so a file outside it BLOCKS the switch (the
+        // server refuses it too). The list says which files, so the block can be acted on.
+        const outsideCount = a.kind === "toRelative" ? a.cards.outside + a.projects.outside : 0;
+        // A collapsible list of named files with a copy button — shared by "not found" and "outside the root".
+        const fileList = (labelKey, items) => items.length > 0 && (
+          <details style={{ marginTop: 4 }}>
+            <summary className="hint" style={{ cursor: "pointer" }}>{t(labelKey).replace("{n}", items.length >= 300 ? "300+" : items.length)}</summary>
+            <div style={{ maxHeight: 140, overflowY: "auto", fontSize: 11, wordBreak: "break-all" }}>
+              {items.map((m, i) => <div key={i}><strong>{m.name}</strong> <span className="hint">{m.path}</span></div>)}
+            </div>
+            <button className="btn icon small subtle" title={t("btnDlgMediaPathsCopyList")}
+              onClick={() => navigator.clipboard.writeText(items.map(m => `${m.name}\t${m.path}`).join("\n")).then(() => showToast(t("tstDlgMediaPathsListCopied")))}><Copy /></button>
+          </details>
+        );
+        return (
+          <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) closeMediaAudit(); }}>
+            <div className="dlp" style={{ maxWidth: 460 }}>
+              <button className="dl-close" onClick={closeMediaAudit}><X /></button>
+              <FolderOpen color="var(--accent)" className="dlp-icon" />
+              <p className="dlp-title">{title}</p>
+              {a.kind !== "toAbsolute" && <p className="dlp-sub">{a.root}</p>}
+              <div className="dlp-body" style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 8 }}>
+                {[["cards", t("lblDlgMediaPathsCards")], ["projects", t("lblDlgMediaPathsProjects")]].filter(([k]) => a[k].total > 0).map(([k, label]) => (
+                  <div key={k}>
+                    <strong>{label}</strong><br /><span className="hint">{line(a[k])}</span>
+                    {fileList("lblDlgMediaPathsShowOutside", a[k].outsideList)}
+                    {fileList("lblDlgMediaPathsShowMissing", a[k].notFound)}
+                  </div>
+                ))}
+                {outsideCount > 0 && <p className="hint" style={{ color: "var(--danger)" }}>{t("msgDlgMediaPathsBlocked").replace("{n}", outsideCount)}</p>}
+                {a.kind === "changeRoot" && <p className="hint">{t("msgDlgMediaPathsRootNote")}</p>}
+                {(a.cards.notFound.length > 0 || a.projects.notFound.length > 0) && <p className="hint">{t(a.kind === "changeRoot" ? "msgDlgMediaPathsNotFoundNote" : "msgDlgMediaPathsMissingNote")}</p>}
+              </div>
+              <div className="dlp-foot">
+                <button className="btn subtle" onClick={closeMediaAudit}>{t("btnGlbCancel")}</button>
+                {a.kind !== "toAbsolute" && <button className="btn" onClick={chooseMediaRoot}><FolderOpen />{t("btnDlgMediaPathsChooseRoot")}</button>}
+                <button className="btn primary" disabled={outsideCount > 0} onClick={applyMediaPaths}>{t("btnDlgMediaPathsApply")}</button>
+              </div>
+            </div>
+          </div>
+        );
+      })()}
+
       {unlinkConfirm && (
         <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setUnlinkConfirm(false); }}>
           <div className="dlp">
