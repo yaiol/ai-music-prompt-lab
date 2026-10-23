@@ -17,6 +17,7 @@ import { parseAmlp } from "./parse-amlp.js";
 import { readFlacFields, getField, writeFlacFields } from "./flac-tags.mjs";
 import pkg from "../package.json" with { type: "json" };
 import { mark, dumpStartupTiming } from "./startup-timing.mjs";
+import { registerNewsRoutes } from "./news.mjs";
 import { lastDir, rememberDir } from "./dialog-memory.mjs";
 mark("electron boot + module imports");
 
@@ -712,6 +713,21 @@ function startServer(callback) {
     return res === "ok" ? "written" : res;
   }
 
+  // Stamp the Suno id of a pasted/stored link into a media file, when the
+  // "Use AMLP_ID tag" setting is on. Shared by the two ways the pair can meet
+  // (link added to a card with media, media linked to a card with a link) so the
+  // result never depends on which came first.
+  // ⚠ The uuid is taken as exactly 36 chars: a share link carries a ?sh=... suffix.
+  function stampSunoIdFromLink(mediaPath, href) {
+    if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] !== "1") return;
+    const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
+    if (!linkId || !mediaPath) return;
+    const r = writeSunoIdFromLink(mediaPath, linkId.toLowerCase());
+    if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
+      console.warn(`AMLP_ID not written for ${mediaPath}: ${r}`);
+    }
+  }
+
   api.put("/cards/:id", async (req, res) => {
     const { id } = req.params;
     if (!db.prepare("SELECT cad_id FROM card WHERE cad_id=?").get(id)) return res.status(404).json({ error: "Not found" });
@@ -762,6 +778,12 @@ function startServer(callback) {
           db.prepare("INSERT INTO url (url_id,url_parent_id,url_type,url_label,url_href,url_order) VALUES (?,?,?,?,?,?)")
             .run(crypto.randomUUID(), id, "cad", "Suno", href, maxOrder + 1);
         }
+      } else {
+        // The file carries no id: the card's own Suno link is then the only source.
+        const link = db.prepare(
+          "SELECT url_href FROM url WHERE url_parent_id=? AND url_type='cad' AND url_href LIKE '%suno.com/song/%' ORDER BY url_order"
+        ).get(id);
+        if (link) stampSunoIdFromLink(mediaPath, link.url_href);
       }
     }
     res.json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(id)));
@@ -1929,17 +1951,8 @@ function startServer(callback) {
     // Opt-in: a Suno link pasted onto a card whose media is linked stamps the id
     // into the file. For a Suno Studio export this is the only source of the id -
     // Suno strips it on export, so it is in neither the flac nor the wav.
-    // ⚠ The uuid is taken as exactly 36 chars: a share link carries a ?sh=... suffix.
-    if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] === "1") {
-      const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
-      const media = fromStoredMedia(db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(req.params.id)?.cad_media_path);
-      if (linkId && media) {
-        const r = writeSunoIdFromLink(media, linkId.toLowerCase());
-        if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
-          console.warn(`AMLP_ID not written for ${media}: ${r}`);
-        }
-      }
-    }
+    const media = fromStoredMedia(db.prepare("SELECT cad_media_path FROM card WHERE cad_id=?").get(req.params.id)?.cad_media_path);
+    if (media) stampSunoIdFromLink(media, href);
     res.json(rowToCard(db.prepare("SELECT * FROM card WHERE cad_id=?").get(req.params.id)));
   });
 
@@ -3193,6 +3206,8 @@ function startServer(callback) {
   });
 
   mark("express route registration");
+
+  registerNewsRoutes(api, { appId: pkg.name, appVersion: pkg.version });
 
   findFreePort(4000, (port) => {
     SERVER_PORT = port;

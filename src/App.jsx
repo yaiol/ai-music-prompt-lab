@@ -20,8 +20,9 @@ import {
   FileText, StickyNote, Disc, AlignLeft, FileMusic, RefreshCw, Wand2, Unlink
 } from "lucide-react";
 import pkg from '../package.json';
-import { checkForUpdate, getUrl } from './lib/update-check';
-import { UpdateBanner } from './lib/ui-update-banner';
+import { getUrl } from './lib/site-url';
+import { NewsLoader } from './lib/ui-news-loader';
+import { NewsSetting } from './lib/ui-news-setting';
 import { AppHeader } from './lib/ui-header';
 import { GithubIcon } from './lib/ui-icons';
 import { SettingsView } from './lib/ui-settings';
@@ -681,11 +682,14 @@ export default function App() {
   const batchTranslateCancelRef = useRef(false);
   const batchTranslateDataRef = useRef(null);
 
-  const [updateInfo, setUpdateInfo]         = useState(null);
+  const [newsEnabled, setNewsEnabled] = useState(true);
   useEffect(() => {
-    checkForUpdate({ appId: pkg.name, alias: STORAGE_PREFIX, currentVersion: APP_VERSION })
-      .then(u => { if (u) setUpdateInfo(u); });
+    fetch(`${API}/news-settings`).then(r => r.json()).then(s => setNewsEnabled(s.enabled)).catch(() => {});
   }, []);
+  function toggleNews(enabled) {
+    setNewsEnabled(enabled);
+    fetch(`${API}/news-settings`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ enabled }) }).catch(() => {});
+  }
 
   // A .amlp opened from the desktop — the main process parks the file and focuses this window;
   // we collect it here and run the ordinary import. Checked on launch AND on every window focus,
@@ -1824,8 +1828,8 @@ export default function App() {
       }}>
       <style>{buildCss()}</style>
 
-      {/* ── Update banner ── */}
-      <UpdateBanner info={updateInfo} appId={pkg.name} lang={langKey} storagePrefix={STORAGE_PREFIX} t={t} onClose={() => setUpdateInfo(null)} />
+      {/* ── A new version (first) and the yaiol news, in one dialog ── */}
+      <NewsLoader api={API} lang={langKey} t={t} />
 
       {/* Header */}
       <AppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD}>
@@ -1974,6 +1978,9 @@ export default function App() {
           <SettingsView
             t={t} appName={APP_NAME} appVersion={APP_VERSION_BUILD} languages={LANGUAGES}
             lang={langKey} setLang={setLangKey} theme={themeName} setTheme={setThemeName}
+            generalExtra={(
+              <NewsSetting enabled={newsEnabled} onChange={toggleNews} label={t('lblStgGeneralNews')} />
+            )}
             tabs={[
               { key: "colors", label: t("tabStgCards"), icon: Pipette, content: (
                 <>

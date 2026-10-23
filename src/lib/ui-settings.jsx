@@ -8,12 +8,12 @@
 //
 // What this component OWNS, identically in every app:
 //   - the frame: rail + page, the title, Esc to leave
-//   - the top of Display: Language + Theme
+//   - the top of General: Language + Theme
 //   - the top of About: logo, name, version, the app's one-line description
 // What each app PASSES:
-//   - displayExtra : fields rendered BELOW Language + Theme
+//   - generalExtra : fields rendered BELOW Language + Theme
 //   - tabs         : the app's own tabs, [{ key, label, icon, content }], placed between
-//                    Display and About
+//                    General and About
 //   - aboutExtra   : content rendered BELOW the About block
 // ⚠ CLAUDE: an app ADDS after the common part, it never replaces or reorders it. An app that
 // needs Theme gone or moved is a catalog decision, not a local override.
@@ -36,14 +36,14 @@ import yaiolLogo from '../assets/yaiol-logo.svg';
 export function SettingsView({
   t, appName, appVersion, languages,
   lang, setLang, theme, setTheme,
-  displayExtra, tabs = [], aboutExtra,
+  generalExtra, tabs = [], aboutExtra,
   onClose,
 }) {
-  const [activeTab, setActiveTab] = useState('display');
+  const [activeTab, setActiveTab] = useState('general');
   // Tabs visited so far. A tab mounts the first time it is shown and then stays mounted:
   // a heavy tab (icons-cockpit's Libraries fetches every icon set) costs nothing until it is
   // opened, and a tab's local state survives switching away and back.
-  const [visited, setVisited] = useState(() => new Set(['display']));
+  const [visited, setVisited] = useState(() => new Set(['general']));
   const showTab = (key) => { setActiveTab(key); setVisited(v => v.has(key) ? v : new Set(v).add(key)); };
 
   // While the page is open, <html> carries .stg-open and ui-app.css hides the footer bars
@@ -99,20 +99,20 @@ export function SettingsView({
     return () => TYPES.forEach(t => { document.body.removeEventListener(t, onKey); document.removeEventListener(t, onDocKey); });
   }, []);
 
-  const display = (
+  const general = (
     <>
       <div className="dlg-field">
-        <label className="dlg-field-label">{t('lblStgDisplayLang')}</label>
+        <label className="dlg-field-label">{t('lblStgGeneralLang')}</label>
         <select className="select" value={lang} onChange={e => setLang(e.target.value)}>
           {languages.map(l => <option key={l.key} value={l.key}>{l.label}</option>)}
         </select>
       </div>
       <div className="dlg-field divider">
-        <label className="dlg-field-label">{t('lblStgDisplayTheme')}</label>
+        <label className="dlg-field-label">{t('lblStgGeneralTheme')}</label>
         <div className="opt-btns">
           {[
-            { key: 'dark',  Icon: Moon, label: t('btnStgDisplayThemeDark') },
-            { key: 'light', Icon: Sun,  label: t('btnStgDisplayThemeLight') },
+            { key: 'dark',  Icon: Moon, label: t('btnStgGeneralThemeDark') },
+            { key: 'light', Icon: Sun,  label: t('btnStgGeneralThemeLight') },
           ].map(({ key, Icon, label }) => (
             <button key={key} className={`opt-btn ${theme === key ? 'active' : ''}`} onClick={() => setTheme(key)}>
               <Icon />
@@ -121,7 +121,7 @@ export function SettingsView({
           ))}
         </div>
       </div>
-      {displayExtra}
+      {generalExtra}
     </>
   );
 
@@ -139,7 +139,7 @@ export function SettingsView({
   );
 
   const allTabs = [
-    { key: 'display', label: t('tabStgDisplay'), icon: Sun, content: display },
+    { key: 'general', label: t('tabStgGeneral'), icon: Sun, content: general },
     ...tabs,
     { key: 'about', label: t('tabStgAbout'), icon: ScrollText, content: about },
   ];

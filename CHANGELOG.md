@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0.12 — 2026-10-23
+
+- A newer version now appears as a card in a news dialog instead of a banner strip: the card lists the release notes newer than the running version, links to the download page, and Don't show again hides it until a still newer version is out
+- Occasional yaiol announcements appear in the same dialog; Settings > General has a new Show news from yaiol switch that turns them off completely (the new-version card is not governed by it)
+- With Use AMLP_ID tag on, linking a FLAC that carries no id to a card that already has a Suno link now writes the id from that link (before, it only worked when the link was pasted after the file was linked, so the result depended on which came first)
+- The Settings Display tab is renamed General
+- Number fields show the corrected value at once: a value typed outside the allowed range snaps to the nearest allowed number immediately instead of keeping the typed text
+- Date fields show the accent frame on keyboard focus, like every other field
+
 ## 1.0.11 — 2026-10-02
 
 - New Media setting, **Stored paths**: Absolute (the default, as before) or Relative. Relative stores each linked file's path, and each project's media folder, from a **media root folder** you choose. Moving your whole library to another drive then means changing the root in one place, not relinking every card. Switching shows an audit first: how many paths will be rewritten, and which files are already missing. Nothing is written until you accept, and going back to Absolute converts everything back the same way. Relative needs every path to lie inside the root, so the switch is refused while any file is outside it, and the audit lists which ones

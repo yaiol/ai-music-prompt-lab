@@ -83,7 +83,7 @@ export function DatePicker({ value, onChange, locale = 'en', todayLabel = 'Today
   return (
     <>
       <button ref={btnRef} type="button" onClick={toggle}
-        className={`dp-field${sel ? '' : ' empty'}${open ? ' open' : ''}${className ? ' ' + className : ''}`} style={style}>
+        className={`dp-field${sel ? '' : ' dp-empty'}${open ? ' open' : ''}${className ? ' ' + className : ''}`} style={style}>
         <span>{sel ? displayFmt.format(new Date(sel.y, sel.m, sel.d)) : placeholder}</span>
         <span className="btn icon small subtle"><CalendarDays /></span>
       </button>

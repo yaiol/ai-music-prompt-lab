@@ -14,7 +14,7 @@
 // ⚠ src/i18n-gen/ IS GENERATED — gitignored, never hand-edited, rebuilt on every `npm run build`
 //   via the `prebuild` script. Edit src/i18n.js and rebuild.
 //
-// ⚠ THIS IS THE CANONICAL SOURCE — it is distributed by .common/shared/sync-shared.js into every
+// ⚠ THIS IS THE CANONICAL SOURCE — it is distributed by the shared catalog's sync into every
 //   app as main/scripts/i18n-split.mjs, and `prebuild`/`prestart` run THAT copy. It must ship
 //   inside main/ because main/ is the whole GitHub repo: a build (CI, or an external clone) has
 //   no .common/ to reach into. Never hand-edit an app's copy — edit here and re-run sync-shared.

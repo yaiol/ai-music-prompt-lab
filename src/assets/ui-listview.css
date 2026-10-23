@@ -1,7 +1,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Canonical "list within a view" styling — SHARED across all electron apps.
 
-   ⚠ SOURCE OF TRUTH: app/electron/.common/shared/assets/ui-listview.css
+   ⚠ SOURCE OF TRUTH: the shared catalog (assets/ui-listview.css)
    This file is COPIED into each app's src/assets/ui-listview.css by sync-shared.js.
    NEVER edit the per-app copy — edit this file and re-sync.
 
@@ -82,6 +82,7 @@
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
 }
 .lv-item.active .lv-item-name { color: var(--accent); font-weight: 600; }
+.lv-item.lv-item-muted:not(.active) .lv-item-name { color: var(--text-mute); }   /* a row with nothing in it yet (a language with no text): greyed out; the active row keeps its accent */
 .lv-item-sub {
   font-size: 10.5px; color: var(--text-mute);
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis;

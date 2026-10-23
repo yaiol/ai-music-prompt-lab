@@ -47,7 +47,9 @@ export function NumberField({ value, onChange, min, max, step = 1, width, classN
   };
   const onBlur = (e) => {
     if (allowEmpty && e.target.value.trim() === '') { onChange(''); return; }
-    onChange(clamp(parseFloat(e.target.value)));
+    const n = clamp(parseFloat(e.target.value));
+    setDraft(n === '' ? '' : String(n));   // show the clamped number even when the value did not move (it would keep the typed text otherwise)
+    onChange(n);
   };
   const bump = (dir) => { if (!disabled) onChange(clamp((Number(value) || 0) + dir * step)); };
 

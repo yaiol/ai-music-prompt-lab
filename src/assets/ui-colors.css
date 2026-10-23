@@ -1,7 +1,7 @@
 /* ──────────────────────────────────────────────────────────────────────────
    Canonical color token palette — SHARED across all electron apps.
 
-   ⚠ SOURCE OF TRUTH: app/electron/.common/shared/assets/ui-colors.css
+   ⚠ SOURCE OF TRUTH: the shared catalog (assets/ui-colors.css)
    Copied into each app's src/assets/ui-colors.css by sync-shared.js. NEVER edit the
    per-app copy — edit this file and re-sync. Import FIRST (before the app's own
    CSS and before ui-app.css/ui-listview.css):  import './assets/ui-colors.css';

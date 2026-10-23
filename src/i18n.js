@@ -27,10 +27,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "New version available:",
-    lnkUpdateWhatsNew:                      "What's new",
     btnUpdateDownload:                      "Download",
-    lnkUpdateSkip:                          "Skip this version",
-    tipUpdateDismiss:                       "Dismiss",
+    lblNewsHideForever:                     "Don't show again",
+    btnNewsOpenLink:                        "Learn more",
+    tipNewsDismiss:                         "Close",
+    lblStgGeneralNews:                      "Show news from yaiol",
+    btnNewsClose:                           "Close",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocal",
@@ -170,7 +172,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Settings",
     tipStgBack:                             "Back",
-    tabStgDisplay:                          "Display",
     tabStgCards:                            "Cards",
     tabStgTags:                             "Tags",
     tabStgMedia:                            "Media",
@@ -210,11 +211,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Rename media on sort by default",
     msgStgMediaRenameOnSortDefault:         "Sets the starting value of the Rename media on sort option in the Sort view. Renaming rewrites the leading number of each linked file on disk.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Theme",
-    lblStgDisplayLang:                      "Language",
-    btnStgDisplayThemeDark:                 "Dark",
-    btnStgDisplayThemeLight:                "Light",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Theme",
+    tabStgGeneral:                          "General",
+    lblStgGeneralLang:                      "Language",
+    btnStgGeneralThemeDark:                 "Dark",
+    btnStgGeneralThemeLight:                "Light",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Cards Colors",
@@ -503,10 +505,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nouvelle version disponible :",
-    lnkUpdateWhatsNew:                      "Nouveautés",
     btnUpdateDownload:                      "Télécharger",
-    lnkUpdateSkip:                          "Ignorer cette version",
-    tipUpdateDismiss:                       "Ignorer",
+    lblNewsHideForever:                     "Ne plus afficher",
+    btnNewsOpenLink:                        "En savoir plus",
+    tipNewsDismiss:                         "Fermer",
+    lblStgGeneralNews:                      "Afficher les actualités de yaiol",
+    btnNewsClose:                           "Fermer",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Voix",
@@ -646,7 +650,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Paramètres",
     tipStgBack:                             "Retour",
-    tabStgDisplay:                          "Affichage",
     tabStgCards:                            "Cartes",
     tabStgTags:                             "Étiquettes",
     tabStgMedia:                            "Média",
@@ -686,11 +689,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Renommer les médias lors du tri par défaut",
     msgStgMediaRenameOnSortDefault:         "Définit la valeur initiale de l'option « Renommer les médias lors du tri » dans la vue de tri. Le renommage réécrit le numéro principal de chaque fichier lié sur le disque.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Thème",
-    lblStgDisplayLang:                      "Langue",
-    btnStgDisplayThemeDark:                 "Sombre",
-    btnStgDisplayThemeLight:                "Clair",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Thème",
+    tabStgGeneral:                          "Général",
+    lblStgGeneralLang:                      "Langue",
+    btnStgGeneralThemeDark:                 "Sombre",
+    btnStgGeneralThemeLight:                "Clair",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Couleurs des cartes",
@@ -978,10 +982,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Neue Version verfügbar:",
-    lnkUpdateWhatsNew:                      "Was ist neu",
     btnUpdateDownload:                      "Herunterladen",
-    lnkUpdateSkip:                          "Diese Version überspringen",
-    tipUpdateDismiss:                       "Schließen",
+    lblNewsHideForever:                     "Nicht mehr anzeigen",
+    btnNewsOpenLink:                        "Mehr erfahren",
+    tipNewsDismiss:                         "Schließen",
+    lblStgGeneralNews:                      "Nachrichten von yaiol anzeigen",
+    btnNewsClose:                           "Schließen",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalisten",
@@ -1121,7 +1127,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Einstellungen",
     tipStgBack:                             "Zurück",
-    tabStgDisplay:                          "Anzeige",
     tabStgCards:                            "Karten",
     tabStgTags:                             "Tags",
     tabStgMedia:                            "Medien",
@@ -1161,11 +1166,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Medien beim Sortieren standardmäßig umbenennen",
     msgStgMediaRenameOnSortDefault:         "Legt den Startwert der Option „Medien beim Sortieren umbenennen“ in der Sortieransicht fest. Das Umbenennen überschreibt die führende Nummer jeder verknüpften Datei auf der Festplatte.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Thema",
-    lblStgDisplayLang:                      "Sprache",
-    btnStgDisplayThemeDark:                 "Dunkel",
-    btnStgDisplayThemeLight:                "Hell",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Thema",
+    tabStgGeneral:                          "Allgemein",
+    lblStgGeneralLang:                      "Sprache",
+    btnStgGeneralThemeDark:                 "Dunkel",
+    btnStgGeneralThemeLight:                "Hell",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kartenfarben",
@@ -1453,10 +1459,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nueva versión disponible:",
-    lnkUpdateWhatsNew:                      "Novedades",
     btnUpdateDownload:                      "Descargar",
-    lnkUpdateSkip:                          "Omitir esta versión",
-    tipUpdateDismiss:                       "Descartar",
+    lblNewsHideForever:                     "No volver a mostrar",
+    btnNewsOpenLink:                        "Más información",
+    tipNewsDismiss:                         "Cerrar",
+    lblStgGeneralNews:                      "Mostrar noticias de yaiol",
+    btnNewsClose:                           "Cerrar",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocalista",
@@ -1596,7 +1604,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Ajustes",
     tipStgBack:                             "Atrás",
-    tabStgDisplay:                          "Pantalla",
     tabStgCards:                            "Tarjetas",
     tabStgTags:                             "Etiquetas",
     tabStgMedia:                            "Medios",
@@ -1636,11 +1643,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Renombrar medios al ordenar por defecto",
     msgStgMediaRenameOnSortDefault:         "Establece el valor inicial de la opción «Renombrar medios al ordenar» en la vista de ordenación. El cambio de nombre reescribe el número principal de cada archivo vinculado en el disco.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Idioma",
-    btnStgDisplayThemeDark:                 "Oscuro",
-    btnStgDisplayThemeLight:                "Claro",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "General",
+    lblStgGeneralLang:                      "Idioma",
+    btnStgGeneralThemeDark:                 "Oscuro",
+    btnStgGeneralThemeLight:                "Claro",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Colores de las tarjetas",
@@ -1928,10 +1936,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nova versão disponível:",
-    lnkUpdateWhatsNew:                      "Novidades",
     btnUpdateDownload:                      "Baixar",
-    lnkUpdateSkip:                          "Ignorar esta versão",
-    tipUpdateDismiss:                       "Dispensar",
+    lblNewsHideForever:                     "Não mostrar novamente",
+    btnNewsOpenLink:                        "Saiba mais",
+    tipNewsDismiss:                         "Fechar",
+    lblStgGeneralNews:                      "Mostrar notícias de yaiol",
+    btnNewsClose:                           "Fechar",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocalista",
@@ -2071,7 +2081,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Configurações",
     tipStgBack:                             "Voltar",
-    tabStgDisplay:                          "Exibição",
     tabStgCards:                            "Cartões",
     tabStgTags:                             "Etiquetas",
     tabStgMedia:                            "Mídia",
@@ -2111,11 +2120,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Renomear mídia ao ordenar por padrão",
     msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opção Renomear mídia ao ordenar na visualização de Ordenação. A renomeação reescreve o número principal de cada arquivo vinculado no disco.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Idioma",
-    btnStgDisplayThemeDark:                 "Escuro",
-    btnStgDisplayThemeLight:                "Claro",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Geral",
+    lblStgGeneralLang:                      "Idioma",
+    btnStgGeneralThemeDark:                 "Escuro",
+    btnStgGeneralThemeLight:                "Claro",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Cores dos cartões",
@@ -2403,10 +2413,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nova versão disponível:",
-    lnkUpdateWhatsNew:                      "Novidades",
     btnUpdateDownload:                      "Transferir",
-    lnkUpdateSkip:                          "Ignorar esta versão",
-    tipUpdateDismiss:                       "Dispensar",
+    lblNewsHideForever:                     "Não mostrar novamente",
+    btnNewsOpenLink:                        "Saber mais",
+    tipNewsDismiss:                         "Fechar",
+    lblStgGeneralNews:                      "Mostrar notícias de yaiol",
+    btnNewsClose:                           "Fechar",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocalista",
@@ -2546,7 +2558,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Definições",
     tipStgBack:                             "Voltar",
-    tabStgDisplay:                          "Visualização",
     tabStgCards:                            "Cartões",
     tabStgTags:                             "Etiquetas",
     tabStgMedia:                            "Multimédia",
@@ -2586,11 +2597,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Mudar o nome dos ficheiros multimédia ao ordenar por predefinição",
     msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opção Mudar o nome dos ficheiros multimédia ao ordenar na vista de Ordenação. A mudança de nome reescreve o número principal de cada ficheiro ligado no disco.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Idioma",
-    btnStgDisplayThemeDark:                 "Escuro",
-    btnStgDisplayThemeLight:                "Claro",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Geral",
+    lblStgGeneralLang:                      "Idioma",
+    btnStgGeneralThemeDark:                 "Escuro",
+    btnStgGeneralThemeLight:                "Claro",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Cores dos cartões",
@@ -2878,10 +2890,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "新版本可用:",
-    lnkUpdateWhatsNew:                      "新功能",
     btnUpdateDownload:                      "下载",
-    lnkUpdateSkip:                          "跳过此版本",
-    tipUpdateDismiss:                       "忽略",
+    lblNewsHideForever:                     "不再显示",
+    btnNewsOpenLink:                        "了解更多",
+    tipNewsDismiss:                         "关闭",
+    lblStgGeneralNews:                      "显示来自 yaiol 的新闻",
+    btnNewsClose:                           "关闭",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "人声",
@@ -3021,7 +3035,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "设置",
     tipStgBack:                             "返回",
-    tabStgDisplay:                          "显示",
     tabStgCards:                            "卡片",
     tabStgTags:                             "标签",
     tabStgMedia:                            "媒体",
@@ -3061,11 +3074,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "默认按排序重命名媒体",
     msgStgMediaRenameOnSortDefault:         "设置排序视图中“按排序重命名媒体”选项的初始值。重命名会重写磁盘上每个链接文件的前导编号。",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "主题",
-    lblStgDisplayLang:                      "语言",
-    btnStgDisplayThemeDark:                 "深色",
-    btnStgDisplayThemeLight:                "浅色",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "主题",
+    tabStgGeneral:                          "常规",
+    lblStgGeneralLang:                      "语言",
+    btnStgGeneralThemeDark:                 "深色",
+    btnStgGeneralThemeLight:                "浅色",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "卡片颜色",
@@ -3353,10 +3367,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "新版本已推出：",
-    lnkUpdateWhatsNew:                      "新功能",
     btnUpdateDownload:                      "下載",
-    lnkUpdateSkip:                          "跳過此版本",
-    tipUpdateDismiss:                       "忽略",
+    lblNewsHideForever:                     "不再顯示",
+    btnNewsOpenLink:                        "了解更多",
+    tipNewsDismiss:                         "關閉",
+    lblStgGeneralNews:                      "顯示來自 yaiol 的新聞",
+    btnNewsClose:                           "關閉",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "人聲",
@@ -3496,7 +3512,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "設定",
     tipStgBack:                             "返回",
-    tabStgDisplay:                          "顯示",
     tabStgCards:                            "卡片",
     tabStgTags:                             "標籤",
     tabStgMedia:                            "媒體",
@@ -3536,11 +3551,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "預設依排序重新命名媒體",
     msgStgMediaRenameOnSortDefault:         "設定排序檢視中「依排序重新命名媒體」選項的起始值。重新命名會重寫磁碟上每個連結檔案的前導編號。",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "主題",
-    lblStgDisplayLang:                      "語言",
-    btnStgDisplayThemeDark:                 "深色",
-    btnStgDisplayThemeLight:                "淺色",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "主題",
+    tabStgGeneral:                          "一般",
+    lblStgGeneralLang:                      "語言",
+    btnStgGeneralThemeDark:                 "深色",
+    btnStgGeneralThemeLight:                "淺色",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "卡片顏色",
@@ -3828,10 +3844,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "新しいバージョンが利用可能です:",
-    lnkUpdateWhatsNew:                      "新機能",
     btnUpdateDownload:                      "ダウンロード",
-    lnkUpdateSkip:                          "このバージョンをスキップ",
-    tipUpdateDismiss:                       "閉じる",
+    lblNewsHideForever:                     "今後表示しない",
+    btnNewsOpenLink:                        "詳細を見る",
+    tipNewsDismiss:                         "閉じる",
+    lblStgGeneralNews:                      "yaiol からのニュースを表示",
+    btnNewsClose:                           "閉じる",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "ボーカリスト",
@@ -3971,7 +3989,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "設定",
     tipStgBack:                             "戻る",
-    tabStgDisplay:                          "表示",
     tabStgCards:                            "カード",
     tabStgTags:                             "タグ",
     tabStgMedia:                            "メディア",
@@ -4011,11 +4028,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "並べ替え時にメディアをデフォルトで名前変更",
     msgStgMediaRenameOnSortDefault:         "並べ替えビューの「並べ替え時にメディアを名前変更」オプションの初期値を設定します。名前変更により、ディスク上の各リンクファイルの先頭番号が書き換えられます。",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "テーマ",
-    lblStgDisplayLang:                      "言語",
-    btnStgDisplayThemeDark:                 "ダーク",
-    btnStgDisplayThemeLight:                "ライト",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "テーマ",
+    tabStgGeneral:                          "一般",
+    lblStgGeneralLang:                      "言語",
+    btnStgGeneralThemeDark:                 "ダーク",
+    btnStgGeneralThemeLight:                "ライト",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "カードの色",
@@ -4303,10 +4321,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Dostępna nowa wersja:",
-    lnkUpdateWhatsNew:                      "Co nowego",
     btnUpdateDownload:                      "Pobierz",
-    lnkUpdateSkip:                          "Pomiń tę wersję",
-    tipUpdateDismiss:                       "Zamknij",
+    lblNewsHideForever:                     "Nie pokazuj ponownie",
+    btnNewsOpenLink:                        "Dowiedz się więcej",
+    tipNewsDismiss:                         "Zamknij",
+    lblStgGeneralNews:                      "Pokaż wiadomości z yaiol",
+    btnNewsClose:                           "Zamknij",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Wokalista",
@@ -4446,7 +4466,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Ustawienia",
     tipStgBack:                             "Wstecz",
-    tabStgDisplay:                          "Wyświetlanie",
     tabStgCards:                            "Karty",
     tabStgTags:                             "Tagi",
     tabStgMedia:                            "Media",
@@ -4486,11 +4505,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Domyślnie zmieniaj nazwy multimediów podczas sortowania",
     msgStgMediaRenameOnSortDefault:         "Ustawia początkową wartość opcji „Zmieniaj nazwy multimediów podczas sortowania” w widoku sortowania. Zmiana nazwy przepisuje początkowy numer każdego połączonego pliku na dysku.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Motyw",
-    lblStgDisplayLang:                      "Język",
-    btnStgDisplayThemeDark:                 "Ciemny",
-    btnStgDisplayThemeLight:                "Jasny",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Motyw",
+    tabStgGeneral:                          "Ogólne",
+    lblStgGeneralLang:                      "Język",
+    btnStgGeneralThemeDark:                 "Ciemny",
+    btnStgGeneralThemeLight:                "Jasny",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kolory kart",
@@ -4778,10 +4798,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Доступна нова версія:",
-    lnkUpdateWhatsNew:                      "Що нового",
     btnUpdateDownload:                      "Завантажити",
-    lnkUpdateSkip:                          "Пропустити цю версію",
-    tipUpdateDismiss:                       "Закрити",
+    lblNewsHideForever:                     "Більше не показувати",
+    btnNewsOpenLink:                        "Дізнатися більше",
+    tipNewsDismiss:                         "Закрити",
+    lblStgGeneralNews:                      "Показувати новини від yaiol",
+    btnNewsClose:                           "Закрити",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Вокаліст",
@@ -4921,7 +4943,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Налаштування",
     tipStgBack:                             "Назад",
-    tabStgDisplay:                          "Дисплей",
     tabStgCards:                            "Картки",
     tabStgTags:                             "Теги",
     tabStgMedia:                            "Медіа",
@@ -4961,11 +4982,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Перейменовувати медіа за замовчуванням під час сортування",
     msgStgMediaRenameOnSortDefault:         "Встановлює початкове значення опції «Перейменовувати медіа під час сортування» у вікні сортування. Перейменування перезаписує початковий номер кожного пов'язаного файлу на диску.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Тема",
-    lblStgDisplayLang:                      "Мова",
-    btnStgDisplayThemeDark:                 "Темна",
-    btnStgDisplayThemeLight:                "Світла",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Тема",
+    tabStgGeneral:                          "Загальні",
+    lblStgGeneralLang:                      "Мова",
+    btnStgGeneralThemeDark:                 "Темна",
+    btnStgGeneralThemeLight:                "Світла",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Кольори карток",
@@ -5253,10 +5275,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nuova versione disponibile:",
-    lnkUpdateWhatsNew:                      "Novità",
     btnUpdateDownload:                      "Scarica",
-    lnkUpdateSkip:                          "Salta questa versione",
-    tipUpdateDismiss:                       "Ignora",
+    lblNewsHideForever:                     "Non mostrare più",
+    btnNewsOpenLink:                        "Scopri di più",
+    tipNewsDismiss:                         "Chiudi",
+    lblStgGeneralNews:                      "Mostra notizie da yaiol",
+    btnNewsClose:                           "Chiudi",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Voce",
@@ -5396,7 +5420,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Impostazioni",
     tipStgBack:                             "Indietro",
-    tabStgDisplay:                          "Visualizzazione",
     tabStgCards:                            "Carte",
     tabStgTags:                             "Tag",
     tabStgMedia:                            "Media",
@@ -5436,11 +5459,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Rinomina i media all'ordinamento per impostazione predefinita",
     msgStgMediaRenameOnSortDefault:         "Imposta il valore iniziale dell'opzione «Rinomina i media all'ordinamento» nella vista Ordina. La ridenominazione riscrive il numero iniziale di ogni file collegato sul disco.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Lingua",
-    btnStgDisplayThemeDark:                 "Scuro",
-    btnStgDisplayThemeLight:                "Chiaro",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Generale",
+    lblStgGeneralLang:                      "Lingua",
+    btnStgGeneralThemeDark:                 "Scuro",
+    btnStgGeneralThemeLight:                "Chiaro",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Colori delle carte",
@@ -5728,10 +5752,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "إصدار جديد متوفر:",
-    lnkUpdateWhatsNew:                      "ما الجديد",
     btnUpdateDownload:                      "تنزيل",
-    lnkUpdateSkip:                          "تخطي هذا الإصدار",
-    tipUpdateDismiss:                       "تجاهل",
+    lblNewsHideForever:                     "عدم الإظهار مرة أخرى",
+    btnNewsOpenLink:                        "تعرّف على المزيد",
+    tipNewsDismiss:                         "إغلاق",
+    lblStgGeneralNews:                      "إظهار الأخبار من yaiol",
+    btnNewsClose:                           "إغلاق",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "مغنّي",
@@ -5871,7 +5897,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "الإعدادات",
     tipStgBack:                             "رجوع",
-    tabStgDisplay:                          "العرض",
     tabStgCards:                            "البطاقات",
     tabStgTags:                             "العلامات",
     tabStgMedia:                            "الوسائط",
@@ -5911,11 +5936,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "إعادة تسمية الوسائط عند الفرز افتراضيًا",
     msgStgMediaRenameOnSortDefault:         "يحدد القيمة الأولية لخيار «إعادة تسمية الوسائط عند الفرز» في عرض الفرز. تعيد عملية إعادة التسمية كتابة الرقم الرئيسي لكل ملف مرتبط على القرص.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "المظهر",
-    lblStgDisplayLang:                      "اللغة",
-    btnStgDisplayThemeDark:                 "داكن",
-    btnStgDisplayThemeLight:                "فاتح",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "المظهر",
+    tabStgGeneral:                          "عام",
+    lblStgGeneralLang:                      "اللغة",
+    btnStgGeneralThemeDark:                 "داكن",
+    btnStgGeneralThemeLight:                "فاتح",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "ألوان البطاقات",
@@ -6203,10 +6229,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nieuwe versie beschikbaar:",
-    lnkUpdateWhatsNew:                      "Wat is nieuw",
     btnUpdateDownload:                      "Downloaden",
-    lnkUpdateSkip:                          "Deze versie overslaan",
-    tipUpdateDismiss:                       "Sluiten",
+    lblNewsHideForever:                     "Niet meer tonen",
+    btnNewsOpenLink:                        "Meer informatie",
+    tipNewsDismiss:                         "Sluiten",
+    lblStgGeneralNews:                      "Nieuws van yaiol tonen",
+    btnNewsClose:                           "Sluiten",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Zanger",
@@ -6346,7 +6374,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Instellingen",
     tipStgBack:                             "Terug",
-    tabStgDisplay:                          "Weergave",
     tabStgCards:                            "Kaarten",
     tabStgTags:                             "Tags",
     tabStgMedia:                            "Media",
@@ -6386,11 +6413,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Media standaard hernoemen bij sorteren",
     msgStgMediaRenameOnSortDefault:         "Stelt de startwaarde in van de optie 'Media hernoemen bij sorteren' in de sorteerweergave. Hernoemen herschrijft het voorloopnummer van elk gekoppeld bestand op schijf.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Thema",
-    lblStgDisplayLang:                      "Taal",
-    btnStgDisplayThemeDark:                 "Donker",
-    btnStgDisplayThemeLight:                "Licht",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Thema",
+    tabStgGeneral:                          "Algemeen",
+    lblStgGeneralLang:                      "Taal",
+    btnStgGeneralThemeDark:                 "Donker",
+    btnStgGeneralThemeLight:                "Licht",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kaartkleuren",
@@ -6678,10 +6706,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Ny versjon tilgjengelig:",
-    lnkUpdateWhatsNew:                      "Hva er nytt",
     btnUpdateDownload:                      "Last ned",
-    lnkUpdateSkip:                          "Hopp over denne versjonen",
-    tipUpdateDismiss:                       "Avvis",
+    lblNewsHideForever:                     "Ikke vis igjen",
+    btnNewsOpenLink:                        "Les mer",
+    tipNewsDismiss:                         "Lukk",
+    lblStgGeneralNews:                      "Vis nyheter fra yaiol",
+    btnNewsClose:                           "Lukk",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalist",
@@ -6821,7 +6851,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Innstillinger",
     tipStgBack:                             "Tilbake",
-    tabStgDisplay:                          "Visning",
     tabStgCards:                            "Kort",
     tabStgTags:                             "Tagger",
     tabStgMedia:                            "Medier",
@@ -6861,11 +6890,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Gi medier nytt navn ved sortering som standard",
     msgStgMediaRenameOnSortDefault:         "Angir startverdien for alternativet «Gi medier nytt navn ved sortering» i sorteringsvisningen. Navneendring omskriver det ledende nummeret for hver koblet fil på disken.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Språk",
-    btnStgDisplayThemeDark:                 "Mørk",
-    btnStgDisplayThemeLight:                "Lys",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Generelt",
+    lblStgGeneralLang:                      "Språk",
+    btnStgGeneralThemeDark:                 "Mørk",
+    btnStgGeneralThemeLight:                "Lys",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kortfarger",
@@ -7153,10 +7183,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Ny version tillgänglig:",
-    lnkUpdateWhatsNew:                      "Vad är nytt",
     btnUpdateDownload:                      "Ladda ner",
-    lnkUpdateSkip:                          "Hoppa över den här versionen",
-    tipUpdateDismiss:                       "Avfärda",
+    lblNewsHideForever:                     "Visa inte igen",
+    btnNewsOpenLink:                        "Läs mer",
+    tipNewsDismiss:                         "Stäng",
+    lblStgGeneralNews:                      "Visa nyheter från yaiol",
+    btnNewsClose:                           "Stäng",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Sångare",
@@ -7296,7 +7328,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Inställningar",
     tipStgBack:                             "Tillbaka",
-    tabStgDisplay:                          "Visning",
     tabStgCards:                            "Kort",
     tabStgTags:                             "Taggar",
     tabStgMedia:                            "Media",
@@ -7336,11 +7367,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Byt namn på media vid sortering som standard",
     msgStgMediaRenameOnSortDefault:         "Anger startvärdet för alternativet ”Byt namn på media vid sortering” i sorteringsvyn. Namnbytet skriver om det inledande numret för varje länkad fil på disken.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Språk",
-    btnStgDisplayThemeDark:                 "Mörkt",
-    btnStgDisplayThemeLight:                "Ljust",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Allmänt",
+    lblStgGeneralLang:                      "Språk",
+    btnStgGeneralThemeDark:                 "Mörkt",
+    btnStgGeneralThemeLight:                "Ljust",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kortfärger",
@@ -7628,10 +7660,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Yeni sürüm mevcut:",
-    lnkUpdateWhatsNew:                      "Yenilikler",
     btnUpdateDownload:                      "İndir",
-    lnkUpdateSkip:                          "Bu sürümü atla",
-    tipUpdateDismiss:                       "Kapat",
+    lblNewsHideForever:                     "Bir daha gösterme",
+    btnNewsOpenLink:                        "Daha fazla bilgi edin",
+    tipNewsDismiss:                         "Kapat",
+    lblStgGeneralNews:                      "yaiol'dan haberleri göster",
+    btnNewsClose:                           "Kapat",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalist",
@@ -7771,7 +7805,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Ayarlar",
     tipStgBack:                             "Geri",
-    tabStgDisplay:                          "Görünüm",
     tabStgCards:                            "Kartlar",
     tabStgTags:                             "Etiketler",
     tabStgMedia:                            "Medya",
@@ -7811,11 +7844,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Varsayılan olarak sıralamada medyayı yeniden adlandır",
     msgStgMediaRenameOnSortDefault:         "Sıralama görünümündeki 'Sıralamada medyayı yeniden adlandır' seçeneğinin başlangıç değerini ayarlar. Yeniden adlandırma, diskteki her bağlantılı dosyanın baştaki numarasını yeniden yazar.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Dil",
-    btnStgDisplayThemeDark:                 "Koyu",
-    btnStgDisplayThemeLight:                "Açık",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Genel",
+    lblStgGeneralLang:                      "Dil",
+    btnStgGeneralThemeDark:                 "Koyu",
+    btnStgGeneralThemeLight:                "Açık",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kart Renkleri",
@@ -8103,10 +8137,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Ny version tilgængelig:",
-    lnkUpdateWhatsNew:                      "Hvad er nyt",
     btnUpdateDownload:                      "Download",
-    lnkUpdateSkip:                          "Spring denne version over",
-    tipUpdateDismiss:                       "Afvis",
+    lblNewsHideForever:                     "Vis ikke igen",
+    btnNewsOpenLink:                        "Læs mere",
+    tipNewsDismiss:                         "Luk",
+    lblStgGeneralNews:                      "Vis nyheder fra yaiol",
+    btnNewsClose:                           "Luk",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalist",
@@ -8246,7 +8282,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Indstillinger",
     tipStgBack:                             "Tilbage",
-    tabStgDisplay:                          "Visning",
     tabStgCards:                            "Kort",
     tabStgTags:                             "Tags",
     tabStgMedia:                            "Medier",
@@ -8286,11 +8321,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Omdøb medier ved sortering som standard",
     msgStgMediaRenameOnSortDefault:         "Indstiller startværdien for indstillingen 'Omdøb medier ved sortering' i sorteringsvisningen. Omdøbning omskriver det ledende nummer for hver tilknyttet fil på disken.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Sprog",
-    btnStgDisplayThemeDark:                 "Mørk",
-    btnStgDisplayThemeLight:                "Lys",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Generelt",
+    lblStgGeneralLang:                      "Sprog",
+    btnStgGeneralThemeDark:                 "Mørk",
+    btnStgGeneralThemeLight:                "Lys",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kortfarver",
@@ -8578,10 +8614,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Uusi versio saatavilla:",
-    lnkUpdateWhatsNew:                      "Mitä uutta",
     btnUpdateDownload:                      "Lataa",
-    lnkUpdateSkip:                          "Ohita tämä versio",
-    tipUpdateDismiss:                       "Hylkää",
+    lblNewsHideForever:                     "Älä näytä uudelleen",
+    btnNewsOpenLink:                        "Lue lisää",
+    tipNewsDismiss:                         "Sulje",
+    lblStgGeneralNews:                      "Näytä uutiset yaiolista",
+    btnNewsClose:                           "Sulje",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalisti",
@@ -8721,7 +8759,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Asetukset",
     tipStgBack:                             "Takaisin",
-    tabStgDisplay:                          "Näyttö",
     tabStgCards:                            "Kortit",
     tabStgTags:                             "Tunnisteet",
     tabStgMedia:                            "Media",
@@ -8761,11 +8798,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Nimeä media uudelleen lajittelun yhteydessä oletuksena",
     msgStgMediaRenameOnSortDefault:         "Asettaa Lajittelu-näkymän 'Nimeä media uudelleen lajittelun yhteydessä' -asetuksen aloitusarvon. Uudelleennimeäminen kirjoittaa uudelleen jokaisen linkitetyn tiedoston etunumeron levylle.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Teema",
-    lblStgDisplayLang:                      "Kieli",
-    btnStgDisplayThemeDark:                 "Tumma",
-    btnStgDisplayThemeLight:                "Vaalea",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Teema",
+    tabStgGeneral:                          "Yleiset",
+    lblStgGeneralLang:                      "Kieli",
+    btnStgGeneralThemeDark:                 "Tumma",
+    btnStgGeneralThemeLight:                "Vaalea",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Korttien värit",
@@ -9053,10 +9091,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Νέα έκδοση διαθέσιμη:",
-    lnkUpdateWhatsNew:                      "Τι νέο υπάρχει",
     btnUpdateDownload:                      "Λήψη",
-    lnkUpdateSkip:                          "Παράλειψη αυτής της έκδοσης",
-    tipUpdateDismiss:                       "Απόρριψη",
+    lblNewsHideForever:                     "Να μην εμφανιστεί ξανά",
+    btnNewsOpenLink:                        "Μάθετε περισσότερα",
+    tipNewsDismiss:                         "Κλείσιμο",
+    lblStgGeneralNews:                      "Εμφάνιση ειδήσεων από το yaiol",
+    btnNewsClose:                           "Κλείσιμο",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Τραγουδιστής",
@@ -9196,7 +9236,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Ρυθμίσεις",
     tipStgBack:                             "Πίσω",
-    tabStgDisplay:                          "Εμφάνιση",
     tabStgCards:                            "Κάρτες",
     tabStgTags:                             "Ετικέτες",
     tabStgMedia:                            "Πολυμέσα",
@@ -9236,11 +9275,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Μετονομασία πολυμέσων κατά την ταξινόμηση από προεπιλογή",
     msgStgMediaRenameOnSortDefault:         "Ορίζει την αρχική τιμή της επιλογής «Μετονομασία πολυμέσων κατά την ταξινόμηση» στην προβολή Ταξινόμηση. Η μετονομασία ξαναγράφει τον αρχικό αριθμό κάθε συνδεδεμένου αρχείου στο δίσκο.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Θέμα",
-    lblStgDisplayLang:                      "Γλώσσα",
-    btnStgDisplayThemeDark:                 "Σκοτεινό",
-    btnStgDisplayThemeLight:                "Φωτεινό",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Θέμα",
+    tabStgGeneral:                          "Γενικά",
+    lblStgGeneralLang:                      "Γλώσσα",
+    btnStgGeneralThemeDark:                 "Σκοτεινό",
+    btnStgGeneralThemeLight:                "Φωτεινό",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Χρώματα καρτών",
@@ -9528,10 +9568,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "גרסה חדשה זמינה:",
-    lnkUpdateWhatsNew:                      "מה חדש",
     btnUpdateDownload:                      "הורדה",
-    lnkUpdateSkip:                          "דלג על גרסה זו",
-    tipUpdateDismiss:                       "בטל",
+    lblNewsHideForever:                     "אל תציג שוב",
+    btnNewsOpenLink:                        "למידע נוסף",
+    tipNewsDismiss:                         "סגור",
+    lblStgGeneralNews:                      "הצג חדשות מ-yaiol",
+    btnNewsClose:                           "סגור",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "זמר",
@@ -9671,7 +9713,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "הגדרות",
     tipStgBack:                             "חזור",
-    tabStgDisplay:                          "תצוגה",
     tabStgCards:                            "כרטיסים",
     tabStgTags:                             "תגיות",
     tabStgMedia:                            "מדיה",
@@ -9711,11 +9752,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "שנה שם מדיה במיון כברירת מחדל",
     msgStgMediaRenameOnSortDefault:         "מגדיר את ערך ההתחלה של האפשרות 'שנה שם מדיה במיון' בתצוגת המיון. שינוי שם כותב מחדש את המספר המוביל של כל קובץ מקושר בדיסק.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "ערכת נושא",
-    lblStgDisplayLang:                      "שפה",
-    btnStgDisplayThemeDark:                 "כהה",
-    btnStgDisplayThemeLight:                "בהיר",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "ערכת נושא",
+    tabStgGeneral:                          "כללי",
+    lblStgGeneralLang:                      "שפה",
+    btnStgGeneralThemeDark:                 "כהה",
+    btnStgGeneralThemeLight:                "בהיר",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "צבעי כרטיסים",
@@ -10003,10 +10045,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "새 버전 사용 가능:",
-    lnkUpdateWhatsNew:                      "새로운 기능",
     btnUpdateDownload:                      "다운로드",
-    lnkUpdateSkip:                          "이 버전 건너뛰기",
-    tipUpdateDismiss:                       "닫기",
+    lblNewsHideForever:                     "다시 표시 안 함",
+    btnNewsOpenLink:                        "자세히 알아보기",
+    tipNewsDismiss:                         "닫기",
+    lblStgGeneralNews:                      "yaiol 뉴스 표시",
+    btnNewsClose:                           "닫기",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "보컬리스트",
@@ -10146,7 +10190,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "설정",
     tipStgBack:                             "뒤로",
-    tabStgDisplay:                          "디스플레이",
     tabStgCards:                            "카드",
     tabStgTags:                             "태그",
     tabStgMedia:                            "미디어",
@@ -10186,11 +10229,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "정렬 시 미디어 이름 기본값으로 변경",
     msgStgMediaRenameOnSortDefault:         "정렬 보기에서 '정렬 시 미디어 이름 변경' 옵션의 시작 값을 설정합니다. 이름 변경은 디스크에 있는 각 연결된 파일의 선행 번호를 다시 작성합니다.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "테마",
-    lblStgDisplayLang:                      "언어",
-    btnStgDisplayThemeDark:                 "다크",
-    btnStgDisplayThemeLight:                "라이트",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "테마",
+    tabStgGeneral:                          "일반",
+    lblStgGeneralLang:                      "언어",
+    btnStgGeneralThemeDark:                 "다크",
+    btnStgGeneralThemeLight:                "라이트",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "카드 색상",
@@ -10478,10 +10522,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Versiune nouă disponibilă:",
-    lnkUpdateWhatsNew:                      "Ce e nou",
     btnUpdateDownload:                      "Descarcă",
-    lnkUpdateSkip:                          "Omite această versiune",
-    tipUpdateDismiss:                       "Ignoră",
+    lblNewsHideForever:                     "Nu mai afișa",
+    btnNewsOpenLink:                        "Află mai multe",
+    tipNewsDismiss:                         "Închide",
+    lblStgGeneralNews:                      "Afișează știri de la yaiol",
+    btnNewsClose:                           "Închide",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocal",
@@ -10621,7 +10667,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Setări",
     tipStgBack:                             "Înapoi",
-    tabStgDisplay:                          "Afișaj",
     tabStgCards:                            "Carduri",
     tabStgTags:                             "Etichete",
     tabStgMedia:                            "Media",
@@ -10661,11 +10706,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Redenumire media la sortare implicit",
     msgStgMediaRenameOnSortDefault:         "Setează valoarea inițială a opțiunii «Redenumire media la sortare» în vizualizarea Sortare. Redenumirea rescrie numărul principal al fiecărui fișier legat de pe disc.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Temă",
-    lblStgDisplayLang:                      "Limbă",
-    btnStgDisplayThemeDark:                 "Întunecat",
-    btnStgDisplayThemeLight:                "Deschis",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Temă",
+    tabStgGeneral:                          "General",
+    lblStgGeneralLang:                      "Limbă",
+    btnStgGeneralThemeDark:                 "Întunecat",
+    btnStgGeneralThemeLight:                "Deschis",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Culorile cardurilor",
@@ -10953,10 +10999,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Phiên bản mới có sẵn:",
-    lnkUpdateWhatsNew:                      "Có gì mới",
     btnUpdateDownload:                      "Tải xuống",
-    lnkUpdateSkip:                          "Bỏ qua phiên bản này",
-    tipUpdateDismiss:                       "Bỏ qua",
+    lblNewsHideForever:                     "Không hiển thị lại",
+    btnNewsOpenLink:                        "Tìm hiểu thêm",
+    tipNewsDismiss:                         "Đóng",
+    lblStgGeneralNews:                      "Hiển thị tin tức từ yaiol",
+    btnNewsClose:                           "Đóng",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Ca sĩ",
@@ -11096,7 +11144,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Cài đặt",
     tipStgBack:                             "Quay lại",
-    tabStgDisplay:                          "Hiển thị",
     tabStgCards:                            "Thẻ",
     tabStgTags:                             "Nhãn",
     tabStgMedia:                            "Phương tiện",
@@ -11136,11 +11183,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Mặc định đổi tên phương tiện khi sắp xếp",
     msgStgMediaRenameOnSortDefault:         "Đặt giá trị ban đầu của tùy chọn Đổi tên phương tiện khi sắp xếp trong chế độ xem Sắp xếp. Việc đổi tên sẽ ghi lại số dẫn đầu của mỗi tệp được liên kết trên đĩa.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Giao diện",
-    lblStgDisplayLang:                      "Ngôn ngữ",
-    btnStgDisplayThemeDark:                 "Tối",
-    btnStgDisplayThemeLight:                "Sáng",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Giao diện",
+    tabStgGeneral:                          "Chung",
+    lblStgGeneralLang:                      "Ngôn ngữ",
+    btnStgGeneralThemeDark:                 "Tối",
+    btnStgGeneralThemeLight:                "Sáng",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Màu thẻ",
@@ -11428,10 +11476,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "نسخه جدید موجود است:",
-    lnkUpdateWhatsNew:                      "چه خبر",
     btnUpdateDownload:                      "دانلود",
-    lnkUpdateSkip:                          "رد کردن این نسخه",
-    tipUpdateDismiss:                       "رد کردن",
+    lblNewsHideForever:                     "دیگر نمایش نده",
+    btnNewsOpenLink:                        "بیشتر بدانید",
+    tipNewsDismiss:                         "بستن",
+    lblStgGeneralNews:                      "نمایش اخبار از yaiol",
+    btnNewsClose:                           "بستن",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "خواننده",
@@ -11571,7 +11621,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "تنظیمات",
     tipStgBack:                             "بازگشت",
-    tabStgDisplay:                          "نمایش",
     tabStgCards:                            "کارت‌ها",
     tabStgTags:                             "برچسب‌ها",
     tabStgMedia:                            "رسانه",
@@ -11611,11 +11660,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "تغییر نام رسانه هنگام مرتب‌سازی به صورت پیش‌فرض",
     msgStgMediaRenameOnSortDefault:         "مقدار اولیه گزینه «تغییر نام رسانه هنگام مرتب‌سازی» را در نمای مرتب‌سازی تنظیم می‌کند. تغییر نام، شماره پیشرو هر فایل مرتبط را روی دیسک بازنویسی می‌کند.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "تم",
-    lblStgDisplayLang:                      "زبان",
-    btnStgDisplayThemeDark:                 "تاریک",
-    btnStgDisplayThemeLight:                "روشن",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "تم",
+    tabStgGeneral:                          "عمومی",
+    lblStgGeneralLang:                      "زبان",
+    btnStgGeneralThemeDark:                 "تاریک",
+    btnStgGeneralThemeLight:                "روشن",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "رنگ‌های کارت",
@@ -11903,10 +11953,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nová verze je k dispozici:",
-    lnkUpdateWhatsNew:                      "Co je nového",
     btnUpdateDownload:                      "Stáhnout",
-    lnkUpdateSkip:                          "Přeskočit tuto verzi",
-    tipUpdateDismiss:                       "Zavřít",
+    lblNewsHideForever:                     "Nezobrazovat znovu",
+    btnNewsOpenLink:                        "Další informace",
+    tipNewsDismiss:                         "Zavřít",
+    lblStgGeneralNews:                      "Zobrazovat zprávy z yaiol",
+    btnNewsClose:                           "Zavřít",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Zpěvák",
@@ -12046,7 +12098,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Nastavení",
     tipStgBack:                             "Zpět",
-    tabStgDisplay:                          "Zobrazení",
     tabStgCards:                            "Karty",
     tabStgTags:                             "Štítky",
     tabStgMedia:                            "Média",
@@ -12086,11 +12137,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Přejmenovat média při řazení ve výchozím nastavení",
     msgStgMediaRenameOnSortDefault:         "Nastaví počáteční hodnotu možnosti „Přejmenovat média při řazení“ v zobrazení Řazení. Přejmenování přepíše úvodní číslo každého propojeného souboru na disku.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Motiv",
-    lblStgDisplayLang:                      "Jazyk",
-    btnStgDisplayThemeDark:                 "Tmavý",
-    btnStgDisplayThemeLight:                "Světlý",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Motiv",
+    tabStgGeneral:                          "Obecné",
+    lblStgGeneralLang:                      "Jazyk",
+    btnStgGeneralThemeDark:                 "Tmavý",
+    btnStgGeneralThemeLight:                "Světlý",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Barvy karet",
@@ -12378,10 +12430,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nova verzija dostupna:",
-    lnkUpdateWhatsNew:                      "Što je novo",
     btnUpdateDownload:                      "Preuzmi",
-    lnkUpdateSkip:                          "Preskoči ovu verziju",
-    tipUpdateDismiss:                       "Odbaci",
+    lblNewsHideForever:                     "Ne prikazuj ponovno",
+    btnNewsOpenLink:                        "Saznajte više",
+    tipNewsDismiss:                         "Zatvori",
+    lblStgGeneralNews:                      "Prikaži vijesti iz yaiol",
+    btnNewsClose:                           "Zatvori",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalista",
@@ -12521,7 +12575,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Postavke",
     tipStgBack:                             "Natrag",
-    tabStgDisplay:                          "Prikaz",
     tabStgCards:                            "Kartice",
     tabStgTags:                             "Oznake",
     tabStgMedia:                            "Mediji",
@@ -12561,11 +12614,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Preimenuj medije pri sortiranju po zadano",
     msgStgMediaRenameOnSortDefault:         "Postavlja početnu vrijednost opcije „Preimenuj medije pri sortiranju“ u prikazu Sortiranje. Preimenovanje prepisuje vodeći broj svake povezane datoteke na disku.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Jezik",
-    btnStgDisplayThemeDark:                 "Tamna",
-    btnStgDisplayThemeLight:                "Svijetla",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Općenito",
+    lblStgGeneralLang:                      "Jezik",
+    btnStgGeneralThemeDark:                 "Tamna",
+    btnStgGeneralThemeLight:                "Svijetla",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Boje kartica",
@@ -12853,10 +12907,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nova versió disponible:",
-    lnkUpdateWhatsNew:                      "Novetats",
     btnUpdateDownload:                      "Baixa",
-    lnkUpdateSkip:                          "Omet aquesta versió",
-    tipUpdateDismiss:                       "Descarta",
+    lblNewsHideForever:                     "No tornar a mostrar",
+    btnNewsOpenLink:                        "Més informació",
+    tipNewsDismiss:                         "Tancar",
+    lblStgGeneralNews:                      "Mostrar notícies de yaiol",
+    btnNewsClose:                           "Tancar",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocalista",
@@ -12996,7 +13052,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Configuració",
     tipStgBack:                             "Enrere",
-    tabStgDisplay:                          "Pantalla",
     tabStgCards:                            "Targetes",
     tabStgTags:                             "Etiquetes",
     tabStgMedia:                            "Mèdia",
@@ -13036,11 +13091,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Canvia el nom dels mitjans en ordenar per defecte",
     msgStgMediaRenameOnSortDefault:         "Estableix el valor inicial de l'opció «Canvia el nom dels mitjans en ordenar» a la vista d'ordenació. El canvi de nom reescriu el número principal de cada fitxer enllaçat al disc.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Idioma",
-    btnStgDisplayThemeDark:                 "Fosc",
-    btnStgDisplayThemeLight:                "Clar",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "General",
+    lblStgGeneralLang:                      "Idioma",
+    btnStgGeneralThemeDark:                 "Fosc",
+    btnStgGeneralThemeLight:                "Clar",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Colors de les targetes",
@@ -13328,10 +13384,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Versi baru tersedia:",
-    lnkUpdateWhatsNew:                      "Apa yang baru",
     btnUpdateDownload:                      "Unduh",
-    lnkUpdateSkip:                          "Lewati versi ini",
-    tipUpdateDismiss:                       "Abaikan",
+    lblNewsHideForever:                     "Jangan tampilkan lagi",
+    btnNewsOpenLink:                        "Pelajari lebih lanjut",
+    tipNewsDismiss:                         "Tutup",
+    lblStgGeneralNews:                      "Tampilkan berita dari yaiol",
+    btnNewsClose:                           "Tutup",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalis",
@@ -13471,7 +13529,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Pengaturan",
     tipStgBack:                             "Kembali",
-    tabStgDisplay:                          "Tampilan",
     tabStgCards:                            "Kartu",
     tabStgTags:                             "Tag",
     tabStgMedia:                            "Media",
@@ -13511,11 +13568,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Ganti nama media saat diurutkan secara default",
     msgStgMediaRenameOnSortDefault:         "Mengatur nilai awal opsi Ganti nama media saat diurutkan di tampilan Urutkan. Mengganti nama akan menulis ulang nomor awal setiap file tertaut di disk.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Bahasa",
-    btnStgDisplayThemeDark:                 "Gelap",
-    btnStgDisplayThemeLight:                "Terang",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Umum",
+    lblStgGeneralLang:                      "Bahasa",
+    btnStgGeneralThemeDark:                 "Gelap",
+    btnStgGeneralThemeLight:                "Terang",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Warna Kartu",
@@ -13803,10 +13861,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Versi baharu tersedia:",
-    lnkUpdateWhatsNew:                      "Apa yang baharu",
     btnUpdateDownload:                      "Muat turun",
-    lnkUpdateSkip:                          "Langkau versi ini",
-    tipUpdateDismiss:                       "Abaikan",
+    lblNewsHideForever:                     "Jangan tunjuk lagi",
+    btnNewsOpenLink:                        "Ketahui lebih lanjut",
+    tipNewsDismiss:                         "Tutup",
+    lblStgGeneralNews:                      "Tunjukkan berita dari yaiol",
+    btnNewsClose:                           "Tutup",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalis",
@@ -13946,7 +14006,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Tetapan",
     tipStgBack:                             "Kembali",
-    tabStgDisplay:                          "Paparan",
     tabStgCards:                            "Kad",
     tabStgTags:                             "Tag",
     tabStgMedia:                            "Media",
@@ -13986,11 +14045,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Namakan semula media semasa isihan secara lalai",
     msgStgMediaRenameOnSortDefault:         "Menetapkan nilai permulaan pilihan Namakan semula media semasa isihan dalam paparan Isihan. Penamaan semula menulis semula nombor utama setiap fail terpaut pada cakera.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Bahasa",
-    btnStgDisplayThemeDark:                 "Gelap",
-    btnStgDisplayThemeLight:                "Cerah",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Umum",
+    lblStgGeneralLang:                      "Bahasa",
+    btnStgGeneralThemeDark:                 "Gelap",
+    btnStgGeneralThemeLight:                "Cerah",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Warna Kad",
@@ -14278,10 +14338,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Доступна новая версия:",
-    lnkUpdateWhatsNew:                      "Что нового",
     btnUpdateDownload:                      "Скачать",
-    lnkUpdateSkip:                          "Пропустить эту версию",
-    tipUpdateDismiss:                       "Закрыть",
+    lblNewsHideForever:                     "Больше не показывать",
+    btnNewsOpenLink:                        "Узнать больше",
+    tipNewsDismiss:                         "Закрыть",
+    lblStgGeneralNews:                      "Показывать новости от yaiol",
+    btnNewsClose:                           "Закрыть",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Вокалист",
@@ -14421,7 +14483,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Настройки",
     tipStgBack:                             "Назад",
-    tabStgDisplay:                          "Отображение",
     tabStgCards:                            "Карточки",
     tabStgTags:                             "Теги",
     tabStgMedia:                            "Медиа",
@@ -14461,11 +14522,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Переименовывать медиа при сортировке по умолчанию",
     msgStgMediaRenameOnSortDefault:         "Устанавливает начальное значение параметра «Переименовывать медиа при сортировке» в представлении сортировки. Переименование перезаписывает начальный номер каждого связанного файла на диске.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Тема",
-    lblStgDisplayLang:                      "Язык",
-    btnStgDisplayThemeDark:                 "Тёмная",
-    btnStgDisplayThemeLight:                "Светлая",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Тема",
+    tabStgGeneral:                          "Общие",
+    lblStgGeneralLang:                      "Язык",
+    btnStgGeneralThemeDark:                 "Тёмная",
+    btnStgGeneralThemeLight:                "Светлая",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Цвета карточек",
@@ -14753,10 +14815,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "มีเวอร์ชันใหม่:",
-    lnkUpdateWhatsNew:                      "มีอะไรใหม่",
     btnUpdateDownload:                      "ดาวน์โหลด",
-    lnkUpdateSkip:                          "ข้ามเวอร์ชันนี้",
-    tipUpdateDismiss:                       "ปิด",
+    lblNewsHideForever:                     "ไม่ต้องแสดงอีก",
+    btnNewsOpenLink:                        "เรียนรู้เพิ่มเติม",
+    tipNewsDismiss:                         "ปิด",
+    lblStgGeneralNews:                      "แสดงข่าวสารจาก yaiol",
+    btnNewsClose:                           "ปิด",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "นักร้อง",
@@ -14896,7 +14960,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "การตั้งค่า",
     tipStgBack:                             "ย้อนกลับ",
-    tabStgDisplay:                          "การแสดงผล",
     tabStgCards:                            "การ์ด",
     tabStgTags:                             "แท็ก",
     tabStgMedia:                            "สื่อ",
@@ -14936,11 +14999,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "เปลี่ยนชื่อสื่อเมื่อจัดเรียงตามค่าเริ่มต้น",
     msgStgMediaRenameOnSortDefault:         "ตั้งค่าเริ่มต้นของตัวเลือก 'เปลี่ยนชื่อสื่อเมื่อจัดเรียง' ในมุมมองการจัดเรียง การเปลี่ยนชื่อจะเขียนทับหมายเลขนำหน้าของแต่ละไฟล์ที่เชื่อมโยงบนดิสก์",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "ธีม",
-    lblStgDisplayLang:                      "ภาษา",
-    btnStgDisplayThemeDark:                 "มืด",
-    btnStgDisplayThemeLight:                "สว่าง",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "ธีม",
+    tabStgGeneral:                          "ทั่วไป",
+    lblStgGeneralLang:                      "ภาษา",
+    btnStgGeneralThemeDark:                 "มืด",
+    btnStgGeneralThemeLight:                "สว่าง",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "สีของการ์ด",
@@ -15228,10 +15292,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Նոր տարբերակ հասանելի է:",
-    lnkUpdateWhatsNew:                      "Ինչ նորություն կա",
     btnUpdateDownload:                      "Ներբեռնել",
-    lnkUpdateSkip:                          "Բաց թողնել այս տարբերակը",
-    tipUpdateDismiss:                       "Մերժել",
+    lblNewsHideForever:                     "Այլևս չցուցադրել",
+    btnNewsOpenLink:                        "Իմանալ ավելին",
+    tipNewsDismiss:                         "Փակել",
+    lblStgGeneralNews:                      "Ցուցադրել նորություններ yaiol-ից",
+    btnNewsClose:                           "Փակել",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Վոկal",
@@ -15371,7 +15437,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Կարգավորումներ",
     tipStgBack:                             "Հետ",
-    tabStgDisplay:                          "Ցուցադրում",
     tabStgCards:                            "Քարտեր",
     tabStgTags:                             "Թեգեր",
     tabStgMedia:                            "Մեդիա",
@@ -15411,11 +15476,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Լռելյայն վերանվանել մեդիան տեսակավորման ժամանակ",
     msgStgMediaRenameOnSortDefault:         "Սահմանում է «Վերանվանել մեդիան տեսակավորման ժամանակ» տարբերակի սկզբնական արժեքը Տեսակավորման տեսքում: Վերանվանումը վերագրում է յուրաքանչյուր կապակցված ֆայլի առաջատար համարը սկավառակի վրա:",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Թեմա",
-    lblStgDisplayLang:                      "Lezhu",
-    btnStgDisplayThemeDark:                 "Մուգ",
-    btnStgDisplayThemeLight:                "Բաց",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Թեմա",
+    tabStgGeneral:                          "Ընդհանուր",
+    lblStgGeneralLang:                      "Lezhu",
+    btnStgGeneralThemeDark:                 "Մուգ",
+    btnStgGeneralThemeLight:                "Բաց",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Քարտերի գույներ",
@@ -15703,10 +15769,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Налична е нова версия:",
-    lnkUpdateWhatsNew:                      "Какво ново",
     btnUpdateDownload:                      "Изтегли",
-    lnkUpdateSkip:                          "Пропусни тази версия",
-    tipUpdateDismiss:                       "Отхвърли",
+    lblNewsHideForever:                     "Не показвай отново",
+    btnNewsOpenLink:                        "Научете повече",
+    tipNewsDismiss:                         "Затвори",
+    lblStgGeneralNews:                      "Показвай новини от yaiol",
+    btnNewsClose:                           "Затвори",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Вокал",
@@ -15846,7 +15914,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Настройки",
     tipStgBack:                             "Назад",
-    tabStgDisplay:                          "Изглед",
     tabStgCards:                            "Карти",
     tabStgTags:                             "Етикети",
     tabStgMedia:                            "Медия",
@@ -15886,11 +15953,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Преименуване на медия при сортиране по подразбиране",
     msgStgMediaRenameOnSortDefault:         "Задава началната стойност на опцията „Преименуване на медия при сортиране“ в изгледа за сортиране. Преименуването презаписва водещия номер на всеки свързан файл на диска.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Тема",
-    lblStgDisplayLang:                      "Език",
-    btnStgDisplayThemeDark:                 "Тъмна",
-    btnStgDisplayThemeLight:                "Светла",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Тема",
+    tabStgGeneral:                          "Общи",
+    lblStgGeneralLang:                      "Език",
+    btnStgGeneralThemeDark:                 "Тъмна",
+    btnStgGeneralThemeLight:                "Светла",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Цветове на карти",
@@ -16178,10 +16246,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Nova versión dispoñible:",
-    lnkUpdateWhatsNew:                      "Novidades",
     btnUpdateDownload:                      "Descargar",
-    lnkUpdateSkip:                          "Omitir esta versión",
-    tipUpdateDismiss:                       "Descartar",
+    lblNewsHideForever:                     "Non mostrar de novo",
+    btnNewsOpenLink:                        "Máis información",
+    tipNewsDismiss:                         "Pechar",
+    lblStgGeneralNews:                      "Mostrar noticias de yaiol",
+    btnNewsClose:                           "Pechar",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vocal",
@@ -16321,7 +16391,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Configuración",
     tipStgBack:                             "Atrás",
-    tabStgDisplay:                          "Visualización",
     tabStgCards:                            "Tarxetas",
     tabStgTags:                             "Etiquetas",
     tabStgMedia:                            "Multimedia",
@@ -16361,11 +16430,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Renomear medios ao ordenar por defecto",
     msgStgMediaRenameOnSortDefault:         "Define o valor inicial da opción «Renomear medios ao ordenar» na vista de ordenación. O cambio de nome reescribe o número principal de cada ficheiro vinculado no disco.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Idioma",
-    btnStgDisplayThemeDark:                 "Escuro",
-    btnStgDisplayThemeLight:                "Claro",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Xeral",
+    lblStgGeneralLang:                      "Idioma",
+    btnStgGeneralThemeDark:                 "Escuro",
+    btnStgGeneralThemeLight:                "Claro",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Cores das tarxetas",
@@ -16653,10 +16723,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Új verzió elérhető:",
-    lnkUpdateWhatsNew:                      "Újdonságok",
     btnUpdateDownload:                      "Letöltés",
-    lnkUpdateSkip:                          "Verzió kihagyása",
-    tipUpdateDismiss:                       "Elvetés",
+    lblNewsHideForever:                     "Ne mutasd újra",
+    btnNewsOpenLink:                        "Tudjon meg többet",
+    tipNewsDismiss:                         "Bezárás",
+    lblStgGeneralNews:                      "Hírek megjelenítése a yaiol-tól",
+    btnNewsClose:                           "Bezárás",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Ének",
@@ -16796,7 +16868,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Beállítások",
     tipStgBack:                             "Vissza",
-    tabStgDisplay:                          "Megjelenítés",
     tabStgCards:                            "Kártyák",
     tabStgTags:                             "Cimkék",
     tabStgMedia:                            "Média",
@@ -16836,11 +16907,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Média átnevezése rendezéskor alapértelmezetten",
     msgStgMediaRenameOnSortDefault:         "Beállítja a „Média átnevezése rendezéskor” opció kezdőértékét a Rendezés nézetben. Az átnevezés felülírja az egyes kapcsolt fájlok vezető számát a lemezen.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Téma",
-    lblStgDisplayLang:                      "Nyelv",
-    btnStgDisplayThemeDark:                 "Sötét",
-    btnStgDisplayThemeLight:                "Világos",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Téma",
+    tabStgGeneral:                          "Általános",
+    lblStgGeneralLang:                      "Nyelv",
+    btnStgGeneralThemeDark:                 "Sötét",
+    btnStgGeneralThemeLight:                "Világos",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kártyaszínek",
@@ -17128,10 +17200,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Yra nauja versija:",
-    lnkUpdateWhatsNew:                      "Kas naujo",
     btnUpdateDownload:                      "Atsisiųsti",
-    lnkUpdateSkip:                          "Praleisti šią versiją",
-    tipUpdateDismiss:                       "Atmesti",
+    lblNewsHideForever:                     "Daugiau nerodyti",
+    btnNewsOpenLink:                        "Sužinoti daugiau",
+    tipNewsDismiss:                         "Uždaryti",
+    lblStgGeneralNews:                      "Rodyti naujienas iš yaiol",
+    btnNewsClose:                           "Uždaryti",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokalas",
@@ -17271,7 +17345,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Nustatymai",
     tipStgBack:                             "Atgal",
-    tabStgDisplay:                          "Rodymas",
     tabStgCards:                            "Kortelės",
     tabStgTags:                             "Žymos",
     tabStgMedia:                            "Medija",
@@ -17311,11 +17384,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Pervardyti mediją rūšiuojant pagal numatytuosius nustatymus",
     msgStgMediaRenameOnSortDefault:         "Nustato parinkties „Pervardyti mediją rūšiuojant“ pradinę reikšmę rūšiavimo rodinyje. Pervardijimas perrašo kiekvieno susieto failo pradinį numerį diske.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Kalba",
-    btnStgDisplayThemeDark:                 "Tamsi",
-    btnStgDisplayThemeLight:                "Šviesi",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Bendra",
+    lblStgGeneralLang:                      "Kalba",
+    btnStgGeneralThemeDark:                 "Tamsi",
+    btnStgGeneralThemeLight:                "Šviesi",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Kortelių spalvos",
@@ -17603,10 +17677,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Достапна е нова верзија:",
-    lnkUpdateWhatsNew:                      "Што е ново",
     btnUpdateDownload:                      "Преземи",
-    lnkUpdateSkip:                          "Прескокни ја оваа верзија",
-    tipUpdateDismiss:                       "Отфрли",
+    lblNewsHideForever:                     "Не прикажувај повторно",
+    btnNewsOpenLink:                        "Дознајте повеќе",
+    tipNewsDismiss:                         "Затвори",
+    lblStgGeneralNews:                      "Прикажи вести од yaiol",
+    btnNewsClose:                           "Затвори",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Вокал",
@@ -17746,7 +17822,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Поставки",
     tipStgBack:                             "Назад",
-    tabStgDisplay:                          "Прикажи",
     tabStgCards:                            "Картички",
     tabStgTags:                             "Ознаки",
     tabStgMedia:                            "Медиуми",
@@ -17786,11 +17861,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Преименувај медиум при сортирање по стандард",
     msgStgMediaRenameOnSortDefault:         "Ја поставува почетната вредност на опцијата „Преименувај медиум при сортирање“ во приказот Сортирање. Преименувањето го препишува водечкиот број на секоја поврзана датотека на дискот.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Тема",
-    lblStgDisplayLang:                      "Јазик",
-    btnStgDisplayThemeDark:                 "Темна",
-    btnStgDisplayThemeLight:                "Светла",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Тема",
+    tabStgGeneral:                          "Општо",
+    lblStgGeneralLang:                      "Јазик",
+    btnStgGeneralThemeDark:                 "Темна",
+    btnStgGeneralThemeLight:                "Светла",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Бои на картички",
@@ -18078,10 +18154,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Доступна је нова верзија:",
-    lnkUpdateWhatsNew:                      "Шта је ново",
     btnUpdateDownload:                      "Преузми",
-    lnkUpdateSkip:                          "Прескочи ову верзију",
-    tipUpdateDismiss:                       "Одбаци",
+    lblNewsHideForever:                     "Не приказуј поново",
+    btnNewsOpenLink:                        "Сазнајте више",
+    tipNewsDismiss:                         "Затвори",
+    lblStgGeneralNews:                      "Прикажи вести из yaiol",
+    btnNewsClose:                           "Затвори",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Вокал",
@@ -18221,7 +18299,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Подешавања",
     tipStgBack:                             "Назад",
-    tabStgDisplay:                          "Приказ",
     tabStgCards:                            "Картице",
     tabStgTags:                             "Ознаке",
     tabStgMedia:                            "Медији",
@@ -18261,11 +18338,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Преименуј медије при сортирању подразумевано",
     msgStgMediaRenameOnSortDefault:         "Поставља почетну вредност опције „Преименуј медије при сортирању“ у приказу Сортирање. Преименовање преписује водећи број сваке повезане датотеке на диску.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Тема",
-    lblStgDisplayLang:                      "Језик",
-    btnStgDisplayThemeDark:                 "Тамна",
-    btnStgDisplayThemeLight:                "Светла",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Тема",
+    tabStgGeneral:                          "Опште",
+    lblStgGeneralLang:                      "Језик",
+    btnStgGeneralThemeDark:                 "Тамна",
+    btnStgGeneralThemeLight:                "Светла",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Боје картица",
@@ -18553,10 +18631,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "K dispozícii je nová verzia:",
-    lnkUpdateWhatsNew:                      "Čo je nové",
     btnUpdateDownload:                      "Stiahnuť",
-    lnkUpdateSkip:                          "Preskočiť túto verziu",
-    tipUpdateDismiss:                       "Zavrieť",
+    lblNewsHideForever:                     "Nezobrazovať znova",
+    btnNewsOpenLink:                        "Zistiť viac",
+    tipNewsDismiss:                         "Zavrieť",
+    lblStgGeneralNews:                      "Zobrazovať správy z yaiol",
+    btnNewsClose:                           "Zavrieť",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokál",
@@ -18696,7 +18776,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Nastavenia",
     tipStgBack:                             "Späť",
-    tabStgDisplay:                          "Zobrazenie",
     tabStgCards:                            "Karty",
     tabStgTags:                             "Štítky",
     tabStgMedia:                            "Médiá",
@@ -18736,11 +18815,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Predvolene premenovať médiá pri triedení",
     msgStgMediaRenameOnSortDefault:         "Nastaví počiatočnú hodnotu možnosti „Premenovať médiá pri triedení“ v zobrazení Triedenie. Premenovanie prepíše úvodné číslo každého prepojeného súboru na disku.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Téma",
-    lblStgDisplayLang:                      "Jazyk",
-    btnStgDisplayThemeDark:                 "Tmavá",
-    btnStgDisplayThemeLight:                "Svetlá",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Téma",
+    tabStgGeneral:                          "Všeobecné",
+    lblStgGeneralLang:                      "Jazyk",
+    btnStgGeneralThemeDark:                 "Tmavá",
+    btnStgGeneralThemeLight:                "Svetlá",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Farby kariet",
@@ -19028,10 +19108,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Na voljo je nova različica:",
-    lnkUpdateWhatsNew:                      "Kaj je novega",
     btnUpdateDownload:                      "Prenesi",
-    lnkUpdateSkip:                          "Preskoči to različico",
-    tipUpdateDismiss:                       "Zavrni",
+    lblNewsHideForever:                     "Ne prikazuj več",
+    btnNewsOpenLink:                        "Več o tem",
+    tipNewsDismiss:                         "Zapri",
+    lblStgGeneralNews:                      "Prikaži novice iz yaiol",
+    btnNewsClose:                           "Zapri",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Vokal",
@@ -19171,7 +19253,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Nastavitve",
     tipStgBack:                             "Nazaj",
-    tabStgDisplay:                          "Prikaz",
     tabStgCards:                            "Kartice",
     tabStgTags:                             "Oznake",
     tabStgMedia:                            "Mediji",
@@ -19211,11 +19292,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Privzeto preimenuj medije ob razvrščanju",
     msgStgMediaRenameOnSortDefault:         "Nastavi začetno vrednost možnosti „Preimenuj medije ob razvrščanju“ v pogledu Razvrščanje. Preimenovanje prepiše vodilno številko vsake povezane datoteke na disku.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Jezik",
-    btnStgDisplayThemeDark:                 "Temna",
-    btnStgDisplayThemeLight:                "Svetla",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Splošno",
+    lblStgGeneralLang:                      "Jezik",
+    btnStgGeneralThemeDark:                 "Temna",
+    btnStgGeneralThemeLight:                "Svetla",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Barve kartic",
@@ -19503,10 +19585,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "புதிய பதிப்பு உள்ளது:",
-    lnkUpdateWhatsNew:                      "புதியது என்ன",
     btnUpdateDownload:                      "பதிவிறக்கு",
-    lnkUpdateSkip:                          "இந்த பதிப்பைத் தவிர்க்கவும்",
-    tipUpdateDismiss:                       "நிராகரி",
+    lblNewsHideForever:                     "மீண்டும் காட்டாதே",
+    btnNewsOpenLink:                        "மேலும் அறிக",
+    tipNewsDismiss:                         "மூடு",
+    lblStgGeneralNews:                      "yaiol இலிருந்து செய்திகளைக் காட்டு",
+    btnNewsClose:                           "மூடு",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "குரல்",
@@ -19646,7 +19730,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "அமைப்புகள்",
     tipStgBack:                             "பின்",
-    tabStgDisplay:                          "காட்சி",
     tabStgCards:                            "அட்டைகள்",
     tabStgTags:                             "குறிச்சொற்கள்",
     tabStgMedia:                            "மீடியா",
@@ -19686,11 +19769,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "இயல்புநிலையாக வரிசைப்படுத்தும் போது மீடியாவை மறுபெயரிடு",
     msgStgMediaRenameOnSortDefault:         "வரிசைப்படுத்துதல் காட்சியில் உள்ள 'வரிசைப்படுத்தும் போது மீடியாவை மறுபெயரிடு' விருப்பத்தின் தொடக்க மதிப்பை அமைக்கிறது. மறுபெயரிடுவது வட்டில் உள்ள ஒவ்வொரு இணைக்கப்பட்ட கோப்பின் தொடக்க எண்ணையும் மீண்டும் எழுதும்.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "தீம்",
-    lblStgDisplayLang:                      "மொழி",
-    btnStgDisplayThemeDark:                 "இருண்ட",
-    btnStgDisplayThemeLight:                "வெளிர்",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "தீம்",
+    tabStgGeneral:                          "பொது",
+    lblStgGeneralLang:                      "மொழி",
+    btnStgGeneralThemeDark:                 "இருண்ட",
+    btnStgGeneralThemeLight:                "வெளிர்",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "அட்டைகளின் வண்ணங்கள்",
@@ -19978,10 +20062,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "नया संस्करण उपलब्ध है:",
-    lnkUpdateWhatsNew:                      "नया क्या है",
     btnUpdateDownload:                      "डाउनलोड करें",
-    lnkUpdateSkip:                          "इस संस्करण को छोड़ें",
-    tipUpdateDismiss:                       "खारिज करें",
+    lblNewsHideForever:                     "दोबारा न दिखाएँ",
+    btnNewsOpenLink:                        "और जानें",
+    tipNewsDismiss:                         "बंद करें",
+    lblStgGeneralNews:                      "yaiol से समाचार दिखाएँ",
+    btnNewsClose:                           "बंद करें",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "आवाज़",
@@ -20121,7 +20207,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "सेटिंग्स",
     tipStgBack:                             "वापस",
-    tabStgDisplay:                          "प्रदर्शन",
     tabStgCards:                            "कार्ड",
     tabStgTags:                             "टैग्स",
     tabStgMedia:                            "मीडिया",
@@ -20161,11 +20246,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "डिफ़ॉल्ट रूप से सॉर्ट करने पर मीडिया का नाम बदलें",
     msgStgMediaRenameOnSortDefault:         "सॉर्ट व्यू में 'सॉर्ट करने पर मीडिया का नाम बदलें' विकल्प का प्रारंभिक मान सेट करता है। नाम बदलने से डिस्क पर प्रत्येक लिंक की गई फ़ाइल का अग्रणी नंबर फिर से लिखा जाता है।",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "थीम",
-    lblStgDisplayLang:                      "भाषा",
-    btnStgDisplayThemeDark:                 "डार्क",
-    btnStgDisplayThemeLight:                "लाइट",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "थीम",
+    tabStgGeneral:                          "सामान्य",
+    lblStgGeneralLang:                      "भाषा",
+    btnStgGeneralThemeDark:                 "डार्क",
+    btnStgGeneralThemeLight:                "लाइट",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "कार्ड के रंग",
@@ -20453,10 +20539,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "নতুন সংস্করণ উপলব্ধ:",
-    lnkUpdateWhatsNew:                      "নতুন কি আছে",
     btnUpdateDownload:                      "ডাউনলোড করুন",
-    lnkUpdateSkip:                          "এই সংস্করণটি এড়িয়ে যান",
-    tipUpdateDismiss:                       "খারিজ করুন",
+    lblNewsHideForever:                     "আবার দেখাবেন না",
+    btnNewsOpenLink:                        "আরও জানুন",
+    tipNewsDismiss:                         "বন্ধ করুন",
+    lblStgGeneralNews:                      "yaiol থেকে খবর দেখান",
+    btnNewsClose:                           "বন্ধ করুন",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "ভোকাল",
@@ -20596,7 +20684,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "সেটিংস",
     tipStgBack:                             "পিছনে",
-    tabStgDisplay:                          "প্রদর্শন",
     tabStgCards:                            "কার্ড",
     tabStgTags:                             "ট্যাগ",
     tabStgMedia:                            "মিডিয়া",
@@ -20636,11 +20723,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "ডিফল্টরূপে সাজানোর সময় মিডিয়া পুনঃনামকরণ করুন",
     msgStgMediaRenameOnSortDefault:         "সাজানো ভিউতে 'সাজানোর সময় মিডিয়া পুনঃনামকরণ করুন' বিকল্পের প্রারম্ভিক মান সেট করে। পুনঃনামকরণ ডিস্কে প্রতিটি লিঙ্ক করা ফাইলের অগ্রণী সংখ্যা পুনরায় লেখে।",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "থিম",
-    lblStgDisplayLang:                      "ভাষা",
-    btnStgDisplayThemeDark:                 "ডার্ক",
-    btnStgDisplayThemeLight:                "লাইট",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "থিম",
+    tabStgGeneral:                          "সাধারণ",
+    lblStgGeneralLang:                      "ভাষা",
+    btnStgGeneralThemeDark:                 "ডার্ক",
+    btnStgGeneralThemeLight:                "লাইট",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "কার্ডের রঙ",
@@ -20928,10 +21016,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "نیا ورژن دستیاب ہے:",
-    lnkUpdateWhatsNew:                      "نیا کیا ہے",
     btnUpdateDownload:                      "ڈاؤن لوڈ کریں",
-    lnkUpdateSkip:                          "اس ورژن کو چھوڑ دیں",
-    tipUpdateDismiss:                       "مسترد کریں",
+    lblNewsHideForever:                     "دوبارہ نہ دکھائیں",
+    btnNewsOpenLink:                        "مزید جانیں",
+    tipNewsDismiss:                         "بند کریں",
+    lblStgGeneralNews:                      "yaiol سے خبریں دکھائیں",
+    btnNewsClose:                           "بند کریں",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "آواز",
@@ -21071,7 +21161,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "ترتیبات",
     tipStgBack:                             "واپس",
-    tabStgDisplay:                          "ڈسپلے",
     tabStgCards:                            "کارڈز",
     tabStgTags:                             "ٹیگز",
     tabStgMedia:                            "میڈیا",
@@ -21111,11 +21200,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "ترتیب دینے پر میڈیا کا نام بطور ڈیفالٹ تبدیل کریں",
     msgStgMediaRenameOnSortDefault:         "ترتیب ویو میں 'ترتیب دینے پر میڈیا کا نام تبدیل کریں' آپشن کی ابتدائی قدر سیٹ کرتا ہے۔ نام کی تبدیلی ڈسک پر ہر منسلک فائل کے ابتدائی نمبر کو دوبارہ لکھتی ہے۔",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "تھیم",
-    lblStgDisplayLang:                      "زبان",
-    btnStgDisplayThemeDark:                 "تاریک",
-    btnStgDisplayThemeLight:                "روشن",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "تھیم",
+    tabStgGeneral:                          "عمومی",
+    lblStgGeneralLang:                      "زبان",
+    btnStgGeneralThemeDark:                 "تاریک",
+    btnStgGeneralThemeLight:                "روشن",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "کارڈز کے رنگ",
@@ -21403,10 +21493,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Toleo jipya linapatikana:",
-    lnkUpdateWhatsNew:                      "Nini kipya",
     btnUpdateDownload:                      "Pakua",
-    lnkUpdateSkip:                          "Ruka toleo hili",
-    tipUpdateDismiss:                       "Futa",
+    lblNewsHideForever:                     "Usionyeshe tena",
+    btnNewsOpenLink:                        "Jifunze zaidi",
+    tipNewsDismiss:                         "Funga",
+    lblStgGeneralNews:                      "Onyesha habari kutoka yaiol",
+    btnNewsClose:                           "Funga",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Sauti",
@@ -21546,7 +21638,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Mipangilio",
     tipStgBack:                             "Rudi",
-    tabStgDisplay:                          "Onyesho",
     tabStgCards:                            "Kadi",
     tabStgTags:                             "Lebo",
     tabStgMedia:                            "Vyombo vya habari",
@@ -21586,11 +21677,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Badilisha jina la media wakati wa kupanga kwa chaguo-msingi",
     msgStgMediaRenameOnSortDefault:         "Huweka thamani ya kuanzia ya chaguo la Badilisha jina la media wakati wa kupanga katika mwonekano wa Kupanga. Kubadilisha jina huandika upya nambari inayoongoza ya kila faili iliyounganishwa kwenye diski.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Mandhari",
-    lblStgDisplayLang:                      "Lugha",
-    btnStgDisplayThemeDark:                 "Giza",
-    btnStgDisplayThemeLight:                "Mwanga",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Mandhari",
+    tabStgGeneral:                          "Jumla",
+    lblStgGeneralLang:                      "Lugha",
+    btnStgGeneralThemeDark:                 "Giza",
+    btnStgGeneralThemeLight:                "Mwanga",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Rangi za Kadi",
@@ -21878,10 +21970,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "ਨਵਾਂ ਸੰਸਕਰਨ ਉਪਲਬਧ ਹੈ:",
-    lnkUpdateWhatsNew:                      "ਨਵਾਂ ਕੀ ਹੈ",
     btnUpdateDownload:                      "ਡਾਊਨਲੋਡ ਕਰੋ",
-    lnkUpdateSkip:                          "ਇਸ ਸੰਸਕਰਨ ਨੂੰ ਛੱਡੋ",
-    tipUpdateDismiss:                       "ਖਾਰਜ ਕਰੋ",
+    lblNewsHideForever:                     "ਦੁਬਾਰਾ ਨਾ ਦਿਖਾਓ",
+    btnNewsOpenLink:                        "ਹੋਰ ਜਾਣੋ",
+    tipNewsDismiss:                         "ਬੰਦ ਕਰੋ",
+    lblStgGeneralNews:                      "yaiol ਤੋਂ ਖ਼ਬਰਾਂ ਦਿਖਾਓ",
+    btnNewsClose:                           "ਬੰਦ ਕਰੋ",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "ਆਵਾਜ਼",
@@ -22021,7 +22115,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "ਸੈਟਿੰਗਾਂ",
     tipStgBack:                             "ਵਾਪਸ",
-    tabStgDisplay:                          "ਪ੍ਰਦਰਸ਼ਨ",
     tabStgCards:                            "ਕਾਰਡ",
     tabStgTags:                             "ਟੈਗ",
     tabStgMedia:                            "ਮੀਡੀਆ",
@@ -22061,11 +22154,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "ਮੂਲ ਰੂਪ ਵਿੱਚ ਛਾਂਟਣ 'ਤੇ ਮੀਡੀਆ ਦਾ ਨਾਮ ਬਦਲੋ",
     msgStgMediaRenameOnSortDefault:         "ਛਾਂਟਣ ਦ੍ਰਿਸ਼ ਵਿੱਚ 'ਛਾਂਟਣ 'ਤੇ ਮੀਡੀਆ ਦਾ ਨਾਮ ਬਦਲੋ' ਵਿਕਲਪ ਦਾ ਸ਼ੁਰੂਆਤੀ ਮੁੱਲ ਸੈੱਟ ਕਰਦਾ ਹੈ। ਨਾਮ ਬਦਲਣ ਨਾਲ ਡਿਸਕ 'ਤੇ ਹਰੇਕ ਲਿੰਕ ਕੀਤੀ ਫਾਈਲ ਦਾ ਮੋਹਰੀ ਨੰਬਰ ਦੁਬਾਰਾ ਲਿਖਿਆ ਜਾਂਦਾ ਹੈ।",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "ਥੀਮ",
-    lblStgDisplayLang:                      "ਭਾਸ਼ਾ",
-    btnStgDisplayThemeDark:                 "ਹਨੇਰਾ",
-    btnStgDisplayThemeLight:                "ਰੋਸ਼ਨ",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "ਥੀਮ",
+    tabStgGeneral:                          "ਆਮ",
+    lblStgGeneralLang:                      "ਭਾਸ਼ਾ",
+    btnStgGeneralThemeDark:                 "ਹਨੇਰਾ",
+    btnStgGeneralThemeLight:                "ਰੋਸ਼ਨ",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "ਕਾਰਡਾਂ ਦੇ ਰੰਗ",
@@ -22353,10 +22447,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Sabon sigar yana nan:",
-    lnkUpdateWhatsNew:                      "Menene sabo",
     btnUpdateDownload:                      "Zazzage",
-    lnkUpdateSkip:                          "Tsallake wannan sigar",
-    tipUpdateDismiss:                       "Watsar",
+    lblNewsHideForever:                     "Kada a sake nunawa",
+    btnNewsOpenLink:                        "Koyi game da shi",
+    tipNewsDismiss:                         "Rufe",
+    lblStgGeneralNews:                      "Nuna labarai daga yaiol",
+    btnNewsClose:                           "Rufe",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Murya",
@@ -22496,7 +22592,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Saituna",
     tipStgBack:                             "Baya",
-    tabStgDisplay:                          "Nuni",
     tabStgCards:                            "Katuna",
     tabStgTags:                             "Tags",
     tabStgMedia:                            "Kafofin watsa labarai",
@@ -22536,11 +22631,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Sake suna kafofin watsa labarai akan rarrabawa ta tsoho",
     msgStgMediaRenameOnSortDefault:         "Yana saita ƙimar farawa na zaɓin Sake suna kafofin watsa labarai akan rarrabawa a cikin ra'ayin Rarrabawa. Sake suna yana sake rubuta lambar jagora ta kowane fayil mai alaƙa akan diski.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Jigo",
-    lblStgDisplayLang:                      "Harshe",
-    btnStgDisplayThemeDark:                 "Duhu",
-    btnStgDisplayThemeLight:                "Haske",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Jigo",
+    tabStgGeneral:                          "Gabaɗaya",
+    lblStgGeneralLang:                      "Harshe",
+    btnStgGeneralThemeDark:                 "Duhu",
+    btnStgGeneralThemeLight:                "Haske",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Launukan Katuna",
@@ -22828,10 +22924,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "Ẹya tuntun wa:",
-    lnkUpdateWhatsNew:                      "Kí ni titun",
     btnUpdateDownload:                      "Ṣe igbasilẹ",
-    lnkUpdateSkip:                          "Fo ẹya yii",
-    tipUpdateDismiss:                       "Foju pa",
+    lblNewsHideForever:                     "Maṣe fi han mọ",
+    btnNewsOpenLink:                        "Kọ́ ẹ̀kọ́ síwájú",
+    tipNewsDismiss:                         "Pa",
+    lblStgGeneralNews:                      "Fi iroyin lati yaiol han",
+    btnNewsClose:                           "Pade",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Ohùn",
@@ -22971,7 +23069,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Ètò",
     tipStgBack:                             "Pada",
-    tabStgDisplay:                          "Ìfihàn",
     tabStgCards:                            "Awọn kaadi",
     tabStgTags:                             "Àwọn Tag",
     tabStgMedia:                            "Media",
@@ -23011,11 +23108,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Tun orukọ media pada lori tito lẹsẹẹsẹ nipasẹ aiyipada",
     msgStgMediaRenameOnSortDefault:         "Ṣeto iye ibẹrẹ ti aṣayan Tun orukọ media pada lori tito lẹsẹẹsẹ ni wiwo tito lẹsẹẹsẹ. Titun orukọ tun kọ nọmba asiwaju ti faili ti o ni asopọ kọọkan lori disiki.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Àkọlé",
-    lblStgDisplayLang:                      "Èdè",
-    btnStgDisplayThemeDark:                 "Òkùnkùn",
-    btnStgDisplayThemeLight:                "Ìmọ́lẹ̀",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Àkọlé",
+    tabStgGeneral:                          "Gbogbogbo",
+    lblStgGeneralLang:                      "Èdè",
+    btnStgGeneralThemeDark:                 "Òkùnkùn",
+    btnStgGeneralThemeLight:                "Ìmọ́lẹ̀",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Awọn awọ kaadi",
@@ -23303,10 +23401,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "కొత్త వెర్షన్ అందుబాటులో ఉంది:",
-    lnkUpdateWhatsNew:                      "కొత్తవి ఏమిటి",
     btnUpdateDownload:                      "డౌన్‌లోడ్ చేయండి",
-    lnkUpdateSkip:                          "ఈ వెర్షన్‌ను దాటవేయి",
-    tipUpdateDismiss:                       "తిరస్కరించు",
+    lblNewsHideForever:                     "మళ్ళీ చూపవద్దు",
+    btnNewsOpenLink:                        "మరింత తెలుసుకోండి",
+    tipNewsDismiss:                         "మూసివేయండి",
+    lblStgGeneralNews:                      "yaiol నుండి వార్తలను చూపించు",
+    btnNewsClose:                           "మూసివేయి",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "స్వరం",
@@ -23446,7 +23546,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "సెట్టింగ్‌లు",
     tipStgBack:                             "వెనుకకు",
-    tabStgDisplay:                          "ప్రదర్శన",
     tabStgCards:                            "కార్డులు",
     tabStgTags:                             "ట్యాగ్‌లు",
     tabStgMedia:                            "మీడియా",
@@ -23486,11 +23585,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "డిఫాల్ట్‌గా క్రమబద్ధీకరించినప్పుడు మీడియా పేరు మార్చండి",
     msgStgMediaRenameOnSortDefault:         "క్రమబద్ధీకరణ వీక్షణలో క్రమబద్ధీకరించినప్పుడు మీడియా పేరు మార్చండి ఎంపిక యొక్క ప్రారంభ విలువను సెట్ చేస్తుంది. పేరు మార్చడం డిస్క్‌లోని ప్రతి లింక్ చేయబడిన ఫైల్ యొక్క ప్రధాన సంఖ్యను తిరిగి వ్రాస్తుంది.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "థీమ్",
-    lblStgDisplayLang:                      "భాష",
-    btnStgDisplayThemeDark:                 "చీకటి",
-    btnStgDisplayThemeLight:                "వెలుతురు",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "థీమ్",
+    tabStgGeneral:                          "సాధారణ",
+    lblStgGeneralLang:                      "భాష",
+    btnStgGeneralThemeDark:                 "చీకటి",
+    btnStgGeneralThemeLight:                "వెలుతురు",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "కార్డుల రంగులు",
@@ -23778,10 +23878,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "नवीन आवृत्ती उपलब्ध आहे:",
-    lnkUpdateWhatsNew:                      "नवीन काय आहे",
     btnUpdateDownload:                      "डाउनलोड करा",
-    lnkUpdateSkip:                          "ही आवृत्ती वगळा",
-    tipUpdateDismiss:                       "डिसमिस करा",
+    lblNewsHideForever:                     "पुन्हा दाखवू नका",
+    btnNewsOpenLink:                        "अधिक जाणून घ्या",
+    tipNewsDismiss:                         "बंद करा",
+    lblStgGeneralNews:                      "yaiol कडून बातम्या दाखवा",
+    btnNewsClose:                           "बंद करा",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "आवाज",
@@ -23921,7 +24023,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "सेटिंग्ज",
     tipStgBack:                             "मागे",
-    tabStgDisplay:                          "प्रदर्शन",
     tabStgCards:                            "कार्ड",
     tabStgTags:                             "टॅग्स",
     tabStgMedia:                            "मीडिया",
@@ -23961,11 +24062,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "डीफॉल्टनुसार क्रमवारी लावताना मीडियाचे नाव बदला",
     msgStgMediaRenameOnSortDefault:         "क्रमवारी दृश्यातील 'क्रमवारी लावताना मीडियाचे नाव बदला' पर्यायाचे प्रारंभिक मूल्य सेट करते. नाव बदलल्याने डिस्कवरील प्रत्येक लिंक केलेल्या फाइलचा अग्रगण्य क्रमांक पुन्हा लिहिला जातो.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "थीम",
-    lblStgDisplayLang:                      "भाषा",
-    btnStgDisplayThemeDark:                 "गडद",
-    btnStgDisplayThemeLight:                "फिकट",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "थीम",
+    tabStgGeneral:                          "सामान्य",
+    lblStgGeneralLang:                      "भाषा",
+    btnStgGeneralThemeDark:                 "गडद",
+    btnStgGeneralThemeLight:                "फिकट",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "कार्डचे रंग",
@@ -24253,10 +24355,12 @@ const TRANSLATIONS = {
 
     // Prefix:Update - Scope:in-app update notification banner
     lblUpdateAvailable:                     "May bagong bersyon:",
-    lnkUpdateWhatsNew:                      "Ano ang bago",
     btnUpdateDownload:                      "I-download",
-    lnkUpdateSkip:                          "Laktawan ang bersyon na ito",
-    tipUpdateDismiss:                       "Balewalain",
+    lblNewsHideForever:                     "Huwag nang ipakita muli",
+    btnNewsOpenLink:                        "Matuto pa",
+    tipNewsDismiss:                         "Isara",
+    lblStgGeneralNews:                      "Ipakita ang balita mula sa yaiol",
+    btnNewsClose:                           "Isara",
 
     // Prefix:App - Scope:app-level messages, confirms, toasts, empty states
     lblAppTypeVocal:                        "Boses",
@@ -24396,7 +24500,6 @@ const TRANSLATIONS = {
     // Prefix:Stg - Scope:settings view
     ttlStg:                                 "Mga Setting",
     tipStgBack:                             "Bumalik",
-    tabStgDisplay:                          "Display",
     tabStgCards:                            "Mga Card",
     tabStgTags:                             "Mga Tag",
     tabStgMedia:                            "Media",
@@ -24436,11 +24539,12 @@ const TRANSLATIONS = {
     lblStgMediaRenameOnSortDefault:         "Palitan ang pangalan ng media sa pag-sort bilang default",
     msgStgMediaRenameOnSortDefault:         "Itinatakda ang panimulang halaga ng opsyong Palitan ang pangalan ng media sa pag-sort sa view ng Pag-sort. Ang pagpapalit ng pangalan ay muling isinusulat ang nangungunang numero ng bawat naka-link na file sa disk.",
 
-    // Prefix:StgDisplay - Scope:settings view (Display tab)
-    lblStgDisplayTheme:                     "Tema",
-    lblStgDisplayLang:                      "Wika",
-    btnStgDisplayThemeDark:                 "Madilim",
-    btnStgDisplayThemeLight:                "Maliwanag",
+    // Prefix:StgGeneral - Scope:settings view (General tab)
+    lblStgGeneralTheme:                     "Tema",
+    tabStgGeneral:                          "Pangkalahatan",
+    lblStgGeneralLang:                      "Wika",
+    btnStgGeneralThemeDark:                 "Madilim",
+    btnStgGeneralThemeLight:                "Maliwanag",
 
     // Prefix:StgCards - Scope:settings view (Cards tab)
     lblStgCardsColors:                      "Mga Kulay ng Card",

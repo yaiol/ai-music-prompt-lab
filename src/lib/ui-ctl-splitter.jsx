@@ -2,7 +2,7 @@
 // ai-music-prompt-lab. A 4px transparent grab strip, `col-resize` cursor, accent tint at 40%
 // on hover and full accent while dragging. Distributed by sync-shared.js into each app's
 // `src/lib/ui-ctl-splitter.jsx` - ⚠ SYNCED FILE, never edit the per-app copy; edit the canonical in
-// `app/electron/.common/shared/lib/ui-ctl-splitter.jsx` and re-sync so every app stays byte-identical.
+// the shared catalog's `lib/ui-ctl-splitter.jsx` and re-sync so every app stays byte-identical.
 //
 // The brand accent is the SAME in every app (only the theme differs), so both values live HERE
 // (one source of truth) and the app just passes its current theme - `<Splitter theme={theme} …/>`
@@ -26,7 +26,7 @@ function injectSplitterStyle() {
   document.head.appendChild(el);
 }
 
-export function Splitter({ theme, onResizeStart, style, title = 'Drag to resize', ...rest }) {
+export function Splitter({ theme, onResizeStart, style, title, ...rest }) {
   useEffect(injectSplitterStyle, []);
   const accent = SPLITTER_ACCENT[theme] || SPLITTER_ACCENT.dark;
   return (
