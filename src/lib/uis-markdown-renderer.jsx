@@ -1,10 +1,10 @@
-// ui-news-text.jsx — the mini-Markdown renderer for a yaiol news announcement's text.
+// uis-markdown-renderer.jsx — the mini-Markdown renderer for a yaiol news announcement's text.
 // Subset, on purpose: a blank line starts a paragraph, a block whose every line starts with "- " is a
 // bullet list, and inline [label](http(s) url), **bold**, *italic*. Anything else is plain text, so a
 // stray symbol can never break the dialog. Built as React elements, never as HTML.
 //
-// Distributed into each app's src/lib/ui-news-text.jsx by sync-shared — ⚠ SYNCED FILE, never edit the
-// per-app copy; edit this canonical source and re-sync. Used by ui-news-dialog.jsx.
+// Distributed into each app's src/lib/uis-markdown-renderer.jsx by sync-shared — ⚠ SYNCED FILE, never edit the
+// per-app copy; edit this canonical source and re-sync. Used by uis-dlg-news.jsx.
 import React from 'react';
 
 const TOKEN = /\[([^\]\n]+)\]\((https?:\/\/[^\s)]+)\)|\*\*([^*\n]+)\*\*|\*([^*\n]+)\*/g;
@@ -34,11 +34,11 @@ function inline(text) {
 function block(raw, i) {
   const lines = raw.split('\n').map(l => l.trim()).filter(Boolean);
   if (lines.length && lines.every(l => BULLET.test(l))) {
-    return <ul key={i} className="dlp-sub left">{lines.map((l, j) => <li key={j}>{inline(l.match(BULLET)[1])}</li>)}</ul>;
+    return <ul key={i} className="uis-dlp-sub left">{lines.map((l, j) => <li key={j}>{inline(l.match(BULLET)[1])}</li>)}</ul>;
   }
-  return <div key={i} className="dlp-sub left">{inline(lines.join(' '))}</div>;
+  return <div key={i} className="uis-dlp-sub left">{inline(lines.join(' '))}</div>;
 }
 
-export function NewsText({ text }) {
+export function UisMarkdownRenderer({ text }) {
   return text.split(/\n{2,}/).filter(p => p.trim()).map(block);
 }

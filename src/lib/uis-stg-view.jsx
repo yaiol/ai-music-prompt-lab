@@ -1,9 +1,9 @@
-// SettingsView - the ONE settings page for every yaiol electron app. Reference: .template.
+// UisStgView - the ONE settings page for every yaiol electron app. Reference: .template.
 // Settings is a full-window VIEW, not a dialog: it takes everything below the header - it covers
-// the app's content region (.app-main) and, while open, the catalog footer bars are hidden (the
+// the app's content region (.uis-app-main) and, while open, the catalog footer bars are hidden (the
 // stg-open effect below). The app underneath stays MOUNTED, only hidden, so a playing track (whose
 // <audio> may live inside the footer), an editor's undo history or a scroll position survive a
-// visit to settings. A left rail (the catalog's .tabs.vertical) lists the tabs; the
+// visit to settings. A left rail (the catalog's .uis-tab-set.vertical) lists the tabs; the
 // active tab fills the rest of the window.
 //
 // What this component OWNS, identically in every app:
@@ -20,20 +20,20 @@
 //
 // Changes apply live (every setter persists immediately), so leaving is plain navigation:
 // the back arrow beside the title, the header's settings button (a toggle) and Esc all leave it.
-// While open, the rest of the header is inert (ui-app.css, under .stg-open) - so the app's settings
+// While open, the rest of the header is inert (uis-app.css, under .uis-stg-open) - so the app's settings
 // button MUST carry the class `stg-toggle`, the one header control exempted.
 //
-// Mount it as the FIRST child of the app's .app-main (the one position:relative content region)
-// while settings is open; .stg-view covers that region absolutely.
+// Mount it as the FIRST child of the app's .uis-app-main (the one position:relative content region)
+// while settings is open; .uis-stg-view covers that region absolutely.
 //
-// Distributed into each app's src/lib/ui-settings.jsx by the workspace sync script - ⚠ SYNCED
+// Distributed into each app's src/lib/uis-stg-view.jsx by the workspace sync script - ⚠ SYNCED
 // FILE, never edit the per-app copy; edit this canonical source and re-sync.
-// Import: `import { SettingsView } from './lib/ui-settings';`
+// Import: `import { UisStgView } from './lib/uis-stg-view';`
 import React, { useEffect, useRef, useState } from 'react';
 import { ArrowLeft, Sun, Moon, ScrollText } from 'lucide-react';
 import yaiolLogo from '../assets/yaiol-logo.svg';
 
-export function SettingsView({
+export function UisStgView({
   t, appName, appVersion, languages,
   lang, setLang, theme, setTheme,
   generalExtra, tabs = [], aboutExtra,
@@ -46,13 +46,13 @@ export function SettingsView({
   const [visited, setVisited] = useState(() => new Set(['general']));
   const showTab = (key) => { setActiveTab(key); setVisited(v => v.has(key) ? v : new Set(v).add(key)); };
 
-  // While the page is open, <html> carries .stg-open and ui-app.css hides the footer bars
-  // (.barh-footer, .bar-status). On <html>, not on .app-root, because a footer can be PORTALED
+  // While the page is open, <html> carries .uis-stg-open and uis-app.css hides the footer bars
+  // (.uis-barh-footer, .uis-bar-status). On <html>, not on .uis-app-root, because a footer can be PORTALED
   // outside the app root (ampl's player). Hidden with CSS, never unmounted: a footer may own the
   // <audio> element, and unmounting it would stop the track.
   useEffect(() => {
-    document.documentElement.classList.add('stg-open');
-    return () => document.documentElement.classList.remove('stg-open');
+    document.documentElement.classList.add('uis-stg-open');
+    return () => document.documentElement.classList.remove('uis-stg-open');
   }, []);
 
   // The KEYBOARD is the page's too, as the mouse is. Every key event is stopped on <body>: that is
@@ -73,8 +73,8 @@ export function SettingsView({
   onCloseRef.current = onClose;
   useEffect(() => {
     const view = viewRef.current;
-    view.querySelector('.tab.active')?.focus();
-    const POPUP = '.pop-surface, .dp-pop';
+    view.querySelector('.uis-tab.active')?.focus();
+    const POPUP = '.uis-pop-surface, .uis-dat-pop';
     const focusables = () => [...view.querySelectorAll('button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])')]
       .filter(el => !el.disabled && el.offsetParent !== null);
     const onKey = (e) => {
@@ -101,20 +101,20 @@ export function SettingsView({
 
   const general = (
     <>
-      <div className="dlg-field">
-        <label className="dlg-field-label">{t('lblStgGeneralLang')}</label>
-        <select className="select" value={lang} onChange={e => setLang(e.target.value)}>
+      <div className="uis-fld-labelled">
+        <label className="uis-fld-labelled-label">{t('lblStgGeneralLang')}</label>
+        <select className="uis-ddn-std" value={lang} onChange={e => setLang(e.target.value)}>
           {languages.map(l => <option key={l.key} value={l.key}>{l.label}</option>)}
         </select>
       </div>
-      <div className="dlg-field divider">
-        <label className="dlg-field-label">{t('lblStgGeneralTheme')}</label>
-        <div className="opt-btns">
+      <div className="uis-fld-labelled divider">
+        <label className="uis-fld-labelled-label">{t('lblStgGeneralTheme')}</label>
+        <div className="uis-opt-set">
           {[
             { key: 'dark',  Icon: Moon, label: t('btnStgGeneralThemeDark') },
             { key: 'light', Icon: Sun,  label: t('btnStgGeneralThemeLight') },
           ].map(({ key, Icon, label }) => (
-            <button key={key} className={`opt-btn ${theme === key ? 'active' : ''}`} onClick={() => setTheme(key)}>
+            <button key={key} className={`uis-opt ${theme === key ? 'active' : ''}`} onClick={() => setTheme(key)}>
               <Icon />
               <span>{label}</span>
             </button>
@@ -127,11 +127,11 @@ export function SettingsView({
 
   const about = (
     <>
-      <div className="dlg-about">
-        <img className="dlg-about-logo" src={yaiolLogo} alt="yaiol" />
-        <div className="dlg-about-text">
-          <div className="dlg-about-id">{appName} <b>v{appVersion}</b> by yaiol</div>
-          <div className="dlg-about-desc">{t('msgStgAboutDesc')}</div>
+      <div className="uis-dlg-about">
+        <img className="uis-dlg-about-logo" src={yaiolLogo} alt="yaiol" />
+        <div className="uis-dlg-about-text">
+          <div className="uis-dlg-about-id">{appName} <b>v{appVersion}</b> by yaiol</div>
+          <div className="uis-dlg-about-desc">{t('msgStgAboutDesc')}</div>
         </div>
       </div>
       {aboutExtra}
@@ -145,24 +145,24 @@ export function SettingsView({
   ];
 
   return (
-    <div className="stg-view" ref={viewRef}>
-      <div className="stg-rail pnl">
-        <div className="stg-head">
+    <div className="uis-stg-view" ref={viewRef}>
+      <div className="uis-stg-rail uis-pnl">
+        <div className="uis-stg-head">
           {/* The back arrow is the page's visible way out (the header's settings toggle and Esc are the others). */}
-          <button className="btn icon subtle" onClick={onClose} title={t('tipStgBack')} aria-label={t('tipStgBack')}><ArrowLeft /></button>
-          <span className="dlg-title">{t('ttlStg')}</span>
+          <button className="uis-btn ico subtle" onClick={onClose} title={t('tipStgBack')} aria-label={t('tipStgBack')}><ArrowLeft /></button>
+          <span className="uis-dlg-title">{t('ttlStg')}</span>
         </div>
-        <div className="tabs vertical">
+        <div className="uis-tab-set vertical">
           {allTabs.map(({ key, label, icon: TabIcon }) => (
-            <button key={key} className={`tab ${activeTab === key ? 'active' : ''}`} onClick={() => showTab(key)}>
+            <button key={key} className={`uis-tab ${activeTab === key ? 'active' : ''}`} onClick={() => showTab(key)}>
               <TabIcon />{label}
             </button>
           ))}
         </div>
       </div>
-      <div className="stg-body dlg-form">
+      <div className="uis-stg-body uis-dlg-form">
         {allTabs.filter(({ key }) => visited.has(key)).map(({ key, content }) => (
-          <div key={key} className="stg-page" hidden={activeTab !== key}>{content}</div>
+          <div key={key} className="uis-stg-page" hidden={activeTab !== key}>{content}</div>
         ))}
       </div>
     </div>

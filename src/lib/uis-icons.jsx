@@ -6,7 +6,7 @@
 // Glyph is the official GitHub mark.
 import React from 'react';
 
-export function GithubIcon({ size = 14, ...props }) {
+export function UisIcoGithub({ size = 14, ...props }) {
   return (
     <svg
       data-icon="yaiol:github"

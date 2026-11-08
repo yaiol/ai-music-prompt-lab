@@ -1,4 +1,4 @@
-// ui-ctl-popover.jsx — the ONE floating-panel MECHANISM for the popover family.
+// uis-ctl-popover.jsx — the ONE floating-panel MECHANISM for the popover family.
 // It portals a panel to <body> and positions it against an anchor element: below the anchor (flips
 // above when there's no room), width floored at the anchor (optional) and capped, anchored to the
 // left or right edge so it stays on-screen, repositioned on scroll/resize, and closed on Esc /
@@ -11,14 +11,14 @@
 // while the pointer is over itself.
 //
 // Every floating dropdown in the catalog is built on this so none of them re-implement (or forget,
-// as `Menu` once did) the portal — the reason a dropdown inside a scrolling dialog used to clip:
-//   • Menu       — a toolbar "pick one action" dropdown
-//   • Combobox   — a type-to-filter picker
+// as `UisMenu` once did) the portal — the reason a dropdown inside a scrolling dialog used to clip:
+//   • UisMenu       — a toolbar "pick one action" dropdown
+//   • UisCboStandard   — a type-to-filter picker
 //   • Switcher   — a pick-one-value list whose rows carry their own actions (rename/delete)
-// The shared LOOK is `.pop-surface` (this panel) + `.pop-item` (a row), in ui-app.css.
+// The shared LOOK is `.uis-pop-surface` (this panel) + `.uis-pop-item` (a row), in uis-app.css.
 //
 // Distributed by sync-shared — ⚠ SYNCED FILE, edit the canonical here and re-sync.
-// Import: `import { Popover } from './lib/ui-ctl-popover';`
+// Import: `import { UisPopover } from './lib/uis-ctl-popover';`
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import { createPortal } from 'react-dom';
 
@@ -26,7 +26,7 @@ const MARGIN     = 8;    // breathing room kept between the panel and the window
 const MIN_PANEL  = 160;  // never squeeze a panel below this, even in a cramped window
 const FLIP_BELOW = 240;  // less room than this under the anchor → consider opening upwards
 
-export function Popover({
+export function UisPopover({
   anchorRef, open, onClose,
   align = 'auto',            // 'left' | 'right' | 'auto' (right-half anchors right, else left)
   placement = 'below',       // 'below' (a dropdown) | 'side' (a submenu flyout, beside its row)
@@ -50,7 +50,7 @@ export function Popover({
     // flat `maxHeight = 320`, which made every long menu scroll on a 1000px-tall window
     // for no reason — the panel was capped at a third of the screen and the rest was
     // hidden behind a scrollbar. Only pass an explicit `maxHeight` to cap a panel BELOW
-    // the available room on purpose (Combobox does, so a long list stays a short list).
+    // the available room on purpose (UisCboStandard does, so a long list stays a short list).
     const roomBelow = window.innerHeight - r.bottom - MARGIN * 2;
     const roomAbove = r.top - MARGIN * 2;
     const fit = (room) => Math.max(MIN_PANEL, maxHeight != null ? Math.min(maxHeight, room) : room);
@@ -65,7 +65,7 @@ export function Popover({
       setPos({
         maxWidth: mw, maxHeight: cap,
         ...(flipLeft ? { right: Math.max(MARGIN, window.innerWidth - r.left) } : { left: r.right }),
-        // -4 cancels .pop-surface's padding so the first row lines up with the parent row.
+        // -4 cancels .uis-pop-surface's padding so the first row lines up with the parent row.
         top: Math.max(MARGIN, Math.min(r.top - 4, window.innerHeight - cap - MARGIN)),
       });
       return;
@@ -111,7 +111,7 @@ export function Popover({
   return createPortal(
     // `pos` already carries the computed maxHeight — do NOT re-apply the raw prop here,
     // which is null by default and would drop the cap entirely.
-    <div ref={popRef} className={`pop-surface${className ? ' ' + className : ''}`} style={pos}
+    <div ref={popRef} className={`uis-pop-surface${className ? ' ' + className : ''}`} style={pos}
       onMouseEnter={onMouseEnter} onMouseLeave={onMouseLeave}>
       {children}
     </div>,

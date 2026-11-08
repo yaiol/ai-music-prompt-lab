@@ -1,4 +1,4 @@
-// ui-news-dialog.jsx — the ONE pop-up that shows yaiol news, in every app that shows news (and in the
+// uis-dlg-news.jsx — the ONE pop-up that shows yaiol news, in every app that shows news (and in the
 // cockpit's news preview, so what the author sees is what the user gets).
 //
 // Controlled and fetch-free:
@@ -17,13 +17,13 @@
 //             "don't show again" box was ticked (the box belongs to the card being shown)
 // An item whose title cannot be resolved is skipped; with none left the dialog renders nothing.
 //
-// Distributed into each app's src/lib/ui-news-dialog.jsx by sync-shared — ⚠ SYNCED FILE, never edit the
+// Distributed into each app's src/lib/uis-dlg-news.jsx by sync-shared — ⚠ SYNCED FILE, never edit the
 // per-app copy; edit this canonical source and re-sync.
-// Import: `import { NewsDialog } from './lib/ui-news-dialog';`
+// Import: `import { UisDlgNews } from './lib/uis-dlg-news';`
 import React, { useState, useEffect } from 'react';
 import { X, ChevronLeft, ChevronRight } from 'lucide-react';
 import yaiolLogo from '../assets/yaiol-logo.svg';
-import { NewsText } from './ui-news-text';
+import { UisMarkdownRenderer } from './uis-markdown-renderer';
 
 // One field (title / subtitle / text / image) of an announcement in the reader's language: that language's own block, else its
 // base language's, else English's - per FIELD, so a language with a title but no text shows the English text (and a language with no picture of its own shows the English one).
@@ -52,7 +52,7 @@ function readMs(read) {
   return Math.max(5000, Math.min(15000, 4000 + Math.round(words / 3) * 1000));
 }
 
-export function NewsDialog({ items, lang, t, onClose }) {
+export function UisDlgNews({ items, lang, t, onClose }) {
   const [index, setIndex] = useState(0);
   const [auto, setAuto] = useState(true);
   const [hidden, setHidden] = useState(() => new Set());
@@ -80,50 +80,50 @@ export function NewsDialog({ items, lang, t, onClose }) {
   const choose = (i) => { setAuto(false); setIndex((i + list.length) % list.length); };
   const toggleHidden = (on) => { setAuto(false); setHidden(prev => { const next = new Set(prev); if (on) next.add(item.id); else next.delete(item.id); return next; }); };
   return (
-    <div className="dl-backdrop" style={{ zIndex: 900 }} onMouseDown={e => { if (e.target === e.currentTarget) close(); }}>
-      <div className="dlp wide" onKeyDown={e => {
+    <div className="uis-dl-backdrop" style={{ zIndex: 900 }} onMouseDown={e => { if (e.target === e.currentTarget) close(); }}>
+      <div className="uis-dlp wide" onKeyDown={e => {
         if (e.key === 'Escape') close();
         else if (e.key === 'ArrowLeft') choose(at - 1);
         else if (e.key === 'ArrowRight') choose(at + 1);
       }}>
-        <button className="dl-close" onClick={close} title={t('tipNewsDismiss')} aria-label={t('tipNewsDismiss')}><X /></button>
-        <img className="dlp-icon" src={yaiolLogo} alt="yaiol" />
+        <button className="uis-dl-close" onClick={close} title={t('tipNewsDismiss')} aria-label={t('tipNewsDismiss')}><X /></button>
+        <img className="uis-dlp-icon" src={yaiolLogo} alt="yaiol" />
         {/* Every announcement is laid out in the SAME grid cell and only the current one is visible, so
             the dialog is as tall as the tallest one and never resizes when the carousel turns. */}
-        <div className="dlp-pages">
+        <div className="uis-dlp-pages">
           {list.map((it, i) => {
             const subtitle = field(it, 'subtitle');
             const image = newsImageUrl(field(it, 'image'));
             return (
-              <div key={it.id} className={`dlp-page${i === at ? '' : ' dlp-page-off'}`}>
-                <div className="dlp-title">{field(it, 'title')}</div>
-                {subtitle && <div className="dlp-subtitle">{subtitle}</div>}
+              <div key={it.id} className={`uis-dlp-page${i === at ? '' : ' uis-dlp-page-off'}`}>
+                <div className="uis-dlp-title">{field(it, 'title')}</div>
+                {subtitle && <div className="uis-dlp-subtitle">{subtitle}</div>}
                 {image && (
-                  <div className="dlp-image">
+                  <div className="uis-dlp-image">
                     {!failed.has(it.id) && <img src={image} alt="" onError={() => setFailed(prev => new Set(prev).add(it.id))} />}
                   </div>
                 )}
-                <div className="dlp-text"><NewsText text={field(it, 'text')} /></div>
+                <div className="uis-dlp-text"><UisMarkdownRenderer text={field(it, 'text')} /></div>
               </div>
             );
           })}
         </div>
         {list.length > 1 && (
-          <div className="dlp-nav">
-            <button className="btn icon subtle" onClick={() => choose(at - 1)}><ChevronLeft /></button>
+          <div className="uis-dlp-nav">
+            <button className="uis-btn ico subtle" onClick={() => choose(at - 1)}><ChevronLeft /></button>
             {list.map((it, i) => (
-              <button key={it.id} className={`chip${i === at ? ' on' : ''}`} onClick={() => choose(i)}>{i + 1}</button>
+              <button key={it.id} className={`uis-chp${i === at ? ' on' : ''}`} onClick={() => choose(i)}>{i + 1}</button>
             ))}
-            <button className="btn icon subtle" onClick={() => choose(at + 1)}><ChevronRight /></button>
+            <button className="uis-btn ico subtle" onClick={() => choose(at + 1)}><ChevronRight /></button>
           </div>
         )}
-        <div className="dlp-foot">
-          <label className="check-label">
-            <input type="checkbox" className="check-box" checked={hidden.has(item.id)} onChange={e => toggleHidden(e.target.checked)} />
+        <div className="uis-dlp-foot">
+          <label className="uis-chk-lbl">
+            <input type="checkbox" className="uis-chk-box" checked={hidden.has(item.id)} onChange={e => toggleHidden(e.target.checked)} />
             {t('lblNewsHideForever')}
           </label>
-          {item.link && <button className="btn primary" autoFocus onClick={() => window.open(item.link, '_blank')}>{item.kind === 'update' ? t('btnUpdateDownload') : t('btnNewsOpenLink')}</button>}
-          <button className="btn subtle" autoFocus={!item.link} onClick={close}>{t('btnNewsClose')}</button>
+          {item.link && <button className="uis-btn primary" autoFocus onClick={() => window.open(item.link, '_blank')}>{item.kind === 'update' ? t('btnUpdateDownload') : t('btnNewsOpenLink')}</button>}
+          <button className="uis-btn subtle" autoFocus={!item.link} onClick={close}>{t('btnNewsClose')}</button>
         </div>
       </div>
     </div>

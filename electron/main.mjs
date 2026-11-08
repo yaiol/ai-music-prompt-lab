@@ -604,11 +604,11 @@ function startServer(callback) {
             const key = String(tag.id || "");
             const v = tag.value;
             const s = typeof v === "string" ? v : (v?.text || v?.description || "");
-            // ⚠ CLAUDE: AMLP_ID is where the id lives once it has been moved out of
+            // ⚠ CLAUDE: YAIOL_AIID is where the id lives once it has been moved out of
             // COMMENT. Miss it and a migrated file reads as having no id at all -
             // no song link, no pre-fill, and the file looks unidentified.
             // Its value is "<service>:<uuid>", so SUNO_ID_RE cannot match it.
-            if (/^amlp_id$/i.test(key)) {
+            if (/^yaiol_aiid$/i.test(key)) {
               const m = s.match(/^suno:([0-9a-fA-F-]{36})$/);
               if (m) return m[1].toLowerCase();
               continue;
@@ -637,7 +637,7 @@ function startServer(callback) {
   }
 
   // ── Moving the Suno id into its own tag ──────────────────────────────────────
-  // The id belongs in AMLP_ID, not in COMMENT: a dedicated field can be stripped
+  // The id belongs in YAIOL_AIID, not in COMMENT: a dedicated field can be stripped
   // when making share copies, while COMMENT stays free for text meant to be read.
   // It is MOVED, never copied - a copy left in COMMENT would ship anyway, which
   // defeats the point.
@@ -645,11 +645,11 @@ function startServer(callback) {
   // Opt-in via the Media setting, and off by default, because this REWRITES the
   // user's master file. Nothing here ever runs unless they asked for it.
 
-  // Move COMMENT's id into AMLP_ID on one file. Returns a short reason string.
+  // Move COMMENT's id into YAIOL_AIID on one file. Returns a short reason string.
   // Writing is done by flac-tags.mjs rather than an external tool: it rewrites
   // one metadata block and copies the audio and the cover art through untouched,
   // so nothing has to be installed and nothing is re-encoded.
-  function moveSunoIdToAmlpTag(mediaPath) {
+  function moveSunoIdToAiidTag(mediaPath) {
     // ⚠ CLAUDE: NEVER write to a .wav. The wav in 10-original is the untouched
     // original and the only reason a lost id can be recovered at all.
     if (/\.wav$/i.test(mediaPath)) return "skipped-wav";
@@ -658,11 +658,11 @@ function startServer(callback) {
 
     const tags = readFlacFields(mediaPath);
     if (!tags) return "unreadable";
-    if (getField(tags, "AMLP_ID")) return "already-tagged";
+    if (getField(tags, "YAIOL_AIID")) return "already-tagged";
     const m = getField(tags, "COMMENT").match(SUNO_ID_RE);
     if (!m) return "no-id";
 
-    const res = writeFlacFields(mediaPath, { AMLP_ID: `suno:${m[1].toLowerCase()}`, COMMENT: "" });
+    const res = writeFlacFields(mediaPath, { YAIOL_AIID: `suno:${m[1].toLowerCase()}`, COMMENT: "" });
     return res === "ok" ? "moved" : res;
   }
 
@@ -681,7 +681,7 @@ function startServer(callback) {
     // already been pasted onto the wrong card once; an id already in the file came
     // from Suno itself. So a disagreement is REPORTED, never overwritten - losing a
     // correct id to a stray paste is unrecoverable, while a refusal is not.
-    const existing = getField(tags, "AMLP_ID");
+    const existing = getField(tags, "YAIOL_AIID");
     if (existing) return existing === `suno:${linkId}` ? "already-tagged" : "conflict-amlp";
     const com = getField(tags, "COMMENT");
     const comId = (com.match(SUNO_ID_RE) || [])[1];
@@ -689,7 +689,7 @@ function startServer(callback) {
 
     // Only clear COMMENT when it is Suno's own provenance string or carries this
     // very id. Anything else in there is the user's text and must survive.
-    const changes = { AMLP_ID: `suno:${linkId}` };
+    const changes = { YAIOL_AIID: `suno:${linkId}` };
     if (comId || /^\s*made with suno/i.test(com)) changes.COMMENT = "";
 
     const res = writeFlacFields(mediaPath, changes);
@@ -714,17 +714,17 @@ function startServer(callback) {
   }
 
   // Stamp the Suno id of a pasted/stored link into a media file, when the
-  // "Use AMLP_ID tag" setting is on. Shared by the two ways the pair can meet
+  // "Use YAIOL_AIID tag" setting is on. Shared by the two ways the pair can meet
   // (link added to a card with media, media linked to a card with a link) so the
   // result never depends on which came first.
   // ⚠ The uuid is taken as exactly 36 chars: a share link carries a ?sh=... suffix.
   function stampSunoIdFromLink(mediaPath, href) {
-    if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] !== "1") return;
+    if (readSettings()[`${STORAGE_PREFIX}-use-yaiol-aiid`] !== "1") return;
     const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
     if (!linkId || !mediaPath) return;
     const r = writeSunoIdFromLink(mediaPath, linkId.toLowerCase());
     if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
-      console.warn(`AMLP_ID not written for ${mediaPath}: ${r}`);
+      console.warn(`YAIOL_AIID not written for ${mediaPath}: ${r}`);
     }
   }
 
@@ -749,12 +749,12 @@ function startServer(callback) {
     })();
     // Media newly linked → if the file carries Suno provenance, add the Suno song URL.
     if (mediaPath && mediaPath !== prevMediaPath) {
-      // Opt-in, off by default: move the id out of COMMENT into AMLP_ID. Done
+      // Opt-in, off by default: move the id out of COMMENT into YAIOL_AIID. Done
       // BEFORE reading the id below so the read sees the file's final state.
-      if (readSettings()[`${STORAGE_PREFIX}-use-amlp-id`] === "1") {
-        const moved = moveSunoIdToAmlpTag(mediaPath);
+      if (readSettings()[`${STORAGE_PREFIX}-use-yaiol-aiid`] === "1") {
+        const moved = moveSunoIdToAiidTag(mediaPath);
         if (!["moved", "no-id", "already-tagged", "skipped-wav", "not-flac"].includes(moved)) {
-          console.warn(`AMLP_ID not written for ${mediaPath}: ${moved}`);
+          console.warn(`YAIOL_AIID not written for ${mediaPath}: ${moved}`);
         }
       }
       const sunoId = await readSunoId(mediaPath);
@@ -2644,7 +2644,7 @@ function startServer(callback) {
   // ── Export Word document ──────────────────────────────────────────────────────
   api.post("/export-docx", async (req, res) => {
     try {
-      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uiLang = "en", title, instrumentalLabel = "Instrumental" } = req.body;
+      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uilLang = "en", title, instrumentalLabel = "Instrumental" } = req.body;
       const mm = await import("music-metadata");
 
       // Page geometry: A4 (11906 twips wide), margins 900 twips each side
@@ -2824,7 +2824,7 @@ function startServer(callback) {
         if (contentLangs.length > 0) {
           const trs = db.prepare("SELECT * FROM card_translation WHERE cat_cadid=? ORDER BY cat_date ASC").all(song.id);
           for (const tr of trs.filter(tr => contentLangs.includes(tr.cat_lang))) {
-            const langLabel = getLangName(tr.cat_lang, uiLang);
+            const langLabel = getLangName(tr.cat_lang, uilLang);
             docChildren.push(new Paragraph({
               alignment: AlignmentType.CENTER,
               spacing: { before: 480, after: 200 },
@@ -2953,7 +2953,7 @@ function startServer(callback) {
   // ── Export Markdown ───────────────────────────────────────────────────────────
   api.post("/export-md", async (req, res) => {
     try {
-      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uiLang = "en", title, translationLabel = "Translation", instrumentalLabel = "Instrumental" } = req.body;
+      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uilLang = "en", title, translationLabel = "Translation", instrumentalLabel = "Instrumental" } = req.body;
       const musicSites = (readSettings()[`${STORAGE_PREFIX}-music-sites`] || "soundcloud").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
 
       let songs;
@@ -3016,7 +3016,7 @@ function startServer(callback) {
         const heading = song.sortNumber ? `${song.sortNumber}. ${song.name}` : song.name;
         let block = `## ${heading}\n`;
         if (song.lang) {
-          const langLabel = getLangName(song.lang, uiLang);
+          const langLabel = getLangName(song.lang, uilLang);
           block += `\n_${langLabel}_\n`;
         }
         const publishedUrls = (song.urls || []).filter(u => musicSites.includes((u.label || '').toLowerCase().trim()));
@@ -3027,7 +3027,7 @@ function startServer(callback) {
         if (contentLangs.length > 0) {
           const trs = db.prepare("SELECT * FROM card_translation WHERE cat_cadid=? ORDER BY cat_date ASC").all(song.id);
           for (const tr of trs.filter(tr => contentLangs.includes(tr.cat_lang))) {
-            const langLabel = getLangName(tr.cat_lang, uiLang);
+            const langLabel = getLangName(tr.cat_lang, uilLang);
             block += `\n### ${translationLabel} - ${langLabel}\n`;
             const trLines = extractLyrics(tr.cat_lyrics, contentLyrics);
             if (trLines.length) block += `\n\`\`\`\n${trLines.join("\n")}\n\`\`\`\n`;
@@ -3047,7 +3047,7 @@ function startServer(callback) {
   // ── Export AsciiDoc ───────────────────────────────────────────────────────────
   api.post("/export-adoc", async (req, res) => {
     try {
-      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uiLang = "en", title, translationLabel = "Translation", instrumentalLabel = "Instrumental" } = req.body;
+      const { projectIds = [], contentLyrics = "clean", contentLangs = [], contentImages = true, contentDesc = true, filterLyrics = "withLyrics", filterPublished = "all", uilLang = "en", title, translationLabel = "Translation", instrumentalLabel = "Instrumental" } = req.body;
       const musicSites = (readSettings()[`${STORAGE_PREFIX}-music-sites`] || "soundcloud").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
 
       let songs;
@@ -3108,7 +3108,7 @@ function startServer(callback) {
         const heading = song.sortNumber ? `${song.sortNumber}. ${song.name}` : song.name;
         let block = `== ${heading}\n`;
         if (song.lang) {
-          const langLabel = getLangName(song.lang, uiLang);
+          const langLabel = getLangName(song.lang, uilLang);
           block += `\n_${langLabel}_\n`;
         }
         const publishedUrls = (song.urls || []).filter(u => musicSites.includes((u.label || '').toLowerCase().trim()));
@@ -3119,7 +3119,7 @@ function startServer(callback) {
         if (contentLangs.length > 0) {
           const trs = db.prepare("SELECT * FROM card_translation WHERE cat_cadid=? ORDER BY cat_date ASC").all(song.id);
           for (const tr of trs.filter(tr => contentLangs.includes(tr.cat_lang))) {
-            const langLabel = getLangName(tr.cat_lang, uiLang);
+            const langLabel = getLangName(tr.cat_lang, uilLang);
             block += `\n=== ${translationLabel} - ${langLabel}\n`;
             const trLines = extractLyrics(tr.cat_lyrics, contentLyrics);
             if (trLines.length) block += `\n....\n${trLines.join("\n")}\n....\n`;

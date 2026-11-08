@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.13 — 2026-11-08
+
+- The tag that holds a track's Suno song id is renamed from AMLP_ID to YAIOL_AIID; the setting now reads Use YAIOL_AIID tag, linking a FLAC moves or writes the id into that tag, and a file's id is read from it
+- The setting is stored under a new name, so it starts off again; turn it on once if you used it
+- Files already tagged AMLP_ID are not recognised any more; the app reads only YAIOL_AIID
+
 ## 1.0.12 — 2026-10-23
 
 - A newer version now appears as a card in a news dialog instead of a banner strip: the card lists the release notes newer than the running version, links to the download page, and Don't show again hides it until a still newer version is out

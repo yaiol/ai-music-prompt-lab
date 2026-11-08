@@ -179,8 +179,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "About",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Use AMLP_ID tag",
-    msgStgMediaAmlpId:                      "Store the song id in the file's own AMLP_ID tag when a media file is linked, instead of leaving it in the comment.",
+    lblStgMediaAiid:                        "Use YAIOL_AIID tag",
+    msgStgMediaAiid:                        "Store the song id in the file's own YAIOL_AIID tag when a media file is linked, instead of leaving it in the comment.",
     lblStgMediaRoot:                        "Media root folder",
     msgStgMediaRoot:                        "Stored paths start from this folder. If your library moves, point this at its new location: nothing is rewritten, the paths simply resolve under the new folder.",
     lblStgMediaPaths:                       "Stored paths",
@@ -657,8 +657,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "À propos",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Utiliser la balise AMLP_ID",
-    msgStgMediaAmlpId:                      "Stocker l'ID de la chanson dans la propre balise AMLP_ID du fichier lorsqu'un fichier média est lié, au lieu de le laisser dans le commentaire.",
+    lblStgMediaAiid:                        "Utiliser la balise YAIOL_AIID",
+    msgStgMediaAiid:                        "Stocker l'ID de la chanson dans la propre balise YAIOL_AIID du fichier lorsqu'un fichier média est lié, au lieu de le laisser dans le commentaire.",
     lblStgMediaRoot:                        "Dossier racine des médias",
     msgStgMediaRoot:                        "Les chemins stockés partent de ce dossier. Si votre bibliothèque est déplacée, indiquez son nouvel emplacement : rien n'est réécrit, les chemins se résolvent simplement sous le nouveau dossier.",
     lblStgMediaPaths:                       "Chemins enregistrés",
@@ -1134,8 +1134,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Über",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID-Tag verwenden",
-    msgStgMediaAmlpId:                      "Die Song-ID im eigenen AMLP_ID-Tag der Datei speichern, wenn eine Mediendatei verknüpft wird, anstatt sie im Kommentar zu belassen.",
+    lblStgMediaAiid:                        "YAIOL_AIID-Tag verwenden",
+    msgStgMediaAiid:                        "Die Song-ID im eigenen YAIOL_AIID-Tag der Datei speichern, wenn eine Mediendatei verknüpft wird, anstatt sie im Kommentar zu belassen.",
     lblStgMediaRoot:                        "Medien-Stammordner",
     msgStgMediaRoot:                        "Gespeicherte Pfade beginnen in diesem Ordner. Wenn Ihre Bibliothek verschoben wird, zeigen Sie hier auf den neuen Speicherort: Es wird nichts neu geschrieben, die Pfade werden einfach unter dem neuen Ordner aufgelöst.",
     lblStgMediaPaths:                       "Gespeicherte Pfade",
@@ -1611,8 +1611,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Acerca de",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
-    msgStgMediaAmlpId:                      "Almacenar el ID de la canción en la propia etiqueta AMLP_ID del archivo cuando se vincula un archivo multimedia, en lugar de dejarlo en el comentario.",
+    lblStgMediaAiid:                        "Usar etiqueta YAIOL_AIID",
+    msgStgMediaAiid:                        "Almacenar el ID de la canción en la propia etiqueta YAIOL_AIID del archivo cuando se vincula un archivo multimedia, en lugar de dejarlo en el comentario.",
     lblStgMediaRoot:                        "Carpeta raíz de medios",
     msgStgMediaRoot:                        "Las rutas almacenadas parten de esta carpeta. Si su biblioteca se mueve, apunte aquí a su nueva ubicación: no se reescribe nada, las rutas simplemente se resuelven bajo la nueva carpeta.",
     lblStgMediaPaths:                       "Rutas almacenadas",
@@ -2088,8 +2088,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Sobre",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Usar tag AMLP_ID",
-    msgStgMediaAmlpId:                      "Armazenar o ID da música na própria tag AMLP_ID do arquivo quando um arquivo de mídia for vinculado, em vez de deixá-lo no comentário.",
+    lblStgMediaAiid:                        "Usar tag YAIOL_AIID",
+    msgStgMediaAiid:                        "Armazenar o ID da música na própria tag YAIOL_AIID do arquivo quando um arquivo de mídia for vinculado, em vez de deixá-lo no comentário.",
     lblStgMediaRoot:                        "Pasta raiz de mídia",
     msgStgMediaRoot:                        "Os caminhos armazenados começam a partir desta pasta. Se sua biblioteca for movida, aponte para o novo local: nada é reescrito, os caminhos simplesmente se resolvem sob a nova pasta.",
     lblStgMediaPaths:                       "Caminhos armazenados",
@@ -2565,8 +2565,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Sobre",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
-    msgStgMediaAmlpId:                      "Armazenar o ID da música na própria etiqueta AMLP_ID do ficheiro quando um ficheiro multimédia é ligado, em vez de o deixar no comentário.",
+    lblStgMediaAiid:                        "Usar etiqueta YAIOL_AIID",
+    msgStgMediaAiid:                        "Armazenar o ID da música na própria etiqueta YAIOL_AIID do ficheiro quando um ficheiro multimédia é ligado, em vez de o deixar no comentário.",
     lblStgMediaRoot:                        "Pasta raiz de multimédia",
     msgStgMediaRoot:                        "Os caminhos armazenados começam a partir desta pasta. Se a sua biblioteca for movida, aponte para a nova localização: nada é reescrito, os caminhos simplesmente resolvem-se sob a nova pasta.",
     lblStgMediaPaths:                       "Caminhos armazenados",
@@ -3042,8 +3042,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "关于",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "使用 AMLP_ID 标签",
-    msgStgMediaAmlpId:                      "当媒体文件被链接时，将歌曲 ID 存储在文件自身的 AMLP_ID 标签中，而不是留在注释中。",
+    lblStgMediaAiid:                        "使用 YAIOL_AIID 标签",
+    msgStgMediaAiid:                        "当媒体文件被链接时，将歌曲 ID 存储在文件自身的 YAIOL_AIID 标签中，而不是留在注释中。",
     lblStgMediaRoot:                        "媒体根文件夹",
     msgStgMediaRoot:                        "存储路径从此文件夹开始。如果媒体库移动，请指向新位置：不会重写任何内容，路径将在新文件夹下解析。",
     lblStgMediaPaths:                       "存储路径",
@@ -3519,8 +3519,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "關於",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "使用 AMLP_ID 標籤",
-    msgStgMediaAmlpId:                      "當媒體檔案被連結時，將歌曲 ID 儲存在檔案本身的 AMLP_ID 標籤中，而不是留在註解中。",
+    lblStgMediaAiid:                        "使用 YAIOL_AIID 標籤",
+    msgStgMediaAiid:                        "當媒體檔案被連結時，將歌曲 ID 儲存在檔案本身的 YAIOL_AIID 標籤中，而不是留在註解中。",
     lblStgMediaRoot:                        "媒體根資料夾",
     msgStgMediaRoot:                        "儲存路徑從此資料夾開始。如果媒體庫移動，請指向新位置：不會重寫任何內容，路徑將在新資料夾下解析。",
     lblStgMediaPaths:                       "儲存路徑",
@@ -3996,8 +3996,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "概要",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_IDタグを使用",
-    msgStgMediaAmlpId:                      "メディアファイルがリンクされた際、曲のIDをコメントに残す代わりに、ファイル自身のAMLP_IDタグに保存します。",
+    lblStgMediaAiid:                        "YAIOL_AIIDタグを使用",
+    msgStgMediaAiid:                        "メディアファイルがリンクされた際、曲のIDをコメントに残す代わりに、ファイル自身のYAIOL_AIIDタグに保存します。",
     lblStgMediaRoot:                        "メディアのルートフォルダー",
     msgStgMediaRoot:                        "保存パスはこのフォルダーから始まります。ライブラリが移動した場合は、新しい場所を指定してください。何も書き換えられず、パスは新しいフォルダーの下で解決されます。",
     lblStgMediaPaths:                       "保存されたパス",
@@ -4473,8 +4473,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "O aplikacji",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Użyj tagu AMLP_ID",
-    msgStgMediaAmlpId:                      "Zapisz identyfikator utworu we własnym tagu AMLP_ID pliku po połączeniu pliku multimedialnego, zamiast pozostawiać go w komentarzu.",
+    lblStgMediaAiid:                        "Użyj tagu YAIOL_AIID",
+    msgStgMediaAiid:                        "Zapisz identyfikator utworu we własnym tagu YAIOL_AIID pliku po połączeniu pliku multimedialnego, zamiast pozostawiać go w komentarzu.",
     lblStgMediaRoot:                        "Główny folder mediów",
     msgStgMediaRoot:                        "Zapisane ścieżki zaczynają się od tego folderu. Jeśli biblioteka zostanie przeniesiona, wskaż jej nową lokalizację: nic nie zostanie przepisane, ścieżki zostaną rozwiązane w nowym folderze.",
     lblStgMediaPaths:                       "Zapisane ścieżki",
@@ -4950,8 +4950,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Про додаток",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Використовувати тег AMLP_ID",
-    msgStgMediaAmlpId:                      "Зберігати ідентифікатор пісні у власному тегу AMLP_ID файлу, коли медіафайл пов'язано, замість залишати його в коментарі.",
+    lblStgMediaAiid:                        "Використовувати тег YAIOL_AIID",
+    msgStgMediaAiid:                        "Зберігати ідентифікатор пісні у власному тегу YAIOL_AIID файлу, коли медіафайл пов'язано, замість залишати його в коментарі.",
     lblStgMediaRoot:                        "Коренева папка медіа",
     msgStgMediaRoot:                        "Збережені шляхи починаються з цієї папки. Якщо бібліотека переміщується, вкажіть її нове розташування: нічого не перезаписується, шляхи розв'язуються в новій папці.",
     lblStgMediaPaths:                       "Збережені шляхи",
@@ -5427,8 +5427,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Informazioni",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Usa tag AMLP_ID",
-    msgStgMediaAmlpId:                      "Memorizza l'ID del brano nel tag AMLP_ID del file quando un file multimediale è collegato, invece di lasciarlo nel commento.",
+    lblStgMediaAiid:                        "Usa tag YAIOL_AIID",
+    msgStgMediaAiid:                        "Memorizza l'ID del brano nel tag YAIOL_AIID del file quando un file multimediale è collegato, invece di lasciarlo nel commento.",
     lblStgMediaRoot:                        "Cartella radice media",
     msgStgMediaRoot:                        "I percorsi memorizzati partono da questa cartella. Se la libreria si sposta, puntala alla sua nuova posizione: nulla viene riscritto, i percorsi si risolvono sotto la nuova cartella.",
     lblStgMediaPaths:                       "Percorsi memorizzati",
@@ -5904,8 +5904,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "حول",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "استخدام وسم AMLP_ID",
-    msgStgMediaAmlpId:                      "تخزين معرّف الأغنية في وسم AMLP_ID الخاص بالملف عند ربط ملف وسائط، بدلاً من تركه في التعليق.",
+    lblStgMediaAiid:                        "استخدام وسم YAIOL_AIID",
+    msgStgMediaAiid:                        "تخزين معرّف الأغنية في وسم YAIOL_AIID الخاص بالملف عند ربط ملف وسائط، بدلاً من تركه في التعليق.",
     lblStgMediaRoot:                        "مجلد الوسائط الجذر",
     msgStgMediaRoot:                        "تبدأ المسارات المخزنة من هذا المجلد. إذا نُقلت مكتبتك، فأشر إلى موقعها الجديد: لا يُعاد كتابة شيء، بل تُحل المسارات ضمن المجلد الجديد.",
     lblStgMediaPaths:                       "المسارات المخزنة",
@@ -6381,8 +6381,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Over",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID-tag gebruiken",
-    msgStgMediaAmlpId:                      "Sla de song-ID op in de eigen AMLP_ID-tag van het bestand wanneer een mediabestand is gekoppeld, in plaats van deze in de opmerking te laten.",
+    lblStgMediaAiid:                        "YAIOL_AIID-tag gebruiken",
+    msgStgMediaAiid:                        "Sla de song-ID op in de eigen YAIOL_AIID-tag van het bestand wanneer een mediabestand is gekoppeld, in plaats van deze in de opmerking te laten.",
     lblStgMediaRoot:                        "Hoofdmap media",
     msgStgMediaRoot:                        "Opgeslagen paden beginnen vanuit deze map. Als uw bibliotheek verplaatst, wijs dit dan naar de nieuwe locatie: niets wordt herschreven, paden worden opgelost onder de nieuwe map.",
     lblStgMediaPaths:                       "Opgeslagen paden",
@@ -6858,8 +6858,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Om",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Bruk AMLP_ID-tagg",
-    msgStgMediaAmlpId:                      "Lagre sang-ID-en i filens egen AMLP_ID-tagg når en mediefil er koblet, i stedet for å la den stå i kommentaren.",
+    lblStgMediaAiid:                        "Bruk YAIOL_AIID-tagg",
+    msgStgMediaAiid:                        "Lagre sang-ID-en i filens egen YAIOL_AIID-tagg når en mediefil er koblet, i stedet for å la den stå i kommentaren.",
     lblStgMediaRoot:                        "Medierotmappe",
     msgStgMediaRoot:                        "Lagrede stier starter fra denne mappen. Hvis biblioteket flyttes, pek til den nye plasseringen: ingenting blir omskrevet, stiene løses under den nye mappen.",
     lblStgMediaPaths:                       "Lagrede stier",
@@ -7335,8 +7335,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Om",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Använd AMLP_ID-tagg",
-    msgStgMediaAmlpId:                      "Lagra låt-ID:t i filens egen AMLP_ID-tagg när en mediefil länkas, istället för att lämna det i kommentaren.",
+    lblStgMediaAiid:                        "Använd YAIOL_AIID-tagg",
+    msgStgMediaAiid:                        "Lagra låt-ID:t i filens egen YAIOL_AIID-tagg när en mediefil länkas, istället för att lämna det i kommentaren.",
     lblStgMediaRoot:                        "Mediarotmapp",
     msgStgMediaRoot:                        "Lagrade sökvägar startar från denna mapp. Om biblioteket flyttas, peka till dess nya plats: inget skrivs om, sökvägarna löses under den nya mappen.",
     lblStgMediaPaths:                       "Lagrade sökvägar",
@@ -7812,8 +7812,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Hakkında",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID etiketini kullan",
-    msgStgMediaAmlpId:                      "Bir medya dosyası bağlandığında şarkı kimliğini yorumda bırakmak yerine, dosyanın kendi AMLP_ID etiketinde saklayın.",
+    lblStgMediaAiid:                        "YAIOL_AIID etiketini kullan",
+    msgStgMediaAiid:                        "Bir medya dosyası bağlandığında şarkı kimliğini yorumda bırakmak yerine, dosyanın kendi YAIOL_AIID etiketinde saklayın.",
     lblStgMediaRoot:                        "Medya kök klasörü",
     msgStgMediaRoot:                        "Depolanan yollar bu klasörden başlar. Kütüphaneniz taşınırsa, yeni konumuna işaret edin: hiçbir şey yeniden yazılmaz, yollar yeni klasör altında çözümlenir.",
     lblStgMediaPaths:                       "Depolanan yollar",
@@ -8289,8 +8289,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Om",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Brug AMLP_ID-tag",
-    msgStgMediaAmlpId:                      "Gem sang-id'et i filens egen AMLP_ID-tag, når en mediefil er linket, i stedet for at lade det stå i kommentaren.",
+    lblStgMediaAiid:                        "Brug YAIOL_AIID-tag",
+    msgStgMediaAiid:                        "Gem sang-id'et i filens egen YAIOL_AIID-tag, når en mediefil er linket, i stedet for at lade det stå i kommentaren.",
     lblStgMediaRoot:                        "Medierodmappe",
     msgStgMediaRoot:                        "Gemte stier starter fra denne mappe. Hvis biblioteket flyttes, peg mod den nye placering: intet omskrives, stierne løses under den nye mappe.",
     lblStgMediaPaths:                       "Gemte stier",
@@ -8766,8 +8766,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Tietoja",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Käytä AMLP_ID-tunnistetta",
-    msgStgMediaAmlpId:                      "Tallenna kappaleen tunnus tiedoston omaan AMLP_ID-tunnisteeseen, kun mediatiedosto linkitetään, sen sijaan että se jätettäisiin kommenttiin.",
+    lblStgMediaAiid:                        "Käytä YAIOL_AIID-tunnistetta",
+    msgStgMediaAiid:                        "Tallenna kappaleen tunnus tiedoston omaan YAIOL_AIID-tunnisteeseen, kun mediatiedosto linkitetään, sen sijaan että se jätettäisiin kommenttiin.",
     lblStgMediaRoot:                        "Median juurikansio",
     msgStgMediaRoot:                        "Tallennetut polut alkavat tästä kansiosta. Jos kirjastosi siirtyy, osoita tämä sen uuteen sijaintiin: mitään ei kirjoiteta uudelleen, polut ratkeavat uuden kansion alla.",
     lblStgMediaPaths:                       "Tallennetut polut",
@@ -9243,8 +9243,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Σχετικά",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Χρήση ετικέτας AMLP_ID",
-    msgStgMediaAmlpId:                      "Αποθήκευση του αναγνωριστικού τραγουδιού στην ετικέτα AMLP_ID του ίδιου του αρχείου όταν συνδέεται ένα αρχείο πολυμέσων, αντί να παραμένει στο σχόλιο.",
+    lblStgMediaAiid:                        "Χρήση ετικέτας YAIOL_AIID",
+    msgStgMediaAiid:                        "Αποθήκευση του αναγνωριστικού τραγουδιού στην ετικέτα YAIOL_AIID του ίδιου του αρχείου όταν συνδέεται ένα αρχείο πολυμέσων, αντί να παραμένει στο σχόλιο.",
     lblStgMediaRoot:                        "Φάκελος ρίζας μέσων",
     msgStgMediaRoot:                        "Οι αποθηκευμένες διαδρομές ξεκινούν από αυτόν τον φάκελο. Εάν η βιβλιοθήκη σας μετακινηθεί, δείξτε το στη νέα της θέση: τίποτα δεν ξαναγράφεται, οι διαδρομές επιλύονται κάτω από τον νέο φάκελο.",
     lblStgMediaPaths:                       "Αποθηκευμένες διαδρομές",
@@ -9720,8 +9720,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "אודות",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "השתמש בתגית AMLP_ID",
-    msgStgMediaAmlpId:                      "שמור את מזהה השיר בתגית AMLP_ID של הקובץ עצמו כאשר קובץ מדיה מקושר, במקום להשאירו בתגית ההערה.",
+    lblStgMediaAiid:                        "השתמש בתגית YAIOL_AIID",
+    msgStgMediaAiid:                        "שמור את מזהה השיר בתגית YAIOL_AIID של הקובץ עצמו כאשר קובץ מדיה מקושר, במקום להשאירו בתגית ההערה.",
     lblStgMediaRoot:                        "תיקיית שורש מדיה",
     msgStgMediaRoot:                        "נתיבים שמורים מתחילים מתיקייה זו. אם הספרייה זזה, הצבע על מיקומה החדש: שום דבר לא נכתב מחדש, הנתיבים נפתרים תחת התיקייה החדשה.",
     lblStgMediaPaths:                       "נתיבים שמורים",
@@ -10197,8 +10197,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "정보",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID 태그 사용",
-    msgStgMediaAmlpId:                      "미디어 파일이 연결될 때 노래 ID를 댓글에 남기는 대신 파일 자체의 AMLP_ID 태그에 저장합니다.",
+    lblStgMediaAiid:                        "YAIOL_AIID 태그 사용",
+    msgStgMediaAiid:                        "미디어 파일이 연결될 때 노래 ID를 댓글에 남기는 대신 파일 자체의 YAIOL_AIID 태그에 저장합니다.",
     lblStgMediaRoot:                        "미디어 루트 폴더",
     msgStgMediaRoot:                        "저장된 경로는 이 폴더에서 시작합니다. 라이브러리가 이동하면 새 위치를 지정하세요. 아무것도 다시 작성되지 않으며, 경로는 새 폴더 아래에서 해결됩니다.",
     lblStgMediaPaths:                       "저장된 경로",
@@ -10674,8 +10674,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Despre",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Utilizează eticheta AMLP_ID",
-    msgStgMediaAmlpId:                      "Stocați ID-ul melodiei în propria etichetă AMLP_ID a fișierului atunci când un fișier media este legat, în loc să-l lăsați în comentariu.",
+    lblStgMediaAiid:                        "Utilizează eticheta YAIOL_AIID",
+    msgStgMediaAiid:                        "Stocați ID-ul melodiei în propria etichetă YAIOL_AIID a fișierului atunci când un fișier media este legat, în loc să-l lăsați în comentariu.",
     lblStgMediaRoot:                        "Folder rădăcină media",
     msgStgMediaRoot:                        "Căile stocate pornesc din acest folder. Dacă biblioteca se mută, indicați noua sa locație: nimic nu este rescris, căile se rezolvă sub noul folder.",
     lblStgMediaPaths:                       "Căi stocate",
@@ -11151,8 +11151,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Giới thiệu",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Sử dụng thẻ AMLP_ID",
-    msgStgMediaAmlpId:                      "Lưu ID bài hát vào thẻ AMLP_ID riêng của tệp khi tệp phương tiện được liên kết, thay vì để nó trong phần bình luận.",
+    lblStgMediaAiid:                        "Sử dụng thẻ YAIOL_AIID",
+    msgStgMediaAiid:                        "Lưu ID bài hát vào thẻ YAIOL_AIID riêng của tệp khi tệp phương tiện được liên kết, thay vì để nó trong phần bình luận.",
     lblStgMediaRoot:                        "Thư mục gốc phương tiện",
     msgStgMediaRoot:                        "Các đường dẫn đã lưu bắt đầu từ thư mục này. Nếu thư viện di chuyển, hãy trỏ đến vị trí mới: không có gì được ghi lại, các đường dẫn chỉ đơn giản là được giải quyết dưới thư mục mới.",
     lblStgMediaPaths:                       "Đường dẫn đã lưu",
@@ -11628,8 +11628,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "درباره",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "استفاده از برچسب AMLP_ID",
-    msgStgMediaAmlpId:                      "هنگام پیوند دادن یک فایل رسانه‌ای، شناسه آهنگ را به جای قرار دادن در بخش نظرات، در برچسب AMLP_ID خود فایل ذخیره کنید.",
+    lblStgMediaAiid:                        "استفاده از برچسب YAIOL_AIID",
+    msgStgMediaAiid:                        "هنگام پیوند دادن یک فایل رسانه‌ای، شناسه آهنگ را به جای قرار دادن در بخش نظرات، در برچسب YAIOL_AIID خود فایل ذخیره کنید.",
     lblStgMediaRoot:                        "پوشه ریشه رسانه",
     msgStgMediaRoot:                        "مسیرهای ذخیره شده از این پوشه شروع می‌شوند. اگر کتابخانه جابجا شد، به مکان جدیدش اشاره دهید: هیچ چیز بازنویسی نمی‌شود، مسیرها تحت پوشه جدید حل می‌شوند.",
     lblStgMediaPaths:                       "مسیرهای ذخیره‌شده",
@@ -12105,8 +12105,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "O aplikaci",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Použít značku AMLP_ID",
-    msgStgMediaAmlpId:                      "Uložit ID skladby do vlastní značky AMLP_ID souboru, když je mediální soubor propojen, namísto ponechání v komentáři.",
+    lblStgMediaAiid:                        "Použít značku YAIOL_AIID",
+    msgStgMediaAiid:                        "Uložit ID skladby do vlastní značky YAIOL_AIID souboru, když je mediální soubor propojen, namísto ponechání v komentáři.",
     lblStgMediaRoot:                        "Kořenová složka médií",
     msgStgMediaRoot:                        "Uložené cesty začínají z této složky. Pokud se knihovna přesune, nasměrujte ji na nové umístění: nic se nepřepisuje, cesty se vyřeší pod novou složkou.",
     lblStgMediaPaths:                       "Uložené cesty",
@@ -12582,8 +12582,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "O aplikaciji",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Koristi AMLP_ID oznaku",
-    msgStgMediaAmlpId:                      "Pohranite ID pjesme u vlastitu AMLP_ID oznaku datoteke kada je medijska datoteka povezana, umjesto da je ostavite u komentaru.",
+    lblStgMediaAiid:                        "Koristi YAIOL_AIID oznaku",
+    msgStgMediaAiid:                        "Pohranite ID pjesme u vlastitu YAIOL_AIID oznaku datoteke kada je medijska datoteka povezana, umjesto da je ostavite u komentaru.",
     lblStgMediaRoot:                        "Korijenska mapa medija",
     msgStgMediaRoot:                        "Pohranjene putanje počinju iz ove mape. Ako se biblioteka premjesti, usmjerite je na novu lokaciju: ništa se ne prepisuje, putanje se razrješavaju pod novom mapom.",
     lblStgMediaPaths:                       "Pohranjene putanje",
@@ -13059,8 +13059,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Quant a",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Utilitza l'etiqueta AMLP_ID",
-    msgStgMediaAmlpId:                      "Emmagatzema l'ID de la cançó a la pròpia etiqueta AMLP_ID del fitxer quan s'enllaça un fitxer multimèdia, en lloc de deixar-lo al comentari.",
+    lblStgMediaAiid:                        "Utilitza l'etiqueta YAIOL_AIID",
+    msgStgMediaAiid:                        "Emmagatzema l'ID de la cançó a la pròpia etiqueta YAIOL_AIID del fitxer quan s'enllaça un fitxer multimèdia, en lloc de deixar-lo al comentari.",
     lblStgMediaRoot:                        "Carpeta arrel de mèdia",
     msgStgMediaRoot:                        "Les rutes emmagatzemades comencen des d'aquesta carpeta. Si la biblioteca es mou, apunteu-la a la seva nova ubicació: no es reescriu res, les rutes es resolen sota la nova carpeta.",
     lblStgMediaPaths:                       "Rutes emmagatzemades",
@@ -13536,8 +13536,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Tentang",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Gunakan tag AMLP_ID",
-    msgStgMediaAmlpId:                      "Simpan ID lagu di tag AMLP_ID file itu sendiri saat file media ditautkan, alih-alih membiarkannya di komentar.",
+    lblStgMediaAiid:                        "Gunakan tag YAIOL_AIID",
+    msgStgMediaAiid:                        "Simpan ID lagu di tag YAIOL_AIID file itu sendiri saat file media ditautkan, alih-alih membiarkannya di komentar.",
     lblStgMediaRoot:                        "Folder root media",
     msgStgMediaRoot:                        "Jalur yang disimpan dimulai dari folder ini. Jika pustaka berpindah, arahkan ke lokasi barunya: tidak ada yang ditulis ulang, jalur akan diselesaikan di bawah folder baru.",
     lblStgMediaPaths:                       "Jalur tersimpan",
@@ -14013,8 +14013,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Tentang",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Guna tag AMLP_ID",
-    msgStgMediaAmlpId:                      "Simpan ID lagu dalam tag AMLP_ID fail itu sendiri apabila fail media dipautkan, bukannya membiarkannya dalam komen.",
+    lblStgMediaAiid:                        "Guna tag YAIOL_AIID",
+    msgStgMediaAiid:                        "Simpan ID lagu dalam tag YAIOL_AIID fail itu sendiri apabila fail media dipautkan, bukannya membiarkannya dalam komen.",
     lblStgMediaRoot:                        "Folder akar media",
     msgStgMediaRoot:                        "Laluan yang disimpan bermula dari folder ini. Jika pustaka bergerak, halakan ke lokasi baharunya: tiada apa-apa yang ditulis semula, laluan akan diselesaikan di bawah folder baharu.",
     lblStgMediaPaths:                       "Laluan Tersimpan",
@@ -14490,8 +14490,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "О программе",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Использовать тег AMLP_ID",
-    msgStgMediaAmlpId:                      "Сохранять ID песни в собственном теге AMLP_ID файла при связывании медиафайла, вместо того чтобы оставлять его в комментарии.",
+    lblStgMediaAiid:                        "Использовать тег YAIOL_AIID",
+    msgStgMediaAiid:                        "Сохранять ID песни в собственном теге YAIOL_AIID файла при связывании медиафайла, вместо того чтобы оставлять его в комментарии.",
     lblStgMediaRoot:                        "Корневая папка медиа",
     msgStgMediaRoot:                        "Сохраненные пути начинаются из этой папки. Если библиотека перемещается, укажите ее новое расположение: ничего не перезаписывается, пути разрешаются в новой папке.",
     lblStgMediaPaths:                       "Сохранённые пути",
@@ -14967,8 +14967,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "เกี่ยวกับ",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "ใช้แท็ก AMLP_ID",
-    msgStgMediaAmlpId:                      "จัดเก็บ ID เพลงในแท็ก AMLP_ID ของไฟล์เองเมื่อมีการเชื่อมโยงไฟล์สื่อ แทนที่จะปล่อยไว้ในความคิดเห็น",
+    lblStgMediaAiid:                        "ใช้แท็ก YAIOL_AIID",
+    msgStgMediaAiid:                        "จัดเก็บ ID เพลงในแท็ก YAIOL_AIID ของไฟล์เองเมื่อมีการเชื่อมโยงไฟล์สื่อ แทนที่จะปล่อยไว้ในความคิดเห็น",
     lblStgMediaRoot:                        "โฟลเดอร์รากสื่อ",
     msgStgMediaRoot:                        "เส้นทางที่จัดเก็บเริ่มต้นจากโฟลเดอร์นี้ หากไลบรารีย้าย ให้ชี้ไปที่ตำแหน่งใหม่: ไม่มีอะไรถูกเขียนใหม่ เส้นทางจะถูกแก้ไขภายใต้โฟลเดอร์ใหม่เท่านั้น",
     lblStgMediaPaths:                       "เส้นทางที่จัดเก็บ",
@@ -15444,8 +15444,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Մասին",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Օգտագործել AMLP_ID պիտակը",
-    msgStgMediaAmlpId:                      "Երգի ID-ն պահել ֆայլի սեփական AMLP_ID պիտակում, երբ մեդիա ֆայլը կապված է, այլ ոչ թե թողնել մեկնաբանության մեջ։",
+    lblStgMediaAiid:                        "Օգտագործել YAIOL_AIID պիտակը",
+    msgStgMediaAiid:                        "Երգի ID-ն պահել ֆայլի սեփական YAIOL_AIID պիտակում, երբ մեդիա ֆայլը կապված է, այլ ոչ թե թողնել մեկնաբանության մեջ։",
     lblStgMediaRoot:                        "Մեդիա արմատական թղթապանակ",
     msgStgMediaRoot:                        "Պահված ուղիները սկսվում են այս թղթապանակից։ Եթե գրադարանը տեղափոխվում է, նշեք դրա նոր տեղը. ոչինչ չի վերագրվում, ուղիները լուծվում են նոր թղթապանակի տակ։",
     lblStgMediaPaths:                       "Պահված ուղիներ",
@@ -15921,8 +15921,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Относно",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Използвай AMLP_ID таг",
-    msgStgMediaAmlpId:                      "Съхранявайте ID на песента в собствения AMLP_ID таг на файла, когато медиен файл е свързан, вместо да го оставяте в коментара.",
+    lblStgMediaAiid:                        "Използвай YAIOL_AIID таг",
+    msgStgMediaAiid:                        "Съхранявайте ID на песента в собствения YAIOL_AIID таг на файла, когато медиен файл е свързан, вместо да го оставяте в коментара.",
     lblStgMediaRoot:                        "Коренова папка за медия",
     msgStgMediaRoot:                        "Запазените пътища започват от тази папка. Ако библиотеката се премести, посочете новото й местоположение: нищо не се презаписва, пътищата се разрешават под новата папка.",
     lblStgMediaPaths:                       "Съхранени пътища",
@@ -16398,8 +16398,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Acerca de",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Usar etiqueta AMLP_ID",
-    msgStgMediaAmlpId:                      "Almacenar o ID da canción na propia etiqueta AMLP_ID do ficheiro cando se vincula un ficheiro multimedia, en lugar de deixalo no comentario.",
+    lblStgMediaAiid:                        "Usar etiqueta YAIOL_AIID",
+    msgStgMediaAiid:                        "Almacenar o ID da canción na propia etiqueta YAIOL_AIID do ficheiro cando se vincula un ficheiro multimedia, en lugar de deixalo no comentario.",
     lblStgMediaRoot:                        "Cartafol raíz de multimedia",
     msgStgMediaRoot:                        "As rutas almacenadas comezan desde este cartafol. Se a biblioteca se move, apunte á súa nova localización: nada se reescribe, as rutas resólvense baixo o novo cartafol.",
     lblStgMediaPaths:                       "Rutas almacenadas",
@@ -16875,8 +16875,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Névjegy",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID címke használata",
-    msgStgMediaAmlpId:                      "A dal azonosítóját a fájl saját AMLP_ID címkéjében tárolja, amikor egy médiafájl hivatkozva van, ahelyett, hogy a megjegyzésben hagyná.",
+    lblStgMediaAiid:                        "YAIOL_AIID címke használata",
+    msgStgMediaAiid:                        "A dal azonosítóját a fájl saját YAIOL_AIID címkéjében tárolja, amikor egy médiafájl hivatkozva van, ahelyett, hogy a megjegyzésben hagyná.",
     lblStgMediaRoot:                        "Média gyökér mappa",
     msgStgMediaRoot:                        "A tárolt útvonalak ebből a mappából indulnak. Ha a könyvtár áthelyezésre kerül, mutasson az új helyére: semmi sem íródik felül, az útvonalak feloldódnak az új mappa alatt.",
     lblStgMediaPaths:                       "Tárolt útvonalak",
@@ -17352,8 +17352,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Apie",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Naudoti AMLP_ID žymę",
-    msgStgMediaAmlpId:                      "Išsaugoti dainos ID paties failo AMLP_ID žymoje, kai medijos failas yra susietas, užuot palikus jį komentare.",
+    lblStgMediaAiid:                        "Naudoti YAIOL_AIID žymę",
+    msgStgMediaAiid:                        "Išsaugoti dainos ID paties failo YAIOL_AIID žymoje, kai medijos failas yra susietas, užuot palikus jį komentare.",
     lblStgMediaRoot:                        "Medijos šakninis aplankas",
     msgStgMediaRoot:                        "Išsaugoti keliai prasideda nuo šio aplanko. Jei biblioteka perkeliama, nurodykite naują vietą: niekas neperrašoma, keliai išsprendžiami naujame aplanke.",
     lblStgMediaPaths:                       "Išsaugoti keliai",
@@ -17829,8 +17829,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "За нас",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Користи AMLP_ID ознака",
-    msgStgMediaAmlpId:                      "Зачувајте го ID-то на песната во сопствената AMLP_ID ознака на датотеката кога медиумска датотека е поврзана, наместо да го оставите во коментарот.",
+    lblStgMediaAiid:                        "Користи YAIOL_AIID ознака",
+    msgStgMediaAiid:                        "Зачувајте го ID-то на песната во сопствената YAIOL_AIID ознака на датотеката кога медиумска датотека е поврзана, наместо да го оставите во коментарот.",
     lblStgMediaRoot:                        "Коренска папка за медиуми",
     msgStgMediaRoot:                        "Зачуваните патеки започнуваат од оваа папка. Ако библиотеката се премести, посочете ја на нејзината нова локација: ништо не се препишува, патеките се решаваат под новата папка.",
     lblStgMediaPaths:                       "Зачувани патеки",
@@ -18306,8 +18306,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "О апликацији",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Користи AMLP_ID ознаку",
-    msgStgMediaAmlpId:                      "Сачувајте ID песме у сопственој AMLP_ID ознаци датотеке када је медијска датотека повезана, уместо да је остављате у коментару.",
+    lblStgMediaAiid:                        "Користи YAIOL_AIID ознаку",
+    msgStgMediaAiid:                        "Сачувајте ID песме у сопственој YAIOL_AIID ознаци датотеке када је медијска датотека повезана, уместо да је остављате у коментару.",
     lblStgMediaRoot:                        "Коренски фолдер медија",
     msgStgMediaRoot:                        "Сачуване путање почињу из ове фасцикле. Ако се библиотека премести, усмерите је на нову локацију: ништа се не преписује, путање се разрешавају под новом фасциклом.",
     lblStgMediaPaths:                       "Сачуване путање",
@@ -18783,8 +18783,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "O aplikácii",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Použiť značku AMLP_ID",
-    msgStgMediaAmlpId:                      "Uložiť ID skladby do vlastnej značky AMLP_ID súboru, keď je mediálny súbor prepojený, namiesto ponechania v komentári.",
+    lblStgMediaAiid:                        "Použiť značku YAIOL_AIID",
+    msgStgMediaAiid:                        "Uložiť ID skladby do vlastnej značky YAIOL_AIID súboru, keď je mediálny súbor prepojený, namiesto ponechania v komentári.",
     lblStgMediaRoot:                        "Koreňový priečinok médií",
     msgStgMediaRoot:                        "Uložené cesty začínajú z tohto priečinka. Ak sa knižnica presunie, nasmerujte ju na nové umiestnenie: nič sa neprepisuje, cesty sa vyriešia pod novým priečinkom.",
     lblStgMediaPaths:                       "Uložené cesty",
@@ -19260,8 +19260,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "O aplikaciji",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Uporabi oznako AMLP_ID",
-    msgStgMediaAmlpId:                      "Shrani ID pesmi v lastno oznako AMLP_ID datoteke, ko je medijska datoteka povezana, namesto da jo pustite v komentarju.",
+    lblStgMediaAiid:                        "Uporabi oznako YAIOL_AIID",
+    msgStgMediaAiid:                        "Shrani ID pesmi v lastno oznako YAIOL_AIID datoteke, ko je medijska datoteka povezana, namesto da jo pustite v komentarju.",
     lblStgMediaRoot:                        "Korenska mapa medijev",
     msgStgMediaRoot:                        "Shranjene poti se začnejo iz te mape. Če se knjižnica premakne, jo usmerite na novo lokacijo: nič se ne prepiše, poti se razrešijo pod novo mapo.",
     lblStgMediaPaths:                       "Shranjene poti",
@@ -19737,8 +19737,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "பற்றி",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID குறிச்சொல்லைப் பயன்படுத்து",
-    msgStgMediaAmlpId:                      "ஒரு மீடியா கோப்பு இணைக்கப்படும்போது, பாடல் ஐடியை கருத்துப் பகுதியில் விடாமல், கோப்பின் சொந்த AMLP_ID குறிச்சொல்லில் சேமிக்கவும்.",
+    lblStgMediaAiid:                        "YAIOL_AIID குறிச்சொல்லைப் பயன்படுத்து",
+    msgStgMediaAiid:                        "ஒரு மீடியா கோப்பு இணைக்கப்படும்போது, பாடல் ஐடியை கருத்துப் பகுதியில் விடாமல், கோப்பின் சொந்த YAIOL_AIID குறிச்சொல்லில் சேமிக்கவும்.",
     lblStgMediaRoot:                        "ஊடகத்தின் அடிப்படை கோப்புறை",
     msgStgMediaRoot:                        "சேமிக்கப்பட்ட பாதைகள் இந்த கோப்புறையிலிருந்து தொடங்குகின்றன. நூலகம் நகர்ந்தால், அதை அதன் புதிய இடத்திற்கு சுட்டிக்காட்டவும்: எதுவும் மீண்டும் எழுதப்படாது, பாதைகள் புதிய கோப்புறையின் கீழ் தீர்க்கப்படும்.",
     lblStgMediaPaths:                       "சேமிக்கப்பட்ட பாதைகள்",
@@ -20214,8 +20214,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "के बारे में",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID टैग का उपयोग करें",
-    msgStgMediaAmlpId:                      "जब कोई मीडिया फ़ाइल लिंक की जाती है, तो गाने की आईडी को टिप्पणी में छोड़ने के बजाय फ़ाइल के अपने AMLP_ID टैग में संग्रहीत करें।",
+    lblStgMediaAiid:                        "YAIOL_AIID टैग का उपयोग करें",
+    msgStgMediaAiid:                        "जब कोई मीडिया फ़ाइल लिंक की जाती है, तो गाने की आईडी को टिप्पणी में छोड़ने के बजाय फ़ाइल के अपने YAIOL_AIID टैग में संग्रहीत करें।",
     lblStgMediaRoot:                        "मीडिया रूट फ़ोल्डर",
     msgStgMediaRoot:                        "संग्रहीत पथ इस फ़ोल्डर से शुरू होते हैं। यदि लाइब्रेरी स्थानांतरित होती है, तो इसे उसके नए स्थान पर इंगित करें: कुछ भी फिर से नहीं लिखा जाता है, पथ नए फ़ोल्डर के तहत हल हो जाते हैं।",
     lblStgMediaPaths:                       "संग्रहीत पथ",
@@ -20691,8 +20691,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "সম্পর্কে",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID ট্যাগ ব্যবহার করুন",
-    msgStgMediaAmlpId:                      "যখন একটি মিডিয়া ফাইল লিঙ্ক করা হয়, তখন গানের আইডি মন্তব্য বিভাগে না রেখে ফাইলের নিজস্ব AMLP_ID ট্যাগে সংরক্ষণ করুন।",
+    lblStgMediaAiid:                        "YAIOL_AIID ট্যাগ ব্যবহার করুন",
+    msgStgMediaAiid:                        "যখন একটি মিডিয়া ফাইল লিঙ্ক করা হয়, তখন গানের আইডি মন্তব্য বিভাগে না রেখে ফাইলের নিজস্ব YAIOL_AIID ট্যাগে সংরক্ষণ করুন।",
     lblStgMediaRoot:                        "মিডিয়া রুট ফোল্ডার",
     msgStgMediaRoot:                        "সংরক্ষিত পাথ এই ফোল্ডার থেকে শুরু হয়। যদি লাইব্রেরি স্থানান্তরিত হয়, তবে এটিকে তার নতুন অবস্থানে নির্দেশ করুন: কিছুই পুনরায় লেখা হয় না, পাথগুলি কেবল নতুন ফোল্ডারের অধীনে সমাধান হয়।",
     lblStgMediaPaths:                       "সংরক্ষিত পাথ",
@@ -21168,8 +21168,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "بارے میں",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID ٹیگ استعمال کریں",
-    msgStgMediaAmlpId:                      "جب کوئی میڈیا فائل منسلک کی جاتی ہے، تو گانے کی ID کو تبصرے میں چھوڑنے کے بجائے فائل کے اپنے AMLP_ID ٹیگ میں محفوظ کریں۔",
+    lblStgMediaAiid:                        "YAIOL_AIID ٹیگ استعمال کریں",
+    msgStgMediaAiid:                        "جب کوئی میڈیا فائل منسلک کی جاتی ہے، تو گانے کی ID کو تبصرے میں چھوڑنے کے بجائے فائل کے اپنے YAIOL_AIID ٹیگ میں محفوظ کریں۔",
     lblStgMediaRoot:                        "میڈیا روٹ فولڈر",
     msgStgMediaRoot:                        "محفوظ کردہ راستے اس فولڈر سے شروع ہوتے ہیں۔ اگر لائبریری منتقل ہوتی ہے، تو اسے اس کے نئے مقام پر اشارہ کریں: کچھ بھی دوبارہ نہیں لکھا جاتا، راستے نئے فولڈر کے تحت حل ہو جاتے ہیں۔",
     lblStgMediaPaths:                       "محفوظ راستے",
@@ -21645,8 +21645,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Kuhusu",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Tumia lebo ya AMLP_ID",
-    msgStgMediaAmlpId:                      "Hifadhi kitambulisho cha wimbo katika lebo ya AMLP_ID ya faili yenyewe wakati faili ya media imeunganishwa, badala ya kuiacha kwenye maoni.",
+    lblStgMediaAiid:                        "Tumia lebo ya YAIOL_AIID",
+    msgStgMediaAiid:                        "Hifadhi kitambulisho cha wimbo katika lebo ya YAIOL_AIID ya faili yenyewe wakati faili ya media imeunganishwa, badala ya kuiacha kwenye maoni.",
     lblStgMediaRoot:                        "Folda kuu ya media",
     msgStgMediaRoot:                        "Njia zilizohifadhiwa huanza kutoka folda hii. Ikiwa maktaba itahamishwa, elekeza hii kwenye eneo lake jipya: hakuna kinachoandikwa upya, njia hutatuliwa tu chini ya folda mpya.",
     lblStgMediaPaths:                       "Njia Zilizohifadhiwa",
@@ -22122,8 +22122,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "ਬਾਰੇ",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID ਟੈਗ ਵਰਤੋ",
-    msgStgMediaAmlpId:                      "ਜਦੋਂ ਕੋਈ ਮੀਡੀਆ ਫਾਈਲ ਲਿੰਕ ਕੀਤੀ ਜਾਂਦੀ ਹੈ, ਤਾਂ ਗੀਤ ਦੀ ID ਨੂੰ ਟਿੱਪਣੀ ਵਿੱਚ ਛੱਡਣ ਦੀ ਬਜਾਏ ਫਾਈਲ ਦੇ ਆਪਣੇ AMLP_ID ਟੈਗ ਵਿੱਚ ਸਟੋਰ ਕਰੋ।",
+    lblStgMediaAiid:                        "YAIOL_AIID ਟੈਗ ਵਰਤੋ",
+    msgStgMediaAiid:                        "ਜਦੋਂ ਕੋਈ ਮੀਡੀਆ ਫਾਈਲ ਲਿੰਕ ਕੀਤੀ ਜਾਂਦੀ ਹੈ, ਤਾਂ ਗੀਤ ਦੀ ID ਨੂੰ ਟਿੱਪਣੀ ਵਿੱਚ ਛੱਡਣ ਦੀ ਬਜਾਏ ਫਾਈਲ ਦੇ ਆਪਣੇ YAIOL_AIID ਟੈਗ ਵਿੱਚ ਸਟੋਰ ਕਰੋ।",
     lblStgMediaRoot:                        "ਮੀਡੀਆ ਰੂਟ ਫੋਲਡਰ",
     msgStgMediaRoot:                        "ਸਟੋਰ ਕੀਤੇ ਪਾਥ ਇਸ ਫੋਲਡਰ ਤੋਂ ਸ਼ੁਰੂ ਹੁੰਦੇ ਹਨ। ਜੇਕਰ ਲਾਇਬ੍ਰੇਰੀ ਚਲਦੀ ਹੈ, ਤਾਂ ਇਸਨੂੰ ਇਸਦੇ ਨਵੇਂ ਸਥਾਨ 'ਤੇ ਪੁਆਇੰਟ ਕਰੋ: ਕੁਝ ਵੀ ਦੁਬਾਰਾ ਨਹੀਂ ਲਿਖਿਆ ਜਾਂਦਾ, ਪਾਥ ਸਿਰਫ਼ ਨਵੇਂ ਫੋਲਡਰ ਦੇ ਅਧੀਨ ਹੱਲ ਹੋ ਜਾਂਦੇ ਹਨ।",
     lblStgMediaPaths:                       "ਸਟੋਰ ਕੀਤੇ ਪਾਥ",
@@ -22599,8 +22599,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Game da",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Yi amfani da tag ɗin AMLP_ID",
-    msgStgMediaAmlpId:                      "Ajiye ID ɗin waƙar a cikin tag ɗin AMLP_ID na fayil ɗin lokacin da aka haɗa fayil ɗin kafofin watsa labarai, maimakon barin shi a cikin sharhi.",
+    lblStgMediaAiid:                        "Yi amfani da tag ɗin YAIOL_AIID",
+    msgStgMediaAiid:                        "Ajiye ID ɗin waƙar a cikin tag ɗin YAIOL_AIID na fayil ɗin lokacin da aka haɗa fayil ɗin kafofin watsa labarai, maimakon barin shi a cikin sharhi.",
     lblStgMediaRoot:                        "Babban fayil na kafofin watsa labarai",
     msgStgMediaRoot:                        "Hanyoyin da aka adana suna farawa daga wannan babban fayil. Idan ɗakin karatun ya motsa, nuna wannan zuwa sabon wurinsa: ba a sake rubuta komai ba, hanyoyin suna warwarewa kawai a ƙarƙashin sabon babban fayil.",
     lblStgMediaPaths:                       "Hanyoyin da aka Ajiye",
@@ -23076,8 +23076,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Nípa",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Lo tag AMLP_ID",
-    msgStgMediaAmlpId:                      "Fi ID orin pamọ sinu tag AMLP_ID ti faili funrarẹ nigbati faili media ba sopọ, dipo ki o fi silẹ ninu asọye.",
+    lblStgMediaAiid:                        "Lo tag YAIOL_AIID",
+    msgStgMediaAiid:                        "Fi ID orin pamọ sinu tag YAIOL_AIID ti faili funrarẹ nigbati faili media ba sopọ, dipo ki o fi silẹ ninu asọye.",
     lblStgMediaRoot:                        "Folda gbongbo media",
     msgStgMediaRoot:                        "Awọn ọna ti o fipamọ bẹrẹ lati folda yii. Ti ile-ikawe ba gbe, tọka eyi si ipo tuntun rẹ: ko si ohun ti a tun kọ, awọn ọna kan yanju labẹ folda tuntun.",
     lblStgMediaPaths:                       "Awọn ipa ọna ti a fipamọ",
@@ -23553,8 +23553,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "గురించి",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID ట్యాగ్‌ని ఉపయోగించండి",
-    msgStgMediaAmlpId:                      "మీడియా ఫైల్ లింక్ చేయబడినప్పుడు, పాట IDని వ్యాఖ్యలో వదిలివేయకుండా, ఫైల్ యొక్క స్వంత AMLP_ID ట్యాగ్‌లో నిల్వ చేయండి.",
+    lblStgMediaAiid:                        "YAIOL_AIID ట్యాగ్‌ని ఉపయోగించండి",
+    msgStgMediaAiid:                        "మీడియా ఫైల్ లింక్ చేయబడినప్పుడు, పాట IDని వ్యాఖ్యలో వదిలివేయకుండా, ఫైల్ యొక్క స్వంత YAIOL_AIID ట్యాగ్‌లో నిల్వ చేయండి.",
     lblStgMediaRoot:                        "మీడియా రూట్ ఫోల్డర్",
     msgStgMediaRoot:                        "నిల్వ చేయబడిన మార్గాలు ఈ ఫోల్డర్ నుండి ప్రారంభమవుతాయి. లైబ్రరీ మారితే, దాని కొత్త స్థానానికి దీన్ని సూచించండి: ఏదీ తిరిగి వ్రాయబడదు, మార్గాలు కొత్త ఫోల్డర్ కింద పరిష్కరించబడతాయి.",
     lblStgMediaPaths:                       "నిల్వ చేయబడిన మార్గాలు",
@@ -24030,8 +24030,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "विषयी",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "AMLP_ID टॅग वापरा",
-    msgStgMediaAmlpId:                      "जेव्हा मीडिया फाइल लिंक केली जाते, तेव्हा गाण्याची आयडी टिप्पणीमध्ये ठेवण्याऐवजी फाइलच्या स्वतःच्या AMLP_ID टॅगमध्ये साठवा.",
+    lblStgMediaAiid:                        "YAIOL_AIID टॅग वापरा",
+    msgStgMediaAiid:                        "जेव्हा मीडिया फाइल लिंक केली जाते, तेव्हा गाण्याची आयडी टिप्पणीमध्ये ठेवण्याऐवजी फाइलच्या स्वतःच्या YAIOL_AIID टॅगमध्ये साठवा.",
     lblStgMediaRoot:                        "मीडिया रूट फोल्डर",
     msgStgMediaRoot:                        "साठवलेले मार्ग या फोल्डरमधून सुरू होतात. जर लायब्ररी हलवली, तर याला तिच्या नवीन स्थानावर निर्देशित करा: काहीही पुन्हा लिहिले जात नाही, मार्ग फक्त नवीन फोल्डरखाली सोडवले जातात.",
     lblStgMediaPaths:                       "संग्रहित मार्ग",
@@ -24507,8 +24507,8 @@ const TRANSLATIONS = {
     tabStgAbout:                            "Tungkol sa",
 
     // Prefix:StgMedia - Scope:settings view (Media tab)
-    lblStgMediaAmlpId:                      "Gamitin ang AMLP_ID tag",
-    msgStgMediaAmlpId:                      "Iimbak ang ID ng kanta sa sariling AMLP_ID tag ng file kapag naka-link ang isang media file, sa halip na iwanan ito sa komento.",
+    lblStgMediaAiid:                        "Gamitin ang YAIOL_AIID tag",
+    msgStgMediaAiid:                        "Iimbak ang ID ng kanta sa sariling YAIOL_AIID tag ng file kapag naka-link ang isang media file, sa halip na iwanan ito sa komento.",
     lblStgMediaRoot:                        "Root folder ng media",
     msgStgMediaRoot:                        "Ang mga nakaimbak na path ay nagsisimula sa folder na ito. Kung lumipat ang library, ituro ito sa bagong lokasyon nito: walang isinusulat muli, ang mga path ay simpleng nalulutas sa ilalim ng bagong folder.",
     lblStgMediaPaths:                       "Mga Naka-imbak na Path",

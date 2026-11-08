@@ -1,38 +1,38 @@
-// ui-ctl-menu.jsx — the ONE canonical dropdown / context menu for every yaiol electron app.
+// uis-ctl-menu.jsx — the ONE canonical dropdown / context menu for every yaiol electron app.
 // A trigger-anchored flyout: a click-away overlay + a themed panel of rows, with optional
 // section labels, dividers, and one level of hover-opened submenus. Every "menu that drops
 // from a toolbar button" (New-document, Export-as, …) uses this so they all look and behave
-// identically. Styling lives in the shared ui-app.css (.menu / .menu-item / .menu-label /
-// .menu-divider / .menu-sub / .menu-flyout).
+// identically. Styling lives in the shared uis-app.css (.menu / .menu-item / .uis-men-label /
+// .uis-men-divider / .uis-men-sub / .menu-flyout).
 //
-// ⚠ The menu MUST render OUTSIDE any .barh-grp/.barv-grp weld — a menu placed inside a weld inherits
-// `.barh-grp > * { height:100% }` and is clipped to the 30px bar (only its first row shows). Put
-// the trigger button in the weld and render <Menu> as a SIBLING, inside a position:relative
+// ⚠ The menu MUST render OUTSIDE any .uis-barh-grp/.uis-barv-grp weld — a menu placed inside a weld inherits
+// `.uis-barh-grp > * { height:100% }` and is clipped to the 30px bar (only its first row shows). Put
+// the trigger button in the weld and render <UisMenu> as a SIBLING, inside a position:relative
 // wrapper AROUND the weld:
 //
 //   <div style={{ position: 'relative' }}>
-//     <div className="barh-grp"><button onClick={() => setOpen(o => !o)}>…</button>…</div>
-//     <Menu open={open} onClose={() => setOpen(false)} title="Create a new">
-//       {items.map(it => <MenuItem key={it.id} label={it.label} onClick={() => pick(it)} />)}
-//     </Menu>
+//     <div className="uis-barh-grp"><button onClick={() => setOpen(o => !o)}>…</button>…</div>
+//     <UisMenu open={open} onClose={() => setOpen(false)} title="Create a new">
+//       {items.map(it => <UisMenuItem key={it.id} label={it.label} onClick={() => pick(it)} />)}
+//     </UisMenu>
 //   </div>
 //
 // Controlled: pass `anchorRef` (a ref on the trigger button) + `open` + `onClose`. The panel PORTALS
-// (via `Popover`), so it is never clipped by a scrolling ancestor and needs no relative wrapper.
-// `align` ('auto' | 'left' | 'right') anchors it to that edge of the trigger. A <MenuItem> runs its
-// onClick then closes; a MenuItem with a `submenu` node becomes a hover-flyout parent. <MenuLabel>
-// is a section sub-label; <MenuDivider> a separator line.
+// (via `UisPopover`), so it is never clipped by a scrolling ancestor and needs no relative wrapper.
+// `align` ('auto' | 'left' | 'right') anchors it to that edge of the trigger. A <UisMenuItem> runs its
+// onClick then closes; a UisMenuItem with a `submenu` node becomes a hover-flyout parent. <UisMenuLabel>
+// is a section sub-label; <UisMenuDivider> a separator line.
 //
 // Distributed into each app's src/lib/ by sync-shared — ⚠ SYNCED FILE, never edit the per-app
 // copy; edit this canonical source and re-sync. Import:
-//   `import { Menu, MenuItem, MenuLabel, MenuDivider } from './lib/ui-ctl-menu';`
+//   `import { UisMenu, UisMenuItem, UisMenuLabel, UisMenuDivider } from './lib/uis-ctl-menu';`
 import React, { createContext, useContext, useState, useRef, useEffect, useId } from 'react';
-import { Popover } from './ui-ctl-popover';
+import { UisPopover } from './uis-ctl-popover';
 
 const NOOP = () => {};
 const MenuCtx = createContext({ close: NOOP, openSub: null, setOpenSub: NOOP });
 
-export function Menu({ anchorRef, open, onClose, title, align = 'auto', children }) {
+export function UisMenu({ anchorRef, open, onClose, title, align = 'auto', children }) {
   // ⚠ CLAUDE: the MENU owns which submenu is open — a single id, not a boolean per row.
   // When each row kept its own `hover` flag, sweeping down a column of parent rows left
   // every flyout on screen at once: leaving a row only SCHEDULED its close while the next
@@ -44,22 +44,22 @@ export function Menu({ anchorRef, open, onClose, title, align = 'auto', children
   useEffect(() => { if (!open) setOpenSub(null); }, [open]);
 
   return (
-    <Popover anchorRef={anchorRef} open={open} onClose={onClose} align={align} ignoreSelector=".menu-flyout">
-      {title && <div className="menu-title">{title}</div>}
+    <UisPopover anchorRef={anchorRef} open={open} onClose={onClose} align={align} ignoreSelector=".menu-flyout">
+      {title && <div className="uis-men-title">{title}</div>}
       <MenuCtx.Provider value={{ close: onClose, openSub, setOpenSub }}>{children}</MenuCtx.Provider>
-    </Popover>
+    </UisPopover>
   );
 }
 
-export function MenuLabel({ children }) {
-  return <div className="menu-label">{children}</div>;
+export function UisMenuLabel({ children }) {
+  return <div className="uis-men-label">{children}</div>;
 }
 
-export function MenuDivider() {
-  return <div className="menu-divider" />;
+export function UisMenuDivider() {
+  return <div className="uis-men-divider" />;
 }
 
-export function MenuItem({ label, onClick, submenu, disabled = false, icon = null }) {
+export function UisMenuItem({ label, onClick, submenu, disabled = false, icon = null }) {
   const { close, openSub, setOpenSub } = useContext(MenuCtx);
   // Hooks stay unconditional — declared before the submenu branch below.
   const id     = useId();
@@ -84,18 +84,18 @@ export function MenuItem({ label, onClick, submenu, disabled = false, icon = nul
   };
 
   // A parent row: no action of its own, opens `submenu` as a flyout while hovered.
-  // ⚠ CLAUDE: the flyout MUST be portalled (via Popover), never an absolutely-positioned
-  // child of the panel. `.pop-surface` sets `overflow-y: auto` to cap tall panels, and an
+  // ⚠ CLAUDE: the flyout MUST be portalled (via UisPopover), never an absolutely-positioned
+  // child of the panel. `.uis-pop-surface` sets `overflow-y: auto` to cap tall panels, and an
   // `overflow` box clips on BOTH axes — so a child at `left: 100%` is invisible the moment
   // the menu is long enough to scroll. That is precisely how submenus were unreachable.
   if (submenu) {
     return (
-      <div className="menu-sub" onMouseEnter={openNow} onMouseLeave={closeSoon}>
-        <div ref={rowRef} className="pop-item menu-item-parent" role="menuitem" aria-haspopup="true">
+      <div className="uis-men-sub" onMouseEnter={openNow} onMouseLeave={closeSoon}>
+        <div ref={rowRef} className="uis-pop-item uis-men-item-parent" role="menuitem" aria-haspopup="true">
           <span>{label}</span>
-          <span className="menu-caret" aria-hidden="true">▸</span>
+          <span className="uis-men-caret" aria-hidden="true">▸</span>
         </div>
-        <Popover anchorRef={rowRef} open={hover} onClose={() => setOpenSub(null)}
+        <UisPopover anchorRef={rowRef} open={hover} onClose={() => setOpenSub(null)}
           placement="side" className="menu-flyout"
           onMouseEnter={openNow} onMouseLeave={closeSoon}>
           {/* ⚠ CLAUDE: the flyout's own rows share this context, so they must NOT be able to
@@ -104,7 +104,7 @@ export function MenuItem({ label, onClick, submenu, disabled = false, icon = nul
           <MenuCtx.Provider value={{ close, openSub: null, setOpenSub: NOOP }}>
             <div role="menu">{submenu}</div>
           </MenuCtx.Provider>
-        </Popover>
+        </UisPopover>
       </div>
     );
   }
@@ -113,7 +113,7 @@ export function MenuItem({ label, onClick, submenu, disabled = false, icon = nul
   // Hovering it also dismisses any open flyout — moving onto a plain row is a clear
   // "not going to the submenu", so it closes at once rather than on the delay.
   return (
-    <button type="button" className="pop-item" role="menuitem" disabled={disabled}
+    <button type="button" className="uis-pop-item" role="menuitem" disabled={disabled}
       onMouseEnter={() => setOpenSub(null)}
       onClick={() => { close(); onClick?.(); }}>
       {icon}<span>{label}</span>

@@ -1,6 +1,6 @@
 // flac-tags.mjs — read and write FLAC Vorbis-comment fields, with no external tool.
 //
-// WHY THIS EXISTS: the app needs to write exactly one tag (AMLP_ID) and clear
+// WHY THIS EXISTS: the app needs to write exactly one tag (YAIOL_AIID) and clear
 // another (COMMENT). Shelling out to ffmpeg for that means either requiring the
 // user to install it, or shipping ~80 MB of GPL video machinery inside an MIT
 // app. Rewriting one metadata block is a few hundred bytes of well-specified

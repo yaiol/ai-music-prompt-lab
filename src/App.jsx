@@ -21,15 +21,14 @@ import {
 } from "lucide-react";
 import pkg from '../package.json';
 import { getUrl } from './lib/site-url';
-import { NewsLoader } from './lib/ui-news-loader';
-import { NewsSetting } from './lib/ui-news-setting';
-import { AppHeader } from './lib/ui-header';
-import { GithubIcon } from './lib/ui-icons';
-import { SettingsView } from './lib/ui-settings';
+import { UisNewsLoader } from './lib/uis-news-loader';
+import { UisAppHeader } from './lib/uis-header';
+import { UisIcoGithub } from './lib/uis-icons';
+import { UisStgView } from './lib/uis-stg-view';
 // Custom icons are EDITABLE .svg FILES in src/assets - `?react` (vite-plugin-svgr) turns one into
 // a real React component at build time, so the file stays open in Inkscape and nothing is pasted
 // into a .jsx. ⚠ CLAUDE: `?react` for EVERY icon, never <img> - it is what lets `currentColor`
-// inherit the button's colour AND what puts the icon under the catalog's `.btn > svg` sizing.
+// inherit the button's colour AND what puts the icon under the catalog's `.uis-btn > svg` sizing.
 // Only genuinely custom marks belong here; a lucide glyph is imported from lucide-react.
 // The mark of the app the "open in LRC Editor" button hands off to.
 import LrcEditorIcon from './assets/icon-yaiol-lrc-editor.svg?react';
@@ -37,15 +36,17 @@ import LrcEditorIcon from './assets/icon-yaiol-lrc-editor.svg?react';
 import CopyTitle     from './assets/icon-yaiol-copy-title.svg?react';
 import CopyStyle     from './assets/icon-yaiol-copy-style.svg?react';
 import CopyLyrics    from './assets/icon-yaiol-copy-lyrics.svg?react';
-import { Splitter } from './lib/ui-ctl-splitter';
-import { NumberField } from './lib/ui-ctl-numberfield';
-import { ColorPicker } from './lib/ui-ctl-colorpicker';
-import { DatePicker } from './lib/ui-ctl-datepicker';
-import { CollapseToggle } from './lib/ui-ctl-collapsetoggle';
-import { Menu, MenuItem } from './lib/ui-ctl-menu';
-import { Combobox } from './lib/ui-ctl-combobox';
-import { useToast } from './lib/ui-fx-toast';
-import { Popover } from './lib/ui-ctl-popover';
+import { UisPnlSplitter } from './lib/uis-pnl-splitter';
+import { UisNum } from './lib/uis-num';
+import { UisPkrColor } from './lib/uis-pkr-color';
+import { UisPkrDate } from './lib/uis-pkr-date';
+import { UisPnlToggle } from './lib/uis-pnl-toggle';
+import { UisBtnCopy } from './lib/uis-btn-copy';
+import { UisFldValue } from './lib/uis-fld-value';
+import { UisMenu, UisMenuItem } from './lib/uis-ctl-menu';
+import { UisCboStandard } from './lib/uis-cbo-standard';
+import { LbsHokToast } from './lib/uis-fx-toast';
+import { UisPopover } from './lib/uis-ctl-popover';
 // Storage namespace - single source: package.json `storagePrefix`. Never hardcode a prefix.
 const STORAGE_PREFIX = pkg.storagePrefix;
 
@@ -81,7 +82,7 @@ const UIDLG = {
 };
 
 // Color-picker default = the live theme accent, read from CSS (single source of truth).
-const accentDefault = () => getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
+const accentDefault = () => getComputedStyle(document.documentElement).getPropertyValue('--uis-accent').trim();
 
 const TYPE_LABEL_KEYS = {
   note:     "lblStgColorNote",
@@ -583,9 +584,9 @@ export default function App() {
   const [rootDropOver, setRootDropOver] = useState(false);
   const [deleteProjectConfirm, setDeleteProjectConfirm] = useState(null);
   const [deleteProjectCards, setDeleteProjectCards]     = useState(false);
-  // Off by default on purpose: writing AMLP_ID modifies the linked master file,
+  // Off by default on purpose: writing YAIOL_AIID modifies the linked master file,
   // so it stays opt-in rather than something a fresh install starts doing.
-  const [useAmlpIdTag, setUseAmlpIdTag] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-use-amlp-id`) === "1");
+  const [useAiidTag, setUseAiidTag] = useState(() => localStorage.getItem(`${STORAGE_PREFIX}-use-yaiol-aiid`) === "1");
   const [importFolderPending, setImportFolderPending] = useState(null); // { projectId, path }
   const [sidebarOpen, setSidebarOpen]     = useState(true);
   const [sidebarWidth, setSidebarWidth]   = useState(() => parseInt(localStorage.getItem(`${STORAGE_PREFIX}-sidebar-width`) || "220"));
@@ -737,7 +738,7 @@ export default function App() {
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-proj-sort`, projectSort); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-proj-sort`]: projectSort }) }); }, [projectSort]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-proj-sort-dir`, projectSortDir); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-proj-sort-dir`]: projectSortDir }) }); }, [projectSortDir]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-view`, viewMode); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-view`]: viewMode }) }); }, [viewMode]);
-  useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-use-amlp-id`, useAmlpIdTag ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-use-amlp-id`]: useAmlpIdTag ? "1" : "0" }) }); }, [useAmlpIdTag]);
+  useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-use-yaiol-aiid`, useAiidTag ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-use-yaiol-aiid`]: useAiidTag ? "1" : "0" }) }); }, [useAiidTag]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort-rename-media-default`, renameMediaOnSortDefault ? "1" : "0"); setRenameMediaOnSort(renameMediaOnSortDefault); }, [renameMediaOnSortDefault]);
   useEffect(() => { document.documentElement.setAttribute("data-theme", themeName); localStorage.setItem(`${STORAGE_PREFIX}-theme`, themeName); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-theme`]: themeName }) }); }, [themeName]);
   useEffect(() => { localStorage.setItem(`${STORAGE_PREFIX}-sort`, sortBy); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-sort`]: sortBy }) }); }, [sortBy]);
@@ -855,7 +856,7 @@ export default function App() {
 
   // Shared toast — the pill lifts clear of the player bar when one is open. Errors still pass
   // a longer ms at the call site so they can be read.
-  const { showToast, toast } = useToast({ bottom: playerMedia ? 84 : undefined });
+  const { showToast, toast } = LbsHokToast({ bottom: playerMedia ? 84 : undefined });
 
   const isGlobalSearch = search.trim().length > 0;
   const parseSearch = (raw) => {
@@ -1738,15 +1739,15 @@ export default function App() {
 
   if (apiError) {
     return (
-      <div className="empty" style={{ ...s.root, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20, padding: 40 }}>
+      <div className="uis-emp" style={{ ...s.root, display: "flex", alignItems: "center", justifyContent: "center", flexDirection: "column", gap: 20, padding: 40 }}>
         <style>{buildCss()}</style>
         <Plug />
-        <h2 style={{ margin: 0, color: 'var(--text)' }}>{t("msgAppCannotReach")}</h2>
-        <p style={{ margin: 0, color: 'var(--text-mute)', textAlign: "center", maxWidth: 400, lineHeight: 1.6 }}>
-          <code style={{ background: 'var(--bg-elev)', padding: "2px 8px", borderRadius: 4, color: 'var(--accent)' }}>cd mpl-server && npm start</code>
+        <h2 style={{ margin: 0, color: 'var(--uis-text)' }}>{t("msgAppCannotReach")}</h2>
+        <p style={{ margin: 0, color: 'var(--uis-text-mute)', textAlign: "center", maxWidth: 400, lineHeight: 1.6 }}>
+          <code style={{ background: 'var(--uis-bg-elev)', padding: "2px 8px", borderRadius: 4, color: 'var(--uis-accent)' }}>cd mpl-server && npm start</code>
         </p>
-        <p className="hint">{apiError}</p>
-        <button className="btn primary" onClick={() => { setApiError(null); setLoading(true); Promise.all([apiFetch("/cards"), apiFetch("/projects")]).then(([p,pr]) => { setCards(p); setProjects(pr); setLoading(false); }).catch((e) => { setApiError(e.message); setLoading(false); }); }}>
+        <p className="uis-hnt">{apiError}</p>
+        <button className="uis-btn primary" onClick={() => { setApiError(null); setLoading(true); Promise.all([apiFetch("/cards"), apiFetch("/projects")]).then(([p,pr]) => { setCards(p); setProjects(pr); setLoading(false); }).catch((e) => { setApiError(e.message); setLoading(false); }); }}>
           <RotateCcw style={{ marginRight: 6 }} />{t("btnAppRetry")}
         </button>
       </div>
@@ -1759,49 +1760,49 @@ export default function App() {
       (p.linkedCards || []).some(id => idsToDelete.includes(id))
     );
 
-  // Tag / selection strip — rendered BELOW the gradient identity bar via AppHeader's
-  // subBar slot (the .barh-subbar), NOT inside the header row. See GUI Standard:
+  // Tag / selection strip — rendered BELOW the gradient identity bar via UisAppHeader's
+  // subBar slot (the .uis-barh-subbar), NOT inside the header row. See GUI Standard:
   // "header buttons → separator → optional sub-bar".
   // ⚠ CLAUDE: pass null (not an empty fragment) when the sub-bar has no content - no tags to
-  // show AND nothing selected. AppHeader's guard is `subBar != null`, so an always-truthy `<>…</>`
-  // renders an empty .barh-subbar band (the "empty strip on an untagged project" bug). subBar
+  // show AND nothing selected. UisAppHeader's guard is `subBar != null`, so an always-truthy `<>…</>`
+  // renders an empty .uis-barh-subbar band (the "empty strip on an untagged project" bug). subBar
   // must be null when empty. This is the shared sub-bar rule (mirror it wherever a subBar is passed).
   const tagBar = (allTags.length === 0 && selectedIds.length === 0) ? null : (
     <>
       {/* Delete the selected cards — first in the strip, present only while cards are selected. */}
       {selectedIds.length > 0 && (
-        <button className="btn icon small subtle" onClick={() => { setTagTarget({ ids: selectedIds, scope: `${selectedIds.length} ${t("lblHdrSelected")}` }); setBulkTagInput(""); setBulkTagOpen(true); }} title={t("tipSbrTag")} aria-label={t("tipSbrTag")}><Tag /></button>
+        <button className="uis-btn ico small subtle" onClick={() => { setTagTarget({ ids: selectedIds, scope: `${selectedIds.length} ${t("lblHdrSelected")}` }); setBulkTagInput(""); setBulkTagOpen(true); }} title={t("tipSbrTag")} aria-label={t("tipSbrTag")}><Tag /></button>
       )}
       {selectedIds.length > 0 && (
-        <button className="btn icon small subtle" onClick={() => { setBatchTranslateIds(selectedIds); setBatchTranslateLang(""); setBatchTranslateLangSearch(""); setBatchTranslateOpen(true); }} title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")}><Languages /></button>
+        <button className="uis-btn ico small subtle" onClick={() => { setBatchTranslateIds(selectedIds); setBatchTranslateLang(""); setBatchTranslateLangSearch(""); setBatchTranslateOpen(true); }} title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")}><Languages /></button>
       )}
       {selectedIds.length > 0 && activeProjectIds.length === 1 && (
-        <button className="btn icon small subtle" onClick={() => setUnlinkConfirm(true)} title={t("tipSbrUnlink")} aria-label={t("tipSbrUnlink")}><Unlink /></button>
+        <button className="uis-btn ico small subtle" onClick={() => setUnlinkConfirm(true)} title={t("tipSbrUnlink")} aria-label={t("tipSbrUnlink")}><Unlink /></button>
       )}
       {selectedIds.length > 0 && (
-        <button className="btn icon small subtle" onClick={() => { setMoveEnvMode("cards"); setMoveTargetEnvId(""); setMoveTargetProjectId(""); }} title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")}><FolderUp /></button>
+        <button className="uis-btn ico small subtle" onClick={() => { setMoveEnvMode("cards"); setMoveTargetEnvId(""); setMoveTargetProjectId(""); }} title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")}><FolderUp /></button>
       )}
       {selectedIds.length > 0 && (
-        <button className="btn icon small subtle" onClick={() => setBulkDeleteConfirm(true)} title={t("tipCardDelete")} aria-label={t("tipCardDelete")} style={{ color: "var(--danger)" }}><Trash2 /></button>
+        <button className="uis-btn ico small subtle" onClick={() => setBulkDeleteConfirm(true)} title={t("tipCardDelete")} aria-label={t("tipCardDelete")} style={{ color: "var(--uis-danger)" }}><Trash2 /></button>
       )}
       {allTags.map((tag) => {
         const color = clrSettingsTags[tag] || getTagColor(tag);
         const active = selectedTags.includes(tag);
-        return <button key={tag} onClick={(e) => toggleTag(tag, e)} className={`chip${active ? " on" : ""}`} style={{ "--chip": color }}>{tag}</button>;
+        return <button key={tag} onClick={(e) => toggleTag(tag, e)} className={`uis-chp${active ? " on" : ""}`} style={{ "--chip": color }}>{tag}</button>;
       })}
       {selectedIds.length > 0 && (
         <div style={{ marginLeft: "auto", display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-          <CheckSquare className="icon-inline" color={'var(--accent)'} />
-          <span style={{ fontSize: 12, color: 'var(--accent)', fontWeight: 600 }}>{selectedIds.length} {t("lblHdrSelected")}</span>
-          <button className="chip" onClick={selectAll} style={{ color: 'var(--accent)', borderColor: 'var(--accent)' + "44" }}>{t("btnHdrSelectAll")} ({filtered.length})</button>
-          <button className="chip" onClick={clearSelection}><X className="icon-inline" />{t("btnHdrClearSelection")}</button>
+          <CheckSquare className="uis-ico-inline" color={'var(--uis-accent)'} />
+          <span style={{ fontSize: 12, color: 'var(--uis-accent)', fontWeight: 600 }}>{selectedIds.length} {t("lblHdrSelected")}</span>
+          <button className="uis-chp" onClick={selectAll} style={{ color: 'var(--uis-accent)', borderColor: 'var(--uis-accent)' + "44" }}>{t("btnHdrSelectAll")} ({filtered.length})</button>
+          <button className="uis-chp" onClick={clearSelection}><X className="uis-ico-inline" />{t("btnHdrClearSelection")}</button>
         </div>
       )}
     </>
   );
 
   return (
-    <div className="app-root" style={s.root}
+    <div className="uis-app-root" style={s.root}
       onDragOver={(e) => { if (e.dataTransfer?.types?.includes("Files")) { e.preventDefault(); e.dataTransfer.dropEffect = "copy"; } }}
       onDrop={(e) => {
         const files = [...(e.dataTransfer?.files || [])];
@@ -1829,51 +1830,51 @@ export default function App() {
       <style>{buildCss()}</style>
 
       {/* ── A new version (first) and the yaiol news, in one dialog ── */}
-      <NewsLoader api={API} lang={langKey} t={t} />
+      <UisNewsLoader api={API} lang={langKey} t={t} />
 
       {/* Header */}
-      <AppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD}>
-        <div className="search barh-search" style={{ maxWidth: 300 }}>
-          <span className="search-glyph"><Search /></span>
-          <input className="search-input" placeholder={t("plhHdrSearch")} value={search}
+      <UisAppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD}>
+        <div className="uis-txt-search uis-barh-search" style={{ maxWidth: 300 }}>
+          <span className="uis-txt-search-glyph"><Search /></span>
+          <input className="uis-txt-search-input" placeholder={t("plhHdrSearch")} value={search}
             title={t("tipHdrSearchHelp")}
             onChange={(e) => { setSearch(e.target.value); setSelectedTags([]); }} />
-          {isGlobalSearch && <span style={{ fontSize: 10, color: "var(--accent)", whiteSpace: "nowrap", pointerEvents: "none" }}>{filtered.length} result{filtered.length !== 1 ? "s" : ""}</span>}
-          {search && <button className="search-clear" onClick={() => setSearch("")}><X className="icon-inline" /></button>}
+          {isGlobalSearch && <span style={{ fontSize: 10, color: "var(--uis-accent)", whiteSpace: "nowrap", pointerEvents: "none" }}>{filtered.length} result{filtered.length !== 1 ? "s" : ""}</span>}
+          {search && <button className="uis-txt-search-clear" onClick={() => setSearch("")}><X className="uis-ico-inline" /></button>}
         </div>
-        <span className="count" style={{ background: 'var(--bg-row)', color: 'var(--text-mute)', fontSize: 12, padding: "2px 8px" }}>{filtered.length}</span>
-        <div className="barh-grp">
-          {/* ⚠ CLAUDE: NO wrapper div around these — they must be DIRECT children of .barh-grp
-              or the pill-collapse (border/radius/dividers, all `.barh-grp > *`) can't reach them and
+        <span className="uis-count" style={{ background: 'var(--uis-bg-row)', color: 'var(--uis-text-mute)', fontSize: 12, padding: "2px 8px" }}>{filtered.length}</span>
+        <div className="uis-barh-grp">
+          {/* ⚠ CLAUDE: NO wrapper div around these — they must be DIRECT children of .uis-barh-grp
+              or the pill-collapse (border/radius/dividers, all `.uis-barh-grp > *`) can't reach them and
               each renders as a separate rounded button. The dim-when-not-applicable state rides on each
-              button's `disabled` (`.btn.icon:disabled`), not a wrapper. */}
+              button's `disabled` (`.uis-btn.ico:disabled`), not a wrapper. */}
           {[["note", types.note], ["music", types.music], ["vocal", types.vocal], ["song", types.SongStateUndefined]].map(([key, typ]) => {
             const active = activeType === key;
             const { Icon } = typ;
             return (
-              <button key={key} className={`btn icon${active ? " active" : ""}`} onClick={() => toggleType(key)} title={typ.label}
+              <button key={key} className={`uis-btn ico${active ? " active" : ""}`} onClick={() => toggleType(key)} title={typ.label}
                 disabled={isSpecialView}
-                style={active ? { color: "var(--accent)", "--accent": typ.accent } : undefined}>
+                style={active ? { color: "var(--uis-accent)", "--uis-accent": typ.accent } : undefined}>
                 <Icon />
               </button>
             );
           })}
-          <button className={`btn icon${showFavOnly ? " active" : ""}`} onClick={() => setShowFavOnly(v => !v)} title={t("tipHdrFavorites")}
-            style={showFavOnly ? { "--accent": "var(--star)" } : undefined}>
-            <Star fill={showFavOnly ? "var(--star)" : "none"} />
+          <button className={`uis-btn ico${showFavOnly ? " active" : ""}`} onClick={() => setShowFavOnly(v => !v)} title={t("tipHdrFavorites")}
+            style={showFavOnly ? { "--uis-accent": "var(--uis-star)" } : undefined}>
+            <Star fill={showFavOnly ? "var(--uis-star)" : "none"} />
           </button>
         </div>
         {(() => {
           const scope = activeProjectIds.length > 0 ? (() => { const allIds = new Set(); const collect = (id) => { const pr = envProjects.find(p => p.id === id); if (!pr) return; pr.cardIds.forEach(pid => allIds.add(pid)); envProjects.filter(p => p.parentId === id).forEach(child => collect(child.id)); }; activeProjectIds.forEach(collect); return [...allIds].map(id => cards.find(p => p.id === id)).filter(Boolean); })() : envCards;
           const clearWarnings = () => { setShowWarningNoTagged(false); setShowWarningNoAiLink(false); setShowWarningNoMedia(false); setShowWarningNoLrc(false); setShowWarningNoPublished(false); };
           const warnBtn = (active, setFn, icon, title, color, count) => (
-            <button className={`btn icon${active ? " active" : ""}`} onClick={() => { clearWarnings(); setFn(v => !active); }} title={title} disabled={count === 0 && !active}
-              style={active ? { "--accent": color } : undefined}>
+            <button className={`uis-btn ico${active ? " active" : ""}`} onClick={() => { clearWarnings(); setFn(v => !active); }} title={title} disabled={count === 0 && !active}
+              style={active ? { "--uis-accent": color } : undefined}>
               {icon}
             </button>
           );
           return (
-            <div className="barh-grp">
+            <div className="uis-barh-grp">
               {warnBtn(showWarningNoTagged, setShowWarningNoTagged, <Tag />, t("tipHdrWarningNoTagged"), "#a78bfa", scope.filter(isUntagged).length)}
               {warnBtn(showWarningNoMedia, setShowWarningNoMedia, <Disc />, t("tipHdrWarningNoMedia"), "#f97316", scope.filter(isNoMedia).length)}
               {warnBtn(showWarningNoLrc, setShowWarningNoLrc, <FileMusic />, t("tipHdrWarningNoLrc"), "#22d3ee", scope.filter(isNoLrc).length)}
@@ -1883,25 +1884,25 @@ export default function App() {
           );
         })()}
         {/* Standard views — always available */}
-        <div className="barh-grp">
+        <div className="uis-barh-grp">
           {[["grid", LayoutGrid, "tipHdrGridView"], ["list", LayoutList, "tipHdrListView"]].map(([mode, Icon, tip]) => (
-            <button key={mode} className={`btn icon${viewMode === mode ? " active" : ""}`} onClick={() => setViewMode(mode)} title={t(tip)}>
+            <button key={mode} className={`uis-btn ico${viewMode === mode ? " active" : ""}`} onClick={() => setViewMode(mode)} title={t(tip)}>
               <Icon />
             </button>
           ))}
         </div>
         {/* Special single-feature views — project-scoped: enabled only when exactly one project is
             active, greyed out (not hidden) otherwise */}
-        <div className="barh-grp">
+        <div className="uis-barh-grp">
           {[["link", Link2, "tipHdrLinkView"], ["media", Disc, "tipHdrMediaLinkView"], ["sort", ArrowUpDown, "tipHdrSortView"]].map(([mode, Icon, tip]) => (
-            <button key={mode} className={`btn icon${viewMode === mode ? " active" : ""}`} disabled={!activeProj}
+            <button key={mode} className={`uis-btn ico${viewMode === mode ? " active" : ""}`} disabled={!activeProj}
               style={!activeProj ? { opacity: 0.35, cursor: "not-allowed" } : undefined}
               onClick={() => activeProj && setViewMode(mode)} title={t(tip)}>
               <Icon />
             </button>
           ))}
         </div>
-        <div className="barh-grp">
+        <div className="uis-barh-grp">
           {["date", "name"].map((key) => {
             const active = sortBy === key;
             // The icon encodes sort direction itself (calendar/AZ arrow up = asc,
@@ -1912,7 +1913,7 @@ export default function App() {
               ? (asc ? CalendarArrowUp : CalendarArrowDown)
               : (asc ? ArrowDownAZ : ArrowDownZA);
             return (
-              <button key={key} className={`btn icon${active ? " active" : ""}`} title={key === "date" ? t("tipHdrSortByDate") : t("tipHdrSortByName")} onClick={() => { if (sortBy === key) setSortDir(d => d === "asc" ? "desc" : "asc"); else { setSortBy(key); setSortDir("desc"); } }}>
+              <button key={key} className={`uis-btn ico${active ? " active" : ""}`} title={key === "date" ? t("tipHdrSortByDate") : t("tipHdrSortByName")} onClick={() => { if (sortBy === key) setSortDir(d => d === "asc" ? "desc" : "asc"); else { setSortBy(key); setSortDir("desc"); } }}>
                 <Icon />
               </button>
             );
@@ -1921,71 +1922,71 @@ export default function App() {
         <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
 
           {/* Import/Export group */}
-          {/* ⚠ CLAUDE: the dropdown must sit OUTSIDE the .barh-grp weld — the weld has overflow:hidden
+          {/* ⚠ CLAUDE: the dropdown must sit OUTSIDE the .uis-barh-grp weld — the weld has overflow:hidden
               and clips any absolutely-positioned popup. Trigger in the weld, menu in this relative wrapper. */}
           <div style={{ position: "relative" }}>
-            <div className="barh-grp">
-            <button className="btn icon" onClick={() => jsonRef.current?.click()} title={t("tipHdrImport")}>
+            <div className="uis-barh-grp">
+            <button className="uis-btn ico" onClick={() => jsonRef.current?.click()} title={t("tipHdrImport")}>
               <Download />
             </button>
-            <button ref={exportBtnRef} className={`btn icon${exportMenuOpen ? " active" : ""}`}
+            <button ref={exportBtnRef} className={`uis-btn ico${exportMenuOpen ? " active" : ""}`}
               onClick={() => setExportMenuOpen(v => !v)}
               title={activeProj ? `${t("tipHdrExportProj")} "${activeProj.name}"` : t("tipHdrExportAll")}>
               <Upload />
             </button>
             </div>
-            <Menu anchorRef={exportBtnRef} open={exportMenuOpen} onClose={() => setExportMenuOpen(false)} align="right">
-              <MenuItem icon={<Upload />} label={activeProj ? `${t("tipHdrExportProj")} "${activeProj.name}"` : t("tipHdrExportCards")}
+            <UisMenu anchorRef={exportBtnRef} open={exportMenuOpen} onClose={() => setExportMenuOpen(false)} align="right">
+              <UisMenuItem icon={<Upload />} label={activeProj ? `${t("tipHdrExportProj")} "${activeProj.name}"` : t("tipHdrExportCards")}
                 onClick={async () => { const proj = activeProj || null; const ep = proj ? cards.filter(p => proj.cardIds.includes(p.id)) : cards; const epr = proj ? [proj] : projects; await exportToJson(ep, epr, proj?.name || null, t("ttlOsdSaveDoc")); }} />
-              <MenuItem icon={<FileMusic />} label={t("btnHdrExportAmlp")} onClick={exportAmlp} />
-              <MenuItem icon={<Sparkles />} label={t("tipHdrExportAi")} onClick={() => exportAiToJson(t("ttlOsdSaveDoc"))} />
-              <MenuItem icon={<Database />} label={t("btnHdrExportBackup")} onClick={() => exportBackupToJson(cards, projects, environments, t("ttlOsdSaveDoc"))} />
-            </Menu>
+              <UisMenuItem icon={<FileMusic />} label={t("btnHdrExportAmlp")} onClick={exportAmlp} />
+              <UisMenuItem icon={<Sparkles />} label={t("tipHdrExportAi")} onClick={() => exportAiToJson(t("ttlOsdSaveDoc"))} />
+              <UisMenuItem icon={<Database />} label={t("btnHdrExportBackup")} onClick={() => exportBackupToJson(cards, projects, environments, t("ttlOsdSaveDoc"))} />
+            </UisMenu>
           </div>
 
           <input ref={jsonRef} type="file" accept=".json,.amlp" style={{ display: "none" }}
             onChange={(e) => { const file = e.target.files?.[0]; if (file) { if (/\.amlp$/i.test(file.name)) importFromAmlp(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, openProjectId); else importFromJson(file, apiFetch, setCards, setProjects, showToast, t, activeEnvId, setEnvironments, setImportErrors); } e.target.value = ""; }} />
           {/* New card — when the clipboard holds a Suno link, the card opens pre-filled from it
               (name, number, style, lyrics, date, link); otherwise it opens empty as always. */}
-          <button className="btn icon primary" disabled={draftFetching} title={`${t("btnHdrNew")} (Ctrl+N)`}
+          <button className="uis-btn ico primary" disabled={draftFetching} title={`${t("btnHdrNew")} (Ctrl+N)`}
             onClick={openNewCard}>
-            {draftFetching ? <RotateCcw className="spinner" /> : <Plus />}
+            {draftFetching ? <RotateCcw className="uis-spn" /> : <Plus />}
           </button>
         </div>
         {/* Only the standard source·help·settings group is pushed right; everything else left. */}
-        <span className="bar-spacer" />
-        <div className="barh-grp">
-          <button className="btn icon" onClick={() => window.open(GITHUB_URL, '_blank')} title="GitHub">
-            <GithubIcon />
+        <span className="uis-bar-spacer" />
+        <div className="uis-barh-grp">
+          <button className="uis-btn ico" onClick={() => window.open(GITHUB_URL, '_blank')} title="GitHub">
+            <UisIcoGithub />
           </button>
-          <button className="btn icon" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
+          <button className="uis-btn ico" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
             <HelpCircle />
           </button>
-          <button className={`btn icon stg-toggle ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(o => !o)} title={t("tipHdrSettings")} aria-pressed={settingsOpen}>
+          <button className={`uis-btn ico uis-stg-toggle ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(o => !o)} title={t("tipHdrSettings")} aria-pressed={settingsOpen}>
             <Settings />
           </button>
         </div>
         {/* Bulk tag modal - rendered at root level, see below */}
 
         {/* Move Card modal - rendered at root level, see below */}
-      </AppHeader>
+      </UisAppHeader>
 
-      {/* .app-main content region (Rule 14): the sidebar+main split. Tagged in place
-          with flex-direction:row so .app-main's column default doesn't stack it; the
+      {/* .uis-app-main content region (Rule 14): the sidebar+main split. Tagged in place
+          with flex-direction:row so .uis-app-main's column default doesn't stack it; the
           player footer is a fixed portal, not a flow child. */}
-      <div className="app-main" style={{ display: "flex", flex: 1, minHeight: 0, flexDirection: "row" }}>
+      <div className="uis-app-main" style={{ display: "flex", flex: 1, minHeight: 0, flexDirection: "row" }}>
         {settingsOpen && (
-          <SettingsView
+          <UisStgView
             t={t} appName={APP_NAME} appVersion={APP_VERSION_BUILD} languages={LANGUAGES}
             lang={langKey} setLang={setLangKey} theme={themeName} setTheme={setThemeName}
             generalExtra={(
-              <NewsSetting enabled={newsEnabled} onChange={toggleNews} label={t('lblStgGeneralNews')} />
+              <div className="uis-fld-labelled divider"><label className="uis-chk-lbl"><input type="checkbox" className="uis-chk-box" checked={newsEnabled} onChange={e => toggleNews(e.target.checked)} />{t('lblStgGeneralNews')}</label></div>
             )}
             tabs={[
               { key: "colors", label: t("tabStgCards"), icon: Pipette, content: (
                 <>
-                  <div className="dlg-field" style={{ gap: 20 }}>
-                    <label className="dlg-field-label">{t("lblStgCardsColors")}</label>
+                  <div className="uis-fld-labelled" style={{ gap: 20 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgCardsColors")}</label>
                     <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                       {Object.entries(types).map(([key, typ]) => {
                         const { Icon: TIcon } = typ;
@@ -1993,22 +1994,22 @@ export default function App() {
                           <div key={key} style={{ display: "flex", flexDirection: "column", gap: 8, padding: "4px 0" }}>
                             <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
                               <div style={{ display: "flex", alignItems: "center", gap: 7, width: 120, fontSize: 13, color: typ.accent, fontWeight: 600, flexShrink: 0 }}>
-                                <TIcon className="icon-inline" color={typ.accent} />{t(TYPE_LABEL_KEYS[key] || key)}
+                                <TIcon className="uis-ico-inline" color={typ.accent} />{t(TYPE_LABEL_KEYS[key] || key)}
                               </div>
-                              <ColorPicker color={clrSettingsCardsColors[key]} onChange={(c) => setClrSettingsCardsColors(prev => ({ ...prev, [key]: c }))} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-                              <button className="btn subtle" onClick={() => setClrSettingsCardsColors(prev => ({ ...prev, [key]: DEFAULT_TYPE_COLORS[key] }))} style={{ marginLeft: "auto" }}>{t("btnStgCardsReset")}</button>
+                              <UisPkrColor color={clrSettingsCardsColors[key]} onChange={(c) => setClrSettingsCardsColors(prev => ({ ...prev, [key]: c }))} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
+                              <button className="uis-btn subtle" onClick={() => setClrSettingsCardsColors(prev => ({ ...prev, [key]: DEFAULT_TYPE_COLORS[key] }))} style={{ marginLeft: "auto" }}>{t("btnStgCardsReset")}</button>
                             </div>
                           </div>
                         );
                       })}
                     </div>
-                    <div className="dlg-field">
-                      <label className="dlg-field-label">{t("lblStgCardsAiSites")}</label>
-                      <input className="input" value={txtSettingsCardsAiSites} onChange={e => setTxtSettingsCardsAiSites(e.target.value)} placeholder="udio, suno, producer, tunee" />
+                    <div className="uis-fld-labelled">
+                      <label className="uis-fld-labelled-label">{t("lblStgCardsAiSites")}</label>
+                      <input className="uis-txt" value={txtSettingsCardsAiSites} onChange={e => setTxtSettingsCardsAiSites(e.target.value)} placeholder="udio, suno, producer, tunee" />
                     </div>
-                    <div className="dlg-field">
-                      <label className="dlg-field-label">{t("lblStgCardsMusicSites")}</label>
-                      <input className="input" value={txtSettingsCardsMusicSites} onChange={e => setTxtSettingsCardsMusicSites(e.target.value)} placeholder="soundcloud" />
+                    <div className="uis-fld-labelled">
+                      <label className="uis-fld-labelled-label">{t("lblStgCardsMusicSites")}</label>
+                      <input className="uis-txt" value={txtSettingsCardsMusicSites} onChange={e => setTxtSettingsCardsMusicSites(e.target.value)} placeholder="soundcloud" />
                     </div>
                   </div>
                 </>
@@ -2020,74 +2021,74 @@ export default function App() {
               ) },
               { key: "media", label: t("tabStgMedia"), icon: FileMusic, content: (
                 <>
-                  <div className="dlg-field">
-                    <label className="dlg-field-label">{t("lblStgMediaPaths")}</label>
-                    <div className="barh-grp">
+                  <div className="uis-fld-labelled">
+                    <label className="uis-fld-labelled-label">{t("lblStgMediaPaths")}</label>
+                    <div className="uis-barh-grp">
                       {[["absolute", t("btnStgMediaPathsAbsolute")], ["relative", t("btnStgMediaPathsRelative")]].map(([mode, label]) => (
-                        <button key={mode} onClick={() => chooseMediaMode(mode)} className={`btn icon${mediaPaths.mode === mode ? " active" : ""}`} style={{ flex: 1, justifyContent: "center" }}>{label}</button>
+                        <button key={mode} onClick={() => chooseMediaMode(mode)} className={`uis-btn ico${mediaPaths.mode === mode ? " active" : ""}`} style={{ flex: 1, justifyContent: "center" }}>{label}</button>
                       ))}
                     </div>
-                    <p className="hint">{t("msgStgMediaPaths")}</p>
+                    <p className="uis-hnt">{t("msgStgMediaPaths")}</p>
                   </div>
                   {mediaPaths.mode === "relative" && (
-                    <div className="dlg-field">
-                      <label className="dlg-field-label">{t("lblStgMediaRoot")}</label>
+                    <div className="uis-fld-labelled">
+                      <label className="uis-fld-labelled-label">{t("lblStgMediaRoot")}</label>
                       <div style={{ display: "flex", gap: 8 }}>
-                        <input className="input" style={{ flex: 1 }} value={mediaRootDraft} onChange={(e) => setMediaRootDraft(e.target.value)}
+                        <input className="uis-txt" style={{ flex: 1 }} value={mediaRootDraft} onChange={(e) => setMediaRootDraft(e.target.value)}
                           onKeyDown={(e) => { if (e.key === "Enter") askMediaPaths("relative", mediaRootDraft.trim()); }} />
-                        <button className="btn icon" onClick={chooseMediaRoot} title={t("tipStgMediaRootChoose")}><FolderOpen /></button>
+                        <button className="uis-btn ico" onClick={chooseMediaRoot} title={t("tipStgMediaRootChoose")}><FolderOpen /></button>
                       </div>
-                      <p className="hint">{t("msgStgMediaRoot")}</p>
+                      <p className="uis-hnt">{t("msgStgMediaRoot")}</p>
                     </div>
                   )}
-                  <div className="dlg-field">
-                    <label className="check-label">
-                      <input type="checkbox" className="check-box" checked={useAmlpIdTag} onChange={(e) => setUseAmlpIdTag(e.target.checked)} />
-                      <span>{t("lblStgMediaAmlpId")}</span>
+                  <div className="uis-fld-labelled">
+                    <label className="uis-chk-lbl">
+                      <input type="checkbox" className="uis-chk-box" checked={useAiidTag} onChange={(e) => setUseAiidTag(e.target.checked)} />
+                      <span>{t("lblStgMediaAiid")}</span>
                     </label>
-                    <p className="hint">{t("msgStgMediaAmlpId")}</p>
+                    <p className="uis-hnt">{t("msgStgMediaAiid")}</p>
                   </div>
-                  <div className="dlg-field">
-                    <label className="check-label">
-                      <input type="checkbox" className="check-box" checked={renameMediaOnSortDefault} onChange={(e) => setRenameMediaOnSortDefault(e.target.checked)} />
+                  <div className="uis-fld-labelled">
+                    <label className="uis-chk-lbl">
+                      <input type="checkbox" className="uis-chk-box" checked={renameMediaOnSortDefault} onChange={(e) => setRenameMediaOnSortDefault(e.target.checked)} />
                       <span>{t("lblStgMediaRenameOnSortDefault")}</span>
                     </label>
-                    <p className="hint">{t("msgStgMediaRenameOnSortDefault")}</p>
+                    <p className="uis-hnt">{t("msgStgMediaRenameOnSortDefault")}</p>
                   </div>
                 </>
               ) },
               { key: "ai", label: t("tabStgAi"), icon: Sparkles, content: (
                 <>
                   {/* API Key */}
-                  <div className="dlg-field">
-                    <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Sparkles className="icon-inline" />{t("lblStgAiApiKey")}</label>
+                  <div className="uis-fld-labelled">
+                    <label className="uis-fld-labelled-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Sparkles className="uis-ico-inline" />{t("lblStgAiApiKey")}</label>
                     <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                       <div style={{ display: "flex", gap: 8 }}>
-                        <input type="password" className="input" placeholder={t("plhStgAiApiKey")}
+                        <input type="password" className="uis-txt" placeholder={t("plhStgAiApiKey")}
                           value={txtSettingsAiApiKey}
                           onChange={(e) => { setTxtSettingsAiApiKey(e.target.value); localStorage.setItem(`${STORAGE_PREFIX}-gemini-key`, e.target.value); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: e.target.value }) }); }}
                           style={{ flex: 1, fontFamily: "monospace" }}
                         />
                         {txtSettingsAiApiKey && (
-                          <button onClick={() => { setTxtSettingsAiApiKey(""); localStorage.removeItem(`${STORAGE_PREFIX}-gemini-key`); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: "" }) }); }} className="btn">{t("btnStgAiApiKeyClear")}</button>
+                          <button onClick={() => { setTxtSettingsAiApiKey(""); localStorage.removeItem(`${STORAGE_PREFIX}-gemini-key`); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-gemini-key`]: "" }) }); }} className="uis-btn">{t("btnStgAiApiKeyClear")}</button>
                         )}
                       </div>
                       {txtSettingsAiApiKey
-                        ? <p className="hint" style={{ color: "var(--ok)" }}>{t("msgStgAiApiKeyEnabled")}</p>
-                        : <p className="hint">{t("msgStgAiApiKeyGetKey")}</p>
+                        ? <p className="uis-hnt" style={{ color: "var(--uis-ok)" }}>{t("msgStgAiApiKeyEnabled")}</p>
+                        : <p className="uis-hnt">{t("msgStgAiApiKeyGetKey")}</p>
                       }
                     </div>
                   </div>
     
                   {/* Default interface mode */}
-                  <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiTemplates")}</label>
+                  <div className="uis-fld-labelled" style={{ borderTop: `1px solid var(--uis-border)`, paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiTemplates")}</label>
                     <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 12 }}>
-                      <span className="hint" style={{ flex: 1 }}>{t("lblStgAiTemplatesMode")} - {t("btnStgAiTemplatesModeSimple")} / {t("btnStgAiTemplatesModeExpert")}</span>
-                      <div className="barh-grp">
+                      <span className="uis-hnt" style={{ flex: 1 }}>{t("lblStgAiTemplatesMode")} - {t("btnStgAiTemplatesModeSimple")} / {t("btnStgAiTemplatesModeExpert")}</span>
+                      <div className="uis-barh-grp">
                         {[{ v: false, label: t("btnStgAiTemplatesModeSimple") }, { v: true, label: t("btnStgAiTemplatesModeExpert") }].map((opt) => (
                           <button key={String(opt.v)} onClick={() => { setTglSettingsAiTemplatesMode(opt.v); localStorage.setItem(`${STORAGE_PREFIX}-ai-expert-mode`, opt.v ? "1" : "0"); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-expert-mode`]: opt.v ? "1" : "0" }) }); }}
-                            className={`btn${tglSettingsAiTemplatesMode === opt.v ? " active" : ""}`}>
+                            className={`uis-btn${tglSettingsAiTemplatesMode === opt.v ? " active" : ""}`}>
                             {opt.label}
                           </button>
                         ))}
@@ -2096,63 +2097,63 @@ export default function App() {
                   </div>
     
                   {/* Character limits */}
-                  <div className="dlg-field" style={{ borderTop: `1px solid var(--border)`, paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiLimits")}</label>
+                  <div className="uis-fld-labelled" style={{ borderTop: `1px solid var(--uis-border)`, paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiLimits")}</label>
                     <div style={{ display: "flex", gap: 12 }}>
                       {[
                         [t("lblStgAiLimitsMusic"),    txtSettingsAiLimitsMusic,    v => { setTxtSettingsAiLimitsMusic(v);    localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-music`,    v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-music`]:    v }) }); }, 100, 3000, 50],
                         [t("lblStgAiLimitsVocal"), txtSettingsAiLimitsVocal, v => { setTxtSettingsAiLimitsVocal(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-limit-vocal`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-limit-vocal`]: v }) }); }, 100, 3000, 50],
                       ].map(([label, val, save, min, max, step]) => (
                         <div key={label} style={{ flexShrink: 0 }}>
-                          <label className="hint" style={{ display: "block", marginBottom: 6 }}>{label}</label>
-                          <NumberField min={min} max={max} step={step} value={val} width={90} onChange={save} />
+                          <label className="uis-hnt" style={{ display: "block", marginBottom: 6 }}>{label}</label>
+                          <UisNum min={min} max={max} step={step} value={val} width={90} onChange={save} />
                         </div>
                       ))}
                     </div>
                   </div>
     
                   {/* Warn limit */}
-                  <div className="dlg-field" style={{ paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiStyleThreshold")}</label>
+                  <div className="uis-fld-labelled" style={{ paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiStyleThreshold")}</label>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <NumberField min={100} max={5000} step={50} value={txtSettingsAiStyleThreshold} width={90}
+                      <UisNum min={100} max={5000} step={50} value={txtSettingsAiStyleThreshold} width={90}
                         onChange={v => { setTxtSettingsAiStyleThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-warn-limit`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-warn-limit`]: v }) }); }} />
-                      <p className="hint">{t("msgStgAiStyleThresholdDesc")}</p>
+                      <p className="uis-hnt">{t("msgStgAiStyleThresholdDesc")}</p>
                     </div>
                   </div>
     
                   {/* Style word threshold */}
-                  <div className="dlg-field" style={{ paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiStyleWordThreshold")}</label>
+                  <div className="uis-fld-labelled" style={{ paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiStyleWordThreshold")}</label>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <NumberField min={10} max={1000} step={10} value={txtSettingsAiStyleWordThreshold} width={90}
+                      <UisNum min={10} max={1000} step={10} value={txtSettingsAiStyleWordThreshold} width={90}
                         onChange={v => { setTxtSettingsAiStyleWordThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-style-word-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-style-word-threshold`]: v }) }); }} />
-                      <p className="hint">{t("msgStgAiStyleWordThresholdDesc")}</p>
+                      <p className="uis-hnt">{t("msgStgAiStyleWordThresholdDesc")}</p>
                     </div>
                   </div>
     
                   {/* Song lyric threshold */}
-                  <div className="dlg-field" style={{ paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiLyricsThreshold")}</label>
+                  <div className="uis-fld-labelled" style={{ paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiLyricsThreshold")}</label>
                     <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-                      <NumberField min={500} max={20000} step={50} value={txtSettingsAiLyricsThreshold} width={90}
+                      <UisNum min={500} max={20000} step={50} value={txtSettingsAiLyricsThreshold} width={90}
                         onChange={v => { setTxtSettingsAiLyricsThreshold(v); localStorage.setItem(`${STORAGE_PREFIX}-ai-lyric-threshold`, v); apiFetch("/settings", { method: "POST", body: JSON.stringify({ [`${STORAGE_PREFIX}-ai-lyric-threshold`]: v }) }); }} />
-                      <p className="hint">{t("msgStgAiLyricsThresholdDesc")}</p>
+                      <p className="uis-hnt">{t("msgStgAiLyricsThresholdDesc")}</p>
                     </div>
                   </div>
     
                   {/* History */}
-                  <div className="dlg-field" style={{ paddingTop: 16 }}>
-                    <label className="dlg-field-label">{t("lblStgAiHistory")}</label>
+                  <div className="uis-fld-labelled" style={{ paddingTop: 16 }}>
+                    <label className="uis-fld-labelled-label">{t("lblStgAiHistory")}</label>
                     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-                      <p className="hint">{JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}-ai-history`) || "[]").length} {t("lblStgAiHistoryCount")}</p>
-                      <button className="btn subtle" onClick={() => { localStorage.removeItem(`${STORAGE_PREFIX}-ai-history`); showToast(t("tstStgAiHistoryCleared")); }}>{t("btnStgAiHistoryClear")}</button>
+                      <p className="uis-hnt">{JSON.parse(localStorage.getItem(`${STORAGE_PREFIX}-ai-history`) || "[]").length} {t("lblStgAiHistoryCount")}</p>
+                      <button className="uis-btn subtle" onClick={() => { localStorage.removeItem(`${STORAGE_PREFIX}-ai-history`); showToast(t("tstStgAiHistoryCleared")); }}>{t("btnStgAiHistoryClear")}</button>
                     </div>
                   </div>
                 </>
               ) },
             ]}
-            aboutExtra={<div className="dlg-about-version">{t("msgStgAboutLocalDb")}</div>}
+            aboutExtra={<div className="uis-dlg-about-version">{t("msgStgAboutLocalDb")}</div>}
             onClose={() => setSettingsOpen(false)}
           />
         )}
@@ -2176,15 +2177,15 @@ export default function App() {
               if (draggedId && targetId && draggedId !== targetId) handleMoveProject(draggedId, targetId);
             }}
           >
-            {/* Vertical action bar — shared vertical toolbar (.barv-grp welds of .btn.icon atoms) on the --bar-bgd surface */}
-            <div className="barv-tools">
+            {/* Vertical action bar — shared vertical toolbar (.uis-barv-grp welds of .uis-btn.ico atoms) on the --uis-bar-bgd surface */}
+            <div className="uis-barv-tools">
               {(() => {
-                // Sidebar action button = the shared toolbar atom (.btn.icon): geometry, hover,
-                // active state + border/weld all come from .btn.icon / .barv-grp. Only the badge overlay
+                // Sidebar action button = the shared toolbar atom (.uis-btn.ico): geometry, hover,
+                // active state + border/weld all come from .uis-btn.ico / .uis-barv-grp. Only the badge overlay
                 // and the per-button `dim` (greyed + click-disabled) are local.
                 const sidebarBtn = (icon, onClick, active, title, dim, badge = null) => (
                   <button onClick={onClick} title={title}
-                    className={"btn icon" + (active ? " active" : "")}
+                    className={"uis-btn ico" + (active ? " active" : "")}
                     style={{ position: "relative", ...(dim ? sidebarDim : {}) }}>
                     {icon}
                     {badge && <span style={{ position: "absolute", bottom: 2, right: 2, lineHeight: 1, pointerEvents: "none" }}>{badge}</span>}
@@ -2196,19 +2197,19 @@ export default function App() {
                 const dimSel = !sidebarSelProj;
                 return (<>
                   {/* Sort group */}
-                  <div className="barv-grp">
+                  <div className="uis-barv-grp">
                     {sidebarBtn((projectSort === "date" && projectSortDir === "asc") ? <CalendarArrowUp /> : <CalendarArrowDown />, () => { if (projectSort === "date") setProjectSortDir(d => d === "asc" ? "desc" : "asc"); else { setProjectSort("date"); setProjectSortDir("desc"); } }, projectSort === "date", "Sort by date", false)}
                     {sidebarBtn((projectSort === "name" && projectSortDir === "desc") ? <ArrowDownZA /> : <ArrowDownAZ />, () => { if (projectSort === "name") setProjectSortDir(d => d === "asc" ? "desc" : "asc"); else { setProjectSort("name"); setProjectSortDir("asc"); } }, projectSort === "name", "Sort by name", false)}
                   </div>
                   {/* Project management — new folder / sync URLs (act on the selected project). Per-project
                       import / edit / tag / translate / move / delete live on the project row; per-card
                       tag / translate / unlink / move / delete live on the selection strip. */}
-                  <div className="barv-grp">
+                  <div className="uis-barv-grp">
                     {sidebarBtn(<FolderPlus />, () => { const sel = activeProjectIds.length === 1 ? activeProjectIds[0] : null; setNewFolderParentId(sel); setEditingProject(null); setProjectModalOpen(true); }, false, t("tipSbrNewProject"), false)}
                     {sidebarBtn(<RefreshCw />, () => handleSyncMusicUrls(sidebarSelProj.id), false, t("tipSbrSyncUrls"), dimSel || !sidebarHasPlaylist)}
                   </div>
                   {/* Excel + doc */}
-                  <div className="barv-grp">
+                  <div className="uis-barv-grp">
                     {sidebarBtn(<FileSpreadsheet />, () => { const proj = activeProj || null; const ep = proj ? cards.filter(p => proj.cardIds.includes(p.id)) : cards; const epr = proj ? [proj] : projects; exportToExcel(ep, epr, proj?.name || null, t("ttlOsdSaveDoc"), API); }, false, activeProj ? `${t("tipSbrExportExcel")} "${activeProj.name}"` : t("tipSbrExportExcel"), false)}
                     {sidebarBtn(<FilePlus />, () => setDocCreateOpen(true), false, t("tipSbrCreateDoc"), false)}
                   </div>
@@ -2217,29 +2218,29 @@ export default function App() {
               })()}
             </div>
             {/* Project list */}
-            <div className="pnl" style={{ flex: 1, minWidth: 0, overflowY: "auto", display: "flex", flexDirection: "column", padding: "12px 0" }}>
+            <div className="uis-pnl" style={{ flex: 1, minWidth: 0, overflowY: "auto", display: "flex", flexDirection: "column", padding: "12px 0" }}>
 
             {/* Environment selector */}
             {environments.length > 0 && (() => {
               const activeEnv = environments.find(e => e.id === activeEnvId);
               return (
-                <div style={{ position: "relative", padding: "0 8px 8px", borderBottom: `1px solid var(--border)`, marginBottom: 6 }}>
+                <div style={{ position: "relative", padding: "0 8px 8px", borderBottom: `1px solid var(--uis-border)`, marginBottom: 6 }}>
                   <button ref={envBtnRef}
-                    className={"field-trigger" + (envPopoverOpen ? " open" : "")}
+                    className={"uis-ddn-ext" + (envPopoverOpen ? " open" : "")}
                     onClick={() => setEnvPopoverOpen(v => !v)}>
                     <span style={{ display: "flex", alignItems: "center", gap: 5, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                      {activeEnv?.isGlobal && <Globe className="icon-inline" color={'var(--accent)'} />}
+                      {activeEnv?.isGlobal && <Globe className="uis-ico-inline" color={'var(--uis-accent)'} />}
                       {activeEnv?.name || "-"}
                     </span>
-                    <ChevronDown className="icon-inline" color={'var(--text-mute)'} />
+                    <ChevronDown className="uis-ico-inline" color={'var(--uis-text-mute)'} />
                   </button>
-                  <Popover anchorRef={envBtnRef} open={envPopoverOpen} minWidthAnchor
+                  <UisPopover anchorRef={envBtnRef} open={envPopoverOpen} minWidthAnchor
                     onClose={() => { setEnvPopoverOpen(false); setRenamingEnvId(null); setNewEnvInput(null); }}>
                     {environments.map((env, idx) => (
                       <div key={env.id}>
-                        {idx === 1 && <div className="menu-divider" />}
+                        {idx === 1 && <div className="uis-men-divider" />}
                         {renamingEnvId === env.id ? (
-                          <div className="pop-item">
+                          <div className="uis-pop-item">
                             <input
                               autoFocus
                               value={renameEnvValue}
@@ -2254,23 +2255,23 @@ export default function App() {
                                 if (e.key === "Escape") setRenamingEnvId(null);
                               }}
                               onClick={e => e.stopPropagation()}
-                              className="input" style={{ flex: 1 }}
+                              className="uis-txt" style={{ flex: 1 }}
                             />
                           </div>
                         ) : (
-                          <div className={"pop-item" + (env.id === activeEnvId ? " active" : "")} role="button"
+                          <div className={"uis-pop-item" + (env.id === activeEnvId ? " active" : "")} role="button"
                             onClick={() => { setActiveEnvId(env.id); setActiveProjectIds([]); setActiveProject(null); setEnvPopoverOpen(false); }}>
-                            {env.isGlobal && <Globe color={'var(--accent)'} />}
-                            {env.id === activeEnvId && <Check color={'var(--accent)'} />}
+                            {env.isGlobal && <Globe color={'var(--uis-accent)'} />}
+                            {env.id === activeEnvId && <Check color={'var(--uis-accent)'} />}
                             <span>{env.name}</span>
                             {!env.isGlobal && (
-                              <button className="btn icon small subtle" style={{ marginLeft: "auto" }} onClick={e => { e.stopPropagation(); setRenamingEnvId(env.id); setRenameEnvValue(env.name); }}
+                              <button className="uis-btn ico small subtle" style={{ marginLeft: "auto" }} onClick={e => { e.stopPropagation(); setRenamingEnvId(env.id); setRenameEnvValue(env.name); }}
                                 title={t("btnCardEdit")}>
                                 <TextCursor />
                               </button>
                             )}
                             {!env.isGlobal && (
-                              <button className="btn icon small subtle" onClick={async e => {
+                              <button className="uis-btn ico small subtle" onClick={async e => {
                                 e.stopPropagation();
                                 try {
                                   await apiFetch(`/environments/${env.id}`, { method: "DELETE" });
@@ -2293,9 +2294,9 @@ export default function App() {
                         )}
                       </div>
                     ))}
-                    <div className="menu-divider" />
+                    <div className="uis-men-divider" />
                     {newEnvInput !== null ? (
-                      <div className="pop-item">
+                      <div className="uis-pop-item">
                         <input
                           autoFocus
                           value={newEnvInput}
@@ -2314,24 +2315,24 @@ export default function App() {
                             if (e.key === "Escape") { setNewEnvInput(null); }
                           }}
                           placeholder={t("plhPnlProjectEnvName")}
-                          className="input" style={{ flex: 1 }}
+                          className="uis-txt" style={{ flex: 1 }}
                         />
                       </div>
                     ) : (
-                      <button className="pop-item" onClick={() => setNewEnvInput("")} style={{ color: 'var(--accent)' }}>
+                      <button className="uis-pop-item" onClick={() => setNewEnvInput("")} style={{ color: 'var(--uis-accent)' }}>
                         <Plus />{t("btnPnlProjectEnvNew")}
                       </button>
                     )}
-                  </Popover>
+                  </UisPopover>
                 </div>
               );
             })()}
 
             {/* All cards entry */}
-            <button onClick={() => { setActiveProject(null); setActiveProjectIds([]); setActiveType(null); }} className={"lv-item" + ((!activeProject && !activeProjectIds.length && !activeType) ? " active" : "")}>
+            <button onClick={() => { setActiveProject(null); setActiveProjectIds([]); setActiveType(null); }} className={"uis-lvw-item" + ((!activeProject && !activeProjectIds.length && !activeType) ? " active" : "")}>
               <Folder />
-              <span className="lv-item-name" style={{ flex: 1 }}>{t("lblPnlProjectAll")}</span>
-              <span className="lv-item-badge">{envCards.length}</span>
+              <span className="uis-lvw-item-name" style={{ flex: 1 }}>{t("lblPnlProjectAll")}</span>
+              <span className="uis-lvw-item-badge">{envCards.length}</span>
             </button>
 
             {/* Unsorted cards entry — cards in no project. Hidden when empty. */}
@@ -2341,10 +2342,10 @@ export default function App() {
               if (unlinkedCount === 0) return null;
               const isActive = activeProject === UNLINKED_KEY;
               return (
-                <button onClick={() => { setActiveProject(UNLINKED_KEY); setActiveProjectIds([]); setActiveType(null); setSelectedTags([]); }} className={"lv-item" + (isActive ? " active" : "")}>
-                  <Folder color="var(--warn)" />
-                  <span className="lv-item-name" style={{ flex: 1 }}>{t("lblPnlProjectUnsorted")}</span>
-                  <span className="lv-item-badge" style={{ background: "color-mix(in srgb, var(--warn) 14%, transparent)", color: "var(--warn)" }}>{unlinkedCount}</span>
+                <button onClick={() => { setActiveProject(UNLINKED_KEY); setActiveProjectIds([]); setActiveType(null); setSelectedTags([]); }} className={"uis-lvw-item" + (isActive ? " active" : "")}>
+                  <Folder color="var(--uis-warn)" />
+                  <span className="uis-lvw-item-name" style={{ flex: 1 }}>{t("lblPnlProjectUnsorted")}</span>
+                  <span className="uis-lvw-item-badge" style={{ background: "color-mix(in srgb, var(--uis-warn) 14%, transparent)", color: "var(--uis-warn)" }}>{unlinkedCount}</span>
                 </button>
               );
             })()}
@@ -2355,19 +2356,19 @@ export default function App() {
               if (untaggedCount === 0) return null;
               const isActive = activeProject === UNTAGGED_KEY;
               return (
-                <button onClick={() => { setActiveProject(UNTAGGED_KEY); setActiveProjectIds([]); setActiveType(null); setSelectedTags([]); }} className={"lv-item" + (isActive ? " active" : "")}>
-                  <Tag color="var(--tag)" />
-                  <span className="lv-item-name" style={{ flex: 1 }}>{t("lblPnlProjectUntagged")}</span>
-                  <span className="lv-item-badge" style={{ background: "color-mix(in srgb, var(--tag) 14%, transparent)", color: "var(--tag)" }}>{untaggedCount}</span>
+                <button onClick={() => { setActiveProject(UNTAGGED_KEY); setActiveProjectIds([]); setActiveType(null); setSelectedTags([]); }} className={"uis-lvw-item" + (isActive ? " active" : "")}>
+                  <Tag color="var(--uis-tag)" />
+                  <span className="uis-lvw-item-name" style={{ flex: 1 }}>{t("lblPnlProjectUntagged")}</span>
+                  <span className="uis-lvw-item-badge" style={{ background: "color-mix(in srgb, var(--uis-tag) 14%, transparent)", color: "var(--uis-tag)" }}>{untaggedCount}</span>
                 </button>
               );
             })()}
 
 
-            {envProjects.length > 0 && <div style={{ height: 1, background: 'var(--border)', margin: "6px 8px" }} />}
+            {envProjects.length > 0 && <div style={{ height: 1, background: 'var(--uis-border)', margin: "6px 8px" }} />}
 
             {envProjects.length === 0 ? (
-              <p className="hint" style={{ padding: "8px 12px" }}>{t("empGLViewNoCardsFound")}</p>
+              <p className="uis-hnt" style={{ padding: "8px 12px" }}>{t("empGLViewNoCardsFound")}</p>
             ) : (() => {
               const sorted = [...envProjects].sort((a, b) => {
                 const dir = projectSortDir === "asc" ? 1 : -1;
@@ -2397,7 +2398,7 @@ export default function App() {
                     <div data-proj-id={proj.id} style={{ display: "flex", alignItems: "center", paddingLeft: depth * 10 }}>
                       <div style={{ width: 16, flexShrink: 0, display: "flex", alignItems: "center", justifyContent: "center" }}>
                         {children.length > 0 && (
-                          <button className="btn icon small subtle" onClick={() => setExpandedProjects(prev => { const n = new Set(prev); n.has(proj.id) ? n.delete(proj.id) : n.add(proj.id); return n; })}>
+                          <button className="uis-btn ico small subtle" onClick={() => setExpandedProjects(prev => { const n = new Set(prev); n.has(proj.id) ? n.delete(proj.id) : n.add(proj.id); return n; })}>
                             {isExpanded ? <ChevronDown /> : <ChevronRight />}
                           </button>
                         )}
@@ -2443,7 +2444,7 @@ export default function App() {
                       onDragOver={e => { e.preventDefault(); setRootDropOver(true); }}
                       onDragLeave={() => setRootDropOver(false)}
                       onDrop={e => { e.preventDefault(); setRootDropOver(false); handleMoveProject(draggingProjectId, null); }}
-                      style={{ margin: "0 8px 4px", padding: "5px 8px", borderRadius: 6, border: `1px dashed ${rootDropOver ? 'var(--accent)' : 'var(--border-strong)'}`, background: rootDropOver ? 'var(--accent)' + "22" : "transparent", fontSize: 11, color: rootDropOver ? 'var(--accent)' : 'var(--text-mute)', textAlign: "center", transition: "all 0.15s" }}>
+                      style={{ margin: "0 8px 4px", padding: "5px 8px", borderRadius: 6, border: `1px dashed ${rootDropOver ? 'var(--uis-accent)' : 'var(--uis-border-strong)'}`, background: rootDropOver ? 'var(--uis-accent)' + "22" : "transparent", fontSize: 11, color: rootDropOver ? 'var(--uis-accent)' : 'var(--uis-text-mute)', textAlign: "center", transition: "all 0.15s" }}>
                       {t("btnPnlProjectMoveToRoot")}
                     </div>
                   )}
@@ -2453,7 +2454,7 @@ export default function App() {
             })()}
 
             {draggingId && (
-              <div style={{ margin: "8px 8px 0", padding: "8px", borderRadius: 8, border: `1px dashed var(--border-strong)`, fontSize: 11, color: 'var(--text-mute)', textAlign: "center" }}>
+              <div style={{ margin: "8px 8px 0", padding: "8px", borderRadius: 8, border: `1px dashed var(--uis-border-strong)`, fontSize: 11, color: 'var(--uis-text-mute)', textAlign: "center" }}>
                 {t("empGLViewDropOnProject")}
               </div>
             )}
@@ -2463,7 +2464,7 @@ export default function App() {
 
         {/* Resize handle */}
         {sidebarOpen && (
-          <Splitter
+          <UisPnlSplitter
             theme={themeName}
             onResizeStart={(e) => {
               isResizingRef.current = true;
@@ -2476,48 +2477,48 @@ export default function App() {
         )}
 
         {/* Sidebar toggle tab */}
-        <CollapseToggle open={sidebarOpen} onToggle={() => setSidebarOpen(v => !v)} side="left" title={sidebarOpen ? t("tipPnlProjectHide") : t("tipPnlProjectShow")} />
+        <UisPnlToggle open={sidebarOpen} onToggle={() => setSidebarOpen(v => !v)} side="left" title={sidebarOpen ? t("tipPnlProjectHide") : t("tipPnlProjectShow")} />
 
         {/* Main content */}
         <div style={{ flex: 1, minWidth: 0, minHeight: 0, overflow: "hidden", display: "flex", flexDirection: "column" }}>
-          {/* View top-bar (Model B, shared `.view-topbar`) - the CONTENT zone's toolbar: tag filter
+          {/* View top-bar (Model B, shared `.uis-barh-view`) - the CONTENT zone's toolbar: tag filter
               + selection cluster. It scopes the CARDS, so it sits at the top of the CONTENT column
               (right of the sidebar) on the content surface, not the header. Same class in apps-cockpit. */}
           {/* Special views (link/media/sort) hide the tag filter and instead carry the finalize toggle —
               check to lock the project's three functions, uncheck to make the view live again. */}
           {isSpecialView
             ? (activeProj && (
-                <div className="view-topbar">
-                  <button className="btn small subtle" type="button" onClick={handleToggleFinalized}
+                <div className="uis-barh-view">
+                  <button className="uis-btn small subtle" type="button" onClick={handleToggleFinalized}
                    
-                    title={t("tipDlgProjectFinalized")} style={{ color: 'var(--text)' }}>
-                    {activeProj.finalized ? <CheckSquare color={'var(--accent)'} /> : <Square color={'var(--text-mute)'} />}
+                    title={t("tipDlgProjectFinalized")} style={{ color: 'var(--uis-text)' }}>
+                    {activeProj.finalized ? <CheckSquare color={'var(--uis-accent)'} /> : <Square color={'var(--uis-text-mute)'} />}
                     <span>{t("lblViewFinalized")}</span>
                   </button>
                   {isSortView && (
-                    <button className="btn small subtle" type="button" onClick={toggleRenameMediaOnSort}
+                    <button className="uis-btn small subtle" type="button" onClick={toggleRenameMediaOnSort}
                      
-                      title={t("tipViewRenameMedia")} style={{ color: 'var(--text)' }}>
-                      {renameMediaOnSort ? <CheckSquare color={'var(--accent)'} /> : <Square color={'var(--text-mute)'} />}
+                      title={t("tipViewRenameMedia")} style={{ color: 'var(--uis-text)' }}>
+                      {renameMediaOnSort ? <CheckSquare color={'var(--uis-accent)'} /> : <Square color={'var(--uis-text-mute)'} />}
                       <span>{t("lblViewRenameMedia")}</span>
                     </button>
                   )}
                 </div>
               ))
-            : (tagBar && <div className="view-topbar">{tagBar}</div>)}
+            : (tagBar && <div className="uis-barh-view">{tagBar}</div>)}
 
           {/* Grid / List / Link */}
           {viewMode === "sort" ? (
             <div style={{ flex: 1, display: "flex", flexDirection: "column", minHeight: 0, overflow: "hidden" }}>
-              <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                <ArrowUpDown className="icon-inline" color={'var(--text-mute)'} />
-                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)' }}>{t("lblPnlSortSongs")} ({sortViewSongs.length})</span>
+              <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--uis-border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                <ArrowUpDown className="uis-ico-inline" color={'var(--uis-text-mute)'} />
+                <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text-mute)' }}>{t("lblPnlSortSongs")} ({sortViewSongs.length})</span>
               </div>
               <div onDragOver={dragAutoScroll} style={{ flex: 1, overflowY: "auto", padding: "12px 14px", paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 8 }}>
                 {loading ? (
-                  <div className="empty"><RotateCcw className="spinner" /></div>
+                  <div className="uis-emp"><RotateCcw className="uis-spn" /></div>
                 ) : sortViewSongs.length === 0 ? (
-                  <div className="empty"><Music2 color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlSortNoSongs")}</p></div>
+                  <div className="uis-emp"><Music2 color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlSortNoSongs")}</p></div>
                 ) : (
                   sortViewSongs.map((song, i) => (
                     <SongListCard key={song.id} song={song} types={types} anyDragging={!!draggingId} allCards={cards}
@@ -2536,15 +2537,15 @@ export default function App() {
             <div style={{ flex: 1, display: "flex", minHeight: 0, overflow: "hidden" }}>
               {/* Left panel - song drop targets */}
               <div style={{ width: linkPanelWidth, minWidth: linkPanelWidth, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                  <types.SongStateCreated.Icon className="icon-inline" color={types.SongStateCreated.accent} />
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)' }}>{t("lblPnlLinkSongs")} ({linkViewSongs.length})</span>
+                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--uis-border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                  <types.SongStateCreated.Icon className="uis-ico-inline" color={types.SongStateCreated.accent} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text-mute)' }}>{t("lblPnlLinkSongs")} ({linkViewSongs.length})</span>
                 </div>
                 <div style={{ flex: 1, overflowY: "auto", padding: "12px 14px", paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 8 }}>
                   {loading ? (
-                    <div className="empty"><RotateCcw className="spinner" /></div>
+                    <div className="uis-emp"><RotateCcw className="uis-spn" /></div>
                   ) : linkViewSongs.length === 0 ? (
-                    <div className="empty"><Music2 color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlLinkNoSongs")}</p></div>
+                    <div className="uis-emp"><Music2 color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlLinkNoSongs")}</p></div>
                   ) : (
                     linkViewSongs.map(song => (
                       <SongListCard key={song.id} song={song} types={types} anyDragging={!!dragMediaFile} locked={projLocked}
@@ -2563,37 +2564,37 @@ export default function App() {
                 </div>
               </div>
               {/* Resize handle */}
-              <Splitter theme={themeName}
+              <UisPnlSplitter theme={themeName}
                 onResizeStart={(e) => { isLinkResizingRef.current = true; linkResizeStartX.current = e.clientX; linkResizeStartW.current = linkPanelWidth; document.body.style.cursor = "col-resize"; document.body.style.userSelect = "none"; }} />
               {/* Right panel - media files */}
               <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                  <Disc className="icon-inline" color={'var(--text-mute)'} />
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)', flex: 1 }}>
+                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--uis-border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                  <Disc className="uis-ico-inline" color={'var(--uis-text-mute)'} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text-mute)', flex: 1 }}>
                     {mediaLinkFolder ? mediaLinkFolder.split(/[\\/]/).pop() : t("lblPnlLinkNoFolder")} {mediaLinkFiles.length > 0 ? `(${mediaLinkFiles.length})` : ""}
                   </span>
-                  <button onClick={() => handleScanMediaFolder(!!mediaLinkFolder)} title={t("tipPnlLinkChooseFolder")} className="btn icon small">
+                  <button onClick={() => handleScanMediaFolder(!!mediaLinkFolder)} title={t("tipPnlLinkChooseFolder")} className="uis-btn ico small">
                     <FolderOpen />
                   </button>
                   {mediaLinkFiles.length > 0 && (
-                    <button onClick={handleAutoLinkMedia} disabled={projLocked} title={t("tipPnlMediaAutoLink")} className="btn icon small">
+                    <button onClick={handleAutoLinkMedia} disabled={projLocked} title={t("tipPnlMediaAutoLink")} className="uis-btn ico small">
                       <Wand2 />
                     </button>
                   )}
                   {mediaLinkedCount > 0 && (
                     <button onClick={toggleHideLinkedMedia} title={hideLinkedMedia ? t("tipPnlMediaShowLinked") : t("tipPnlMediaHideLinked")}
-                      className={`btn icon small${hideLinkedMedia ? " active" : ""}`}>
+                      className={`uis-btn ico small${hideLinkedMedia ? " active" : ""}`}>
                       {hideLinkedMedia ? <CircleDashed /> : <Disc />}
                     </button>
                   )}
                 </div>
                 <div style={{ flex: 1, overflowY: "auto", padding: 12, paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 6 }}>
                   {!mediaLinkFolder ? (
-                    <div className="empty"><Disc color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlLinkBrowseFolder")}</p></div>
+                    <div className="uis-emp"><Disc color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlLinkBrowseFolder")}</p></div>
                   ) : mediaLinkFiles.length === 0 ? (
-                    <div className="empty"><Disc color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlLinkNoAudio")}</p></div>
+                    <div className="uis-emp"><Disc color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlLinkNoAudio")}</p></div>
                   ) : visibleMediaFiles.length === 0 ? (
-                    <div className="empty"><Disc color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlMediaAllLinked")}</p></div>
+                    <div className="uis-emp"><Disc color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlMediaAllLinked")}</p></div>
                   ) : (
                     visibleMediaFiles.map(file => {
                       const linkedSong = linkViewSongs.find(s => s.mediaPath === file.path);
@@ -2612,15 +2613,15 @@ export default function App() {
             <div style={{ flex: 1, display: "flex", minHeight: 0, overflow: "hidden" }}>
               {/* Left panel - song drop targets */}
               <div style={{ width: linkPanelWidth, minWidth: linkPanelWidth, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
-                  <types.SongStateCreated.Icon className="icon-inline" color={types.SongStateCreated.accent} />
-                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)' }}>{t("lblPnlLinkSongs")} ({linkViewSongs.length})</span>
+                <div style={{ padding: "10px 16px", borderBottom: `1px solid var(--uis-border)`, display: "flex", alignItems: "center", gap: 8, flexShrink: 0 }}>
+                  <types.SongStateCreated.Icon className="uis-ico-inline" color={types.SongStateCreated.accent} />
+                  <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text-mute)' }}>{t("lblPnlLinkSongs")} ({linkViewSongs.length})</span>
                 </div>
                 <div style={{ flex: 1, overflowY: "auto", padding: "12px 14px", paddingBottom: playerMedia ? 90 : 60, display: "flex", flexDirection: "column", gap: 8 }}>
                   {loading ? (
-                    <div className="empty"><RotateCcw className="spinner" /></div>
+                    <div className="uis-emp"><RotateCcw className="uis-spn" /></div>
                   ) : linkViewSongs.length === 0 ? (
-                    <div className="empty"><Music2 color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlLinkNoSongs")}</p></div>
+                    <div className="uis-emp"><Music2 color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlLinkNoSongs")}</p></div>
                   ) : (
                     linkViewSongs.map(song => (
                       <SongListCard key={song.id} song={song} types={types} anyDragging={!!draggingId} allCards={cards} locked={projLocked}
@@ -2640,7 +2641,7 @@ export default function App() {
                 </div>
               </div>
               {/* Resize handle */}
-              <Splitter
+              <UisPnlSplitter
                 theme={themeName}
                 onResizeStart={(e) => {
                   isLinkResizingRef.current = true;
@@ -2652,16 +2653,16 @@ export default function App() {
               />
               {/* Right panel - music + vocal drag sources */}
               <div style={{ flex: 1, minWidth: 0, display: "flex", flexDirection: "column", overflow: "hidden" }}>
-                <div style={{ padding: "10px 16px 8px", borderBottom: `1px solid var(--border)`, display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 }}>
+                <div style={{ padding: "10px 16px 8px", borderBottom: `1px solid var(--uis-border)`, display: "flex", flexDirection: "column", gap: 6, flexShrink: 0 }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                    <Link2 className="icon-inline" color={'var(--text-mute)'} />
-                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text-mute)', flex: 1 }}>{t("lblPnlLinkMusicVocal")} ({linkViewMV.length})</span>
+                    <Link2 className="uis-ico-inline" color={'var(--uis-text-mute)'} />
+                    <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text-mute)', flex: 1 }}>{t("lblPnlLinkMusicVocal")} ({linkViewMV.length})</span>
                     {globalEnvId && (
-                      <div className="opt-btns">
+                      <div className="uis-opt-set">
                         {[["local", Folder, t("lblPnlLinkCurrentProject")], ["global", Globe, t("lblPnlLinkGlobal")]].map(([val, Icon, label]) => {
                           const active = linkMVScope === val;
-                          return <button key={val} className={"opt-btn" + (active ? " active" : "")} onClick={() => setLinkMVScope(val)} title={label}>
-                            <Icon className="icon-inline" />{label}
+                          return <button key={val} className={"uis-opt" + (active ? " active" : "")} onClick={() => setLinkMVScope(val)} title={label}>
+                            <Icon className="uis-ico-inline" />{label}
                           </button>;
                         })}
                       </div>
@@ -2669,16 +2670,16 @@ export default function App() {
                   </div>
                   <input value={linkMVSearch} onChange={e => setLinkMVSearch(e.target.value)}
                     placeholder={t("plhHdrSearchCards")}
-                    className="input" style={{ width: "100%" }} />
+                    className="uis-txt" style={{ width: "100%" }} />
                 </div>
                 <div style={{ flex: 1, overflowY: "auto", padding: 12, paddingBottom: playerMedia ? 90 : 60, display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(220px, 1fr))", gap: 10, alignContent: "start" }}>
                   {loading ? (
-                    <div className="empty"><RotateCcw className="spinner" /></div>
+                    <div className="uis-emp"><RotateCcw className="uis-spn" /></div>
                   ) : linkViewMV.length === 0 ? (
-                    <div className="empty"><Music2 color={'var(--text-mute)'} /><p className="empty-title">{t("empPnlLinkNoMusicVocal")}</p></div>
+                    <div className="uis-emp"><Music2 color={'var(--uis-text-mute)'} /><p className="uis-emp-title">{t("empPnlLinkNoMusicVocal")}</p></div>
                   ) : (
                     linkViewMV.map(p => (
-                      <LinkViewMVCard key={p.id} card={p} types={types} isDragging={draggingId === p.id} locked={projLocked}
+                      <UilLinkViewMVCard key={p.id} card={p} types={types} isDragging={draggingId === p.id} locked={projLocked}
                         linkedByCount={envCards.filter(s => (s.linkedCards || []).includes(p.id)).length}
                         onEdit={(p) => { setEditingCard(p); setModalOpen(true); }}
                         onDragStart={(e, id) => { setDraggingId(id); e.dataTransfer.setData("cardIds", JSON.stringify([id])); e.dataTransfer.setData("cardId", id); e.dataTransfer.setData("linkable", "1"); e.dataTransfer.effectAllowed = "copy"; }}
@@ -2691,12 +2692,12 @@ export default function App() {
           ) : (
             <main style={{ ...(viewMode === "list" ? s.list : s.grid), paddingBottom: playerMedia ? 90 : 60 }}>
               {loading ? (
-                <div className="empty"><RotateCcw className="spinner" /><p className="empty-title">{t("msgPnlLinkLoading")}</p></div>
+                <div className="uis-emp"><RotateCcw className="uis-spn" /><p className="uis-emp-title">{t("msgPnlLinkLoading")}</p></div>
               ) : filtered.length === 0 ? (
-                <div className="empty">
-                  {isUntaggedView ? <Tag color={'var(--text-mute)'} /> : isUnlinkedView ? <Star color={'var(--text-mute)'} /> : isNoLrcView ? <FileMusic color={'var(--text-mute)'} /> : activeProjectIds.length > 0 ? <FolderOpen color={'var(--text-mute)'} /> : cfg ? <cfg.Icon color={'var(--text-mute)'} /> : <Music2 color={'var(--text-mute)'} />}
-                  <p className="empty-title">{isUntaggedView ? t("empGLViewAllHaveTags") : isUnlinkedView ? t("empGLViewAllInProject") : isNoLrcView ? t("empGLViewAllHaveLrc") : activeProjectIds.length > 0 ? t("empGLViewNoCardsProject") : t("empGLViewNoCardsFound")}</p>
-                  <p className="empty-sub">{isUntaggedView || isUnlinkedView || isNoLrcView ? "" : activeProjectIds.length > 0 ? t("empGLViewDragToAdd") : t("empGLViewAdjustFilters")}</p>
+                <div className="uis-emp">
+                  {isUntaggedView ? <Tag color={'var(--uis-text-mute)'} /> : isUnlinkedView ? <Star color={'var(--uis-text-mute)'} /> : isNoLrcView ? <FileMusic color={'var(--uis-text-mute)'} /> : activeProjectIds.length > 0 ? <FolderOpen color={'var(--uis-text-mute)'} /> : cfg ? <cfg.Icon color={'var(--uis-text-mute)'} /> : <Music2 color={'var(--uis-text-mute)'} />}
+                  <p className="uis-emp-title">{isUntaggedView ? t("empGLViewAllHaveTags") : isUnlinkedView ? t("empGLViewAllInProject") : isNoLrcView ? t("empGLViewAllHaveLrc") : activeProjectIds.length > 0 ? t("empGLViewNoCardsProject") : t("empGLViewNoCardsFound")}</p>
+                  <p className="uis-emp-sub">{isUntaggedView || isUnlinkedView || isNoLrcView ? "" : activeProjectIds.length > 0 ? t("empGLViewDragToAdd") : t("empGLViewAdjustFilters")}</p>
                 </div>
               ) : (
                 filtered.map((p) => (
@@ -2762,26 +2763,26 @@ export default function App() {
 
       {/* Batch translate modal */}
       {batchTranslateOpen && (
-        <div className="dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget && !batchTranslateRunning) { setBatchTranslateOpen(false); setBatchTranslateLang(""); } }}>
-          <div className="dlp" style={{ maxWidth: 300 }}>
+        <div className="uis-dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget && !batchTranslateRunning) { setBatchTranslateOpen(false); setBatchTranslateLang(""); } }}>
+          <div className="uis-dlp" style={{ maxWidth: 300 }}>
             {batchTranslateRunning && batchTranslateProgress ? (
               <>
-                <Languages color={'var(--accent)'} className="dlp-icon" />
-                <p className="dlp-title">{t("lblDlgTranslateProgress")} {batchTranslateProgress.current}/{batchTranslateProgress.total}</p>
-                <p className="dlp-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{batchTranslateProgress.cardName}</p>
-                <div className="dlp-foot">
-                  <button className="btn subtle" onClick={() => { batchTranslateCancelRef.current = true; }}><X />{t("btnGlbCancel")}</button>
+                <Languages color={'var(--uis-accent)'} className="uis-dlp-icon" />
+                <p className="uis-dlp-title">{t("lblDlgTranslateProgress")} {batchTranslateProgress.current}/{batchTranslateProgress.total}</p>
+                <p className="uis-dlp-sub" style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{batchTranslateProgress.cardName}</p>
+                <div className="uis-dlp-foot">
+                  <button className="uis-btn subtle" onClick={() => { batchTranslateCancelRef.current = true; }}><X />{t("btnGlbCancel")}</button>
                 </div>
               </>
             ) : (
               <>
-                <button className="dl-close" onClick={() => { setBatchTranslateOpen(false); setBatchTranslateLang(""); }}><X /></button>
-                <Languages color={'var(--accent)'} className="dlp-icon" />
-                <p className="dlp-title">{t("ttlDlgTranslate")}</p>
-                <div className="dlp-body">
+                <button className="uis-dl-close" onClick={() => { setBatchTranslateOpen(false); setBatchTranslateLang(""); }}><X /></button>
+                <Languages color={'var(--uis-accent)'} className="uis-dlp-icon" />
+                <p className="uis-dlp-title">{t("ttlDlgTranslate")}</p>
+                <div className="uis-dlp-body">
                 <div style={{ width: "100%" }}>
-                  <span className="dlg-field-label" style={{ marginBottom: 4, display: "block" }}>{t("lblDlgTranslateTarget")}</span>
-                  <Combobox
+                  <span className="uis-fld-labelled-label" style={{ marginBottom: 4, display: "block" }}>{t("lblDlgTranslateTarget")}</span>
+                  <UisCboStandard
                     autoFocus
                     placeholder={t("lblDlgTranslateTarget")}
                     value={batchTranslateLangOpen ? batchTranslateLangSearch : (batchTranslateLang ? `${getLangName(batchTranslateLang, langKey)} (${batchTranslateLang})` : "")}
@@ -2791,13 +2792,13 @@ export default function App() {
                     items={(() => { const q = batchTranslateLangSearch.toLowerCase(); return q ? SONG_LANGUAGES.filter(l => l.name.toLowerCase().includes(q) || getLangName(l.code, langKey).toLowerCase().includes(q) || l.code.toLowerCase().includes(q)) : []; })()}
                     itemKey={l => l.code}
                     itemActive={l => l.code === batchTranslateLang}
-                    renderItem={l => <>{getLangName(l.code, langKey)} <span className="pop-dim">({l.code})</span></>}
+                    renderItem={l => <>{getLangName(l.code, langKey)} <span className="uis-pop-dim">({l.code})</span></>}
                     onPick={l => { setBatchTranslateLang(l.code); setBatchTranslateLangSearch(""); }}
                   />
                 </div>
                 </div>
-                <div className="dlp-foot">
-                  <button className="btn primary" disabled={!batchTranslateLang || !txtSettingsAiApiKey} onClick={handleBatchTranslate}>{t("btnDlgTranslateStart")}</button>
+                <div className="uis-dlp-foot">
+                  <button className="uis-btn primary" disabled={!batchTranslateLang || !txtSettingsAiApiKey} onClick={handleBatchTranslate}>{t("btnDlgTranslateStart")}</button>
                 </div>
               </>
             )}
@@ -2825,22 +2826,22 @@ export default function App() {
         const targetFolders = isCards && moveTargetEnvId ? buildFolderOptions(projects.filter(p => p.env === moveTargetEnvId)) : [];
         const closeModal = () => { setMoveEnvMode(null); setMoveTargetEnvId(""); setMoveTargetProjectId(""); setMoveCardWarning(null); };
         return (
-          <div className="dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) closeModal(); }}>
-            <div className="dlp" style={{ maxWidth: isCards ? 380 : 320 }}>
-              <button className="dl-close" onClick={closeModal}><X /></button>
-              <ArrowUpDown color="var(--env)" className="dlp-icon" />
-              <p className="dlp-title">{t("ttlDlgMoveEnv")}{isCards ? ` (${selectedIds.length})` : ""}</p>
-              <div className="dlp-body">
+          <div className="uis-dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) closeModal(); }}>
+            <div className="uis-dlp" style={{ maxWidth: isCards ? 380 : 320 }}>
+              <button className="uis-dl-close" onClick={closeModal}><X /></button>
+              <ArrowUpDown color="var(--uis-env)" className="uis-dlp-icon" />
+              <p className="uis-dlp-title">{t("ttlDlgMoveEnv")}{isCards ? ` (${selectedIds.length})` : ""}</p>
+              <div className="uis-dlp-body">
                 <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                  <select className="select" value={moveTargetEnvId} onChange={e => { setMoveTargetEnvId(e.target.value); setMoveTargetProjectId(""); }} style={{ flex: 1 }}>
+                  <select className="uis-ddn-std" value={moveTargetEnvId} onChange={e => { setMoveTargetEnvId(e.target.value); setMoveTargetProjectId(""); }} style={{ flex: 1 }}>
                     <option value="">{t("optDlgMoveEnvSelect")}</option>
                     {envOptions.map(e => <option key={e.id} value={e.id}>{e.name}</option>)}
                   </select>
                 </div>
                 {isCards && moveTargetEnvId && (
                   <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-                    <span className="dlg-field-label" style={{ whiteSpace: "nowrap" }}>{t("lblDlgMoveEnvProject")}</span>
-                    <select className="select" value={moveTargetProjectId} onChange={e => setMoveTargetProjectId(e.target.value)} style={{ flex: 1 }}>
+                    <span className="uis-fld-labelled-label" style={{ whiteSpace: "nowrap" }}>{t("lblDlgMoveEnvProject")}</span>
+                    <select className="uis-ddn-std" value={moveTargetProjectId} onChange={e => setMoveTargetProjectId(e.target.value)} style={{ flex: 1 }}>
                       <option value="">📁 {t("optDlgMoveEnvRoot")}</option>
                       {targetFolders.map(p => (
                         <option key={p.id} value={p.id}>{"\u00a0\u00a0".repeat(p.depth)}{p.depth > 0 ? "↳ " : "📁 "}{p.name}</option>
@@ -2850,23 +2851,23 @@ export default function App() {
                 )}
               </div>
               {isCards && moveCardWarning && (
-                <div style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: `1px solid color-mix(in srgb, var(--warn) 40%, transparent)`, background: "color-mix(in srgb, var(--warn) 12%, transparent)", display: "flex", flexDirection: "column", gap: 6 }}>
-                  <span style={{ fontSize: 12, color: "var(--warn)", fontWeight: 600 }}>⚠ Moving will unlink from {moveCardWarning.length} song{moveCardWarning.length !== 1 ? "s" : ""} in this environment:</span>
-                  <span className="hint">{moveCardWarning.map(s => s.name).join(", ")}</span>
-                  <span className="hint">{t("msgDlgMoveEnvMergeWarning")}</span>
+                <div style={{ width: "100%", padding: "8px 10px", borderRadius: 8, border: `1px solid color-mix(in srgb, var(--uis-warn) 40%, transparent)`, background: "color-mix(in srgb, var(--uis-warn) 12%, transparent)", display: "flex", flexDirection: "column", gap: 6 }}>
+                  <span style={{ fontSize: 12, color: "var(--uis-warn)", fontWeight: 600 }}>⚠ Moving will unlink from {moveCardWarning.length} song{moveCardWarning.length !== 1 ? "s" : ""} in this environment:</span>
+                  <span className="uis-hnt">{moveCardWarning.map(s => s.name).join(", ")}</span>
+                  <span className="uis-hnt">{t("msgDlgMoveEnvMergeWarning")}</span>
                   <div style={{ display: "flex", gap: 6 }}>
-                    <button className="btn primary" style={{ "--accent": "var(--warn)", "--accent-hov": "color-mix(in srgb, var(--warn) 82%, black)" }} onClick={() => handleMoveCards(true)}>
+                    <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-warn)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-warn) 82%, black)" }} onClick={() => handleMoveCards(true)}>
                       <ArrowUpDown />{t("btnDlgMoveEnvForce")}
                     </button>
-                    <button className="btn subtle" onClick={() => setMoveCardWarning(null)}>
+                    <button className="uis-btn subtle" onClick={() => setMoveCardWarning(null)}>
                       <X />{t("btnGlbCancel")}
                     </button>
                   </div>
                 </div>
               )}
-              <div className="dlp-foot">
-                <button className="btn primary" disabled={!moveTargetEnvId} onClick={isCards ? handleMoveCards : () => handleMoveFolder(folderProj.id)}
-                  style={{ "--accent": "#4dc8c8", "--accent-hov": "#3bb8b8" }}>
+              <div className="uis-dlp-foot">
+                <button className="uis-btn primary" disabled={!moveTargetEnvId} onClick={isCards ? handleMoveCards : () => handleMoveFolder(folderProj.id)}
+                  style={{ "--uis-accent": "#4dc8c8", "--uis-accent-hov": "#3bb8b8" }}>
                   <ArrowUpDown />{t("btnDlgMoveEnvMove")}
                 </button>
               </div>
@@ -2888,14 +2889,14 @@ export default function App() {
         const tagsOnAll  = allTags.filter(tg => selectedCards.every(p => p.tags.includes(tg)));
         const tagsOnSome = allTags.filter(tg => selectedCards.some(p => p.tags.includes(tg)) && !tagsOnAll.includes(tg));
         return (
-          <div className="dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) { setBulkTagOpen(false); setBulkTagInput(""); } }}>
-            <div className="dlp" style={{ maxWidth: 340 }}>
-              <button className="dl-close" onClick={() => { setBulkTagOpen(false); setBulkTagInput(""); }}><X /></button>
-              <Tag color="var(--tag)" className="dlp-icon" />
-              <p className="dlp-title">{t("ttlDlgTags")} ({tagTarget.scope})</p>
-              <div className="dlp-body">
+          <div className="uis-dl-backdrop" onMouseDown={e => { if (e.target === e.currentTarget) { setBulkTagOpen(false); setBulkTagInput(""); } }}>
+            <div className="uis-dlp" style={{ maxWidth: 340 }}>
+              <button className="uis-dl-close" onClick={() => { setBulkTagOpen(false); setBulkTagInput(""); }}><X /></button>
+              <Tag color="var(--uis-tag)" className="uis-dlp-icon" />
+              <p className="uis-dlp-title">{t("ttlDlgTags")} ({tagTarget.scope})</p>
+              <div className="uis-dlp-body">
               <div style={{ width: "100%" }}>
-                <Combobox
+                <UisCboStandard
                   autoFocus
                   placeholder={t("plhDlgTagsInput")}
                   value={bulkTagInput}
@@ -2912,25 +2913,25 @@ export default function App() {
               </div>
               {(tagsOnAll.length > 0 || tagsOnSome.length > 0) && (
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 5, alignItems: "center", marginTop: 4 }}>
-                  <span className="hint" style={{ marginRight: 2 }}>{t("lblDlgTagsQuickRemove")}</span>
+                  <span className="uis-hnt" style={{ marginRight: 2 }}>{t("lblDlgTagsQuickRemove")}</span>
                   {tagsOnAll.map(tg => (
-                    <button key={tg} className="chip on" onClick={() => handleBulkTag(tg, "remove")} title={`Remove "${tg}" from all selected`}>
-                      {tg}<X className="icon-inline" />
+                    <button key={tg} className="uis-chp on" onClick={() => handleBulkTag(tg, "remove")} title={`Remove "${tg}" from all selected`}>
+                      {tg}<X className="uis-ico-inline" />
                     </button>
                   ))}
                   {tagsOnSome.map(tg => (
-                    <button key={tg} className="chip" onClick={() => handleBulkTag(tg, "remove")} title={`Remove "${tg}" from selected cards that have it`}>
-                      {tg}<X className="icon-inline" />
+                    <button key={tg} className="uis-chp" onClick={() => handleBulkTag(tg, "remove")} title={`Remove "${tg}" from selected cards that have it`}>
+                      {tg}<X className="uis-ico-inline" />
                     </button>
                   ))}
                 </div>
               )}
               </div>
-              <div className="dlp-foot">
-                <button className="btn primary" style={{ flex: 1, "--accent": "var(--ok)", "--accent-hov": "color-mix(in srgb, var(--ok) 82%, black)" }} disabled={!bulkTagInput.trim()} onClick={() => handleBulkTag(bulkTagInput, "add")}>
+              <div className="uis-dlp-foot">
+                <button className="uis-btn primary" style={{ flex: 1, "--uis-accent": "var(--uis-ok)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-ok) 82%, black)" }} disabled={!bulkTagInput.trim()} onClick={() => handleBulkTag(bulkTagInput, "add")}>
                   <Plus />{t("btnDlgTagsAdd")}
                 </button>
-                <button className="btn primary" style={{ flex: 1, "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} disabled={!bulkTagInput.trim()} onClick={() => handleBulkTag(bulkTagInput, "remove")}>
+                <button className="uis-btn primary" style={{ flex: 1, "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} disabled={!bulkTagInput.trim()} onClick={() => handleBulkTag(bulkTagInput, "remove")}>
                   <X />{t("btnDlgTagsRemove")}
                 </button>
               </div>
@@ -2942,28 +2943,28 @@ export default function App() {
       {deleteConfirm && (() => {
         const orphanedSongs = getOrphanedSongs([deleteConfirm]);
         return (
-          <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setDeleteConfirm(null); }}>
-            <div className="dlp" onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
-              <button className="dl-close" onClick={() => setDeleteConfirm(null)}><X /></button>
-              <Trash2 color="var(--danger)" className="dlp-icon" />
-              <p className="dlp-title">{t("cfmDlgDeleteCardQ")}</p>
+          <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setDeleteConfirm(null); }}>
+            <div className="uis-dlp" onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+              <button className="uis-dl-close" onClick={() => setDeleteConfirm(null)}><X /></button>
+              <Trash2 color="var(--uis-danger)" className="uis-dlp-icon" />
+              <p className="uis-dlp-title">{t("cfmDlgDeleteCardQ")}</p>
               {orphanedSongs.length > 0 ? (
                 <div style={{ marginBottom: 12, textAlign: "left", width: "100%" }}>
-                  <p className="dlp-sub" style={{ marginBottom: 6, color: "var(--danger)" }}>⚠ {t("msgDlgDeleteLinkedWarning")}</p>
+                  <p className="uis-dlp-sub" style={{ marginBottom: 6, color: "var(--uis-danger)" }}>⚠ {t("msgDlgDeleteLinkedWarning")}</p>
                   <div style={{ maxHeight: 180, overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 }}>
                     {orphanedSongs.map(s2 => (
-                      <span key={s2.id} style={{ fontSize: 12, color: 'var(--text)', padding: "2px 0" }}>
+                      <span key={s2.id} style={{ fontSize: 12, color: 'var(--uis-text)', padding: "2px 0" }}>
                         • {s2.name}<span style={{ fontSize: 10, fontWeight: 700, opacity: 0.6, marginLeft: 4 }}>v{s2.version || 1}</span>
                       </span>
                     ))}
                   </div>
                 </div>
               ) : (
-                <p className="dlp-sub">{t("cfmDlgDeleteCardSub")}</p>
+                <p className="uis-dlp-sub">{t("cfmDlgDeleteCardSub")}</p>
               )}
-              <div className="dlp-foot">
-                <button className="btn subtle dlg-confirm-cancel-default" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setDeleteConfirm(null)}>{t("btnGlbCancel")}</button>
-                <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={() => handleDelete(deleteConfirm)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
+              <div className="uis-dlp-foot">
+                <button className="uis-btn subtle uis-dlg-confirm-cancel-default" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setDeleteConfirm(null)}>{t("btnGlbCancel")}</button>
+                <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} onClick={() => handleDelete(deleteConfirm)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
               </div>
             </div>
           </div>
@@ -2971,15 +2972,15 @@ export default function App() {
       })()}
 
       {importFolderPending && (
-        <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setImportFolderPending(null); }}>
-          <div className="dlp">
-            <button className="dl-close" onClick={() => setImportFolderPending(null)}><X /></button>
-            <FolderOpen color={types.SongStateCreated.accent} className="dlp-icon" />
-            <p className="dlp-title">{t("cfmSbrImportSongsTitle")}</p>
-            <p className="dlp-sub">{t("cfmSbrImportSongsSub")}</p>
-            <div className="dlp-foot">
-              <button className="btn subtle" onClick={() => setImportFolderPending(null)}>{t("btnGlbCancel")}</button>
-              <button className="btn primary" style={{ "--accent": types.SongStateCreated.accent, "--accent-hov": types.SongStateCreated.accent }}
+        <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setImportFolderPending(null); }}>
+          <div className="uis-dlp">
+            <button className="uis-dl-close" onClick={() => setImportFolderPending(null)}><X /></button>
+            <FolderOpen color={types.SongStateCreated.accent} className="uis-dlp-icon" />
+            <p className="uis-dlp-title">{t("cfmSbrImportSongsTitle")}</p>
+            <p className="uis-dlp-sub">{t("cfmSbrImportSongsSub")}</p>
+            <div className="uis-dlp-foot">
+              <button className="uis-btn subtle" onClick={() => setImportFolderPending(null)}>{t("btnGlbCancel")}</button>
+              <button className="uis-btn primary" style={{ "--uis-accent": types.SongStateCreated.accent, "--uis-accent-hov": types.SongStateCreated.accent }}
                 onClick={() => handleImportFolderConfirm("song")}>
                 <Music2 />{t("btnSbrImportConfirm")}
               </button>
@@ -2989,20 +2990,20 @@ export default function App() {
       )}
 
       {deleteProjectConfirm && (
-        <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setDeleteProjectConfirm(null); }}>
-          <div className="dlp">
-            <button className="dl-close" onClick={() => setDeleteProjectConfirm(null)}><X /></button>
-            <Trash2 color="var(--danger)" className="dlp-icon" />
-            <p className="dlp-title">{t("cfmDlgDeleteProjectTitle")}</p>
-            <div className="dlp-body">
-              <label className="check-label">
-                <input type="checkbox" className="check-box" checked={deleteProjectCards} onChange={(e) => setDeleteProjectCards(e.target.checked)} />
+        <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setDeleteProjectConfirm(null); }}>
+          <div className="uis-dlp">
+            <button className="uis-dl-close" onClick={() => setDeleteProjectConfirm(null)}><X /></button>
+            <Trash2 color="var(--uis-danger)" className="uis-dlp-icon" />
+            <p className="uis-dlp-title">{t("cfmDlgDeleteProjectTitle")}</p>
+            <div className="uis-dlp-body">
+              <label className="uis-chk-lbl">
+                <input type="checkbox" className="uis-chk-box" checked={deleteProjectCards} onChange={(e) => setDeleteProjectCards(e.target.checked)} />
                 <span>{t("lblDlgDeleteProjectCards")}</span>
               </label>
             </div>
-            <div className="dlp-foot">
-              <button className="btn subtle" onClick={() => setDeleteProjectConfirm(null)}>{t("btnGlbCancel")}</button>
-              <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={() => handleDeleteProject(deleteProjectConfirm, deleteProjectCards)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
+            <div className="uis-dlp-foot">
+              <button className="uis-btn subtle" onClick={() => setDeleteProjectConfirm(null)}>{t("btnGlbCancel")}</button>
+              <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} onClick={() => handleDeleteProject(deleteProjectConfirm, deleteProjectCards)}><Trash2 style={{ marginRight: 6 }} />{t("btnCardDelete")}</button>
             </div>
           </div>
         </div>
@@ -3021,37 +3022,37 @@ export default function App() {
         // A collapsible list of named files with a copy button — shared by "not found" and "outside the root".
         const fileList = (labelKey, items) => items.length > 0 && (
           <details style={{ marginTop: 4 }}>
-            <summary className="hint" style={{ cursor: "pointer" }}>{t(labelKey).replace("{n}", items.length >= 300 ? "300+" : items.length)}</summary>
+            <summary className="uis-hnt" style={{ cursor: "pointer" }}>{t(labelKey).replace("{n}", items.length >= 300 ? "300+" : items.length)}</summary>
             <div style={{ maxHeight: 140, overflowY: "auto", fontSize: 11, wordBreak: "break-all" }}>
-              {items.map((m, i) => <div key={i}><strong>{m.name}</strong> <span className="hint">{m.path}</span></div>)}
+              {items.map((m, i) => <div key={i}><strong>{m.name}</strong> <span className="uis-hnt">{m.path}</span></div>)}
             </div>
-            <button className="btn icon small subtle" title={t("btnDlgMediaPathsCopyList")}
+            <button className="uis-btn ico small subtle" title={t("btnDlgMediaPathsCopyList")}
               onClick={() => navigator.clipboard.writeText(items.map(m => `${m.name}\t${m.path}`).join("\n")).then(() => showToast(t("tstDlgMediaPathsListCopied")))}><Copy /></button>
           </details>
         );
         return (
-          <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) closeMediaAudit(); }}>
-            <div className="dlp" style={{ maxWidth: 460 }}>
-              <button className="dl-close" onClick={closeMediaAudit}><X /></button>
-              <FolderOpen color="var(--accent)" className="dlp-icon" />
-              <p className="dlp-title">{title}</p>
-              {a.kind !== "toAbsolute" && <p className="dlp-sub">{a.root}</p>}
-              <div className="dlp-body" style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 8 }}>
+          <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) closeMediaAudit(); }}>
+            <div className="uis-dlp" style={{ maxWidth: 460 }}>
+              <button className="uis-dl-close" onClick={closeMediaAudit}><X /></button>
+              <FolderOpen color="var(--uis-accent)" className="uis-dlp-icon" />
+              <p className="uis-dlp-title">{title}</p>
+              {a.kind !== "toAbsolute" && <p className="uis-dlp-sub">{a.root}</p>}
+              <div className="uis-dlp-body" style={{ textAlign: "left", display: "flex", flexDirection: "column", gap: 8 }}>
                 {[["cards", t("lblDlgMediaPathsCards")], ["projects", t("lblDlgMediaPathsProjects")]].filter(([k]) => a[k].total > 0).map(([k, label]) => (
                   <div key={k}>
-                    <strong>{label}</strong><br /><span className="hint">{line(a[k])}</span>
+                    <strong>{label}</strong><br /><span className="uis-hnt">{line(a[k])}</span>
                     {fileList("lblDlgMediaPathsShowOutside", a[k].outsideList)}
                     {fileList("lblDlgMediaPathsShowMissing", a[k].notFound)}
                   </div>
                 ))}
-                {outsideCount > 0 && <p className="hint" style={{ color: "var(--danger)" }}>{t("msgDlgMediaPathsBlocked").replace("{n}", outsideCount)}</p>}
-                {a.kind === "changeRoot" && <p className="hint">{t("msgDlgMediaPathsRootNote")}</p>}
-                {(a.cards.notFound.length > 0 || a.projects.notFound.length > 0) && <p className="hint">{t(a.kind === "changeRoot" ? "msgDlgMediaPathsNotFoundNote" : "msgDlgMediaPathsMissingNote")}</p>}
+                {outsideCount > 0 && <p className="uis-hnt" style={{ color: "var(--uis-danger)" }}>{t("msgDlgMediaPathsBlocked").replace("{n}", outsideCount)}</p>}
+                {a.kind === "changeRoot" && <p className="uis-hnt">{t("msgDlgMediaPathsRootNote")}</p>}
+                {(a.cards.notFound.length > 0 || a.projects.notFound.length > 0) && <p className="uis-hnt">{t(a.kind === "changeRoot" ? "msgDlgMediaPathsNotFoundNote" : "msgDlgMediaPathsMissingNote")}</p>}
               </div>
-              <div className="dlp-foot">
-                <button className="btn subtle" onClick={closeMediaAudit}>{t("btnGlbCancel")}</button>
-                {a.kind !== "toAbsolute" && <button className="btn" onClick={chooseMediaRoot}><FolderOpen />{t("btnDlgMediaPathsChooseRoot")}</button>}
-                <button className="btn primary" disabled={outsideCount > 0} onClick={applyMediaPaths}>{t("btnDlgMediaPathsApply")}</button>
+              <div className="uis-dlp-foot">
+                <button className="uis-btn subtle" onClick={closeMediaAudit}>{t("btnGlbCancel")}</button>
+                {a.kind !== "toAbsolute" && <button className="uis-btn" onClick={chooseMediaRoot}><FolderOpen />{t("btnDlgMediaPathsChooseRoot")}</button>}
+                <button className="uis-btn primary" disabled={outsideCount > 0} onClick={applyMediaPaths}>{t("btnDlgMediaPathsApply")}</button>
               </div>
             </div>
           </div>
@@ -3059,15 +3060,15 @@ export default function App() {
       })()}
 
       {unlinkConfirm && (
-        <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setUnlinkConfirm(false); }}>
-          <div className="dlp">
-            <button className="dl-close" onClick={() => setUnlinkConfirm(false)}><X /></button>
-            <Unlink color="var(--warn)" className="dlp-icon" />
-            <p className="dlp-title">{t("cfmDlgUnlinkTitle")}</p>
-            <p className="dlp-sub">{t("cfmDlgUnlinkSub")} — {selectedIds.length} {t("lblHdrSelected")}</p>
-            <div className="dlp-foot">
-              <button className="btn subtle" onClick={() => setUnlinkConfirm(false)}>{t("btnGlbCancel")}</button>
-              <button className="btn primary" style={{ "--accent": "var(--warn)", "--accent-hov": "color-mix(in srgb, var(--warn) 82%, black)" }} onClick={handleBulkUnlink}><Unlink style={{ marginRight: 6 }} />{t("btnHdrUnlink")}</button>
+        <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setUnlinkConfirm(false); }}>
+          <div className="uis-dlp">
+            <button className="uis-dl-close" onClick={() => setUnlinkConfirm(false)}><X /></button>
+            <Unlink color="var(--uis-warn)" className="uis-dlp-icon" />
+            <p className="uis-dlp-title">{t("cfmDlgUnlinkTitle")}</p>
+            <p className="uis-dlp-sub">{t("cfmDlgUnlinkSub")} — {selectedIds.length} {t("lblHdrSelected")}</p>
+            <div className="uis-dlp-foot">
+              <button className="uis-btn subtle" onClick={() => setUnlinkConfirm(false)}>{t("btnGlbCancel")}</button>
+              <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-warn)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-warn) 82%, black)" }} onClick={handleBulkUnlink}><Unlink style={{ marginRight: 6 }} />{t("btnHdrUnlink")}</button>
             </div>
           </div>
         </div>
@@ -3102,24 +3103,24 @@ export default function App() {
           const fmt = docCreateSettings.docFormat || "docx";
           const endpoint = fmt === "md" ? "/export-md" : fmt === "adoc" ? "/export-adoc" : "/export-docx";
           try {
-            const r = await apiFetch(endpoint, { method: "POST", body: JSON.stringify({ projectIds: ids, contentLyrics: docCreateSettings.contentLyrics, contentLangs: docCreateSettings.contentLangs || [], contentImages: docCreateSettings.contentImages !== "without", contentDesc: docCreateSettings.contentDesc !== "without", filterLyrics: docCreateSettings.filterLyrics || "withLyrics", filterPublished: docCreateSettings.filterPublished || "all", uiLang: langKey, translationLabel: t('lblDlgCardTranslation'), instrumentalLabel: t('lblDlgDocLyricsInstrumental'), title: t('ttlOsdSaveDoc') }) });
+            const r = await apiFetch(endpoint, { method: "POST", body: JSON.stringify({ projectIds: ids, contentLyrics: docCreateSettings.contentLyrics, contentLangs: docCreateSettings.contentLangs || [], contentImages: docCreateSettings.contentImages !== "without", contentDesc: docCreateSettings.contentDesc !== "without", filterLyrics: docCreateSettings.filterLyrics || "withLyrics", filterPublished: docCreateSettings.filterPublished || "all", uilLang: langKey, translationLabel: t('lblDlgCardTranslation'), instrumentalLabel: t('lblDlgDocLyricsInstrumental'), title: t('ttlOsdSaveDoc') }) });
             if (!r.canceled) showToast("✅ " + (fmt === "md" ? "Markdown" : fmt === "adoc" ? "AsciiDoc" : "Document") + " saved");
           } catch(err) { showToast("❌ " + err.message); }
         };
         return (
-          <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}>
-            <div className="dlg" style={{ maxWidth: 360, padding: 28, gap: 20 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+          <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) close(); }}>
+            <div className="uis-dlg" style={{ maxWidth: 360, padding: 28, gap: 20 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
               <div style={s.modalHead}>
-                <h2 className="dlg-title" style={{ margin: 0 }}><FilePlus />{t("ttlDlgDoc")}</h2>
-                <button className="dl-close" onClick={close}><X /></button>
+                <h2 className="uis-dlg-title" style={{ margin: 0 }}><FilePlus />{t("ttlDlgDoc")}</h2>
+                <button className="uis-dl-close" onClick={close}><X /></button>
               </div>
               {/* Format option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocFormat")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocFormat")}</span>
+                <div className="uis-barh-grp">
                   {fmtOpts.map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, docFormat: opt.key }))}
-                      className={`btn icon${(docCreateSettings.docFormat || "docx") === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${(docCreateSettings.docFormat || "docx") === opt.key ? " active" : ""}`}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
                     </button>
@@ -3128,11 +3129,11 @@ export default function App() {
               </div>
               {/* Images option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocContentImages")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocContentImages")}</span>
+                <div className="uis-barh-grp">
                   {[{ key: "with", label: t("btnDlgDocContentWith") }, { key: "without", label: t("btnDlgDocContentWithout") }].map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, contentImages: opt.key }))}
-                      className={`btn icon${(docCreateSettings.contentImages || "with") === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${(docCreateSettings.contentImages || "with") === opt.key ? " active" : ""}`}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
                     </button>
@@ -3141,11 +3142,11 @@ export default function App() {
               </div>
               {/* Description option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocContentDesc")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocContentDesc")}</span>
+                <div className="uis-barh-grp">
                   {[{ key: "with", label: t("btnDlgDocContentWith") }, { key: "without", label: t("btnDlgDocContentWithout") }].map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, contentDesc: opt.key }))}
-                      className={`btn icon${(docCreateSettings.contentDesc || "with") === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${(docCreateSettings.contentDesc || "with") === opt.key ? " active" : ""}`}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
                     </button>
@@ -3154,11 +3155,11 @@ export default function App() {
               </div>
               {/* Published filter option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocFilterPublished")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocFilterPublished")}</span>
+                <div className="uis-barh-grp">
                   {[{ key: "publishedOnly", label: t("btnDlgDocFilterPublishedOnly") }, { key: "all", label: t("btnDlgDocFilterAll") }].map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, filterPublished: opt.key }))}
-                      className={`btn icon${(docCreateSettings.filterPublished || "all") === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${(docCreateSettings.filterPublished || "all") === opt.key ? " active" : ""}`}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
                     </button>
@@ -3167,11 +3168,11 @@ export default function App() {
               </div>
               {/* Lyrics filter option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocFilterLyrics")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocFilterLyrics")}</span>
+                <div className="uis-barh-grp">
                   {[{ key: "withLyrics", label: t("btnDlgDocFilterWithLyrics") }, { key: "all", label: t("btnDlgDocFilterAll") }].map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, filterLyrics: opt.key }))}
-                      className={`btn icon${(docCreateSettings.filterLyrics || "withLyrics") === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${(docCreateSettings.filterLyrics || "withLyrics") === opt.key ? " active" : ""}`}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
                     </button>
@@ -3180,11 +3181,11 @@ export default function App() {
               </div>
               {/* Lyrics content option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocContentLyrics")}</span>
-                <div className="barh-grp">
+                <span className="uis-fld-labelled-label">{t("lblDlgDocContentLyrics")}</span>
+                <div className="uis-barh-grp">
                   {opts.map((opt) => (
                     <button key={opt.key} onClick={() => setDocCreateSettings(prev => ({ ...prev, contentLyrics: opt.key }))}
-                      className={`btn icon${docCreateSettings.contentLyrics === opt.key ? " active" : ""}`}
+                      className={`uis-btn ico${docCreateSettings.contentLyrics === opt.key ? " active" : ""}`}
                       title={opt.desc}
                       style={{ flex: 1, justifyContent: "center" }}>
                       {opt.label}
@@ -3194,7 +3195,7 @@ export default function App() {
               </div>
               {/* Translations option */}
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
-                <span className="dlg-field-label">{t("lblDlgDocContentLangs")}</span>
+                <span className="uis-fld-labelled-label">{t("lblDlgDocContentLangs")}</span>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>
                   {availableTranslationLangs.map(lang => {
                     const selected = (docCreateSettings.contentLangs || []).includes(lang);
@@ -3203,7 +3204,7 @@ export default function App() {
                     return (
                       <button key={lang}
                         onClick={() => setDocCreateSettings(prev => ({ ...prev, contentLangs: selected ? (prev.langs || []).filter(l => l !== lang) : [...(prev.langs || []), lang] }))}
-                        className={`chip${selected ? " on" : ""}`}>
+                        className={`uis-chp${selected ? " on" : ""}`}>
                         {label}
                       </button>
                     );
@@ -3212,9 +3213,9 @@ export default function App() {
               </div>
               {/* Actions */}
               <div style={{ display: "flex", gap: 10, justifyContent: "flex-end", alignItems: "center" }}>
-                <span className={`hint${exportCount === 0 ? " warn" : ""}`} style={{ marginRight: "auto" }}>{exportCount} {t("msgDlgDocSongCount")}</span>
-                <button className="btn subtle" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={close}>{t("btnGlbCancel")}</button>
-                <button className="btn primary" disabled={exportCount === 0} onClick={doExport}><FilePlus style={{ marginRight: 6 }} />{t("btnDlgDocCreate")}</button>
+                <span className={`uis-hnt${exportCount === 0 ? " warn" : ""}`} style={{ marginRight: "auto" }}>{exportCount} {t("msgDlgDocSongCount")}</span>
+                <button className="uis-btn subtle" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={close}>{t("btnGlbCancel")}</button>
+                <button className="uis-btn primary" disabled={exportCount === 0} onClick={doExport}><FilePlus style={{ marginRight: 6 }} />{t("btnDlgDocCreate")}</button>
               </div>
             </div>
           </div>
@@ -3224,28 +3225,28 @@ export default function App() {
       {bulkDeleteConfirm && (() => {
         const orphanedSongs = getOrphanedSongs(selectedIds);
         return (
-          <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setBulkDeleteConfirm(false); }}>
-            <div className="dlp" onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
-              <button className="dl-close" onClick={() => setBulkDeleteConfirm(false)}><X /></button>
-              <Trash2 color="var(--danger)" className="dlp-icon" />
-              <p className="dlp-title">{t("btnCardDelete")} {selectedIds.length} {t("cfmDlgDeleteSelected")}</p>
+          <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setBulkDeleteConfirm(false); }}>
+            <div className="uis-dlp" onKeyDown={(e) => { if (e.key !== 'Tab') return; const btns = [...e.currentTarget.querySelectorAll('button')]; const first = btns[0]; const last = btns[btns.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+              <button className="uis-dl-close" onClick={() => setBulkDeleteConfirm(false)}><X /></button>
+              <Trash2 color="var(--uis-danger)" className="uis-dlp-icon" />
+              <p className="uis-dlp-title">{t("btnCardDelete")} {selectedIds.length} {t("cfmDlgDeleteSelected")}</p>
               {orphanedSongs.length > 0 ? (
                 <div style={{ marginBottom: 12, textAlign: "left", width: "100%" }}>
-                  <p className="dlp-sub" style={{ marginBottom: 6, color: "var(--danger)" }}>⚠ {t("msgDlgDeleteLinkedWarning")}</p>
+                  <p className="uis-dlp-sub" style={{ marginBottom: 6, color: "var(--uis-danger)" }}>⚠ {t("msgDlgDeleteLinkedWarning")}</p>
                   <div style={{ maxHeight: 180, overflowY: "auto", display: "flex", flexDirection: "column", gap: 3 }}>
                     {orphanedSongs.map(s2 => (
-                      <span key={s2.id} style={{ fontSize: 12, color: 'var(--text)', padding: "2px 0" }}>
+                      <span key={s2.id} style={{ fontSize: 12, color: 'var(--uis-text)', padding: "2px 0" }}>
                         • {s2.name}<span style={{ fontSize: 10, fontWeight: 700, opacity: 0.6, marginLeft: 4 }}>v{s2.version || 1}</span>
                       </span>
                     ))}
                   </div>
                 </div>
               ) : (
-                <p className="dlp-sub">{t("cfmDlgDeleteCardSub")}</p>
+                <p className="uis-dlp-sub">{t("cfmDlgDeleteCardSub")}</p>
               )}
-              <div className="dlp-foot">
-                <button className="btn subtle dlg-confirm-cancel-default" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setBulkDeleteConfirm(false)}>{t("btnGlbCancel")}</button>
-                <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={handleBulkDelete}><Trash2 style={{ marginRight: 6 }} />{t("btnDlgDeleteAll")}</button>
+              <div className="uis-dlp-foot">
+                <button className="uis-btn subtle uis-dlg-confirm-cancel-default" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setBulkDeleteConfirm(false)}>{t("btnGlbCancel")}</button>
+                <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} onClick={handleBulkDelete}><Trash2 style={{ marginRight: 6 }} />{t("btnDlgDeleteAll")}</button>
               </div>
             </div>
           </div>
@@ -3266,19 +3267,19 @@ export default function App() {
         onClose={() => { setPlayerMedia(null); setPlaylist([]); setGlobalPlaying(false); }}
       />
       {importErrors && (
-        <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setImportErrors(null); }}>
-          <div className="dlg" style={{ maxWidth: 520 }}>
+        <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) setImportErrors(null); }}>
+          <div className="uis-dlg" style={{ maxWidth: 520 }}>
             <div style={{ ...s.modalHead, padding: "16px 20px 14px" }}>
-              <h2 className="dlg-title" style={{ margin: 0 }}><AlertTriangle color="var(--danger)" />{t("ttlAppImportJSONWarnings")}</h2>
-              <button className="dl-close" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setImportErrors(null)}><X /></button>
+              <h2 className="uis-dlg-title" style={{ margin: 0 }}><AlertTriangle color="var(--uis-danger)" />{t("ttlAppImportJSONWarnings")}</h2>
+              <button className="uis-dl-close" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={() => setImportErrors(null)}><X /></button>
             </div>
             <div style={{ overflowY: "auto", maxHeight: 360, padding: "12px 20px", display: "flex", flexDirection: "column", gap: 6 }}>
               {importErrors.map((msg, i) => (
-                <div key={i} style={{ fontSize: 12, color: 'var(--text)', fontFamily: "'JetBrains Mono', monospace", background: 'var(--bg-input)', border: `1px solid var(--border)`, borderRadius: 6, padding: "6px 10px" }}>{msg}</div>
+                <div key={i} style={{ fontSize: 12, color: 'var(--uis-text)', fontFamily: "'JetBrains Mono', monospace", background: 'var(--uis-bg-input)', border: `1px solid var(--uis-border)`, borderRadius: 6, padding: "6px 10px" }}>{msg}</div>
               ))}
             </div>
-            <div style={{ padding: "12px 20px", borderTop: `1px solid var(--border)`, display: "flex", justifyContent: "flex-end" }}>
-              <button className="btn subtle" onClick={() => setImportErrors(null)}>{t("btnGlbCancel")}</button>
+            <div style={{ padding: "12px 20px", borderTop: `1px solid var(--uis-border)`, display: "flex", justifyContent: "flex-end" }}>
+              <button className="uis-btn subtle" onClick={() => setImportErrors(null)}>{t("btnGlbCancel")}</button>
             </div>
           </div>
         </div>
@@ -3311,32 +3312,32 @@ function ProjectItem({ proj, isActive, isDropTarget, draggingId, langKey, totalC
           e.dataTransfer.effectAllowed = "move";
           const ghost = document.createElement("div");
           ghost.innerText = "📁 " + proj.name;
-          ghost.style.cssText = `position:fixed;top:-200px;left:0;padding:6px 14px;background:var(--bg-elev);color:${proj.color};border:1px solid ${proj.color};border-radius:8px;font-size:13px;font-family:inherit;white-space:nowrap;`;
+          ghost.style.cssText = `position:fixed;top:-200px;left:0;padding:6px 14px;background:var(--uis-bg-elev);color:${proj.color};border:1px solid ${proj.color};border-radius:8px;font-size:13px;font-family:inherit;white-space:nowrap;`;
           document.body.appendChild(ghost);
           e.dataTransfer.setDragImage(ghost, 10, 20);
           setTimeout(() => { if (document.body.contains(ghost)) document.body.removeChild(ghost); }, 200);
           setTimeout(() => onDragProjectStart(), 0);
         }}
         onDragEnd={() => onDragProjectEnd()}
-        style={{ cursor: "grab", padding: "0 4px", color: 'var(--text-mute)', display: "flex", alignItems: "center", flexShrink: 0, fontSize: 10 }}
+        style={{ cursor: "grab", padding: "0 4px", color: 'var(--uis-text-mute)', display: "flex", alignItems: "center", flexShrink: 0, fontSize: 10 }}
       >⠿</div>
-      {/* Row / selected state from the SHARED .lv-item; the folder ICON keeps its per-folder
+      {/* Row / selected state from the SHARED .uis-lvw-item; the folder ICON keeps its per-folder
           color; only the drag/drop affordances stay inline (not part of the list spec). */}
-      <button onClick={(e) => onSelect(e)} className={"lv-item" + (isActive ? " active" : "")} style={{ margin: 0, flex: 1, minWidth: 0, ...(isDropTarget ? { background: 'var(--accent)' + "22", borderColor: 'var(--accent)', outline: `2px dashed var(--accent)` } : dragOver ? { background: 'var(--bg-hov)', borderColor: proj.color + "66", outline: `2px dashed ${proj.color}` } : {}) }}>
+      <button onClick={(e) => onSelect(e)} className={"uis-lvw-item" + (isActive ? " active" : "")} style={{ margin: 0, flex: 1, minWidth: 0, ...(isDropTarget ? { background: 'var(--uis-accent)' + "22", borderColor: 'var(--uis-accent)', outline: `2px dashed var(--uis-accent)` } : dragOver ? { background: 'var(--uis-bg-hov)', borderColor: proj.color + "66", outline: `2px dashed ${proj.color}` } : {}) }}>
         <Folder color={proj.color} />
-        <span className="lv-item-name" style={{ flex: 1 }}>{proj.name}{proj.version > 1 && <span style={{ fontSize: 9, fontWeight: 700, color: proj.color, border: `1px solid ${proj.color}55`, borderRadius: 4, padding: '1px 4px', marginLeft: 4, opacity: 0.85 }}>v{proj.version}</span>}</span>
-        <span className="lv-item-badge">{totalCount ?? proj.cardIds.length}</span>
+        <span className="uis-lvw-item-name" style={{ flex: 1 }}>{proj.name}{proj.version > 1 && <span style={{ fontSize: 9, fontWeight: 700, color: proj.color, border: `1px solid ${proj.color}55`, borderRadius: 4, padding: '1px 4px', marginLeft: 4, opacity: 0.85 }}>v{proj.version}</span>}</span>
+        <span className="uis-lvw-item-badge">{totalCount ?? proj.cardIds.length}</span>
       </button>
       {/* Row actions — absent until the row is hovered, then floated over the count badge so the
           name never moves. A sibling of the select button (never inside it), so a click here never
           selects the project. */}
       <div className="proj-acts">
-        <button className="btn icon small subtle" title={t("btnCardEdit")} aria-label={t("btnCardEdit")} onClick={onEdit}><Pencil /></button>
-        <button className="btn icon small subtle" title={t("tipSbrTag")} aria-label={t("tipSbrTag")} onClick={onTag}><Tag /></button>
-        <button className="btn icon small subtle" title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")} onClick={onTranslate}><Languages /></button>
-        <button className="btn icon small subtle" title={t("tipSbrImportFolder")} aria-label={t("tipSbrImportFolder")} onClick={onImport}><FolderOpen /></button>
-        <button className="btn icon small subtle" title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")} onClick={onMove}><FolderUp /></button>
-        <button className="btn icon small subtle" title={t("tipCardDelete")} aria-label={t("tipCardDelete")} onClick={onDelete}><Trash2 /></button>
+        <button className="uis-btn ico small subtle" title={t("btnCardEdit")} aria-label={t("btnCardEdit")} onClick={onEdit}><Pencil /></button>
+        <button className="uis-btn ico small subtle" title={t("tipSbrTag")} aria-label={t("tipSbrTag")} onClick={onTag}><Tag /></button>
+        <button className="uis-btn ico small subtle" title={t("tipSbrTranslate")} aria-label={t("tipSbrTranslate")} onClick={onTranslate}><Languages /></button>
+        <button className="uis-btn ico small subtle" title={t("tipSbrImportFolder")} aria-label={t("tipSbrImportFolder")} onClick={onImport}><FolderOpen /></button>
+        <button className="uis-btn ico small subtle" title={t("tipSbrMoveEnv")} aria-label={t("tipSbrMoveEnv")} onClick={onMove}><FolderUp /></button>
+        <button className="uis-btn ico small subtle" title={t("tipCardDelete")} aria-label={t("tipCardDelete")} onClick={onDelete}><Trash2 /></button>
       </div>
     </div>
   );
@@ -3363,13 +3364,13 @@ function TagColorsTab({ s, t, clrSettingsTags, setClrSettingsTags, allTags }) {
 
   return (
     <div style={{ paddingTop: 20 }}>
-      <div className="dlg-field">
-        <label className="dlg-field-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Tag className="icon-inline" />{t("ttlStgTagColors")}</label>
-        <p className="hint" style={{ marginBottom: 12 }}>{t("msgStgTagColorsDesc")}</p>
+      <div className="uis-fld-labelled">
+        <label className="uis-fld-labelled-label" style={{ display: "flex", alignItems: "center", gap: 6 }}><Tag className="uis-ico-inline" />{t("ttlStgTagColors")}</label>
+        <p className="uis-hnt" style={{ marginBottom: 12 }}>{t("msgStgTagColorsDesc")}</p>
         {/* Add row */}
         <div style={{ display: "flex", gap: 8, alignItems: "center", marginBottom: 12, position: "relative" }}>
           <div style={{ flex: 1 }}>
-            <Combobox
+            <UisCboStandard
               placeholder={t("plhStgTagColor")}
               value={input}
               onChange={setInput}
@@ -3380,19 +3381,19 @@ function TagColorsTab({ s, t, clrSettingsTags, setClrSettingsTags, allTags }) {
               onPick={setInput}
             />
           </div>
-          <ColorPicker color={pendingColor} onChange={setPendingColor} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-          <button className="btn primary" onClick={add}>{t("btnStgTagColorAdd")}</button>
+          <UisPkrColor color={pendingColor} onChange={setPendingColor} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
+          <button className="uis-btn primary" onClick={add}>{t("btnStgTagColorAdd")}</button>
         </div>
         {/* Override list - maxHeight cap prevents the grid cell from growing unboundedly (DLG-8 Part 2) */}
         <div style={{ maxHeight: 260, overflowY: "auto" }}>
         {overrides.length === 0
-          ? <p className="hint">{t("msgStgTagColorEmpty")}</p>
+          ? <p className="uis-hnt">{t("msgStgTagColorEmpty")}</p>
           : <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
               {overrides.map(([tag, color]) => (
-                <div key={tag} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 10px", borderRadius: 7, border: `1px solid var(--border-strong)`, background: 'var(--bg-input)' }}>
+                <div key={tag} style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 10px", borderRadius: 7, border: `1px solid var(--uis-border-strong)`, background: 'var(--uis-bg-input)' }}>
                   <span style={{ flex: 1, fontSize: 12, color, fontWeight: 600 }}>{tag}</span>
-                  <ColorPicker color={color} onChange={(c) => update(tag, c)} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
-                  <button className="btn icon small subtle" onClick={() => remove(tag)} title={t("tipStgTagColorRemove")}><X /></button>
+                  <UisPkrColor color={color} onChange={(c) => update(tag, c)} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
+                  <button className="uis-btn ico small subtle" onClick={() => remove(tag)} title={t("tipStgTagColorRemove")}><X /></button>
                 </div>
               ))}
             </div>
@@ -3460,45 +3461,45 @@ function ProjectModal({ project, parentId, isSubFolder, langKey, apiPort, onSave
   };
 
   return (
-    <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="dlg" style={{ maxWidth: 480, padding: 28, gap: 20 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+    <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="uis-dlg" style={{ maxWidth: 480, padding: 28, gap: 20 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
         <div style={s.modalHead}>
-          <h2 className="dlg-title" style={{ margin: 0 }}>
+          <h2 className="uis-dlg-title" style={{ margin: 0 }}>
             <FolderPlus color={color} />{project ? t("ttlDlgProjectEdit") : isSubFolder ? "New Sub-folder" : t("ttlDlgProjectNew")}
           </h2>
-          <button className="dl-close" onClick={onClose}><X /></button>
+          <button className="uis-dl-close" onClick={onClose}><X /></button>
         </div>
-        <div className="dlg-field">
-          <label className="dlg-field-label">{t("lblDlgProjectName")}</label>
-          <input className="input" style={error ? s.errBorder : undefined}
+        <div className="uis-fld-labelled">
+          <label className="uis-fld-labelled-label">{t("lblDlgProjectName")}</label>
+          <input className="uis-txt" style={error ? s.errBorder : undefined}
             placeholder={t("plhDlgProjectName")} value={name}
             onChange={(e) => { setName(e.target.value); setError(""); }} autoFocus />
           {error && <span style={s.errMsg}>{error}</span>}
         </div>
-        <div className="dlg-field">
-          <label className="dlg-field-label">{t("lblDlgProjectColor")}</label>
-          <ColorPicker color={color} onChange={setColor} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
+        <div className="uis-fld-labelled">
+          <label className="uis-fld-labelled-label">{t("lblDlgProjectColor")}</label>
+          <UisPkrColor color={color} onChange={setColor} cancelLabel={t("btnGlbCancel")} applyLabel={t("btnDlgCardApply")} pickTitle={t("tipGlbPickFromScreen")} />
         </div>
-        <div className="dlg-field">
-          <label className="dlg-field-label" style={{ color: color, display: "flex", alignItems: "center", gap: 5 }}><Globe className="icon-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+        <div className="uis-fld-labelled">
+          <label className="uis-fld-labelled-label" style={{ color: color, display: "flex", alignItems: "center", gap: 5 }}><Globe className="uis-ico-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
           <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
             {urls.map((u) => (
               <UrlRow key={u.id} url={u} accent={color} onRemove={handleRemoveUrl} />
             ))}
             <div style={{ display: "flex", gap: 6 }}>
-              <input className="input" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
-              <input className="input" style={{ flex: 1 }} placeholder="https://…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
-              <button className="btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--accent": color, "--accent-hov": color, flexShrink: 0 }}>{t("btnDlgCardAdd")}</button>
+              <input className="uis-txt" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
+              <input className="uis-txt" style={{ flex: 1 }} placeholder="https://…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
+              <button className="uis-btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--uis-accent": color, "--uis-accent-hov": color, flexShrink: 0 }}>{t("btnDlgCardAdd")}</button>
             </div>
           </div>
         </div>
-        <div className="dlg-field">
-          <label className="dlg-field-label">{t("lblDlgProjectPath")}</label>
+        <div className="uis-fld-labelled">
+          <label className="uis-fld-labelled-label">{t("lblDlgProjectPath")}</label>
           <div style={{ display: "flex", gap: 6 }}>
-            <input className="input" style={{ flex: 1 }}
+            <input className="uis-txt" style={{ flex: 1 }}
               placeholder={t("plhDlgProjectPath")} value={projPath}
               onChange={(e) => setProjPath(e.target.value)} />
-            <button className="btn subtle" style={{ flexShrink: 0 }} onClick={browsePath}>
+            <button className="uis-btn subtle" style={{ flexShrink: 0 }} onClick={browsePath}>
               <FolderOpen />
             </button>
           </div>
@@ -3506,18 +3507,18 @@ function ProjectModal({ project, parentId, isSubFolder, langKey, apiPort, onSave
         <div style={{ display: "flex", justifyContent: "flex-end", flexDirection: "column", gap: 10 }}>
           {project && (
             <div style={{ display: "flex", gap: 12, alignItems: "center", width: "100%" }}>
-              <DatePicker value={dateVal} onChange={setDateVal} locale={langKey} todayLabel={t('btnGlbToday')} clearLabel={t('btnGlbClear')} />
+              <UisPkrDate value={dateVal} onChange={setDateVal} locale={langKey} todayLabel={t('btnGlbToday')} clearLabel={t('btnGlbClear')} />
               <span style={{ fontWeight: 700, color: color, fontSize: 11 }}>v{project.version || 1}</span>
-              <button className="btn small subtle" type="button" onClick={() => setFinalized(f => !f)} title={t("tipDlgProjectFinalized")}
-                style={{ color: 'var(--text)' }}>
-                {finalized ? <CheckSquare color={color} /> : <Square color={'var(--text-mute)'} />}
+              <button className="uis-btn small subtle" type="button" onClick={() => setFinalized(f => !f)} title={t("tipDlgProjectFinalized")}
+                style={{ color: 'var(--uis-text)' }}>
+                {finalized ? <CheckSquare color={color} /> : <Square color={'var(--uis-text-mute)'} />}
                 <span>{t("lblDlgProjectFinalized")}</span>
               </button>
             </div>
           )}
           <div style={{ display: "flex", gap: 10, width: "100%", justifyContent: "flex-end" }}>
-            <button className="btn subtle" onClick={onClose}>{t("btnGlbCancel")}</button>
-            <button className="btn primary" style={{ "--accent": color, "--accent-hov": color }} onClick={submit}>{project ? t("btnDlgProjectSave") : t("btnDlgProjectCreate")}</button>
+            <button className="uis-btn subtle" onClick={onClose}>{t("btnGlbCancel")}</button>
+            <button className="uis-btn primary" style={{ "--uis-accent": color, "--uis-accent-hov": color }} onClick={submit}>{project ? t("btnDlgProjectSave") : t("btnDlgProjectCreate")}</button>
           </div>
         </div>
       </div>
@@ -3634,7 +3635,7 @@ const GlobalPlayer = forwardRef(function GlobalPlayer({ media, apiPort, langKey,
   if (!media) return null;
 
   return createPortal(
-    <div className="barh-footer" style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 150 }}> {/* shared canonical footer bar — ui-app.css */}
+    <div className="uis-barh-footer" style={{ position: "fixed", bottom: 0, left: 0, right: 0, zIndex: 150 }}> {/* shared canonical footer bar — uis-app.css */}
       <audio
         ref={audioRef}
         src={streamUrl}
@@ -3643,51 +3644,51 @@ const GlobalPlayer = forwardRef(function GlobalPlayer({ media, apiPort, langKey,
         onEnded={handleEnded}
       />
       {/* Shuffle */}
-      <button className={"btn icon small subtle" + (shuffle ? " active" : "")} onClick={toggleShuffle} style={{ position: "relative" }} title={shuffle ? t("tipFtrShuffleOn") : t("tipFtrShuffleOff")}>
-        <Shuffle className="icon-inline" />
-        {shuffle && <span style={{ position: "absolute", bottom: 1, right: 2, width: 4, height: 4, borderRadius: "50%", background: 'var(--accent)' }} />}
+      <button className={"uis-btn ico small subtle" + (shuffle ? " active" : "")} onClick={toggleShuffle} style={{ position: "relative" }} title={shuffle ? t("tipFtrShuffleOn") : t("tipFtrShuffleOff")}>
+        <Shuffle className="uis-ico-inline" />
+        {shuffle && <span style={{ position: "absolute", bottom: 1, right: 2, width: 4, height: 4, borderRadius: "50%", background: 'var(--uis-accent)' }} />}
       </button>
-      <button className="btn icon small subtle" onClick={handlePrev} title={t("tipFtrPrevious")}>
+      <button className="uis-btn ico small subtle" onClick={handlePrev} title={t("tipFtrPrevious")}>
         <ChevronLeft />
       </button>
-      <button className="btn icon primary" onClick={togglePlay}>
+      <button className="uis-btn ico primary" onClick={togglePlay}>
         {playing ? <Pause /> : <Play />}
       </button>
-      <button className="btn icon small subtle" onClick={() => { if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; } setPlayingSync(false); }} title={t("tipFtrStop")}
-        style={{ color: "var(--danger)" }}>
+      <button className="uis-btn ico small subtle" onClick={() => { if (audioRef.current) { audioRef.current.pause(); audioRef.current.currentTime = 0; } setPlayingSync(false); }} title={t("tipFtrStop")}
+        style={{ color: "var(--uis-danger)" }}>
         <Square />
       </button>
-      <button className="btn icon small subtle" onClick={handleNext} title={t("tipFtrNext")}>
+      <button className="uis-btn ico small subtle" onClick={handleNext} title={t("tipFtrNext")}>
         <ChevronRight />
       </button>
       {/* Repeat */}
-      <button className={"btn icon small subtle" + (repeat !== "off" ? " active" : "")} onClick={cycleRepeat} style={{ position: "relative" }} title={repeat === "off" ? t("tipFtrRepeatOff") : repeat === "all" ? t("tipFtrRepeatAll") : t("tipFtrRepeatOne")}>
-        <RepeatIcon className="icon-inline" />
-        {repeat === "one" && <span style={{ position: "absolute", top: 1, right: 0, fontSize: 8, fontWeight: 700, color: 'var(--accent)', lineHeight: 1 }}>1</span>}
-        {repeat !== "off" && repeat !== "one" && <span style={{ position: "absolute", bottom: 1, right: 2, width: 4, height: 4, borderRadius: "50%", background: 'var(--accent)' }} />}
+      <button className={"uis-btn ico small subtle" + (repeat !== "off" ? " active" : "")} onClick={cycleRepeat} style={{ position: "relative" }} title={repeat === "off" ? t("tipFtrRepeatOff") : repeat === "all" ? t("tipFtrRepeatAll") : t("tipFtrRepeatOne")}>
+        <RepeatIcon className="uis-ico-inline" />
+        {repeat === "one" && <span style={{ position: "absolute", top: 1, right: 0, fontSize: 8, fontWeight: 700, color: 'var(--uis-accent)', lineHeight: 1 }}>1</span>}
+        {repeat !== "off" && repeat !== "one" && <span style={{ position: "absolute", bottom: 1, right: 2, width: 4, height: 4, borderRadius: "50%", background: 'var(--uis-accent)' }} />}
       </button>
-      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--text)', flexShrink: 0, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={media.cardName}>
+      <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text)', flexShrink: 0, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={media.cardName}>
         {media.cardName}
       </span>
       <input type="range" min={0} max={duration || 1} step={0.1}
         value={currentTime}
         onChange={e => { const v = parseFloat(e.target.value); if (audioRef.current) audioRef.current.currentTime = v; setCurrentTime(v); }}
-        style={{ flex: 1, height: 4, accentColor: 'var(--accent)', cursor: "pointer" }} />
-      <span className="hint" style={{ flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
+        style={{ flex: 1, height: 4, accentColor: 'var(--uis-accent)', cursor: "pointer" }} />
+      <span className="uis-hnt" style={{ flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
         {fmt(currentTime)} / {fmt(duration)}
       </span>
-      <div className="barh-sep" />
-      <button className="btn icon small subtle" onClick={toggleMute} title={muted ? t("tipFtrUnmute") : t("tipFtrMute")}>
+      <div className="uis-barh-sep" />
+      <button className="uis-btn ico small subtle" onClick={toggleMute} title={muted ? t("tipFtrUnmute") : t("tipFtrMute")}>
         <VolumeIcon />
       </button>
       <input
         type="range" min="0" max="1" step="0.02"
         value={muted ? 0 : volume}
         onChange={handleVolume}
-        style={{ width: 72, height: 4, accentColor: 'var(--accent)', cursor: "pointer", flexShrink: 0 }}
+        style={{ width: 72, height: 4, accentColor: 'var(--uis-accent)', cursor: "pointer", flexShrink: 0 }}
         title={`${t("tipFtrVolume")}: ${Math.round((muted ? 0 : volume) * 100)}%`}
       />
-      <button className="btn icon small subtle" onClick={onClose}>
+      <button className="uis-btn ico small subtle" onClick={onClose}>
         <X />
       </button>
     </div>,
@@ -3700,8 +3701,8 @@ function playBtnProps(mediaExists, isPlaying, accentColor, t) {
   const missing = !mediaExists;
   return {
     icon: missing ? <AlertTriangle /> : isPlaying ? <Pause /> : <Play />,
-    color: missing ? "var(--danger)" : accentColor,
-    borderColor: missing ? "color-mix(in srgb, var(--danger) 27%, transparent)" : `${accentColor}44`,
+    color: missing ? "var(--uis-danger)" : accentColor,
+    borderColor: missing ? "color-mix(in srgb, var(--uis-danger) 27%, transparent)" : `${accentColor}44`,
     title: missing ? t("tipCardMediaMissing") : isPlaying ? t("tipCardPause") : t("tipCardPlay"),
     disabled: missing,
   };
@@ -3754,7 +3755,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
       </div>
     : !isSong && linkedByCount > 0
       ? <div style={{ display: "flex", gap: 4, alignItems: "center", flexShrink: 0 }}>
-          <Link2 className="icon-inline" color={'var(--text-mute)'} /><span style={{ fontSize: 10, border: `1px solid ${types.SongStateUndefined?.accent}44`, borderRadius: 4, padding: "2px 6px", color: types.SongStateUndefined?.accent, background: types.SongStateUndefined?.accentDim }}>{linkedByCount}</span>
+          <Link2 className="uis-ico-inline" color={'var(--uis-text-mute)'} /><span style={{ fontSize: 10, border: `1px solid ${types.SongStateUndefined?.accent}44`, borderRadius: 4, padding: "2px 6px", color: types.SongStateUndefined?.accent, background: types.SongStateUndefined?.accentDim }}>{linkedByCount}</span>
         </div>
       : null;
 
@@ -3788,7 +3789,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
   // Mode-specific placeholder (only the part that varies)
   const modePlaceholder = mode === "link" ? (
     linkedCards.length === 0 ? (
-      <div style={{ border: `1px dashed ${anyDragging ? cfg.accent + "88" : 'var(--border)'}`, borderRadius: 6, padding: "6px 12px", textAlign: "center", fontSize: 11, color: anyDragging ? cfg.accent : 'var(--text-mute)', transition: "all 0.2s", flex: 1, minWidth: 0 }}>
+      <div style={{ border: `1px dashed ${anyDragging ? cfg.accent + "88" : 'var(--uis-border)'}`, borderRadius: 6, padding: "6px 12px", textAlign: "center", fontSize: 11, color: anyDragging ? cfg.accent : 'var(--uis-text-mute)', transition: "all 0.2s", flex: 1, minWidth: 0 }}>
         {anyDragging ? t("lblPnlLinkDrop") : t("lblPnlLinkNoCards")}
       </div>
     ) : (
@@ -3798,8 +3799,8 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
           const { Icon: LIcon } = lc;
           return (
             <span key={lp.id} style={{ fontSize: 11, border: `1px solid ${lc.accent}44`, borderRadius: 4, padding: "3px 6px 3px 8px", color: lc.accent, background: lc.accentDim, display: "inline-flex", alignItems: "center", gap: 4 }}>
-              <LIcon className="icon-inline" />{lp.name}<span style={{ opacity: 0.65, fontWeight: 700 }}>v{lp.version || 1}</span>
-              <button className="btn icon small subtle" onClick={() => onUnlink(song.id, lp.id)} title={t("tipPnlLinkUnlink")} style={{ color: lc.accent + "99" }}>
+              <LIcon className="uis-ico-inline" />{lp.name}<span style={{ opacity: 0.65, fontWeight: 700 }}>v{lp.version || 1}</span>
+              <button className="uis-btn ico small subtle" onClick={() => onUnlink(song.id, lp.id)} title={t("tipPnlLinkUnlink")} style={{ color: lc.accent + "99" }}>
                 <X />
               </button>
             </span>
@@ -3810,12 +3811,12 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
   ) : mode === "media" ? (
     filename ? (
       <div style={{ display: "flex", alignItems: "center", gap: 6, border: `1px solid ${cfg.accent}44`, borderRadius: 6, padding: "4px 10px", background: cfg.accentDim, flex: 1, minWidth: 0 }}>
-        <Disc className="icon-inline" color={cfg.accent} style={{ flexShrink: 0 }} />
+        <Disc className="uis-ico-inline" color={cfg.accent} style={{ flexShrink: 0 }} />
         <span style={{ fontSize: 11, color: cfg.accent, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={song.mediaPath}>{filename}</span>
-        <button className="btn icon small subtle" onClick={() => onClearMedia(song.id)} title={t("tipPnlLinkRemoveMedia")} style={{ color: cfg.accent + "99" }}><X /></button>
+        <button className="uis-btn ico small subtle" onClick={() => onClearMedia(song.id)} title={t("tipPnlLinkRemoveMedia")} style={{ color: cfg.accent + "99" }}><X /></button>
       </div>
     ) : (
-      <div style={{ border: `1px dashed ${anyDragging ? cfg.accent + "88" : 'var(--border)'}`, borderRadius: 6, padding: "6px 12px", textAlign: "center", fontSize: 11, color: anyDragging ? cfg.accent : 'var(--text-mute)', transition: "all 0.2s", flex: 1, minWidth: 0 }}>
+      <div style={{ border: `1px dashed ${anyDragging ? cfg.accent + "88" : 'var(--uis-border)'}`, borderRadius: 6, padding: "6px 12px", textAlign: "center", fontSize: 11, color: anyDragging ? cfg.accent : 'var(--uis-text-mute)', transition: "all 0.2s", flex: 1, minWidth: 0 }}>
         {anyDragging ? t("lblPnlLinkDropMedia") : t("lblPnlLinkNoMedia")}
       </div>
     )
@@ -3829,7 +3830,7 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
       {modePlaceholder}
       {!isSpecial && song.tags?.length > 0 && <div style={{ display: "flex", gap: 4, flexShrink: 0 }}>
         {song.tags.slice(0, 3).map((tag) => { const c = tagColor(tag); return <span key={tag} style={{ ...s.inlineTag, color: c, borderColor: c + "55", fontSize: 10 }}>{tag}</span>; })}
-        {song.tags.length > 3 && <span className="hint">+{song.tags.length - 3}</span>}
+        {song.tags.length > 3 && <span className="uis-hnt">+{song.tags.length - 3}</span>}
       </div>}
       {!isSpecial && linkedBadges}
     </div>
@@ -3839,23 +3840,23 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
   // inert, but listening is not editing — so the button alone stays clickable.
   const pb = playBtnProps(mediaExists, isPlaying, cfg.accent, t);
   const playButton = (
-    <button className="btn icon small" style={{ visibility: song.mediaPath ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent", pointerEvents: "auto" }} onClick={() => !pb.disabled && onPlay && onPlay(song)} title={pb.title} tabIndex={song.mediaPath ? 0 : -1}>
+    <button className="uis-btn ico small" style={{ visibility: song.mediaPath ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent", pointerEvents: "auto" }} onClick={() => !pb.disabled && onPlay && onPlay(song)} title={pb.title} tabIndex={song.mediaPath ? 0 : -1}>
       {pb.icon}
     </button>
   );
 
   return (
     <div
-      style={{ ...s.card, "--card-accent": cfg.accent, opacity: isDragging ? 0.5 : 1, cursor: "grab", flexDirection: "row", alignItems: "center", gap: 12, padding: "10px 16px", ...(isSelected ? { borderColor: 'var(--accent)' + "88", background: 'var(--bg-elev)' } : {}), ...overStyle, ...(mode === "sort" ? { position: "relative" } : {}), ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
+      style={{ ...s.card, "--card-accent": cfg.accent, opacity: isDragging ? 0.5 : 1, cursor: "grab", flexDirection: "row", alignItems: "center", gap: 12, padding: "10px 16px", ...(isSelected ? { borderColor: 'var(--uis-accent)' + "88", background: 'var(--uis-bg-elev)' } : {}), ...overStyle, ...(mode === "sort" ? { position: "relative" } : {}), ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
       className="card-item"
       {...(locked ? {} : dropHandlers)}
     >
       {/* Sort drop line — centered in the 8px gap so it reads as a clear line BETWEEN the two cards */}
       {mode === "sort" && sortInsert && (
-        <div style={{ position: "absolute", left: 0, right: 0, height: 3, borderRadius: 2, background: 'var(--accent)', pointerEvents: "none", zIndex: 2, ...(sortInsert === "before" ? { top: -5 } : { bottom: -5 }) }} />
+        <div style={{ position: "absolute", left: 0, right: 0, height: 3, borderRadius: 2, background: 'var(--uis-accent)', pointerEvents: "none", zIndex: 2, ...(sortInsert === "before" ? { top: -5 } : { bottom: -5 }) }} />
       )}
       {mode === "list" && (
-        <button className="btn icon small subtle" style={{ color: isSelected ? 'var(--accent)' : 'var(--text-mute)' }} onClick={(e) => { e.stopPropagation(); onToggleSelect && onToggleSelect(song.id); }}>
+        <button className="uis-btn ico small subtle" style={{ color: isSelected ? 'var(--uis-accent)' : 'var(--uis-text-mute)' }} onClick={(e) => { e.stopPropagation(); onToggleSelect && onToggleSelect(song.id); }}>
           {isSelected ? <CheckSquare /> : <Square />}
         </button>
       )}
@@ -3864,11 +3865,11 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
       <div style={{ display: "flex", flexDirection: "column", flex: 1, minWidth: 0, gap: 2 }}>
         <div style={{ display: "flex", alignItems: "center", gap: 7 }}>
           {!isSpecial && <>
-            <button className="btn icon small" onClick={() => onEdit(song)} title={t("tipCardEdit")}>
+            <button className="uis-btn ico small" onClick={() => onEdit(song)} title={t("tipCardEdit")}>
               <Pencil />
             </button>
             {playButton}
-            <button className="btn icon small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && song.mediaPath && cleanLyrics(song.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
+            <button className="uis-btn ico small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && song.mediaPath && cleanLyrics(song.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--uis-text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--uis-text-mute)44` }}
               onClick={() => fetch(`http://localhost:${apiPort}/launch-lrc-editor`, {
                 method: 'POST', headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ mediaPath: song.mediaPath, lyrics: song.lyrics ? cleanLyrics(song.lyrics) : undefined }),
@@ -3877,11 +3878,11 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
               tabIndex={isSong && song.mediaPath ? 0 : -1}>
               <LrcEditorIcon />
             </button>
-            <button className="btn icon small subtle" style={{ color: song.favorite ? "var(--star)" : 'var(--text-mute)' }} onClick={() => onFav && onFav(song.id)}><Star fill={song.favorite ? "var(--star)" : "none"} /></button>
+            <button className="uis-btn ico small subtle" style={{ color: song.favorite ? "var(--uis-star)" : 'var(--uis-text-mute)' }} onClick={() => onFav && onFav(song.id)}><Star fill={song.favorite ? "var(--uis-star)" : "none"} /></button>
           </>}
           {mode === "sort" && playButton}
           <h3 style={{ ...s.cardTitle, margin: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap", fontSize: 15, color: cfg.accent, flex: 1, minWidth: 0, display: "flex", alignItems: "center", gap: 4 }}>{song.sortNumber != null ? `${String(song.sortNumber).padStart(2, "0")}-${song.name}` : song.name}<span style={{ fontSize: 9, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>v{song.version || 1}</span></h3>
-          {!isSpecial && song.lang && <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-mute)', border: `1px solid var(--border)`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>{song.lang}</span>}
+          {!isSpecial && song.lang && <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--uis-text-mute)', border: `1px solid var(--uis-border)`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>{song.lang}</span>}
         </div>
         {mode !== "sort" && secondLine}
       </div>
@@ -3896,47 +3897,47 @@ function SongListCard({ song, types, langKey, apiPort, lrcExists, lrcEditorInsta
         return (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(5, 1fr)", gap: 4, flexShrink: 0, alignSelf: "start" }}>
             {/* Row 1: copy title, copy style, copy lyrics, unlink, delete */}
-            <button className="btn icon small" style={{ ...(copiedId === song.id + "_title" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}) }}
+            <button className="uis-btn ico small" style={{ ...(copiedId === song.id + "_title" ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}) }}
               onClick={() => onCopy && onCopy(song, "title")}
               title={t("tipCardCopyTitle")}>
               {copiedId === song.id + "_title" ? <Check /> : <CopyTitle />}
             </button>
-            {!isNote ? <button className="btn icon small" style={{ ...(copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: (isSong ? (song.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : song.style?.trim()) ? "visible" : "hidden" }}
+            {!isNote ? <button className="uis-btn ico small" style={{ ...(copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}), visibility: (isSong ? (song.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : song.style?.trim()) ? "visible" : "hidden" }}
               onClick={() => onCopy && onCopy(song, isLinkedSong ? "linked" : undefined)}
               title={t("tipCardCopyStyle")}
               tabIndex={(isSong ? (song.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : song.style?.trim()) ? 0 : -1}>
               {copiedId === (isLinkedSong ? song.id + "_linked" : song.id) ? <Check /> : <CopyStyle />}
             </button> : emptySlot}
-            {!isNote ? <button className="btn icon small" style={{ ...(copiedId === song.id + "_lyrics" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: isSong && song.lyrics ? "visible" : "hidden" }}
+            {!isNote ? <button className="uis-btn ico small" style={{ ...(copiedId === song.id + "_lyrics" ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}), visibility: isSong && song.lyrics ? "visible" : "hidden" }}
               onClick={() => onCopy && onCopy(song, "lyrics")}
               title={t("tipCardCopyLyrics")}
               tabIndex={isSong && song.lyrics ? 0 : -1}>
               {copiedId === song.id + "_lyrics" ? <Check /> : <CopyLyrics />}
             </button> : emptySlot}
             {onRemoveFromProject
-              ? <button className="btn icon small" style={{ color: "var(--warn)", borderColor: "var(--warn)" }} onClick={() => onRemoveFromProject(activeProjectId, song.id)} title={t("tipCardUnlink")}>
+              ? <button className="uis-btn ico small" style={{ color: "var(--uis-warn)", borderColor: "var(--uis-warn)" }} onClick={() => onRemoveFromProject(activeProjectId, song.id)} title={t("tipCardUnlink")}>
                   <X />
                 </button>
               : emptySlot}
-            <button className="btn icon small" style={{ color: "var(--danger)", borderColor: "var(--danger)" }} onClick={() => onDelete && onDelete(song.id)} title={t("tipCardDelete")}>
+            <button className="uis-btn ico small" style={{ color: "var(--uis-danger)", borderColor: "var(--uis-danger)" }} onClick={() => onDelete && onDelete(song.id)} title={t("tipCardDelete")}>
               <Trash2 />
             </button>
             {/* Row 2: globe, ai url, music url, other url */}
             {isGlobalCard
-              ? <button className="btn icon small" style={{ cursor: "default" }} title={t("lblCardGlobalResource")}><Globe color={'var(--accent)'} /></button>
+              ? <button className="uis-btn ico small" style={{ cursor: "default" }} title={t("lblCardGlobalResource")}><Globe color={'var(--uis-accent)'} /></button>
               : emptySlot}
             {aiUrl
-              ? <button title={aiUrl.label + ": " + aiUrl.href} className="btn icon small" style={{ borderColor: types.SongStateCreated?.accent + "66", color: types.SongStateCreated?.accent, background: types.SongStateCreated?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(aiUrl.href, "_blank"); }}>
+              ? <button title={aiUrl.label + ": " + aiUrl.href} className="uis-btn ico small" style={{ borderColor: types.SongStateCreated?.accent + "66", color: types.SongStateCreated?.accent, background: types.SongStateCreated?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(aiUrl.href, "_blank"); }}>
                   <span style={{ fontWeight: 700, lineHeight: 1 }}>{(aiUrl.label || "?")[0].toUpperCase()}</span>
                 </button>
               : emptySlot}
             {musicUrl
-              ? <button title={musicUrl.label + ": " + musicUrl.href} className="btn icon small" style={{ borderColor: types.SongStatePublished?.accent + "66", color: types.SongStatePublished?.accent, background: types.SongStatePublished?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(musicUrl.href, "_blank"); }}>
+              ? <button title={musicUrl.label + ": " + musicUrl.href} className="uis-btn ico small" style={{ borderColor: types.SongStatePublished?.accent + "66", color: types.SongStatePublished?.accent, background: types.SongStatePublished?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(musicUrl.href, "_blank"); }}>
                   <span style={{ fontWeight: 700, lineHeight: 1 }}>{(musicUrl.label || "?")[0].toUpperCase()}</span>
                 </button>
               : emptySlot}
             {otherUrl
-              ? <button title={otherUrl.label + ": " + otherUrl.href} className="btn icon small" style={{ borderColor: 'var(--text-mute)' + "66", color: 'var(--text-mute)', background: "transparent" }} onClick={(e) => { e.stopPropagation(); window.open(otherUrl.href, "_blank"); }}>
+              ? <button title={otherUrl.label + ": " + otherUrl.href} className="uis-btn ico small" style={{ borderColor: 'var(--uis-text-mute)' + "66", color: 'var(--uis-text-mute)', background: "transparent" }} onClick={(e) => { e.stopPropagation(); window.open(otherUrl.href, "_blank"); }}>
                   <span style={{ fontWeight: 700, lineHeight: 1 }}>{(otherUrl.label || "?")[0].toUpperCase()}</span>
                 </button>
               : emptySlot}
@@ -3972,7 +3973,7 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
         {card.urls.map((u) => (
           <button key={u.id}
             title={u.label + ": " + u.href}
-            className="btn small"
+            className="uis-btn small"
             style={{ color: cfg.accent, borderColor: `${cfg.accent}44`, background: cfg.accentDim }}
             onClick={(e) => { e.stopPropagation(); window.open(u.href, "_blank"); }}
           >
@@ -4004,31 +4005,31 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
   const actionButtons = (
     <>
       {/* Title/copy button - always available (every card has a name) */}
-      <button className="btn icon small" style={{ ...(copiedId === card.id + "_title" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}) }}
+      <button className="uis-btn ico small" style={{ ...(copiedId === card.id + "_title" ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}) }}
         onClick={() => onCopy(card, "title")}
         title={t("tipCardCopyTitle")}>
         {copiedId === card.id + "_title" ? <Check /> : <CopyTitle />}
       </button>
       {/* Style/copy button - hidden for note type; invisible placeholder when style is empty */}
-      {!isNote && <button className="btn icon small" style={{ ...(copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: (isSong ? (card.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : card.style?.trim()) ? "visible" : "hidden" }}
+      {!isNote && <button className="uis-btn ico small" style={{ ...(copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}), visibility: (isSong ? (card.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : card.style?.trim()) ? "visible" : "hidden" }}
         onClick={() => onCopy(card, isLinkedSong ? "linked" : undefined)}
         title={t("tipCardCopyStyle")}
         tabIndex={(isSong ? (card.style?.trim() || linkedCards.some(lp => lp.style?.trim())) : card.style?.trim()) ? 0 : -1}>
         {copiedId === (isLinkedSong ? card.id + "_linked" : card.id) ? <Check /> : <CopyStyle />}
       </button>}
       {/* Lyrics button - visible for song with lyrics, invisible placeholder for music/vocal, hidden for note */}
-      {!isNote && <button className="btn icon small" style={{ ...(copiedId === card.id + "_lyrics" ? { background: "color-mix(in srgb, var(--ok) 14%, transparent)", color: "var(--ok)", borderColor: "var(--ok)" } : {}), visibility: isSong && card.lyrics ? "visible" : "hidden" }}
+      {!isNote && <button className="uis-btn ico small" style={{ ...(copiedId === card.id + "_lyrics" ? { background: "color-mix(in srgb, var(--uis-ok) 14%, transparent)", color: "var(--uis-ok)", borderColor: "var(--uis-ok)" } : {}), visibility: isSong && card.lyrics ? "visible" : "hidden" }}
         onClick={() => onCopy(card, "lyrics")}
         title={t("tipCardCopyLyrics")}
         tabIndex={isSong && card.lyrics ? 0 : -1}>
         {copiedId === card.id + "_lyrics" ? <Check /> : <CopyLyrics />}
       </button>}
       {onRemoveFromProject && (
-        <button className="btn icon small" style={{ color: "var(--warn)", borderColor: "var(--warn)" }} onClick={onRemoveFromProject} title={t("tipCardUnlink")}>
+        <button className="uis-btn ico small" style={{ color: "var(--uis-warn)", borderColor: "var(--uis-warn)" }} onClick={onRemoveFromProject} title={t("tipCardUnlink")}>
           <X />
         </button>
       )}
-      <button className="btn icon small" style={{ color: "var(--danger)", borderColor: "var(--danger)" }} onClick={() => onDelete(card.id)} title={t("tipCardDelete")}>
+      <button className="uis-btn ico small" style={{ color: "var(--uis-danger)", borderColor: "var(--uis-danger)" }} onClick={() => onDelete(card.id)} title={t("tipCardDelete")}>
         <Trash2 />
       </button>
     </>
@@ -4051,7 +4052,7 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
   // ── Grid layout (default) ────────────────────────────────────────────────────
   return (
     <div
-      style={{ ...s.card, "--card-accent": cfg.accent, opacity: isDragging ? 0.5 : 1, cursor: "grab", ...(isSelected ? { borderColor: 'var(--accent)' + "88", boxShadow: `0 0 0 2px ${'var(--accent)' + "22"}` } : {}), ...(linkOver && anyDragging ? { borderColor: cfg.accent, boxShadow: `0 0 0 2px ${cfg.accent}44` } : {}) }}
+      style={{ ...s.card, "--card-accent": cfg.accent, opacity: isDragging ? 0.5 : 1, cursor: "grab", ...(isSelected ? { borderColor: 'var(--uis-accent)' + "88", boxShadow: `0 0 0 2px ${'var(--uis-accent)' + "22"}` } : {}), ...(linkOver && anyDragging ? { borderColor: cfg.accent, boxShadow: `0 0 0 2px ${cfg.accent}44` } : {}) }}
       className="card-item"
       draggable
       onDragStart={(e) => onDragStart(e, card.id)}
@@ -4061,15 +4062,15 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
       <div style={{ display: "flex", gap: 6, flex: 1, minHeight: 0 }}>
         {/* Left: checkbox + content */}
         <div style={{ display: "flex", flex: 1, minWidth: 0, gap: 6 }}>
-          <button className="btn icon small subtle" style={{ color: isSelected ? 'var(--accent)' : 'var(--text-mute)' }}>
+          <button className="uis-btn ico small subtle" style={{ color: isSelected ? 'var(--uis-accent)' : 'var(--uis-text-mute)' }}>
             {isSelected ? <CheckSquare /> : <Square />}
           </button>
           <div style={{ flex: 1, minWidth: 0 }}>
-            <h3 style={{ ...s.cardTitle, color: cfg.accent, margin: "0 0 8px", display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>{card.sortNumber != null ? `${String(card.sortNumber).padStart(2, "0")}-${card.name}` : card.name}<span style={{ fontSize: 9, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 4, padding: '1px 5px', marginLeft: 4, opacity: 0.85, flexShrink: 0 }}>v{card.version || 1}</span>{card.lang && <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--text-mute)', border: `1px solid var(--border)`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>{card.lang}</span>}{isGlobalCard && <Globe className="icon-inline" color={'var(--accent)'} title={t("lblCardGlobalResource")} style={{ marginLeft: 2, flexShrink: 0 }} />}</h3>
+            <h3 style={{ ...s.cardTitle, color: cfg.accent, margin: "0 0 8px", display: "flex", alignItems: "center", gap: 4, flexWrap: "wrap" }}>{card.sortNumber != null ? `${String(card.sortNumber).padStart(2, "0")}-${card.name}` : card.name}<span style={{ fontSize: 9, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 4, padding: '1px 5px', marginLeft: 4, opacity: 0.85, flexShrink: 0 }}>v{card.version || 1}</span>{card.lang && <span style={{ fontSize: 9, fontWeight: 700, color: 'var(--uis-text-mute)', border: `1px solid var(--uis-border)`, borderRadius: 4, padding: '1px 5px', opacity: 0.85, flexShrink: 0 }}>{card.lang}</span>}{isGlobalCard && <Globe className="uis-ico-inline" color={'var(--uis-accent)'} title={t("lblCardGlobalResource")} style={{ marginLeft: 2, flexShrink: 0 }} />}</h3>
             <p style={{ ...s.cardBody, ...(expanded ? {} : { display: "-webkit-box", WebkitLineClamp: 8, WebkitBoxOrient: "vertical", overflow: "hidden" }) }}>
               {expanded ? displayText : preview}
               {displayText.length > 160 && (
-                <button className="btn icon small subtle" onClick={() => setExpanded((v) => !v)} style={{ color: cfg.accent }}>
+                <button className="uis-btn ico small subtle" onClick={() => setExpanded((v) => !v)} style={{ color: cfg.accent }}>
                   {expanded ? <ChevronUp /> : <ChevronDown />}
                 </button>
               )}
@@ -4080,18 +4081,18 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
               </div>
             )}
             {!isNote && linkedCards.length > 0 && (
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, borderTop: `1px solid var(--border)`, paddingTop: 10, alignItems: "center" }}>
-                <Link2 className="icon-inline" color={'var(--text-mute)'} />
+              <div style={{ display: "flex", flexWrap: "wrap", gap: 6, borderTop: `1px solid var(--uis-border)`, paddingTop: 10, alignItems: "center" }}>
+                <Link2 className="uis-ico-inline" color={'var(--uis-text-mute)'} />
                 {linkedCards.map((lp) => {
                   const lc = types[lp.type];
                   const { Icon: LIcon } = lc;
-                  return <span key={lp.id} style={{ fontSize: 11, border: `1px solid ${lc.accent}44`, borderRadius: 4, padding: "2px 8px", color: lc.accent, background: lc.accentDim, display: "inline-flex", alignItems: "center", gap: 4 }}><LIcon className="icon-inline" />{lp.name}<span style={{ opacity: 0.65, fontWeight: 700 }}>v{lp.version || 1}</span></span>;
+                  return <span key={lp.id} style={{ fontSize: 11, border: `1px solid ${lc.accent}44`, borderRadius: 4, padding: "2px 8px", color: lc.accent, background: lc.accentDim, display: "inline-flex", alignItems: "center", gap: 4 }}><LIcon className="uis-ico-inline" />{lp.name}<span style={{ opacity: 0.65, fontWeight: 700 }}>v{lp.version || 1}</span></span>;
                 })}
               </div>
             )}
             {!isNote && !isSong && linkedByCount > 0 && (
-              <div style={{ display: "flex", gap: 6, borderTop: `1px solid var(--border)`, paddingTop: 10, alignItems: "center" }}>
-                <Link2 className="icon-inline" color={'var(--text-mute)'} />
+              <div style={{ display: "flex", gap: 6, borderTop: `1px solid var(--uis-border)`, paddingTop: 10, alignItems: "center" }}>
+                <Link2 className="uis-ico-inline" color={'var(--uis-text-mute)'} />
                 <span style={{ fontSize: 10, border: `1px solid ${types.SongStateUndefined?.accent}44`, borderRadius: 4, padding: "2px 6px", color: types.SongStateUndefined?.accent, background: types.SongStateUndefined?.accentDim }}>{linkedByCount}</span>
               </div>
             )}
@@ -4099,8 +4100,8 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
         </div>
         {/* Right: star + url icons stacked */}
         <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 2, flexShrink: 0 }}>
-          <button className="btn icon small subtle" style={{ color: card.favorite ? "var(--star)" : 'var(--text-mute)' }} onClick={() => onFav(card.id)}>
-            <Star fill={card.favorite ? "var(--star)" : "none"} />
+          <button className="uis-btn ico small subtle" style={{ color: card.favorite ? "var(--uis-star)" : 'var(--uis-text-mute)' }} onClick={() => onFav(card.id)}>
+            <Star fill={card.favorite ? "var(--uis-star)" : "none"} />
           </button>
           {(() => {
             const aiList    = (txtSettingsCardsAiSites    || "udio, suno, producer, tunee").split(",").map(s => s.trim().toLowerCase()).filter(Boolean);
@@ -4109,24 +4110,24 @@ function CardItem({ card, cfg, copiedId, allCards, isDragging, anyDragging, isSe
             const musicUrl = (card.urls || []).find(u => musicList.includes((u.label || "").toLowerCase().trim()));
             const otherUrl = (card.urls || []).find(u => { const lbl = (u.label || "").toLowerCase().trim(); return !aiList.includes(lbl) && !musicList.includes(lbl); });
             return <>
-              {aiUrl    && <button title={aiUrl.label    + ": " + aiUrl.href}    className="btn icon small" style={{ borderColor: types.SongStateCreated?.accent + "66", color: types.SongStateCreated?.accent, background: types.SongStateCreated?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(aiUrl.href,    "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(aiUrl.label    || "?")[0].toUpperCase()}</span></button>}
-              {musicUrl && <button title={musicUrl.label + ": " + musicUrl.href} className="btn icon small" style={{ borderColor: types.SongStatePublished?.accent + "66", color: types.SongStatePublished?.accent, background: types.SongStatePublished?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(musicUrl.href, "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(musicUrl.label || "?")[0].toUpperCase()}</span></button>}
-              {otherUrl && <button title={otherUrl.label + ": " + otherUrl.href} className="btn icon small" style={{ borderColor: 'var(--text-mute)' + "66", color: 'var(--text-mute)', background: "transparent" }} onClick={(e) => { e.stopPropagation(); window.open(otherUrl.href, "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(otherUrl.label || "?")[0].toUpperCase()}</span></button>}
+              {aiUrl    && <button title={aiUrl.label    + ": " + aiUrl.href}    className="uis-btn ico small" style={{ borderColor: types.SongStateCreated?.accent + "66", color: types.SongStateCreated?.accent, background: types.SongStateCreated?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(aiUrl.href,    "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(aiUrl.label    || "?")[0].toUpperCase()}</span></button>}
+              {musicUrl && <button title={musicUrl.label + ": " + musicUrl.href} className="uis-btn ico small" style={{ borderColor: types.SongStatePublished?.accent + "66", color: types.SongStatePublished?.accent, background: types.SongStatePublished?.accentDim }} onClick={(e) => { e.stopPropagation(); window.open(musicUrl.href, "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(musicUrl.label || "?")[0].toUpperCase()}</span></button>}
+              {otherUrl && <button title={otherUrl.label + ": " + otherUrl.href} className="uis-btn ico small" style={{ borderColor: 'var(--uis-text-mute)' + "66", color: 'var(--uis-text-mute)', background: "transparent" }} onClick={(e) => { e.stopPropagation(); window.open(otherUrl.href, "_blank"); }}><span style={{ fontWeight: 700, lineHeight: 1 }}>{(otherUrl.label || "?")[0].toUpperCase()}</span></button>}
             </>;
           })()}
         </div>
       </div>
       <div style={{ ...s.cardActions, justifyContent: "space-between" }}>
         <div style={{ display: "flex", gap: 8 }}>
-          <button className="btn icon small" onClick={() => onEdit(card)} title={t("tipCardEdit")}>
+          <button className="uis-btn ico small" onClick={() => onEdit(card)} title={t("tipCardEdit")}>
             <Pencil />
           </button>
           {(() => { const pb = playBtnProps(mediaExists, isPlaying, cfg.accent, t); return (
-            <button className="btn icon small" style={{ visibility: streamUrl ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent" }} onClick={() => !pb.disabled && onPlay && onPlay(card)} title={pb.title} tabIndex={streamUrl ? 0 : -1}>
+            <button className="uis-btn ico small" style={{ visibility: streamUrl ? "visible" : "hidden", color: pb.color, borderColor: pb.borderColor, background: isPlaying ? cfg.accentDim : "transparent" }} onClick={() => !pb.disabled && onPlay && onPlay(card)} title={pb.title} tabIndex={streamUrl ? 0 : -1}>
               {pb.icon}
             </button>
           ); })()}
-          <button className="btn icon small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && card.mediaPath && cleanLyrics(card.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--text-mute)44` }}
+          <button className="uis-btn ico small" disabled={!lrcEditorInstalled} style={{ visibility: isSong && card.mediaPath && cleanLyrics(card.lyrics || "").trim() ? "visible" : "hidden", color: lrcExists ? cfg.accent : 'var(--uis-text-mute)', borderColor: lrcExists ? `${cfg.accent}44` : `var(--uis-text-mute)44` }}
             onClick={() => fetch(`http://localhost:${apiPort}/launch-lrc-editor`, {
               method: 'POST', headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ mediaPath: card.mediaPath, lyrics: card.lyrics ? cleanLyrics(card.lyrics) : undefined }),
@@ -4149,12 +4150,12 @@ function MediaLinkFileCard({ file, isDragging, linkedSong, types, txtSettingsCar
   const cfg = linkedSong ? getSongState(linkedSong, types, txtSettingsCardsAiSites, txtSettingsCardsMusicSites) : null;
   return (
     <div
-      style={{ background: 'var(--bg-elev)', border: `1px solid var(--border)`, borderRadius: 8, padding: "8px 12px", display: "flex", alignItems: "center", gap: 8, cursor: "grab", opacity: isDragging ? 0.45 : 1, transition: "opacity 0.15s", userSelect: "none", ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
+      style={{ background: 'var(--uis-bg-elev)', border: `1px solid var(--uis-border)`, borderRadius: 8, padding: "8px 12px", display: "flex", alignItems: "center", gap: 8, cursor: "grab", opacity: isDragging ? 0.45 : 1, transition: "opacity 0.15s", userSelect: "none", ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
       draggable={!locked}
       onDragStart={locked ? undefined : (e) => { e.dataTransfer.setData("mediafile", file.path); e.dataTransfer.effectAllowed = "copy"; }}
     >
-      <Disc className="icon-inline" color={'var(--text-mute)'} style={{ flexShrink: 0 }} />
-      <span style={{ fontSize: 12, color: 'var(--text)', flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={file.path}>{file.name}</span>
+      <Disc className="uis-ico-inline" color={'var(--uis-text-mute)'} style={{ flexShrink: 0 }} />
+      <span style={{ fontSize: 12, color: 'var(--uis-text)', flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={file.path}>{file.name}</span>
       {linkedSong && cfg && (
         <span style={{ fontSize: 10, border: `1px solid ${cfg.accent}44`, borderRadius: 4, padding: "2px 6px", color: cfg.accent, background: cfg.accentDim, flexShrink: 0, maxWidth: 140, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}
           title={linkedSong.name}>
@@ -4165,8 +4166,8 @@ function MediaLinkFileCard({ file, isDragging, linkedSong, types, txtSettingsCar
   );
 }
 
-// ── LinkViewMVCard ────────────────────────────────────────────────────────────
-function LinkViewMVCard({ card, types, isDragging, linkedByCount, onEdit, onDragStart, onDragEnd, langKey, locked }) {
+// ── UilLinkViewMVCard ────────────────────────────────────────────────────────────
+function UilLinkViewMVCard({ card, types, isDragging, linkedByCount, onEdit, onDragStart, onDragEnd, langKey, locked }) {
   const t = useT(langKey);
   const cfg = types[card.type];
   const { Icon } = cfg;
@@ -4174,27 +4175,27 @@ function LinkViewMVCard({ card, types, isDragging, linkedByCount, onEdit, onDrag
   const preview = (card.style || "").length > 100 ? (card.style || "").slice(0, 100) + "…" : (card.style || "");
   return (
     <div
-      style={{ background: 'var(--bg-elev)', border: `1px solid var(--border)`, borderRadius: 10, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6, cursor: "grab", opacity: isDragging ? 0.45 : 1, transition: "opacity 0.15s", userSelect: "none", ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
+      style={{ background: 'var(--uis-bg-elev)', border: `1px solid var(--uis-border)`, borderRadius: 10, padding: "12px 14px", display: "flex", flexDirection: "column", gap: 6, cursor: "grab", opacity: isDragging ? 0.45 : 1, transition: "opacity 0.15s", userSelect: "none", ...(locked ? { pointerEvents: "none", opacity: 0.45 } : {}) }}
       draggable={!locked}
       onDragStart={(e) => onDragStart(e, card.id)}
       onDragEnd={onDragEnd}
     >
       <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-        <Icon className="icon-inline" color={cfg.accent} />
+        <Icon className="uis-ico-inline" color={cfg.accent} />
         <span style={{ fontSize: 13, fontWeight: 700, color: cfg.accent, flex: 1, minWidth: 0, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{card.name}</span>
         <span style={{ fontSize: 10, color: cfg.accent, border: `1px solid ${cfg.accent}44`, borderRadius: 4, padding: "1px 5px", opacity: 0.8, flexShrink: 0 }}>v{card.version || 1}</span>
-        <button className="btn icon small subtle" onClick={() => onEdit(card)} title={t("tipCardEdit")}>
+        <button className="uis-btn ico small subtle" onClick={() => onEdit(card)} title={t("tipCardEdit")}>
           <Pencil />
         </button>
       </div>
       {preview && (
-        <p style={{ margin: 0, fontSize: 11, color: 'var(--text-dim)', lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
+        <p style={{ margin: 0, fontSize: 11, color: 'var(--uis-text-dim)', lineHeight: 1.5, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 3, WebkitBoxOrient: "vertical" }}>
           {preview}
         </p>
       )}
       {linkedByCount > 0 && (
-        <div style={{ display: "flex", gap: 6, borderTop: `1px solid var(--border)`, paddingTop: 6, alignItems: "center" }}>
-          <Link2 className="icon-inline" color={'var(--text-mute)'} />
+        <div style={{ display: "flex", gap: 6, borderTop: `1px solid var(--uis-border)`, paddingTop: 6, alignItems: "center" }}>
+          <Link2 className="uis-ico-inline" color={'var(--uis-text-mute)'} />
           <span style={{ fontSize: 10, border: `1px solid ${songCfg?.accent}44`, borderRadius: 4, padding: "2px 6px", color: songCfg?.accent, background: songCfg?.accentDim, display: "inline-flex", alignItems: "center", gap: 3 }}>
             {linkedByCount}
           </span>
@@ -4242,7 +4243,7 @@ async function callAi(request, apiKey, apiPort, label) {
   const { text } = await resp.json();
   const bag = parseResponse(text);
   bag._raw = text;
-  const filename = (label || "ai-call") + ".txt";
+  const filename = (label || "ai-call") + ".uis-txt";
   fetch(`http://localhost:${apiPort}/debug-write`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ filename, content: "=== REQUEST ===\n" + request + "\n\n=== RESPONSE ===\n" + (text || "") }) }).catch(() => {});
   return bag;
 }
@@ -4277,16 +4278,12 @@ function buildTaskRequest(task, vars, templates, presets, systemBlocks) {
 // every modal that lists a card's URLs (both card layouts + the project links), so the row
 // never drifts. Accent + remove handler come from the caller; open/copy are self-contained.
 function UrlRow({ url, accent, onRemove }) {
-  const [copied, setCopied] = useState(false);
-  const iconBtn = { background: "none", border: "none", cursor: "pointer", color: 'var(--text-mute)', padding: 2, display: "flex", flexShrink: 0 };
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 10px", borderRadius: 8, border: "1px solid var(--border)", background: "var(--dlg-inp)" }}>
-      <span style={{ fontSize: 12, fontWeight: 600, color: accent, minWidth: 50, flexShrink: 0 }}>{url.label}</span>
-      <span className="hint" style={{ flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>{url.href}</span>
-      <button className="btn icon small subtle" onClick={() => window.open(url.href, "_blank")}><ExternalLink /></button>
-      <button className="btn icon small subtle" onClick={() => { navigator.clipboard.writeText(url.href); setCopied(true); setTimeout(() => setCopied(false), 1200); }}>{copied ? <Check color="var(--ok)" /> : <Copy />}</button>
-      <button className="btn icon small subtle" onClick={() => onRemove(url.id)}><X /></button>
-    </div>
+    <UisFldValue label={url.label} accent={accent} actions={<>
+      <button className="uis-btn ico small subtle" onClick={() => window.open(url.href, "_blank")}><ExternalLink /></button>
+      <UisBtnCopy text={url.href} subtle />
+      <button className="uis-btn ico small subtle" onClick={() => onRemove(url.id)}><X /></button>
+    </>}>{url.href}</UisFldValue>
   );
 }
 
@@ -4729,42 +4726,42 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
   const BLOCK_LABELS = { role: t("lblDlgAiRole"), structure: t("lblDlgAiStructure"), rules: t("lblDlgAiRules"), style: t("lblDlgCardStyle") };
 
   return (
-    <div className="dl-backdrop" style={{ zIndex: 2000 }} onMouseDown={e => { if (e.target === e.currentTarget) { onSaveTweaks(buildTweaks()); onClose(); } }}>
-      <div className="dlg" style={{ width: 520, maxWidth: "95vw" }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
-        <div className="dlg-body" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+    <div className="uis-dl-backdrop" style={{ zIndex: 2000 }} onMouseDown={e => { if (e.target === e.currentTarget) { onSaveTweaks(buildTweaks()); onClose(); } }}>
+      <div className="uis-dlg" style={{ width: 520, maxWidth: "95vw" }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+        <div className="uis-dlg-body" style={{ display: "flex", flexDirection: "column", gap: 16 }}>
         <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-          <h3 className="dlg-title" style={{ margin: 0 }}><Sparkles color={'var(--accent)'} />{t("lblStgAiTemplates")}</h3>
+          <h3 className="uis-dlg-title" style={{ margin: 0 }}><Sparkles color={'var(--uis-accent)'} />{t("lblStgAiTemplates")}</h3>
           <div style={{ display: "flex", gap: 6, alignItems: "center" }}>
-            <button className="btn" onClick={() => setExpertMode(v => !v)}>{expertMode ? t("btnStgAiTemplatesModeSimple") : t("btnStgAiTemplatesModeExpert")}</button>
-            <button className="dl-close" onClick={() => { onSaveTweaks(buildTweaks()); onClose(); }}><X /></button>
+            <button className="uis-btn" onClick={() => setExpertMode(v => !v)}>{expertMode ? t("btnStgAiTemplatesModeSimple") : t("btnStgAiTemplatesModeExpert")}</button>
+            <button className="uis-dl-close" onClick={() => { onSaveTweaks(buildTweaks()); onClose(); }}><X /></button>
           </div>
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <label className="dlg-field-label" style={{ flexShrink: 0 }}>{t("lblStgAiTemplatesMode")}</label>
+          <label className="uis-fld-labelled-label" style={{ flexShrink: 0 }}>{t("lblStgAiTemplatesMode")}</label>
           <select value={selectedTemplateId || ""} onChange={e => handleTemplateChange(e.target.value)}
-            className="select" style={{ flex: 1 }}>
+            className="uis-ddn-std" style={{ flex: 1 }}>
             {templates.map(tpl => <option key={tpl.id} value={tpl.id}>{tpl.name}</option>)}
           </select>
-          <button className="btn icon small subtle" onClick={handleSaveAsTemplate} title={t("tipDlgAiSaveAsTemplate")}
+          <button className="uis-btn ico small subtle" onClick={handleSaveAsTemplate} title={t("tipDlgAiSaveAsTemplate")}
            >
             <Plus />
           </button>
-          <button className="btn icon small subtle" onClick={handleRenameTemplate} title={t("tipDlgAiRenameTemplate")} disabled={currentTpl?.isDefault}
-            style={{ color: currentTpl?.isDefault ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+          <button className="uis-btn ico small subtle" onClick={handleRenameTemplate} title={t("tipDlgAiRenameTemplate")} disabled={currentTpl?.isDefault}
+            style={{ color: currentTpl?.isDefault ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
             <TextCursor />
           </button>
-          <button className="btn icon small subtle" onClick={handleOverwriteTemplate} title={t("tipDlgAiOverwrite")} disabled={!templateModified}
-            style={{ color: templateModified ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+          <button className="uis-btn ico small subtle" onClick={handleOverwriteTemplate} title={t("tipDlgAiOverwrite")} disabled={!templateModified}
+            style={{ color: templateModified ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
             <Save />
           </button>
-          <button className="btn icon small subtle" onClick={handleDeleteTemplate} title={t("tipDlgAiDeleteTemplate")} disabled={currentTpl?.isDefault}
-            style={{ color: currentTpl?.isDefault ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+          <button className="uis-btn ico small subtle" onClick={handleDeleteTemplate} title={t("tipDlgAiDeleteTemplate")} disabled={currentTpl?.isDefault}
+            style={{ color: currentTpl?.isDefault ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
             <Trash2 />
           </button>
-          <button className="btn icon small subtle" onClick={handleSetDefault} title={t("tipDlgAiSetDefault")}
-            style={{ color: isCurrentDefault ? "var(--star)" : 'var(--text-mute)' }}>
-            <Star fill={isCurrentDefault ? "var(--star)" : "none"} />
+          <button className="uis-btn ico small subtle" onClick={handleSetDefault} title={t("tipDlgAiSetDefault")}
+            style={{ color: isCurrentDefault ? "var(--uis-star)" : 'var(--uis-text-mute)' }}>
+            <Star fill={isCurrentDefault ? "var(--uis-star)" : "none"} />
           </button>
         </div>
 
@@ -4773,12 +4770,12 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <input autoFocus value={tplInputValue} onChange={e => setTplInputValue(e.target.value)}
                 onKeyDown={e => { if (e.key === "Enter") handleTplInputConfirm(); if (e.key === "Escape") { setTplInputMode(null); setTplInputValue(""); } }}
-                className="input" style={{ flex: 1, borderColor: 'var(--accent)' }} />
-              <button className="btn icon small subtle" onClick={handleTplInputConfirm} disabled={!tplInputValue.trim()}
-                style={{ color: tplInputValue.trim() ? "var(--ok)" : 'var(--text-mute)' }}>
+                className="uis-txt" style={{ flex: 1, borderColor: 'var(--uis-accent)' }} />
+              <button className="uis-btn ico small subtle" onClick={handleTplInputConfirm} disabled={!tplInputValue.trim()}
+                style={{ color: tplInputValue.trim() ? "var(--uis-ok)" : 'var(--uis-text-mute)' }}>
                 <Check />
               </button>
-              <button className="btn icon small subtle" onClick={() => { setTplInputMode(null); setTplInputValue(""); }}
+              <button className="uis-btn ico small subtle" onClick={() => { setTplInputMode(null); setTplInputValue(""); }}
                >
                 <X />
               </button>
@@ -4787,16 +4784,16 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
         )}
 
         {pendingDelete && (
-          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 10px", background: "color-mix(in srgb, var(--danger) 13%, transparent)", borderRadius: 8, border: "1px solid color-mix(in srgb, var(--danger) 40%, transparent)" }}>
-            <span style={{ fontSize: 12, color: 'var(--text)', flex: 1 }}>{t("cfmDlgAiDeleteTemplateQ")}</span>
-            <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={handleDeleteConfirm}>{t("btnCardDelete")}</button>
-            <button className="btn subtle" onClick={() => setPendingDelete(false)}>{t("btnGlbCancel")}</button>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "6px 10px", background: "color-mix(in srgb, var(--uis-danger) 13%, transparent)", borderRadius: 8, border: "1px solid color-mix(in srgb, var(--uis-danger) 40%, transparent)" }}>
+            <span style={{ fontSize: 12, color: 'var(--uis-text)', flex: 1 }}>{t("cfmDlgAiDeleteTemplateQ")}</span>
+            <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} onClick={handleDeleteConfirm}>{t("btnCardDelete")}</button>
+            <button className="uis-btn subtle" onClick={() => setPendingDelete(false)}>{t("btnGlbCancel")}</button>
           </div>
         )}
 
         {expertMode && dataLoaded && (
           <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-            <div className="dlg-field-label" style={{ marginBottom: 2 }}>{t("ttlDlgAiBlocks")}</div>
+            <div className="uis-fld-labelled-label" style={{ marginBottom: 2 }}>{t("ttlDlgAiBlocks")}</div>
             {blockOrder.map(block => {
               const state = blockStates[block] || { presetId: null, content: "", enabled: true };
               const blockPresets = presets[block] || [];
@@ -4805,69 +4802,69 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
               const currentPreset = state.presetId ? blockPresets.find(p => p.id === state.presetId) : null;
               const canOverwrite = modified && currentPreset && !currentPreset.isDefault;
               return (
-                <div key={block} style={{ border: `1px solid var(--border-strong)`, borderRadius: 8, overflow: "hidden", opacity: state.enabled ? 1 : 0.5 }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", background: 'var(--bg-input)' }}>
-                    <button className="btn icon small subtle" onClick={() => setExpandedBlocks(prev => ({ ...prev, [block]: !expanded }))} title={t("tipDlgAiTweakBlock")}
-                      style={{ color: expanded ? 'var(--accent)' : 'var(--text-mute)' }}>
+                <div key={block} style={{ border: `1px solid var(--uis-border-strong)`, borderRadius: 8, overflow: "hidden", opacity: state.enabled ? 1 : 0.5 }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "6px 10px", background: 'var(--uis-bg-input)' }}>
+                    <button className="uis-btn ico small subtle" onClick={() => setExpandedBlocks(prev => ({ ...prev, [block]: !expanded }))} title={t("tipDlgAiTweakBlock")}
+                      style={{ color: expanded ? 'var(--uis-accent)' : 'var(--uis-text-mute)' }}>
                       <ChevronDown style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.15s" }} />
                     </button>
-                    <span className="hint" style={{ flexShrink: 0 }}>{blockMeta[block]?.name ?? BLOCK_LABELS[block] ?? block}</span>
+                    <span className="uis-hnt" style={{ flexShrink: 0 }}>{blockMeta[block]?.name ?? BLOCK_LABELS[block] ?? block}</span>
                     <select value={state.presetId || ""} onChange={e => handlePresetChange(block, e.target.value || null)}
-                      disabled={!state.enabled} className="select" style={{ flex: 1 }}>
+                      disabled={!state.enabled} className="uis-ddn-std" style={{ flex: 1 }}>
                       {blockPresets.map(p => <option key={p.id} value={p.id}>{p.name}</option>)}
                     </select>
-                    <button className="btn icon small subtle" onClick={() => { handleSaveAsNew(block); setExpandedBlocks(prev => ({ ...prev, [block]: true })); }} title={t("tipDlgAiSaveAsNew")}
+                    <button className="uis-btn ico small subtle" onClick={() => { handleSaveAsNew(block); setExpandedBlocks(prev => ({ ...prev, [block]: true })); }} title={t("tipDlgAiSaveAsNew")}
                      >
                       <Plus />
                     </button>
-                    <button className="btn icon small subtle" onClick={() => handleRenamePreset(block)} title={t("tipDlgAiRenameTemplate")} disabled={!state.presetId || currentPreset?.isDefault}
-                      style={{ color: (!state.presetId || currentPreset?.isDefault) ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+                    <button className="uis-btn ico small subtle" onClick={() => handleRenamePreset(block)} title={t("tipDlgAiRenameTemplate")} disabled={!state.presetId || currentPreset?.isDefault}
+                      style={{ color: (!state.presetId || currentPreset?.isDefault) ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
                       <TextCursor />
                     </button>
-                    <button className="btn icon small subtle" onClick={() => handleOverwrite(block)} title={t("tipDlgAiOverwrite")} disabled={!canOverwrite}
-                      style={{ color: canOverwrite ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+                    <button className="uis-btn ico small subtle" onClick={() => handleOverwrite(block)} title={t("tipDlgAiOverwrite")} disabled={!canOverwrite}
+                      style={{ color: canOverwrite ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
                       <Save />
                     </button>
-                    <button className="btn icon small subtle" onClick={() => handleBlockToggle(block)} title={t("tipDlgAiToggleBlock")}
-                      style={{ color: state.enabled ? "var(--ok)" : 'var(--text-mute)' }}>
+                    <button className="uis-btn ico small subtle" onClick={() => handleBlockToggle(block)} title={t("tipDlgAiToggleBlock")}
+                      style={{ color: state.enabled ? "var(--uis-ok)" : 'var(--uis-text-mute)' }}>
                       {state.enabled ? <Check /> : <X />}
                     </button>
-                    <button className="btn icon small subtle" onClick={() => handleRemoveBlock(block)} title={t("tipDlgAiRemoveBlock")} disabled={currentTpl?.isDefault}
-                      style={{ color: currentTpl?.isDefault ? 'var(--text-mute)' : 'var(--text-mute)' }}>
+                    <button className="uis-btn ico small subtle" onClick={() => handleRemoveBlock(block)} title={t("tipDlgAiRemoveBlock")} disabled={currentTpl?.isDefault}
+                      style={{ color: currentTpl?.isDefault ? 'var(--uis-text-mute)' : 'var(--uis-text-mute)' }}>
                       <Trash2 />
                     </button>
                   </div>
                   {expanded && (
-                    <div style={{ padding: 10, borderTop: `1px solid var(--border)`, display: "flex", flexDirection: "column", gap: 6 }}>
+                    <div style={{ padding: 10, borderTop: `1px solid var(--uis-border)`, display: "flex", flexDirection: "column", gap: 6 }}>
                       {presetInputBlock === block && (
                         <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                           <input autoFocus value={presetInputValue} onChange={e => setPresetInputValue(e.target.value)}
                             onKeyDown={e => { if (e.key === "Enter") handlePresetInputConfirm(block); if (e.key === "Escape") { setPresetInputBlock(null); setPresetInputMode(null); setPresetInputValue(""); } }}
-                            className="input" style={{ flex: 1, borderColor: 'var(--accent)' }} />
-                          <button className="btn icon small subtle" onClick={() => handlePresetInputConfirm(block)} disabled={!presetInputValue.trim()}
-                            style={{ color: presetInputValue.trim() ? "var(--ok)" : 'var(--text-mute)' }}>
+                            className="uis-txt" style={{ flex: 1, borderColor: 'var(--uis-accent)' }} />
+                          <button className="uis-btn ico small subtle" onClick={() => handlePresetInputConfirm(block)} disabled={!presetInputValue.trim()}
+                            style={{ color: presetInputValue.trim() ? "var(--uis-ok)" : 'var(--uis-text-mute)' }}>
                             <Check />
                           </button>
-                          <button className="btn icon small subtle" onClick={() => { setPresetInputBlock(null); setPresetInputMode(null); setPresetInputValue(""); }}
+                          <button className="uis-btn ico small subtle" onClick={() => { setPresetInputBlock(null); setPresetInputMode(null); setPresetInputValue(""); }}
                            >
                             <X />
                           </button>
                         </div>
                       )}
                       {presetPendingDelete === block && (
-                        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 8px", background: "color-mix(in srgb, var(--danger) 13%, transparent)", borderRadius: 6, border: "1px solid color-mix(in srgb, var(--danger) 40%, transparent)" }}>
-                          <span style={{ fontSize: 12, color: 'var(--text)', flex: 1 }}>{t("cfmDlgAiDeletePresetQ")}</span>
-                          <button className="btn primary" style={{ "--accent": "var(--danger)", "--accent-hov": "color-mix(in srgb, var(--danger) 82%, black)" }} onClick={() => handlePresetDeleteConfirm(block)}>{t("btnCardDelete")}</button>
-                          <button className="btn subtle" onClick={() => setPresetPendingDelete(null)}>{t("btnGlbCancel")}</button>
+                        <div style={{ display: "flex", alignItems: "center", gap: 8, padding: "5px 8px", background: "color-mix(in srgb, var(--uis-danger) 13%, transparent)", borderRadius: 6, border: "1px solid color-mix(in srgb, var(--uis-danger) 40%, transparent)" }}>
+                          <span style={{ fontSize: 12, color: 'var(--uis-text)', flex: 1 }}>{t("cfmDlgAiDeletePresetQ")}</span>
+                          <button className="uis-btn primary" style={{ "--uis-accent": "var(--uis-danger)", "--uis-accent-hov": "color-mix(in srgb, var(--uis-danger) 82%, black)" }} onClick={() => handlePresetDeleteConfirm(block)}>{t("btnCardDelete")}</button>
+                          <button className="uis-btn subtle" onClick={() => setPresetPendingDelete(null)}>{t("btnGlbCancel")}</button>
                         </div>
                       )}
                       <textarea rows={4} value={state.content} onChange={e => setBlockStates(prev => ({ ...prev, [block]: { ...prev[block], content: e.target.value } }))}
-                        className="textarea" />
+                        className="uis-txt-area" />
                       {state.presetId && !currentPreset?.isDefault && (
                         <div style={{ display: "flex", justifyContent: "flex-end" }}>
-                          <button className="btn small subtle" onClick={() => handleDeletePreset(block)} title={t("tipDlgAiDeletePreset")}
+                          <button className="uis-btn small subtle" onClick={() => handleDeletePreset(block)} title={t("tipDlgAiDeletePreset")}
                            >
-                            <Trash2 /><span style={{ color: 'var(--text-mute)' }}>{t("btnDlgAiDeletePreset")}</span>
+                            <Trash2 /><span style={{ color: 'var(--uis-text-mute)' }}>{t("btnDlgAiDeletePreset")}</span>
                           </button>
                         </div>
                       )}
@@ -4880,12 +4877,12 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
               const available = Object.keys(presets).filter(b => !blockOrder.includes(b));
               return available.length > 0 && (
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <select id="addBlockSelect" className="select" style={{ flex: 1 }}>
+                  <select id="addBlockSelect" className="uis-ddn-std" style={{ flex: 1 }}>
                     {available.map(b => <option key={b} value={b}>{BLOCK_LABELS[b] ?? b}</option>)}
                   </select>
-                  <button className="btn" onClick={() => { const sel = document.getElementById("addBlockSelect"); if (sel) handleAddBlock(sel.value); }}
+                  <button className="uis-btn" onClick={() => { const sel = document.getElementById("addBlockSelect"); if (sel) handleAddBlock(sel.value); }}
                     title={t("tipDlgAiAddBlock")}>
-                    <Plus className="icon-inline" />
+                    <Plus className="uis-ico-inline" />
                     <span>{t("btnDlgAiAddBlock")}</span>
                   </button>
                 </div>
@@ -4895,16 +4892,16 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
         )}
 
         {allVars.length > 0 && (
-          <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "var(--dlg-bgd)", border: `1px solid var(--border-strong)`, borderRadius: 8, padding: "10px 12px" }}>
-            <span className="dlg-field-label">{t("ttlDlgAiVariables")}</span>
+          <div style={{ display: "flex", flexDirection: "column", gap: 8, background: "var(--uis-dlg-bgd)", border: `1px solid var(--uis-border-strong)`, borderRadius: 8, padding: "10px 12px" }}>
+            <span className="uis-fld-labelled-label">{t("ttlDlgAiVariables")}</span>
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(180px, 1fr))", gap: 8 }}>
               {allVars.map(v => (
                 <div key={v.name} style={{ display: "flex", flexDirection: "column", gap: 3 }}>
-                  <label className="dlg-field-label">{v.name}</label>
+                  <label className="uis-fld-labelled-label">{v.name}</label>
                   {v.type === "ckb" ? (
-                    <label className="check-label" style={{ padding: "5px 0" }}>
+                    <label className="uis-chk-lbl" style={{ padding: "5px 0" }}>
                       <input
-                        type="checkbox" className="check-box"
+                        type="checkbox" className="uis-chk-box"
                         checked={varValues[v.name] !== false}
                         onChange={e => setVarValues(prev => ({ ...prev, [v.name]: e.target.checked }))}
                       />
@@ -4915,7 +4912,7 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
                       type={v.type === "num" ? "number" : "text"}
                       value={varValues[v.name] ?? v.defaultVal}
                       onChange={e => setVarValues(prev => ({ ...prev, [v.name]: e.target.value }))}
-                      className="input"
+                      className="uis-txt"
                     />
                   )}
                 </div>
@@ -4925,10 +4922,10 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
         )}
 
         <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-          <label className="dlg-field-label">{t("lblDlgAiYourRequest")}</label>
+          <label className="uis-fld-labelled-label">{t("lblDlgAiYourRequest")}</label>
           <textarea rows={3} value={userRequest} onChange={e => setUserRequest(e.target.value)}
             placeholder={task === "vocal" ? t("plhDlgCardAiVocal") : task === "lyrics" ? t("plhDlgCardAiSong") : t("plhDlgCardAiMusic")}
-            className="textarea"
+            className="uis-txt-area"
             onKeyDown={e => { if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) handleGenerate(); }} />
         </div>
 
@@ -4937,18 +4934,18 @@ function AiGenerateModal({ task, txtSettingsAiApiKey, apiPort, cardId, aiTweaks,
             const step = promptLengthMode === "words" ? 10 : 50;
             return (
               <div style={{ display: "flex", alignItems: "center", gap: 6, flexShrink: 0 }}>
-                <NumberField value={limit} min={step} step={step} onChange={setLimit} width={72} />
-                <span className="hint">{promptLengthMode === "words" ? t("lblDlgCardWords") : t("lblDlgCardChars")}</span>
+                <UisNum value={limit} min={step} step={step} onChange={setLimit} width={72} />
+                <span className="uis-hnt">{promptLengthMode === "words" ? t("lblDlgCardWords") : t("lblDlgCardChars")}</span>
               </div>
             );
           })()}
-          <button className="btn" onClick={handleCopy} disabled={!userRequest.trim()}
+          <button className="uis-btn" onClick={handleCopy} disabled={!userRequest.trim()}
             title={t("tipDlgAiCopyRequest")} style={{ flexShrink: 0 }}>
             <Sparkles />
           </button>
-          <button className="btn primary" onClick={handleGenerate} disabled={loading || !userRequest.trim() || !txtSettingsAiApiKey}
+          <button className="uis-btn primary" onClick={handleGenerate} disabled={loading || !userRequest.trim() || !txtSettingsAiApiKey}
             style={{ flex: 1, justifyContent: "center" }}>
-            {loading ? <RotateCcw className="spinner" /> : <Sparkles />}
+            {loading ? <RotateCcw className="uis-spn" /> : <Sparkles />}
             {loading ? "…" : t("tipDlgAiGenerate")}
           </button>
         </div>
@@ -5270,14 +5267,14 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
   // fingerprint instead of naming it.
   const referenceFields = (
     <div style={{ display: "flex", gap: 6 }}>
-      <div className="dlg-field" style={{ flex: 1 }}>
-        <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceArtist")}</label>
-        <input className="input" placeholder={t("plhDlgCardReferenceArtist")}
+      <div className="uis-fld-labelled" style={{ flex: 1 }}>
+        <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceArtist")}</label>
+        <input className="uis-txt" placeholder={t("plhDlgCardReferenceArtist")}
           value={referenceArtist} onChange={(e) => setReferenceArtist(e.target.value)} />
       </div>
-      <div className="dlg-field" style={{ flex: 2 }}>
-        <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceComplement")}</label>
-        <input className="input" placeholder={t("plhDlgCardReferenceComplement")}
+      <div className="uis-fld-labelled" style={{ flex: 2 }}>
+        <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardReferenceComplement")}</label>
+        <input className="uis-txt" placeholder={t("plhDlgCardReferenceComplement")}
           value={referenceComplement} onChange={(e) => setReferenceComplement(e.target.value)} />
       </div>
     </div>
@@ -5381,42 +5378,42 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
   });
 
   return (
-    <div className="dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
-      <div className="dlg" style={{ maxWidth: 900 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
+    <div className="uis-dl-backdrop" onMouseDown={(e) => { if (e.target === e.currentTarget) onClose(); }}>
+      <div className="uis-dlg" style={{ maxWidth: 900 }} onKeyDown={(e) => { if (e.key !== 'Tab') return; const els = [...e.currentTarget.querySelectorAll('button, input, select, textarea, [tabindex]:not([tabindex="-1"])')].filter(el => !el.disabled && el.offsetParent !== null); const first = els[0]; const last = els[els.length - 1]; if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } } else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } } }}>
         <div style={{ padding: "28px 28px 0", flexShrink: 0 }}>
           <div style={s.modalHead}>
-            <h2 className="dlg-title" style={{ margin: 0 }}><TypeIcon color={cfg.accent} />{card ? t("ttlDlgCardEdit") : t("ttlDlgCardNew")}<span style={{ fontSize: 12, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 6, padding: "2px 8px" }}>v{card?.version || 1}</span></h2>
-            <button className="dl-close" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={onClose}><X /></button>
+            <h2 className="uis-dlg-title" style={{ margin: 0 }}><TypeIcon color={cfg.accent} />{card ? t("ttlDlgCardEdit") : t("ttlDlgCardNew")}<span style={{ fontSize: 12, fontWeight: 700, color: cfg.accent, border: `1px solid ${cfg.accent}55`, borderRadius: 6, padding: "2px 8px" }}>v{card?.version || 1}</span></h2>
+            <button className="uis-dl-close" ref={el => { if (el && !el.dataset.didFocus) { el.dataset.didFocus = "1"; el.focus(); } }} onClick={onClose}><X /></button>
           </div>
         </div>
         <div style={{ flex: 1, minHeight: 0, overflowY: "auto", padding: "20px 28px", display: "flex", flexDirection: "column", gap: 20 }}>
         {!card && (
-          <div className="dlg-field">
-            <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardType")}</label>
-            <div className="opt-btns">
+          <div className="uis-fld-labelled">
+            <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardType")}</label>
+            <div className="uis-opt-set">
               {[["note", types.note], ["music", types.music], ["vocal", types.vocal], ["song", types.SongStateUndefined]].map(([key, typ]) => {
                 const active = type === key;
                 const { Icon: TIcon } = typ;
-                return <button key={key} onClick={() => handleTypeChange(key)} className={`opt-btn${active ? " active" : ""}`} style={{ "--accent": typ.accent }}><TIcon /><span>{typ.label}</span></button>;
+                return <button key={key} onClick={() => handleTypeChange(key)} className={`uis-opt${active ? " active" : ""}`} style={{ "--uis-accent": typ.accent }}><TIcon /><span>{typ.label}</span></button>;
               })}
             </div>
           </div>
         )}
-        <div className="dlg-field">
-          <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardName")}</label>
+        <div className="uis-fld-labelled">
+          <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardName")}</label>
           {nameSuggestions.length > 0 && (
             <div style={{ display: "flex", flexWrap: "wrap", gap: 6, marginBottom: 8 }}>
               {nameSuggestions.map((sug, i) => (
-                <button className="btn primary" key={i} onClick={() => { setName(sug); setNameSuggestions([]); }}
+                <button className="uis-btn primary" key={i} onClick={() => { setName(sug); setNameSuggestions([]); }}
                  >
                   <Sparkles />{sug}
                 </button>
               ))}
-              <button className="btn icon small subtle" onClick={() => setNameSuggestions([])}><X /></button>
+              <button className="uis-btn ico small subtle" onClick={() => setNameSuggestions([])}><X /></button>
             </div>
           )}
           <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-            <NumberField
+            <UisNum
               value={sortNumber === "" ? "" : Number(sortNumber)}
               onChange={(v) => setSortNumber(v === "" ? "" : String(v))}
               min={1}
@@ -5426,18 +5423,18 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
               placeholder="#"
               style={{ textAlign: "center", fontWeight: 700 }}
             />
-            <input className="input" style={{ ...(errors.name ? s.errBorder : {}), flex: 1, margin: 0 }}
+            <input className="uis-txt" style={{ ...(errors.name ? s.errBorder : {}), flex: 1, margin: 0 }}
               placeholder={type === "song" ? t("plhDlgCardNameSong") : type === "vocal" ? t("plhDlgCardNameVocal") : t("plhDlgCardNameMusic")}
               value={name} onChange={(e) => { setName(e.target.value); setErrors((v) => ({ ...v, name: null })); }} />
           </div>
           {errors.name && <span style={s.errMsg}>{errors.name}</span>}
         </div>
         {type === "note" ? (<>
-          <div className="tabs" style={{ margin: "0 -28px", padding: "0 28px" }}>
+          <div className="uis-tab-set" style={{ margin: "0 -28px", padding: "0 28px" }}>
             {[["desc", AlignLeft, t("tabDlgCardDesc")], ["note", FileText, t("tabDlgCardNote")]].map(([key, TabIcon, label]) => {
               const active = songTab === key;
               return (
-                <button key={key} onClick={() => setSongTab(key)} className={`tab${active ? " active" : ""}`} style={active ? { "--accent": cfg.accent } : undefined}>
+                <button key={key} onClick={() => setSongTab(key)} className={`uis-tab${active ? " active" : ""}`} style={active ? { "--uis-accent": cfg.accent } : undefined}>
                   <TabIcon />{label}
                 </button>
               );
@@ -5445,28 +5442,28 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
           </div>
           <div style={{ minHeight: card ? UIDLG.tabMinHeightEdit : UIDLG.tabMinHeightNew, display: "flex", flexDirection: "column", gap: 20 }}>
             {songTab === "desc" && (
-              <div className="dlg-field">
-                <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
-                <textarea className="textarea" style={{ minHeight: 200 }}
+              <div className="uis-fld-labelled">
+                <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
+                <textarea className="uis-txt-area" style={{ minHeight: 200 }}
                   placeholder={t("tabDlgCardDesc") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                   value={desc} onChange={(e) => setDesc(e.target.value)} />
               </div>
             )}
             {songTab === "note" && (
-              <div className="dlg-field">
-                <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
-                <textarea className="textarea" style={{ minHeight: 200 }}
+              <div className="uis-fld-labelled">
+                <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
+                <textarea className="uis-txt-area" style={{ minHeight: 200 }}
                   placeholder={t("tabDlgCardNote") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                   value={note} onChange={(e) => setNote(e.target.value)} />
               </div>
             )}
           </div>
         </>) : type === "song" ? (<>
-          <div className="tabs" style={{ margin: "0 -28px", padding: "0 28px" }}>
+          <div className="uis-tab-set" style={{ margin: "0 -28px", padding: "0 28px" }}>
             {[["desc", AlignLeft, t("tabDlgCardDesc")], ["style", Music2, t("lblDlgCardStyle")], ["linked", Link2, t("lblDlgCardLinkedStyles")], ["lyrics", ScrollText, t("tabDlgCardLyrics")], ["translation", Languages, t("tabDlgCardTranslation")], ["links", Globe, t("tabDlgCardLinks")], ["note", FileText, t("tabDlgCardNote")]].map(([key, TabIcon, label]) => {
               const active = songTab === key;
               return (
-                <button key={key} onClick={() => setSongTab(key)} className={`tab${active ? " active" : ""}`} style={active ? { "--accent": cfg.accent } : undefined}>
+                <button key={key} onClick={() => setSongTab(key)} className={`uis-tab${active ? " active" : ""}`} style={active ? { "--uis-accent": cfg.accent } : undefined}>
                   <TabIcon />{label}
                 </button>
               );
@@ -5474,44 +5471,44 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
           </div>
           <div style={{ minHeight: card ? UIDLG.tabMinHeightEdit : UIDLG.tabMinHeightNew, display: "flex", flexDirection: "column", gap: 20 }}>
           {songTab === "desc" && (
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("tabDlgCardDesc") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                 value={desc} onChange={(e) => setDesc(e.target.value)} />
             </div>
           )}
           {songTab === "note" && (
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("tabDlgCardNote") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                 value={note} onChange={(e) => setNote(e.target.value)} />
             </div>
           )}
           {songTab === "style" && <>
             {referenceFields}
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("plhDlgCardStyle")} rows={UIDLG.textareaRowsStyle + rowsBonus}
                 value={style} onChange={(e) => { setStyle(e.target.value); setErrors((v) => ({ ...v, style: null })); }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
-                <button className="btn" onClick={() => { setAiModalTask("music"); setAiModalInitLimit(txtSettingsAiStyleThreshold || 1000); setShowAiModal(true); }}>
+                <button className="uis-btn" onClick={() => { setAiModalTask("music"); setAiModalInitLimit(txtSettingsAiStyleThreshold || 1000); setShowAiModal(true); }}>
                   <Sparkles />{t("tipDlgAiGenerate")}
                 </button>
-                <span className="hint" style={{ fontVariantNumeric: "tabular-nums" }}>{style.length} {t("lblDlgCardChars")}</span>
+                <span className="uis-hnt" style={{ fontVariantNumeric: "tabular-nums" }}>{style.length} {t("lblDlgCardChars")}</span>
               </div>
             </div>
           </>}
-          {songTab === "linked" && <div className="dlg-field">
+          {songTab === "linked" && <div className="uis-fld-labelled">
               <div style={{ display: "flex", alignItems: "center", marginBottom: 0 }}>
-                <label className="dlg-field-label" style={{ color: cfg.accent, marginBottom: 0, display: "flex", alignItems: "center", gap: 5 }}><Link2 className="icon-inline" />{t("lblDlgCardLinkedStyles")}<span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+                <label className="uis-fld-labelled-label" style={{ color: cfg.accent, marginBottom: 0, display: "flex", alignItems: "center", gap: 5 }}><Link2 className="uis-ico-inline" />{t("lblDlgCardLinkedStyles")}<span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
               </div>
-              {linkableCards.length === 0 ? <p className="hint">{t("empDlgCardNoMusicVocal")}</p> : (
+              {linkableCards.length === 0 ? <p className="uis-hnt">{t("empDlgCardNoMusicVocal")}</p> : (
                 <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                   <input value={linkSearch} onChange={(e) => setLinkSearch(e.target.value)}
-                    placeholder={linkedCards.length > 0 ? t("plhHdrSearchSeeAll") : t("plhHdrSearchCards")} className="input" />
+                    placeholder={linkedCards.length > 0 ? t("plhHdrSearchSeeAll") : t("plhHdrSearchCards")} className="uis-txt" />
                   <div style={{ display: "flex", flexDirection: "column", gap: 8, maxHeight: 260, overflowY: "auto" }}>
                     {["music", "vocal"].map((typeKey) => {
                       const q = linkSearch.trim().toLowerCase();
@@ -5533,38 +5530,38 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                         });
                       if (!group.length) return null;
                       const tc = types[typeKey]; const { Icon: GIcon } = tc;
-                      return <div key={typeKey}><div style={{ fontSize: 10, color: tc.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, display: "flex", alignItems: "center", gap: 4 }}><GIcon className="icon-inline" />{tc.label}</div><div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{group.map((p) => { const linked = linkedCards.includes(p.id); const isGlobal = globalEnvId && p.env === globalEnvId && !linkableCards.some(lp => lp.id === p.id); return <button key={p.id} onClick={() => toggleLink(p.id)} title={isGlobal ? "🌍 Global" : undefined} className={"btn" + (linked ? " active" : "")} style={{ "--accent": tc.accent }}>{linked && <Check className="icon-inline" />}{p.favorite && !linked && <Star className="icon-inline" style={{ opacity: 0.5 }} />}{isGlobal && <span style={{ fontSize: 9, opacity: 0.6 }}>🌍</span>}{p.name}<span style={{ fontSize: 10, opacity: 0.7, fontWeight: 700 }}>v{p.version || 1}</span></button>; })}</div></div>;
+                      return <div key={typeKey}><div style={{ fontSize: 10, color: tc.accent, letterSpacing: 1, textTransform: "uppercase", marginBottom: 4, display: "flex", alignItems: "center", gap: 4 }}><GIcon className="uis-ico-inline" />{tc.label}</div><div style={{ display: "flex", flexWrap: "wrap", gap: 6 }}>{group.map((p) => { const linked = linkedCards.includes(p.id); const isGlobal = globalEnvId && p.env === globalEnvId && !linkableCards.some(lp => lp.id === p.id); return <button key={p.id} onClick={() => toggleLink(p.id)} title={isGlobal ? "🌍 Global" : undefined} className={"uis-btn" + (linked ? " active" : "")} style={{ "--uis-accent": tc.accent }}>{linked && <Check className="uis-ico-inline" />}{p.favorite && !linked && <Star className="uis-ico-inline" style={{ opacity: 0.5 }} />}{isGlobal && <span style={{ fontSize: 9, opacity: 0.6 }}>🌍</span>}{p.name}<span style={{ fontSize: 10, opacity: 0.7, fontWeight: 700 }}>v{p.version || 1}</span></button>; })}</div></div>;
                     })}
                   </div>
                 </div>
               )}
             </div>}
-          {songTab === "lyrics" && <div className="dlg-field">
-            <label className="dlg-field-label" style={{ color: cfg.accent }}>Lyrics</label>
-            <textarea className="textarea"
+          {songTab === "lyrics" && <div className="uis-fld-labelled">
+            <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>Lyrics</label>
+            <textarea className="uis-txt-area"
               placeholder={t("plhDlgCardLyrics")} rows={UIDLG.textareaRowsLyrics + rowsBonus}
               value={lyrics} onChange={(e) => setLyrics(e.target.value)} />
             <div style={{ display: "flex", alignItems: "center", marginTop: 4, gap: 8 }}>
-              <button className="btn" onClick={() => { setAiModalTask("lyrics"); setAiModalInitLimit(txtSettingsAiLyricsThreshold || 5000); setShowAiModal(true); }}>
+              <button className="uis-btn" onClick={() => { setAiModalTask("lyrics"); setAiModalInitLimit(txtSettingsAiLyricsThreshold || 5000); setShowAiModal(true); }}>
                 <Sparkles />{t("tipDlgAiGenerate")}
               </button>
               {urls.some(u => u.href.includes("suno.com/song/") || u.href.includes("producer.ai/song/") || u.href.includes("tunee.ai/music/")) && (
-                <button title={t("tipDlgCardFetchLyrics")} disabled={sunoFetching} className="btn"
+                <button title={t("tipDlgCardFetchLyrics")} disabled={sunoFetching} className="uis-btn"
                   onClick={() => { const u = urls.find(x => x.href.includes("suno.com/song/") || x.href.includes("producer.ai/song/") || x.href.includes("tunee.ai/music/")); if (u) fetchLyrics(u.href); }}>
                   <Globe />{sunoFetching ? t("lblDlgCardFetching") : t("lblDlgCardFetchLyrics")}
                 </button>
               )}
               {lyrics.trim() && (
-                <button className="btn" title={t("tipDlgCardCopyLyricsClean")}
+                <button className="uis-btn" title={t("tipDlgCardCopyLyricsClean")}
                   onClick={() => { navigator.clipboard.writeText(cleanLyrics(lyrics)); showToast("📋 " + t("btnDlgCardCopyLyricsClean")); }}>
                   <Music />{t("btnDlgCardCopyLyricsClean")}
                 </button>
               )}
               <div style={{ flex: 1 }} />
               {/* Source language picker */}
-              <span className="hint" style={{ flexShrink: 0 }}>{t("lblDlgCardTranslationSourceLanguage")}</span>
+              <span className="uis-hnt" style={{ flexShrink: 0 }}>{t("lblDlgCardTranslationSourceLanguage")}</span>
               <div style={{ flexShrink: 0 }}>
-                <Combobox
+                <UisCboStandard
                   inputStyle={{ width: srcLang ? "auto" : 110, maxWidth: 150 }}
                   placeholder="…"
                   value={srcLangOpen ? srcLangSearch : (srcLang ? `${getLangName(srcLang, langKey)} (${srcLang})` : "")}
@@ -5577,52 +5574,52 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                   })}
                   itemKey={l => l.code}
                   itemActive={l => l.code === srcLang}
-                  renderItem={l => <>{getLangName(l.code, langKey)} <span className="pop-dim">({l.code})</span></>}
+                  renderItem={l => <>{getLangName(l.code, langKey)} <span className="uis-pop-dim">({l.code})</span></>}
                   onPick={l => saveSrcLang(l.code)}
                   renderHeader={srcLang ? ({ close }) => (
-                    <button type="button" className="pop-item pop-dim" onMouseDown={e => { e.preventDefault(); saveSrcLang(""); close(); }}>(clear)</button>
+                    <button type="button" className="uis-pop-item uis-pop-dim" onMouseDown={e => { e.preventDefault(); saveSrcLang(""); close(); }}>(clear)</button>
                   ) : undefined}
                 />
               </div>
-              <span className="hint" style={{ fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{lyrics.length} {t("lblDlgCardChars")}</span>
+              <span className="uis-hnt" style={{ fontVariantNumeric: "tabular-nums", flexShrink: 0 }}>{lyrics.length} {t("lblDlgCardChars")}</span>
             </div>
           </div>}
-          {songTab === "translation" && <div className="dlg-field">
+          {songTab === "translation" && <div className="uis-fld-labelled">
             {/* Translation blocks */}
-            {translations.filter(x => !x.deleted).length === 0 && <p className="hint" style={{ textAlign: "center", padding: "16px 0" }}>{t("empDlgCardTranslationNone")}</p>}
+            {translations.filter(x => !x.deleted).length === 0 && <p className="uis-hnt" style={{ textAlign: "center", padding: "16px 0" }}>{t("empDlgCardTranslationNone")}</p>}
             {translations.filter(x => !x.deleted).map(tr => {
               const expanded = expandedTranslations.has(tr.id);
               return (
-                <div key={tr.id} style={{ border: `1px solid var(--border-strong)`, borderRadius: 8, marginBottom: 8, overflow: "hidden" }}>
-                  <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", background: 'var(--bg-input)', cursor: "pointer" }}
+                <div key={tr.id} style={{ border: `1px solid var(--uis-border-strong)`, borderRadius: 8, marginBottom: 8, overflow: "hidden" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: 6, padding: "7px 10px", background: 'var(--uis-bg-input)', cursor: "pointer" }}
                     onClick={() => setExpandedTranslations(prev => { const s = new Set(prev); expanded ? s.delete(tr.id) : s.add(tr.id); return s; })}>
-                    <ChevronDown className="icon-inline" style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.15s", color: expanded ? cfg.accent : 'var(--text-mute)', flexShrink: 0 }} />
-                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)', flexShrink: 0 }}>{getLangName(tr.lang, langKey)} <span style={{ color: 'var(--text-mute)', fontWeight: 400 }}>({tr.lang})</span></span>
-                    <input className="input"
+                    <ChevronDown className="uis-ico-inline" style={{ transform: expanded ? "rotate(180deg)" : "none", transition: "transform 0.15s", color: expanded ? cfg.accent : 'var(--uis-text-mute)', flexShrink: 0 }} />
+                    <span style={{ fontSize: 13, fontWeight: 600, color: 'var(--uis-text)', flexShrink: 0 }}>{getLangName(tr.lang, langKey)} <span style={{ color: 'var(--uis-text-mute)', fontWeight: 400 }}>({tr.lang})</span></span>
+                    <input className="uis-txt"
                       style={{ flex: 1 }}
 
                       value={tr.name || ""}
                       onClick={e => e.stopPropagation()}
                       onChange={e => updateTranslationLocal(tr.id, { name: e.target.value })} />
-                    <button title={t("btnDlgCardTranslationAi")} disabled={translatingId === tr.id} className="btn small"
+                    <button title={t("btnDlgCardTranslationAi")} disabled={translatingId === tr.id} className="uis-btn small"
                       onClick={e => { e.stopPropagation(); handleTranslateAi(tr); }}>
                       <Sparkles />{translatingId === tr.id ? "…" : t("btnDlgCardTranslationAi")}
                     </button>
                     <button title={t("tipDlgAiCopyRequest")} onClick={e => { e.stopPropagation(); handleCopyAiTranslationRequest(tr); }}
-                      className="btn icon small subtle">
+                      className="uis-btn ico small subtle">
                       <Sparkles />
                     </button>
                     <button title={t("tipDlgCardTranslationCopy")} onClick={e => { e.stopPropagation(); handleCopyTranslation(tr); }}
-                      className="btn icon small subtle">
+                      className="uis-btn ico small subtle">
                       <Copy />
                     </button>
                     <button title={t("tipDlgCardTranslationDelete")} onClick={e => { e.stopPropagation(); handleDeleteTranslation(tr); }}
-                      className="btn icon small subtle">
+                      className="uis-btn ico small subtle">
                       <Trash2 />
                     </button>
                   </div>
                   {expanded && (
-                    <textarea className="textarea" style={{ width: "100%" }} rows={UIDLG.textareaRowsTranslation + rowsBonus}
+                    <textarea className="uis-txt-area" style={{ width: "100%" }} rows={UIDLG.textareaRowsTranslation + rowsBonus}
                       value={tr.content}
                       onChange={e => updateTranslationLocal(tr.id, { content: e.target.value })} />
                   )}
@@ -5632,7 +5629,7 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
 
             {/* Add translation */}
             <div style={{ marginTop: 4 }}>
-              <Combobox
+              <UisCboStandard
                 placeholder={t("btnDlgCardTranslationAdd") + "…"}
                 value={addLangSearch}
                 onChange={setAddLangSearch}
@@ -5642,45 +5639,45 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                   return !q || l.name.toLowerCase().includes(q) || getLangName(l.code, langKey).toLowerCase().includes(q) || l.code.toLowerCase().includes(q);
                 })}
                 itemKey={l => l.code}
-                renderItem={l => <>{getLangName(l.code, langKey)} <span className="pop-dim">({l.code})</span></>}
+                renderItem={l => <>{getLangName(l.code, langKey)} <span className="uis-pop-dim">({l.code})</span></>}
                 onPick={l => handleAddTranslation(l.code)}
               />
             </div>
           </div>}
           {songTab === "links" && <>
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Globe className="icon-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Globe className="uis-ico-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {sortedUrls.map((u) => (
                   <UrlRow key={u.id} url={u} accent={cfg.accent} onRemove={handleRemoveUrl} />
                 ))}
                 <div style={{ display: "flex", gap: 6 }}>
-                  <input className="input" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
-                  <input className="input" style={{ flex: 1 }} placeholder="https://suno.com/song/…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
-                  <button className="btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--accent": cfg.accent, "--accent-hov": cfg.accent }}>{t("btnDlgCardAdd")}</button>
+                  <input className="uis-txt" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
+                  <input className="uis-txt" style={{ flex: 1 }} placeholder="https://suno.com/song/…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
+                  <button className="uis-btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--uis-accent": cfg.accent, "--uis-accent-hov": cfg.accent }}>{t("btnDlgCardAdd")}</button>
                 </div>
               </div>
             </div>
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Play className="icon-inline" />{t("lblDlgCardMediaFile")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Play className="uis-ico-inline" />{t("lblDlgCardMediaFile")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <button className="btn" onClick={browseMedia}>
+                <button className="uis-btn" onClick={browseMedia}>
                   <FolderOpen />{t("btnDlgCardBrowse")}
                 </button>
                 {mediaPath
                   ? <><span style={{ fontSize: 12, color: cfg.accent, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={mediaPath}>{mediaPath.split(/[\\/]/).pop()}</span>
-                      <button className="btn icon small subtle" onClick={() => setMediaPath("")}><X /></button></>
-                  : <span className="hint">{t("msgDlgCardNoFileSelected")}</span>}
+                      <button className="uis-btn ico small subtle" onClick={() => setMediaPath("")}><X /></button></>
+                  : <span className="uis-hnt">{t("msgDlgCardNoFileSelected")}</span>}
               </div>
             </div>
           </>}
           </div>
         </>) : (<>
-          <div className="tabs" style={{ margin: "0 -28px", padding: "0 28px" }}>
+          <div className="uis-tab-set" style={{ margin: "0 -28px", padding: "0 28px" }}>
             {[["desc", AlignLeft, t("tabDlgCardDesc")], ["style", Music2, t("lblDlgCardStyle")], ["links", Globe, t("lblDlgCardExternalLinks")], ["note", FileText, t("tabDlgCardNote")]].map(([key, TabIcon, label]) => {
               const active = mvTab === key;
               return (
-                <button key={key} onClick={() => setMvTab(key)} className={`tab${active ? " active" : ""}`} style={active ? { "--accent": cfg.accent } : undefined}>
+                <button key={key} onClick={() => setMvTab(key)} className={`uis-tab${active ? " active" : ""}`} style={active ? { "--uis-accent": cfg.accent } : undefined}>
                   <TabIcon />{label}
                 </button>
               );
@@ -5688,43 +5685,43 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
           </div>
           <div style={{ minHeight: card ? UIDLG.tabMinHeightEdit : UIDLG.tabMinHeightNew, display: "flex", flexDirection: "column", gap: 20 }}>
           {mvTab === "desc" && (
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardDesc")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("tabDlgCardDesc") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                 value={desc} onChange={(e) => setDesc(e.target.value)} />
             </div>
           )}
           {mvTab === "note" && (
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("tabDlgCardNote")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("tabDlgCardNote") + "…"} rows={UIDLG.textareaRowsDescNote + rowsBonus}
                 value={note} onChange={(e) => setNote(e.target.value)} />
             </div>
           )}
           {mvTab === "style" && (<>
             {referenceFields}
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
-              <textarea className="textarea"
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardStyle")}</label>
+              <textarea className="uis-txt-area"
                 placeholder={t("plhDlgCardStyle")} rows={UIDLG.textareaRowsStyle + rowsBonus}
                 value={style} onChange={(e) => { setStyle(e.target.value); setErrors((v) => ({ ...v, style: null })); }} />
               <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginTop: 4 }}>
-                <button className="btn" onClick={() => { const task = type === "vocal" ? "vocal" : "music"; const lim = type === "vocal" ? (txtSettingsAiLimitsVocal || 300) : (txtSettingsAiLimitsMusic || 700); setAiModalTask(task); setAiModalInitLimit(lim); setShowAiModal(true); }}>
+                <button className="uis-btn" onClick={() => { const task = type === "vocal" ? "vocal" : "music"; const lim = type === "vocal" ? (txtSettingsAiLimitsVocal || 300) : (txtSettingsAiLimitsMusic || 700); setAiModalTask(task); setAiModalInitLimit(lim); setShowAiModal(true); }}>
                   <Sparkles />{t("tipDlgAiGenerate")}
                 </button>
-                <span className="hint" style={{ fontVariantNumeric: "tabular-nums", color: style.length > (txtSettingsAiStyleThreshold || 1000) ? "var(--danger)" : undefined, fontWeight: style.length > (txtSettingsAiStyleThreshold || 1000) ? 700 : undefined }}>{style.length} {t("lblDlgCardChars")}</span>
+                <span className="uis-hnt" style={{ fontVariantNumeric: "tabular-nums", color: style.length > (txtSettingsAiStyleThreshold || 1000) ? "var(--uis-danger)" : undefined, fontWeight: style.length > (txtSettingsAiStyleThreshold || 1000) ? 700 : undefined }}>{style.length} {t("lblDlgCardChars")}</span>
               </div>
               {globalEnvId && card && (
                 <div style={{ marginTop: 12, display: "flex", alignItems: "center", gap: 8 }}>
                   {card.env === globalEnvId ? (
-                    <span style={{ fontSize: 12, color: 'var(--accent)', display: "flex", alignItems: "center", gap: 5 }}>
-                      <Globe className="icon-inline" color={'var(--accent)'} />{t("tipPnlProjectGlobal")}
+                    <span style={{ fontSize: 12, color: 'var(--uis-accent)', display: "flex", alignItems: "center", gap: 5 }}>
+                      <Globe className="uis-ico-inline" color={'var(--uis-accent)'} />{t("tipPnlProjectGlobal")}
                     </span>
                   ) : (
-                    <button className="btn" onClick={() => onMakeGlobal(card.id)}>
-                      <Globe className="icon-inline" />{t("btnPnlProjectMakeGlobal")}
+                    <button className="uis-btn" onClick={() => onMakeGlobal(card.id)}>
+                      <Globe className="uis-ico-inline" />{t("btnPnlProjectMakeGlobal")}
                     </button>
                   )}
                 </div>
@@ -5732,77 +5729,77 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
             </div>
           </>)}
           {mvTab === "links" && <>
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Globe className="icon-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Globe className="uis-ico-inline" />{t("lblDlgCardExternalLinks")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {sortedUrls.map((u) => (
                   <UrlRow key={u.id} url={u} accent={cfg.accent} onRemove={handleRemoveUrl} />
                 ))}
                 <div style={{ display: "flex", gap: 6 }}>
-                  <input className="input" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
-                  <input className="input" style={{ flex: 1 }} placeholder="https://…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
-                  <button className="btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--accent": cfg.accent, "--accent-hov": cfg.accent }}>{t("btnDlgCardAdd")}</button>
+                  <input className="uis-txt" style={{ width: 80, flexShrink: 0 }} placeholder={t("plhDlgCardUrlLabel")} value={newUrlLabel} onChange={(e) => setNewUrlLabel(e.target.value)} />
+                  <input className="uis-txt" style={{ flex: 1 }} placeholder="https://…" value={newUrlHref} onChange={(e) => setNewUrlHref(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") { e.preventDefault(); handleAddUrl(); } }} />
+                  <button className="uis-btn primary" onClick={handleAddUrl} disabled={!newUrlHref.trim()} style={{ "--uis-accent": cfg.accent, "--uis-accent-hov": cfg.accent }}>{t("btnDlgCardAdd")}</button>
                 </div>
               </div>
             </div>
-            <div className="dlg-field">
-              <label className="dlg-field-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Play className="icon-inline" />{t("lblDlgCardMediaFile")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
+            <div className="uis-fld-labelled">
+              <label className="uis-fld-labelled-label" style={{ color: cfg.accent, display: "flex", alignItems: "center", gap: 5 }}><Play className="uis-ico-inline" />{t("lblDlgCardMediaFile")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardOptional")})</span></label>
               <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                <button className="btn" onClick={browseMedia}>
+                <button className="uis-btn" onClick={browseMedia}>
                   <FolderOpen />{t("btnDlgCardBrowse")}
                 </button>
                 {mediaPath
                   ? <><span style={{ fontSize: 12, color: cfg.accent, flex: 1, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={mediaPath}>{mediaPath.split(/[\\/]/).pop()}</span>
-                      <button className="btn icon small subtle" onClick={() => setMediaPath("")}><X /></button></>
-                  : <span className="hint">{t("msgDlgCardNoFileSelected")}</span>}
+                      <button className="uis-btn ico small subtle" onClick={() => setMediaPath("")}><X /></button></>
+                  : <span className="uis-hnt">{t("msgDlgCardNoFileSelected")}</span>}
               </div>
             </div>
           </>}
           </div>
         </>)}
         </div>
-        <div className="dlg-field" style={{ padding: "12px 28px 12px", flexShrink: 0, position: "relative", zIndex: 10 }}>
-          <label className="dlg-field-label" style={{ color: cfg.accent }}>{t("lblDlgCardTags")} <span style={{ color: 'var(--text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardTagsHint")})</span></label>
-          <Combobox
+        <div className="uis-fld-labelled" style={{ padding: "12px 28px 12px", flexShrink: 0, position: "relative", zIndex: 10 }}>
+          <label className="uis-fld-labelled-label" style={{ color: cfg.accent }}>{t("lblDlgCardTags")} <span style={{ color: 'var(--uis-text-mute)', textTransform: "none", letterSpacing: 0, fontWeight: 400 }}>({t("msgDlgCardTagsHint")})</span></label>
+          <UisCboStandard
             placeholder={type === "song" ? t("plhDlgCardTagsSong") : type === "vocal" ? t("plhDlgCardTagsVocal") : t("plhDlgCardTagsMusic")}
             value={tagInput}
             onChange={setTagInput}
             items={suggestions}
             itemKey={tag => tag}
             renderItem={tag => {
-              const color = getTagColor(tag);   // unset --chip → .chip's own neutral fallback
+              const color = getTagColor(tag);   // unset --chip → .uis-chp's own neutral fallback
               const idx = tag.toLowerCase().indexOf(currentWord);
               const before = tag.slice(0, idx), match = tag.slice(idx, idx + currentWord.length), after = tag.slice(idx + currentWord.length);
-              return <span className="chip" style={color ? { "--chip": color } : undefined}>{before}<strong>{match}</strong>{after}</span>;
+              return <span className="uis-chp" style={color ? { "--chip": color } : undefined}>{before}<strong>{match}</strong>{after}</span>;
             }}
             onPick={pickSuggestion}
           />
         </div>
         <div style={{ display: "flex", justifyContent: "flex-end", flexDirection: "column", gap: 10, padding: "0 28px 28px", flexShrink: 0 }}>
           {(card || type === "song") && (
-            <div className="hint" style={{ alignSelf: "flex-start", display: "flex", gap: 12, alignItems: "center" }}>
+            <div className="uis-hnt" style={{ alignSelf: "flex-start", display: "flex", gap: 12, alignItems: "center" }}>
               {card && <>
-                <DatePicker value={dateVal} onChange={setDateVal} locale={langKey} todayLabel={t('btnGlbToday')} clearLabel={t('btnGlbClear')} />
+                <UisPkrDate value={dateVal} onChange={setDateVal} locale={langKey} todayLabel={t('btnGlbToday')} clearLabel={t('btnGlbClear')} />
                 <span style={{ fontWeight: 700, color: cfg.accent }}>v{card.version || 1}</span>
               </>}
               {type === "song" && (() => {
                 const totalStyleChars = style.length + linkedCards.reduce((sum, id) => { const p = allCards.find(x => x.id === id); return sum + (p ? p.style.length : 0); }, 0);
                 return <>
-                  <span className="hint" style={{ fontVariantNumeric: "tabular-nums", color: totalStyleChars > (txtSettingsAiStyleThreshold || 1000) ? "var(--danger)" : undefined, fontWeight: totalStyleChars > (txtSettingsAiStyleThreshold || 1000) ? 700 : undefined }}>{t("lblDlgCardStyleChars")} {totalStyleChars} {t("lblDlgCardChars")}</span>
-                  <span className="hint" style={{ fontVariantNumeric: "tabular-nums", color: lyrics.length > (txtSettingsAiLyricsThreshold || 5000) ? "var(--danger)" : undefined, fontWeight: lyrics.length > (txtSettingsAiLyricsThreshold || 5000) ? 700 : undefined }}>{t("lblDlgCardLyricsChars")} {lyrics.length} {t("lblDlgCardChars")}</span>
+                  <span className="uis-hnt" style={{ fontVariantNumeric: "tabular-nums", color: totalStyleChars > (txtSettingsAiStyleThreshold || 1000) ? "var(--uis-danger)" : undefined, fontWeight: totalStyleChars > (txtSettingsAiStyleThreshold || 1000) ? 700 : undefined }}>{t("lblDlgCardStyleChars")} {totalStyleChars} {t("lblDlgCardChars")}</span>
+                  <span className="uis-hnt" style={{ fontVariantNumeric: "tabular-nums", color: lyrics.length > (txtSettingsAiLyricsThreshold || 5000) ? "var(--uis-danger)" : undefined, fontWeight: lyrics.length > (txtSettingsAiLyricsThreshold || 5000) ? 700 : undefined }}>{t("lblDlgCardLyricsChars")} {lyrics.length} {t("lblDlgCardChars")}</span>
                 </>;
               })()}
             </div>
           )}
           <div style={{ display: "flex", gap: 10, width: "100%", alignItems: "center" }}>
             {txtSettingsAiApiKey && type === "song" && (
-              <button className="btn" onClick={openWizard}>
+              <button className="uis-btn" onClick={openWizard}>
                 <Wand2 />{t("ttlDlgWizard")}
               </button>
             )}
             <div style={{ flex: 1 }} />
-            <button className="btn subtle" onClick={onClose}>{t("btnGlbCancel")}</button>
-            <button className="btn primary" style={{ "--accent": cfg.accent, "--accent-hov": cfg.accent }} onClick={submit}>{card ? t("btnDlgCardSaveChanges") : t("btnDlgCardCreate")}</button>
+            <button className="uis-btn subtle" onClick={onClose}>{t("btnGlbCancel")}</button>
+            <button className="uis-btn primary" style={{ "--uis-accent": cfg.accent, "--uis-accent-hov": cfg.accent }} onClick={submit}>{card ? t("btnDlgCardSaveChanges") : t("btnDlgCardCreate")}</button>
           </div>
         </div>
       </div>
@@ -5831,19 +5828,19 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
       )}
       {/* ── Wizard overlay ── */}
       {wizardStep && (
-        <div style={{ position: "fixed", inset: 0, background: 'var(--bg)', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 200, padding: 40 }}>
+        <div style={{ position: "fixed", inset: 0, background: 'var(--uis-bg)', display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", zIndex: 200, padding: 40 }}>
           <div style={{ width: "100%", maxWidth: 420, display: "flex", flexDirection: "column", gap: 20 }}>
-            <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--text)', display: "flex", alignItems: "center", gap: 8 }}>
-              <Wand2 className="icon-inline" color={'var(--accent)'} />
+            <h3 style={{ margin: 0, fontSize: 17, fontWeight: 700, color: 'var(--uis-text)', display: "flex", alignItems: "center", gap: 8 }}>
+              <Wand2 className="uis-ico-inline" color={'var(--uis-accent)'} />
               {t("ttlDlgWizard")}
-              <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--text-mute)', marginLeft: "auto" }}>{wizardList.length > 1 ? `${wizardStep}/3` : `${wizardStep - 1}/2`}</span>
+              <span style={{ fontSize: 12, fontWeight: 500, color: 'var(--uis-text-mute)', marginLeft: "auto" }}>{wizardList.length > 1 ? `${wizardStep}/3` : `${wizardStep - 1}/2`}</span>
             </h3>
 
             {wizardStep === 1 && (
               <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
                 {wizardList.map(w => (
-                  <button key={w.id} className="lv-item" onClick={() => { setWizardSelected(w); setWizardStep(2); }}>
-                    <span className="lv-item-name">{w.name}</span>
+                  <button key={w.id} className="uis-lvw-item" onClick={() => { setWizardSelected(w); setWizardStep(2); }}>
+                    <span className="uis-lvw-item-name">{w.name}</span>
                   </button>
                 ))}
               </div>
@@ -5852,11 +5849,11 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
             {wizardStep === 2 && wizardSelected && (
               <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
                 {wizardList.length > 1 && (
-                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--accent)' }}>{wizardSelected.name}</div>
+                  <div style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-accent)' }}>{wizardSelected.name}</div>
                 )}
-                <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text)' }}>{t("lblDlgWizardArtist")}</label>
+                <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--uis-text)' }}>{t("lblDlgWizardArtist")}</label>
                 <div>
-                  <Combobox
+                  <UisCboStandard
                     autoFocus
                     placeholder="Tiken Jah Fakoly, Idir, Cesária Évora…"
                     inputStyle={{ width: "100%" }}
@@ -5876,20 +5873,20 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
               <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
                 <div style={{ display: "flex", gap: 12 }}>
                   <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-mute)', textTransform: "uppercase", letterSpacing: "0.06em" }}>{t("lblDlgWizardArtist")}</label>
-                    <div style={{ fontSize: 14, color: 'var(--text)', marginTop: 4 }}>{wizardArtist}</div>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--uis-text-mute)', textTransform: "uppercase", letterSpacing: "0.06em" }}>{t("lblDlgWizardArtist")}</label>
+                    <div style={{ fontSize: 14, color: 'var(--uis-text)', marginTop: 4 }}>{wizardArtist}</div>
                   </div>
                   <div style={{ flex: 1 }}>
-                    <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-mute)', textTransform: "uppercase", letterSpacing: "0.06em" }}>{t("lblDlgWizardLanguage")}</label>
-                    <div style={{ fontSize: 14, color: 'var(--text)', marginTop: 4 }}>{wizardDna.LANGUAGE_PRIMARY || "-"}</div>
+                    <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--uis-text-mute)', textTransform: "uppercase", letterSpacing: "0.06em" }}>{t("lblDlgWizardLanguage")}</label>
+                    <div style={{ fontSize: 14, color: 'var(--uis-text)', marginTop: 4 }}>{wizardDna.LANGUAGE_PRIMARY || "-"}</div>
                   </div>
                 </div>
                 <div>
-                  <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--text-mute)', textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6, display: "block" }}>{t("lblDlgWizardSubjects")}</label>
+                  <label style={{ fontSize: 11, fontWeight: 600, color: 'var(--uis-text-mute)', textTransform: "uppercase", letterSpacing: "0.06em", marginBottom: 6, display: "block" }}>{t("lblDlgWizardSubjects")}</label>
                   <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
                     {(wizardDna.SUBJECTS || "").split("\n").map(l => l.replace(/^\d+\.\s*/, "").trim()).filter(Boolean).map((sub, i) => (
-                      <button key={i} className={"lv-item" + (wizardSubject === sub ? " active" : "")} onClick={() => setWizardSubject(sub)}>
-                        <span className="lv-item-name">{sub}</span>
+                      <button key={i} className={"uis-lvw-item" + (wizardSubject === sub ? " active" : "")} onClick={() => setWizardSubject(sub)}>
+                        <span className="uis-lvw-item-name">{sub}</span>
                       </button>
                     ))}
                     <input
@@ -5898,30 +5895,30 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
                       onChange={e => setWizardSubject(e.target.value)}
                       placeholder={t("plhDlgWizardCustomSubject")}
                       style={{ marginTop: 4 }}
-                      className="input"
+                      className="uis-txt"
                     />
                   </div>
                 </div>
               </div>
             )}
 
-            {wizardError && <div style={{ fontSize: 12, color: "var(--danger)", padding: "8px 12px", background: "color-mix(in srgb, var(--danger) 9%, transparent)", borderRadius: 8 }}>{wizardError}</div>}
+            {wizardError && <div style={{ fontSize: 12, color: "var(--uis-danger)", padding: "8px 12px", background: "color-mix(in srgb, var(--uis-danger) 9%, transparent)", borderRadius: 8 }}>{wizardError}</div>}
 
             <div style={{ display: "flex", gap: 10, justifyContent: "flex-end" }}>
-              <button className="btn subtle" onClick={() => setWizardStep(null)}>
+              <button className="uis-btn subtle" onClick={() => setWizardStep(null)}>
                 {t("btnGlbCancel")}
               </button>
               {wizardStep > 1 && (
-                <button className="btn subtle" onClick={() => setWizardStep(wizardStep === 2 && wizardList.length <= 1 ? null : wizardStep - 1)}>
+                <button className="uis-btn subtle" onClick={() => setWizardStep(wizardStep === 2 && wizardList.length <= 1 ? null : wizardStep - 1)}>
                   {t("btnDlgWizardBack")}
                 </button>
               )}
               {wizardStep >= 2 && (
-                <button className="btn primary"
+                <button className="uis-btn primary"
                   disabled={wizardLoading || (wizardStep === 2 && !wizardArtist.trim()) || (wizardStep === 3 && !wizardSubject)}
                   onClick={wizardStep === 2 ? handleWizardStep1 : handleWizardStep2}
                  >
-                  {wizardLoading && <RotateCcw className="spinner" />}
+                  {wizardLoading && <RotateCcw className="uis-spn" />}
                   {wizardLoading ? t("lblDlgWizardGenerating") : t("btnDlgWizardNext")}
                 </button>
               )}
@@ -5936,46 +5933,46 @@ function CardModal({ card, draft, allExistingTags, allCards, types, langKey, api
 // ── Styles ─────────────────────────────────────────────────────────────────────
 function makeStyles() {
   return {
-    root:             { background: 'var(--bg)', color: 'var(--text)', fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: 0, transition: "background 0.3s, color 0.3s" }, /* frame (flex column, 100vh, overflow hidden) comes from .app-root */
-    header:           { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4, padding: "6px 10px", borderBottom: `1px solid var(--border)`, background: "var(--bar-bgd)", position: "sticky", top: 0, zIndex: 20, backdropFilter: "blur(12px)", flexWrap: "wrap" },
+    root:             { background: 'var(--uis-bg)', color: 'var(--uis-text)', fontFamily: "'Inter', system-ui, sans-serif", paddingBottom: 0, transition: "background 0.3s, color 0.3s" }, /* frame (flex column, 100vh, overflow hidden) comes from .uis-app-root */
+    header:           { display: "flex", alignItems: "center", justifyContent: "space-between", gap: 4, padding: "6px 10px", borderBottom: `1px solid var(--uis-border)`, background: "var(--uis-bar-bgd)", position: "sticky", top: 0, zIndex: 20, backdropFilter: "blur(12px)", flexWrap: "wrap" },
     logoWrap:         { display: "flex", alignItems: "center", gap: 10 },
-    sidebar:          { width: 220, minWidth: 220, background: 'var(--pnl-bgd)', borderRight: `1px solid var(--border)`, display: "flex", flexDirection: "column", overflow: "hidden" },
+    sidebar:          { width: 220, minWidth: 220, background: 'var(--uis-pnl-bgd)', borderRight: `1px solid var(--uis-border)`, display: "flex", flexDirection: "column", overflow: "hidden" },
     grid:             { display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(340px, 1fr))", gap: 18, padding: "20px 28px", paddingBottom: 60, overflowY: "auto", flex: 1, minHeight: 0, alignContent: "start" },
     list:             { display: "flex", flexDirection: "column", gap: 10, padding: "20px 28px", paddingBottom: 60, overflowY: "auto", flex: 1, minHeight: 0 },
-    card:             { background: 'var(--bg-elev)', borderWidth: "1px", borderStyle: "solid", borderColor: 'var(--border)', borderRadius: 12, padding: 20, display: "flex", flexDirection: "column", gap: 12, transition: "all 0.2s" },
+    card:             { background: 'var(--uis-bg-elev)', borderWidth: "1px", borderStyle: "solid", borderColor: 'var(--uis-border)', borderRadius: 12, padding: 20, display: "flex", flexDirection: "column", gap: 12, transition: "all 0.2s" },
     cardTop:          { display: "flex", justifyContent: "space-between", alignItems: "center" },
-    cardTitle:        { margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--text)', lineHeight: 1.3 },
-    cardBody:         { margin: 0, fontSize: 13, color: 'var(--text-dim)', lineHeight: 1.65, whiteSpace: "pre-wrap", wordBreak: "break-word" },
+    cardTitle:        { margin: 0, fontSize: 16, fontWeight: 700, color: 'var(--uis-text)', lineHeight: 1.3 },
+    cardBody:         { margin: 0, fontSize: 13, color: 'var(--uis-text-dim)', lineHeight: 1.65, whiteSpace: "pre-wrap", wordBreak: "break-word" },
     cardTags:         { display: "flex", flexWrap: "wrap", gap: 6 },
     inlineTag:        { fontSize: 11, border: "1px solid", borderRadius: 4, padding: "2px 8px", opacity: 0.85 },
-    cardActions:      { display: "flex", gap: 8, borderTop: `1px solid var(--border)`, paddingTop: 12, justifyContent: "flex-end" },
+    cardActions:      { display: "flex", gap: 8, borderTop: `1px solid var(--uis-border)`, paddingTop: 12, justifyContent: "flex-end" },
     modalHead:        { display: "flex", justifyContent: "space-between", alignItems: "center" },
-    errBorder:        { borderColor: "var(--danger)" },
-    errMsg:           { fontSize: 12, color: "var(--danger)" },
+    errBorder:        { borderColor: "var(--uis-danger)" },
+    errMsg:           { fontSize: 12, color: "var(--uis-danger)" },
   };
 }
 
 function buildCss() {
   return `
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap');
-    /* Palette tokens (--bg, --accent, --border, --text, --shadow, --gradient, …) come from
-       lib/ui-colors.css (imported first in index.jsx) — the canonical :root for both themes.
+    /* Palette tokens (--uis-bg, --uis-accent, --uis-border, --uis-text, --uis-shadow, --uis-gradient, …) come from
+       lib/uis-colors.css (imported first in index.jsx) — the canonical :root for both themes.
        Shared classes (tokens/chrome/dialog/list-view) resolve against those; no token bridge
-       is emitted here. ⚠ CLAUDE: never re-add a :root palette bridge — ui-colors.css owns it. */
+       is emitted here. ⚠ CLAUDE: never re-add a :root palette bridge — uis-colors.css owns it. */
     * { box-sizing: border-box; }
-    button:focus-visible { outline: 2px solid var(--accent) !important; outline-offset: 2px; border-radius: 4px; }
-    body { margin: 0; background: var(--bg); font-family: 'Inter', system-ui, sans-serif; }
-    /* ── Shared header (GUI Standard Rules 9 & 10): .barh-app-name + .barh-app-version are
-       unscoped in ui-app.css (bg = --bar-bgd). Not redefined here. */
-    .act-btn:hover { border-color: var(--accent) !important; color: var(--accent) !important; background: var(--bg-hov) !important; }
-    .act-btn-danger:hover { border-color: var(--danger) !important; }
+    button:focus-visible { outline: 2px solid var(--uis-accent) !important; outline-offset: 2px; border-radius: 4px; }
+    body { margin: 0; background: var(--uis-bg); font-family: 'Inter', system-ui, sans-serif; }
+    /* ── Shared header (GUI Standard Rules 9 & 10): .uis-barh-app-name + .uis-barh-app-version are
+       unscoped in uis-app.css (bg = --uis-bar-bgd). Not redefined here. */
+    .act-btn:hover { border-color: var(--uis-accent) !important; color: var(--uis-accent) !important; background: var(--uis-bg-hov) !important; }
+    .act-btn-danger:hover { border-color: var(--uis-danger) !important; }
     @keyframes spin { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
-    /* Splitters now use the shared <Splitter> (lib/ui-ctl-splitter.jsx) - its .app-splitter look is
+    /* Splitters now use the shared <UisPnlSplitter> (lib/uis-pnl-splitter.jsx) - its .uis-pnl-splitter look is
        self-injected; the old .sidebar-resize rules were removed (this app is the reference). */
     .card-item:hover { border-color: var(--card-accent) !important; box-shadow: 0 4px 24px rgba(0,0,0,0.15); transform: translateY(-2px); }
     /* Project-row actions: absent until the row is hovered, then floated at the row's right edge
        over the count badge (the same hover-reveal the release cockpit's grid rows use). */
-    .proj-acts { display: none; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); align-items: center; gap: 2px; padding: 1px; border-radius: 6px; background: var(--bg-hov); }
+    .proj-acts { display: none; position: absolute; right: 6px; top: 50%; transform: translateY(-50%); align-items: center; gap: 2px; padding: 1px; border-radius: 6px; background: var(--uis-bg-hov); }
     .proj-item:hover .proj-acts { display: flex; }
   `;
 }

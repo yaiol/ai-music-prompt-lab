@@ -21,8 +21,8 @@ try {
   console.warn('lang-helper: failed to load languages.js -', err.message);
 }
 
-function getLangName(code, uiLang = 'en') {
-  const localized = LANG_NAMES[uiLang]?.[code];
+function getLangName(code, uilLang = 'en') {
+  const localized = LANG_NAMES[uilLang]?.[code];
   if (localized) return localized;
   return SONG_LANGUAGES.find(l => l.code === code)?.name || code;
 }
