@@ -1,9 +1,9 @@
 {
   "name": "ai-music-prompt-lab",
   "productName": "AI Music Prompt Lab",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "license": "MIT",
-  "description": "AI Prompt Manager — Vocal & Music",
+  "description": "A workspace for your Suno prompts: reusable music and vocal styles, combined into songs and organized your way.",
   "private": true,
   "author": "yaiol",
   "main": "electron/main.mjs",

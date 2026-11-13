@@ -15,9 +15,11 @@ import { fileURLToPath } from "node:url";
 import { getLangName, SONG_LANGUAGES } from "./lang-helper.js";
 import { parseAmlp } from "./parse-amlp.js";
 import { readFlacFields, getField, writeFlacFields } from "./flac-tags.mjs";
+import { readM4aFields, getM4aField, writeM4aFields } from "./m4a-tags.mjs";
 import pkg from "../package.json" with { type: "json" };
 import { mark, dumpStartupTiming } from "./startup-timing.mjs";
 import { registerNewsRoutes } from "./news.mjs";
+import { registerWindowRoutes, watchWindowState } from "./window-bar.mjs";
 import { lastDir, rememberDir } from "./dialog-memory.mjs";
 mark("electron boot + module imports");
 
@@ -608,7 +610,9 @@ function startServer(callback) {
             // COMMENT. Miss it and a migrated file reads as having no id at all -
             // no song link, no pre-fill, and the file looks unidentified.
             // Its value is "<service>:<uuid>", so SUNO_ID_RE cannot match it.
-            if (/^yaiol_aiid$/i.test(key)) {
+            // The field name arrives wrapped by the container: bare in a flac, "TXXX:YAIOL_AIID"
+            // in an mp3, "----:com.apple.iTunes:YAIOL_AIID" in an m4a.
+            if (/(^|:)yaiol_aiid$/i.test(key)) {
               const m = s.match(/^suno:([0-9a-fA-F-]{36})$/);
               if (m) return m[1].toLowerCase();
               continue;
@@ -645,24 +649,32 @@ function startServer(callback) {
   // Opt-in via the Media setting, and off by default, because this REWRITES the
   // user's master file. Nothing here ever runs unless they asked for it.
 
+  // The tag reader and writer of a file's format: a flac or an m4a. Null for any other format,
+  // which the id is then never written into. Both writers rewrite the tags alone and copy the
+  // audio and the cover art through untouched, so nothing has to be installed and nothing is
+  // re-encoded.
+  function aiidTagIo(mediaPath) {
+    if (/\.flac$/i.test(mediaPath)) return { read: readFlacFields, get: getField, write: writeFlacFields };
+    if (/\.m4a$/i.test(mediaPath)) return { read: readM4aFields, get: getM4aField, write: writeM4aFields };
+    return null;
+  }
+
   // Move COMMENT's id into YAIOL_AIID on one file. Returns a short reason string.
-  // Writing is done by flac-tags.mjs rather than an external tool: it rewrites
-  // one metadata block and copies the audio and the cover art through untouched,
-  // so nothing has to be installed and nothing is re-encoded.
   function moveSunoIdToAiidTag(mediaPath) {
     // ⚠ CLAUDE: NEVER write to a .wav. The wav in 10-original is the untouched
     // original and the only reason a lost id can be recovered at all.
     if (/\.wav$/i.test(mediaPath)) return "skipped-wav";
-    if (!/\.flac$/i.test(mediaPath)) return "not-flac";
+    const io = aiidTagIo(mediaPath);
+    if (!io) return "unsupported";
     if (!fs.existsSync(mediaPath)) return "missing";
 
-    const tags = readFlacFields(mediaPath);
+    const tags = io.read(mediaPath);
     if (!tags) return "unreadable";
-    if (getField(tags, "YAIOL_AIID")) return "already-tagged";
-    const m = getField(tags, "COMMENT").match(SUNO_ID_RE);
+    if (io.get(tags, "YAIOL_AIID")) return "already-tagged";
+    const m = io.get(tags, "COMMENT").match(SUNO_ID_RE);
     if (!m) return "no-id";
 
-    const res = writeFlacFields(mediaPath, { YAIOL_AIID: `suno:${m[1].toLowerCase()}`, COMMENT: "" });
+    const res = io.write(mediaPath, { YAIOL_AIID: `suno:${m[1].toLowerCase()}`, COMMENT: "" });
     return res === "ok" ? "moved" : res;
   }
 
@@ -671,19 +683,20 @@ function startServer(callback) {
   // strips the id on export, so neither the flac nor its original wav has one.
   function writeSunoIdFromLink(mediaPath, linkId) {
     if (/\.wav$/i.test(mediaPath)) return "skipped-wav";
-    if (!/\.flac$/i.test(mediaPath)) return "not-flac";
+    const io = aiidTagIo(mediaPath);
+    if (!io) return "unsupported";
     if (!fs.existsSync(mediaPath)) return "missing";
 
-    const tags = readFlacFields(mediaPath);
+    const tags = io.read(mediaPath);
     if (!tags) return "unreadable";
 
     // ⚠ CLAUDE: the FILE outranks a pasted link. A link is typed by hand and has
     // already been pasted onto the wrong card once; an id already in the file came
     // from Suno itself. So a disagreement is REPORTED, never overwritten - losing a
     // correct id to a stray paste is unrecoverable, while a refusal is not.
-    const existing = getField(tags, "YAIOL_AIID");
+    const existing = io.get(tags, "YAIOL_AIID");
     if (existing) return existing === `suno:${linkId}` ? "already-tagged" : "conflict-amlp";
-    const com = getField(tags, "COMMENT");
+    const com = io.get(tags, "COMMENT");
     const comId = (com.match(SUNO_ID_RE) || [])[1];
     if (comId && comId.toLowerCase() !== linkId) return "conflict-comment";
 
@@ -692,7 +705,7 @@ function startServer(callback) {
     const changes = { YAIOL_AIID: `suno:${linkId}` };
     if (comId || /^\s*made with suno/i.test(com)) changes.COMMENT = "";
 
-    const res = writeFlacFields(mediaPath, changes);
+    const res = io.write(mediaPath, changes);
     return res === "ok" ? "written" : res;
   }
 
@@ -723,7 +736,7 @@ function startServer(callback) {
     const linkId = (String(href).match(/suno\.com\/song\/([0-9a-fA-F-]{36})/) || [])[1];
     if (!linkId || !mediaPath) return;
     const r = writeSunoIdFromLink(mediaPath, linkId.toLowerCase());
-    if (!["written", "already-tagged", "skipped-wav", "not-flac"].includes(r)) {
+    if (!["written", "already-tagged", "skipped-wav", "unsupported"].includes(r)) {
       console.warn(`YAIOL_AIID not written for ${mediaPath}: ${r}`);
     }
   }
@@ -753,7 +766,7 @@ function startServer(callback) {
       // BEFORE reading the id below so the read sees the file's final state.
       if (readSettings()[`${STORAGE_PREFIX}-use-yaiol-aiid`] === "1") {
         const moved = moveSunoIdToAiidTag(mediaPath);
-        if (!["moved", "no-id", "already-tagged", "skipped-wav", "not-flac"].includes(moved)) {
+        if (!["moved", "no-id", "already-tagged", "skipped-wav", "unsupported"].includes(moved)) {
           console.warn(`YAIOL_AIID not written for ${mediaPath}: ${moved}`);
         }
       }
@@ -2218,46 +2231,24 @@ function startServer(callback) {
     res.json(canceled ? { path: null } : { path: filePaths[0] });
   });
 
-  // ── Import songs from folder ───────────────────────────────────────────────────
-  api.post("/import-folder", (req, res) => {
-    const { folderPath, projectId, songType } = req.body;
+  // ── Import songs from folder: the tracks of ONE folder ─────────────────────────
+  // Only the list. The cards are made by the renderer, through the same path as tracks dropped
+  // on the window, so a folder import fills a card from Suno exactly as a drop does.
+  // Not recursive (the folder is one album), and one path per track: the same name in several
+  // formats (a flac beside its wav original) is one song, and the flac is the one kept.
+  api.post("/folder-tracks", (req, res) => {
+    const { folderPath } = req.body;
     if (!folderPath) return res.status(400).json({ error: "folderPath required" });
-    const resolvedType = "song";
-
-    let files;
     try {
-      files = fs.readdirSync(folderPath).filter(f => /\.(mp3|flac)$/i.test(f)).sort();
-    } catch (err) {
-      return res.status(400).json({ error: "Cannot read folder: " + err.message });
-    }
-
-    if (!files.length) return res.json({ created: 0 });
-
-    const created = [];
-    db.transaction(() => {
-      for (const file of files) {
-        const ext = path.extname(file);
-        const base = path.basename(file, ext);
-        // Parse "##-Name" or "## - Name" pattern
-        const match = base.match(/^(\d+)\s*[--]\s*(.+)$/);
-        const sortNumber = match ? parseInt(match[1], 10) : null;
-        const name = match ? match[2].trim() : base;
-        const mediaPath = path.join(folderPath, file);
-
-        const id = crypto.randomUUID();
-        const version = nextCardVersion(name, resolvedType);
-        const order = db.prepare("SELECT COUNT(*) as n FROM card").get().n;
-        db.prepare("INSERT INTO card(cad_id,cad_name,cad_version,cad_type,cad_style,cad_tags,cad_favorite,cad_date,cad_order,cad_media_path) VALUES (?,?,?,?,?,?,?,?,?,?)")
-          .run(id, name, version, resolvedType, "", "[]", 0, Date.now(), sortNumber, toStoredMedia(mediaPath));
-
-        if (projectId) {
-          db.prepare("UPDATE card SET cad_prjid=? WHERE cad_id=?").run(projectId, id);
-        }
-        created.push(id);
+      const byTrack = new Map();
+      for (const f of fs.readdirSync(folderPath).filter(f => MEDIA_EXT_RE.test(f)).sort()) {
+        const key = path.basename(f, path.extname(f)).toLowerCase();
+        if (!byTrack.has(key) || /\.flac$/i.test(f)) byTrack.set(key, f);
       }
-    })();
-
-    res.json({ created: created.length });
+      res.json({ paths: [...byTrack.values()].sort().map(f => path.join(folderPath, f)) });
+    } catch (err) {
+      res.status(400).json({ error: "Cannot read folder: " + err.message });
+    }
   });
 
   // Read the OS clipboard — done in the main process because the renderer's
@@ -3209,6 +3200,8 @@ function startServer(callback) {
 
   registerNewsRoutes(api, { appId: pkg.name, appVersion: pkg.version });
 
+  registerWindowRoutes(api, () => mainWindow);
+
   findFreePort(4000, (port) => {
     SERVER_PORT = port;
     mark(`free port probe (landed on ${port})`);
@@ -3232,9 +3225,10 @@ function createWindow(port) {
     title: APP_NAME,
     icon: path.join(__dirname, isDev ? '../public/app.ico' : '../dist/app.ico'),
     webPreferences: { nodeIntegration: false, contextIsolation: true, preload: path.join(__dirname, "preload.js") },
-    titleBarStyle: process.platform === "darwin" ? "hiddenInset" : "default",
+    frame: false,   // the app draws its own window bar (UisBarWindow), on every platform
   });
   mainWindow.setMenuBarVisibility(false);
+  watchWindowState(mainWindow);
   mark("BrowserWindow created");
   if (isDev) {
     mainWindow.loadURL(`http://localhost:${DEV_PORT}?apiPort=${port}`);

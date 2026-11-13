@@ -71,9 +71,12 @@ async function currentAnnouncements({ appId }) {
   const feed = await loadFeed();
   const list = Array.isArray(feed?.announcements) ? feed.announcements : [];
   // A draft (`draft: true`) is never shown to a user, even if one slips into the published feed.
+  // A silenced announcement is STILL returned, marked `dismissed`: the page does not show it on launch, but
+  // keeps it for the window bar's news button, which reopens it (see uis-news-loader.jsx). One that has ended
+  // is gone, button included.
   return list
-    .filter(a => a && typeof a.id === "string" && a.draft !== true && isReadable(a.version) && !state.dismissed.includes(a.id) && !isNotStarted(a.start) && !isExpired(a.end) && isTargeted(a.target, appId) && hasTitle(a.lang))
-    .map(a => ({ id: a.id, lang: a.lang, link: typeof a.link === "string" ? a.link : null }));
+    .filter(a => a && typeof a.id === "string" && a.draft !== true && isReadable(a.version) && !isNotStarted(a.start) && !isExpired(a.end) && isTargeted(a.target, appId) && hasTitle(a.lang))
+    .map(a => ({ id: a.id, lang: a.lang, link: typeof a.link === "string" ? a.link : null, dismissed: state.dismissed.includes(a.id) }));
 }
 
 const SITE_APPS = "https://apps.yaiol.com";
@@ -98,6 +101,8 @@ async function fetchJson(url) {
 // version is out; only then is the notes file of the reader's language fetched (own language, then its base
 // language, then English), and the release blocks newer than the version running make up the card's text.
 // Its id names the latest version, so "don't show again" silences the update until a newer one comes out.
+// A silenced card is STILL returned, marked `dismissed`: the page does not show it on launch, but keeps it for the
+// window bar's reminder button, which reopens it (see uis-news-loader.jsx).
 // The news switch does NOT apply: it is about announcements only.
 async function currentUpdate({ appId, appVersion, lang }) {
   if (process.env.YAIOL_DEV || !appVersion) return [];
@@ -105,7 +110,7 @@ async function currentUpdate({ appId, appVersion, lang }) {
   const latest = (await fetchJson(`${base}/latest.json`))?.version;
   if (typeof latest !== "string" || cmpVersion(latest, appVersion) <= 0) return [];
   const id = `update:${appId}:${latest}`;
-  if (readNewsState().dismissed.includes(id)) return [];
+  const dismissed = readNewsState().dismissed.includes(id);
   const code = String(lang || "en").replace(/_/g, "-");
   let releases = [];
   for (const k of [...new Set([code, code.split("-")[0], "en"])]) {
@@ -121,7 +126,7 @@ async function currentUpdate({ appId, appVersion, lang }) {
   const text = newer.length > 1
     ? newer.map(r => `**v${r.version}${r.date ? ` — ${r.date}` : ""}**\n\n${r.text}`).join("\n\n")
     : (newer[0]?.text || "");
-  return [{ id, kind: "update", version: latest, text, link }];
+  return [{ id, kind: "update", version: latest, text, link, dismissed }];
 }
 
 export function registerNewsRoutes(api, { appId, appVersion }) {
@@ -143,12 +148,17 @@ export function registerNewsRoutes(api, { appId, appVersion }) {
     res.json({ enabled: updateNewsState({ enabled: req.body?.enabled !== false }).enabled });
   });
 
+  // `ids`: "don't show again" was ticked. `restore`: the box of an already silenced card was UNticked (a card
+  // reopened from one of the window bar's two reminder buttons), so it shows on launch again.
   api.post("/news-dismiss", (req, res) => {
-    const ids = (Array.isArray(req.body?.ids) ? req.body.ids : []).filter(id => typeof id === "string" && id);
-    if (!ids.length) { res.json({ ok: false }); return; }
+    const strings = list => (Array.isArray(list) ? list : []).filter(id => typeof id === "string" && id);
+    const ids = strings(req.body?.ids);
+    const restore = strings(req.body?.restore);
+    if (!ids.length && !restore.length) { res.json({ ok: false }); return; }
     const state = readNewsState();
-    const fresh = ids.filter(id => !state.dismissed.includes(id));
-    if (fresh.length) updateNewsState({ dismissed: [...state.dismissed, ...fresh] });
+    const kept = state.dismissed.filter(id => !restore.includes(id));
+    const fresh = ids.filter(id => !kept.includes(id));
+    if (fresh.length || kept.length !== state.dismissed.length) updateNewsState({ dismissed: [...kept, ...fresh] });
     res.json({ ok: true });
   });
 }

@@ -6,7 +6,8 @@
 //             clicks a number / arrow (or ticks the box), and the dialog keeps one size throughout.
 //             Each is { id, lang, link? }, or ONE UPDATE card { id, kind: 'update', version, text, link } (the latest version and the notes of
 //             every release newer than the one running, see news.mjs): its title is t('lblUpdateAvailable') + the version, its text is
-//             the release notes, its button t('btnUpdateDownload').
+//             the release notes, its button t('btnUpdateDownload'). A card marked `dismissed` (the update card reopened from
+//             the window bar after "don't show again") opens with its box already ticked.
 //             For an announcement `lang` is { <language>: { title, subtitle?, text?, image? } }, resolved HERE
 //             field by field by lang → base language → en, the picture included. An `image` is an https://
 //             address, a data:image URL, or a bare file name (read from apps.yaiol.com/news/); anything else is ignored
@@ -14,7 +15,7 @@
 //   t       — the app's translator; reads lblNewsHideForever, btnNewsOpenLink, btnNewsClose, tipNewsDismiss, and for an update
 //             lblUpdateAvailable, btnUpdateDownload
 //   onClose — fired by the X, Esc, a click outside and Close; receives { hideIds }: the ids whose
-//             "don't show again" box was ticked (the box belongs to the card being shown)
+//             "don't show again" box is ticked when it closes (the box belongs to the card being shown)
 // An item whose title cannot be resolved is skipped; with none left the dialog renders nothing.
 //
 // Distributed into each app's src/lib/uis-dlg-news.jsx by sync-shared — ⚠ SYNCED FILE, never edit the
@@ -55,7 +56,7 @@ function readMs(read) {
 export function UisDlgNews({ items, lang, t, onClose }) {
   const [index, setIndex] = useState(0);
   const [auto, setAuto] = useState(true);
-  const [hidden, setHidden] = useState(() => new Set());
+  const [hidden, setHidden] = useState(() => new Set((items || []).filter(it => it?.dismissed).map(it => it.id)));
   const [failed, setFailed] = useState(() => new Set());   // images that did not load: the box stays, empty
   // One field of a card: an update card's title and text are built from its version and notes, an announcement's come from its languages.
   const field = (it, f) => it.kind === 'update'

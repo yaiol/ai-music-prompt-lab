@@ -1,5 +1,19 @@
 # Changelog
 
+## 1.0.14 — 2026-11-13
+
+- The YAIOL_AIID tag now works on M4A files as well as FLAC: with Use YAIOL_AIID tag on, linking an M4A moves or writes the Suno song id into that tag, without re-encoding the audio
+- A file's id is now also read from the YAIOL_AIID tag of MP3 and M4A files
+- Importing a folder now creates its cards the same way as dropping tracks on the window, so each card is filled from Suno when its file says which song it is
+- Folder import takes every audio format the app links, not only MP3 and FLAC; the same track in several formats (a FLAC beside its WAV) becomes one song, linked to the FLAC
+- A card filled from Suno keeps the track number from its file name when the Suno title has none
+- The window now has its own title bar: Settings, Help and GitHub sit at its left beside the app icon, the name and version are in the middle, and it follows the Windows title-bar colour
+- New reminder button in the title bar when a newer version is out: it stays after the new-version card is closed or hidden with Don't show again, and a click reopens the card with the release notes and the download link
+- New News button in the title bar while yaiol has an announcement for the app: a click reopens the announcements, including the ones hidden with Don't show again. It does not appear when Show news from yaiol is off
+- Don't show again can be undone: reopen a card from its title-bar button and untick the box, and it shows again at the next launch
+- The About page and the package now carry a one-line description of the app
+- The player's position and volume sliders have a new look
+
 ## 1.0.13 — 2026-11-08
 
 - The tag that holds a track's Suno song id is renamed from AMLP_ID to YAIOL_AIID; the setting now reads Use YAIOL_AIID tag, linking a FLAC moves or writes the id into that tag, and a file's id is read from it

@@ -25,14 +25,17 @@
 //     <div className="uis-barh-grp"> ...github · help · settings... </div>
 //   </UisAppHeader>
 // Everything after the version badge is the app's own content, passed as children.
+//
+// `bare`: an app that draws its own window bar (UisBarWindow) shows the name and the version THERE, so its
+// header is rendered without them - the children start at the bar's left edge. Nothing else changes.
 import React from 'react';
 
-export function UisAppHeader({ appName, appVersion, children, subBar }) {
+export function UisAppHeader({ appName, appVersion, children, subBar, bare = false }) {
   return (
     <>
       <div className="uis-barh-header">
-        <span className="uis-barh-app-name">{appName}</span>
-        <span className="uis-barh-app-version">v{appVersion}</span>
+        {!bare && <span className="uis-barh-app-name">{appName}</span>}
+        {!bare && <span className="uis-barh-app-version">v{appVersion}</span>}
         {children}
       </div>
       {/* 2px gradient identity bar - GUI Standard Rule 10. */}

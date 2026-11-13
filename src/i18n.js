@@ -31,6 +31,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Don't show again",
     btnNewsOpenLink:                        "Learn more",
     tipNewsDismiss:                         "Close",
+    tipNewsShow:                            "News",
     lblStgGeneralNews:                      "Show news from yaiol",
     btnNewsClose:                           "Close",
 
@@ -109,6 +110,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Export LP file",
     btnHdrExportBackup:                     "Database Backup",
     tipHdrSettings:                         "Settings",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimize",
+    tipWinMaximize:                         "Maximize",
+    tipWinRestore:                          "Restore",
+    tipWinClose:                            "Close",
+
     tipHdrHelp:                             "Help",
     btnHdrNew:                              "New",
     lblHdrSelected:                         "selected",
@@ -263,7 +271,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "History cleared",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager for Vocal, Music & Song",
+    msgStgAboutDesc:                        "A workspace for your Suno prompts: reusable music and vocal styles, combined into songs and organized your way.",
     msgStgAboutLocalDb:                     "Local SQLite database",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -509,6 +517,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Ne plus afficher",
     btnNewsOpenLink:                        "En savoir plus",
     tipNewsDismiss:                         "Fermer",
+    tipNewsShow:                            "Actualités",
     lblStgGeneralNews:                      "Afficher les actualités de yaiol",
     btnNewsClose:                           "Fermer",
 
@@ -587,6 +596,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exporter le fichier LP",
     btnHdrExportBackup:                     "Sauvegarde de la base de données",
     tipHdrSettings:                         "Paramètres",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimiser",
+    tipWinMaximize:                         "Agrandir",
+    tipWinRestore:                          "Restaurer",
+    tipWinClose:                            "Fermer",
+
     tipHdrHelp:                             "Aide",
     btnHdrNew:                              "Nouveau",
     lblHdrSelected:                         "sélectionné(s)",
@@ -741,7 +757,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historique effacé",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gestionnaire de Prompts IA pour Vocal, Music & Song",
+    msgStgAboutDesc:                        "Un espace de travail pour vos invites Suno : des styles musicaux et vocaux réutilisables, combinés en chansons et organisés à votre guise.",
     msgStgAboutLocalDb:                     "Base de données SQLite locale",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -986,6 +1002,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Nicht mehr anzeigen",
     btnNewsOpenLink:                        "Mehr erfahren",
     tipNewsDismiss:                         "Schließen",
+    tipNewsShow:                            "Nachrichten",
     lblStgGeneralNews:                      "Nachrichten von yaiol anzeigen",
     btnNewsClose:                           "Schließen",
 
@@ -1064,6 +1081,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP-Datei exportieren",
     btnHdrExportBackup:                     "Datenbank-Sicherung",
     tipHdrSettings:                         "Einstellungen",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimieren",
+    tipWinMaximize:                         "Maximieren",
+    tipWinRestore:                          "Wiederherstellen",
+    tipWinClose:                            "Schließen",
+
     tipHdrHelp:                             "Hilfe",
     btnHdrNew:                              "Neu",
     lblHdrSelected:                         "ausgewählt",
@@ -1218,7 +1242,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Verlauf gelöscht",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "KI-Prompt-Manager für Vocal, Music & Song",
+    msgStgAboutDesc:                        "Ein Arbeitsbereich für Ihre Suno-Prompts: wiederverwendbare Musik- und Gesangsstile, zu Liedern kombiniert und nach Ihren Wünschen organisiert.",
     msgStgAboutLocalDb:                     "Lokale SQLite-Datenbank",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -1463,6 +1487,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "No volver a mostrar",
     btnNewsOpenLink:                        "Más información",
     tipNewsDismiss:                         "Cerrar",
+    tipNewsShow:                            "Noticias",
     lblStgGeneralNews:                      "Mostrar noticias de yaiol",
     btnNewsClose:                           "Cerrar",
 
@@ -1541,6 +1566,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportar archivo LP",
     btnHdrExportBackup:                     "Copia de seguridad de la base de datos",
     tipHdrSettings:                         "Ajustes",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimizar",
+    tipWinMaximize:                         "Maximizar",
+    tipWinRestore:                          "Restaurar",
+    tipWinClose:                            "Cerrar",
+
     tipHdrHelp:                             "Ayuda",
     btnHdrNew:                              "Nuevo",
     lblHdrSelected:                         "seleccionado(s)",
@@ -1695,7 +1727,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historial borrado",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gestor de Prompts IA para Vocal, Music & Song",
+    msgStgAboutDesc:                        "Un espacio de trabajo para tus prompts de Suno: estilos musicales y vocales reutilizables, combinados en canciones y organizados a tu manera.",
     msgStgAboutLocalDb:                     "Base de datos SQLite local",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -1940,6 +1972,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Não mostrar novamente",
     btnNewsOpenLink:                        "Saiba mais",
     tipNewsDismiss:                         "Fechar",
+    tipNewsShow:                            "Notícias",
     lblStgGeneralNews:                      "Mostrar notícias de yaiol",
     btnNewsClose:                           "Fechar",
 
@@ -2018,6 +2051,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportar arquivo LP",
     btnHdrExportBackup:                     "Backup do banco de dados",
     tipHdrSettings:                         "Configurações",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimizar",
+    tipWinMaximize:                         "Maximizar",
+    tipWinRestore:                          "Restaurar",
+    tipWinClose:                            "Fechar",
+
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "selecionado(s)",
@@ -2172,7 +2212,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Histórico limpo",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gerenciador de Prompts de IA para Vocal, Music & Song",
+    msgStgAboutDesc:                        "Um espaço de trabalho para seus prompts Suno: estilos musicais e vocais reutilizáveis, combinados em músicas e organizados do seu jeito.",
     msgStgAboutLocalDb:                     "Banco de dados SQLite local",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -2417,6 +2457,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Não mostrar novamente",
     btnNewsOpenLink:                        "Saber mais",
     tipNewsDismiss:                         "Fechar",
+    tipNewsShow:                            "Notícias",
     lblStgGeneralNews:                      "Mostrar notícias de yaiol",
     btnNewsClose:                           "Fechar",
 
@@ -2495,6 +2536,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportar ficheiro LP",
     btnHdrExportBackup:                     "Cópia de segurança da base de dados",
     tipHdrSettings:                         "Definições",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimizar",
+    tipWinMaximize:                         "Maximizar",
+    tipWinRestore:                          "Restaurar",
+    tipWinClose:                            "Fechar",
+
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "selecionado(s)",
@@ -2649,7 +2697,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Histórico limpo",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gestor de Prompts de IA para Vocal, Music & Song",
+    msgStgAboutDesc:                        "Um espaço de trabalho para os seus prompts Suno: estilos musicais e vocais reutilizáveis, combinados em músicas e organizados à sua maneira.",
     msgStgAboutLocalDb:                     "Base de dados SQLite local",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -2894,6 +2942,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "不再显示",
     btnNewsOpenLink:                        "了解更多",
     tipNewsDismiss:                         "关闭",
+    tipNewsShow:                            "新闻",
     lblStgGeneralNews:                      "显示来自 yaiol 的新闻",
     btnNewsClose:                           "关闭",
 
@@ -2972,6 +3021,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "导出 LP 文件",
     btnHdrExportBackup:                     "数据库备份",
     tipHdrSettings:                         "设置",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "最小化",
+    tipWinMaximize:                         "最大化",
+    tipWinRestore:                          "还原",
+    tipWinClose:                            "关闭",
+
     tipHdrHelp:                             "帮助",
     btnHdrNew:                              "新建",
     lblHdrSelected:                         "已选择",
@@ -3126,7 +3182,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "历史已清除",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI 提示管理器，适用于 Vocal、Music 和 Song",
+    msgStgAboutDesc:                        "您的 Suno 提示词工作区：可重复使用的音乐和人声风格，组合成歌曲并按您的方式整理。",
     msgStgAboutLocalDb:                     "本地 SQLite 数据库",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -3371,6 +3427,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "不再顯示",
     btnNewsOpenLink:                        "了解更多",
     tipNewsDismiss:                         "關閉",
+    tipNewsShow:                            "新聞",
     lblStgGeneralNews:                      "顯示來自 yaiol 的新聞",
     btnNewsClose:                           "關閉",
 
@@ -3449,6 +3506,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "匯出 LP 檔案",
     btnHdrExportBackup:                     "資料庫備份",
     tipHdrSettings:                         "設定",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "最小化",
+    tipWinMaximize:                         "最大化",
+    tipWinRestore:                          "還原",
+    tipWinClose:                            "關閉",
+
     tipHdrHelp:                             "說明",
     btnHdrNew:                              "新增",
     lblHdrSelected:                         "已選取",
@@ -3603,7 +3667,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "記錄已清除",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI 提示管理器，適用於 Vocal、Music 和 Song",
+    msgStgAboutDesc:                        "您的 Suno 提示詞工作區：可重複使用的音樂和人聲風格，組合為歌曲並依您的方式整理。",
     msgStgAboutLocalDb:                     "本機 SQLite 資料庫",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -3848,6 +3912,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "今後表示しない",
     btnNewsOpenLink:                        "詳細を見る",
     tipNewsDismiss:                         "閉じる",
+    tipNewsShow:                            "ニュース",
     lblStgGeneralNews:                      "yaiol からのニュースを表示",
     btnNewsClose:                           "閉じる",
 
@@ -3926,6 +3991,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LPファイルをエクスポート",
     btnHdrExportBackup:                     "データベースバックアップ",
     tipHdrSettings:                         "設定",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "最小化",
+    tipWinMaximize:                         "最大化",
+    tipWinRestore:                          "元に戻す",
+    tipWinClose:                            "閉じる",
+
     tipHdrHelp:                             "ヘルプ",
     btnHdrNew:                              "新規",
     lblHdrSelected:                         "件選択中",
@@ -4080,7 +4152,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "履歴をクリアしました",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Vocal・Music・Song 用 AI プロンプトマネージャー",
+    msgStgAboutDesc:                        "Sunoプロンプトのワークスペース：再利用可能な音楽とボーカルスタイルを組み合わせて曲を作成し、自由に整理できます。",
     msgStgAboutLocalDb:                     "ローカル SQLite データベース",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -4325,6 +4397,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Nie pokazuj ponownie",
     btnNewsOpenLink:                        "Dowiedz się więcej",
     tipNewsDismiss:                         "Zamknij",
+    tipNewsShow:                            "Wiadomości",
     lblStgGeneralNews:                      "Pokaż wiadomości z yaiol",
     btnNewsClose:                           "Zamknij",
 
@@ -4403,6 +4476,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Eksportuj plik LP",
     btnHdrExportBackup:                     "Kopia zapasowa bazy danych",
     tipHdrSettings:                         "Ustawienia",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimalizuj",
+    tipWinMaximize:                         "Maksymalizuj",
+    tipWinRestore:                          "Przywróć",
+    tipWinClose:                            "Zamknij",
+
     tipHdrHelp:                             "Pomoc",
     btnHdrNew:                              "Nowy",
     lblHdrSelected:                         "zaznaczono",
@@ -4557,7 +4637,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historia wyczyszczona",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Menedżer promptów AI dla Vocal, Music i Song",
+    msgStgAboutDesc:                        "Obszar roboczy dla Twoich promptów Suno: wielokrotnego użytku style muzyczne i wokalne, łączone w piosenki i organizowane według Twojego uznania.",
     msgStgAboutLocalDb:                     "Lokalna baza danych SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -4802,6 +4882,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Більше не показувати",
     btnNewsOpenLink:                        "Дізнатися більше",
     tipNewsDismiss:                         "Закрити",
+    tipNewsShow:                            "Новини",
     lblStgGeneralNews:                      "Показувати новини від yaiol",
     btnNewsClose:                           "Закрити",
 
@@ -4880,6 +4961,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Експортувати файл LP",
     btnHdrExportBackup:                     "Резервна копія бази даних",
     tipHdrSettings:                         "Налаштування",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Згорнути",
+    tipWinMaximize:                         "Розгорнути",
+    tipWinRestore:                          "Відновити",
+    tipWinClose:                            "Закрити",
+
     tipHdrHelp:                             "Довідка",
     btnHdrNew:                              "Новий",
     lblHdrSelected:                         "вибрано",
@@ -5034,7 +5122,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Історію очищено",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI менеджер промптів для Vocal, Music і Song",
+    msgStgAboutDesc:                        "Робочий простір для ваших підказок Suno: багаторазові музичні та вокальні стилі, об'єднані в пісні та організовані на ваш розсуд.",
     msgStgAboutLocalDb:                     "Локальна база даних SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -5279,6 +5367,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Non mostrare più",
     btnNewsOpenLink:                        "Scopri di più",
     tipNewsDismiss:                         "Chiudi",
+    tipNewsShow:                            "Notizie",
     lblStgGeneralNews:                      "Mostra notizie da yaiol",
     btnNewsClose:                           "Chiudi",
 
@@ -5357,6 +5446,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Esporta file LP",
     btnHdrExportBackup:                     "Backup del database",
     tipHdrSettings:                         "Impostazioni",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Riduci a icona",
+    tipWinMaximize:                         "Ingrandisci",
+    tipWinRestore:                          "Ripristina",
+    tipWinClose:                            "Chiudi",
+
     tipHdrHelp:                             "Aiuto",
     btnHdrNew:                              "Nuovo",
     lblHdrSelected:                         "selezionato/i",
@@ -5511,7 +5607,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Cronologia cancellata",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gestore di Prompt AI per Vocal, Music e Song",
+    msgStgAboutDesc:                        "Un'area di lavoro per i tuoi prompt Suno: stili musicali e vocali riutilizzabili, combinati in brani e organizzati a modo tuo.",
     msgStgAboutLocalDb:                     "Database SQLite locale",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -5756,6 +5852,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "عدم الإظهار مرة أخرى",
     btnNewsOpenLink:                        "تعرّف على المزيد",
     tipNewsDismiss:                         "إغلاق",
+    tipNewsShow:                            "الأخبار",
     lblStgGeneralNews:                      "إظهار الأخبار من yaiol",
     btnNewsClose:                           "إغلاق",
 
@@ -5834,6 +5931,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "تصدير ملف LP",
     btnHdrExportBackup:                     "نسخ احتياطي لقاعدة البيانات",
     tipHdrSettings:                         "الإعدادات",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "تصغير",
+    tipWinMaximize:                         "تكبير",
+    tipWinRestore:                          "استعادة",
+    tipWinClose:                            "إغلاق",
+
     tipHdrHelp:                             "مساعدة",
     btnHdrNew:                              "جديد",
     lblHdrSelected:                         "محدد",
@@ -5988,7 +6092,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "تم مسح السجل",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "مدير موجّهات AI لـ Vocal وMusic وSong",
+    msgStgAboutDesc:                        "مساحة عمل لمدخلات Suno الخاصة بك: أنماط موسيقية وصوتية قابلة لإعادة الاستخدام، مدمجة في أغانٍ ومنظمة بطريقتك.",
     msgStgAboutLocalDb:                     "قاعدة بيانات SQLite محلية",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -6233,6 +6337,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Niet meer tonen",
     btnNewsOpenLink:                        "Meer informatie",
     tipNewsDismiss:                         "Sluiten",
+    tipNewsShow:                            "Nieuws",
     lblStgGeneralNews:                      "Nieuws van yaiol tonen",
     btnNewsClose:                           "Sluiten",
 
@@ -6311,6 +6416,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP-bestand exporteren",
     btnHdrExportBackup:                     "Database back-up",
     tipHdrSettings:                         "Instellingen",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimaliseren",
+    tipWinMaximize:                         "Maximaliseren",
+    tipWinRestore:                          "Herstellen",
+    tipWinClose:                            "Sluiten",
+
     tipHdrHelp:                             "Hulp",
     btnHdrNew:                              "Nieuw",
     lblHdrSelected:                         "geselecteerd",
@@ -6465,7 +6577,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Geschiedenis gewist",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager voor Vocal, Music & Song",
+    msgStgAboutDesc:                        "Een werkruimte voor je Suno-prompts: herbruikbare muziek- en zangstijlen, gecombineerd tot nummers en op jouw manier georganiseerd.",
     msgStgAboutLocalDb:                     "Lokale SQLite-database",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -6710,6 +6822,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Ikke vis igjen",
     btnNewsOpenLink:                        "Les mer",
     tipNewsDismiss:                         "Lukk",
+    tipNewsShow:                            "Nyheter",
     lblStgGeneralNews:                      "Vis nyheter fra yaiol",
     btnNewsClose:                           "Lukk",
 
@@ -6788,6 +6901,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Eksporter LP-fil",
     btnHdrExportBackup:                     "Databasesikkerhetskopi",
     tipHdrSettings:                         "Innstillinger",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimer",
+    tipWinMaximize:                         "Maksimer",
+    tipWinRestore:                          "Gjenopprett",
+    tipWinClose:                            "Lukk",
+
     tipHdrHelp:                             "Hjelp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valgt",
@@ -6942,7 +7062,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historikk slettet",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager for Vocal, Music & Song",
+    msgStgAboutDesc:                        "Et arbeidsområde for dine Suno-prompter: gjenbrukbare musikk- og vokalstiler, kombinert til sanger og organisert på din måte.",
     msgStgAboutLocalDb:                     "Lokal SQLite-database",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -7187,6 +7307,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Visa inte igen",
     btnNewsOpenLink:                        "Läs mer",
     tipNewsDismiss:                         "Stäng",
+    tipNewsShow:                            "Nyheter",
     lblStgGeneralNews:                      "Visa nyheter från yaiol",
     btnNewsClose:                           "Stäng",
 
@@ -7265,6 +7386,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportera LP-fil",
     btnHdrExportBackup:                     "Databassäkerhetskopia",
     tipHdrSettings:                         "Inställningar",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimera",
+    tipWinMaximize:                         "Maximera",
+    tipWinRestore:                          "Återställ",
+    tipWinClose:                            "Stäng",
+
     tipHdrHelp:                             "Hjälp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valda",
@@ -7419,7 +7547,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historik rensad",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager för Vocal, Music & Song",
+    msgStgAboutDesc:                        "En arbetsyta för dina Suno-prompter: återanvändbara musik- och sångstilar, kombinerade till låtar och organiserade på ditt sätt.",
     msgStgAboutLocalDb:                     "Lokal SQLite-databas",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -7664,6 +7792,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Bir daha gösterme",
     btnNewsOpenLink:                        "Daha fazla bilgi edin",
     tipNewsDismiss:                         "Kapat",
+    tipNewsShow:                            "Haberler",
     lblStgGeneralNews:                      "yaiol'dan haberleri göster",
     btnNewsClose:                           "Kapat",
 
@@ -7742,6 +7871,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP dosyasını dışa aktar",
     btnHdrExportBackup:                     "Veritabanı Yedekleme",
     tipHdrSettings:                         "Ayarlar",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Küçült",
+    tipWinMaximize:                         "Ekranı kapla",
+    tipWinRestore:                          "Geri yükle",
+    tipWinClose:                            "Kapat",
+
     tipHdrHelp:                             "Yardım",
     btnHdrNew:                              "Yeni",
     lblHdrSelected:                         "seçildi",
@@ -7896,7 +8032,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Geçmiş temizlendi",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Vocal, Music & Song için AI İstem Yöneticisi",
+    msgStgAboutDesc:                        "Suno istemleriniz için bir çalışma alanı: yeniden kullanılabilir müzik ve vokal stilleri, şarkılar halinde birleştirilmiş ve istediğiniz gibi düzenlenmiş.",
     msgStgAboutLocalDb:                     "Yerel SQLite veritabanı",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -8141,6 +8277,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Vis ikke igen",
     btnNewsOpenLink:                        "Læs mere",
     tipNewsDismiss:                         "Luk",
+    tipNewsShow:                            "Nyheder",
     lblStgGeneralNews:                      "Vis nyheder fra yaiol",
     btnNewsClose:                           "Luk",
 
@@ -8219,6 +8356,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Eksporter LP-fil",
     btnHdrExportBackup:                     "Databasesikkerhedskopi",
     tipHdrSettings:                         "Indstillinger",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimer",
+    tipWinMaximize:                         "Maksimer",
+    tipWinRestore:                          "Gendan",
+    tipWinClose:                            "Luk",
+
     tipHdrHelp:                             "Hjælp",
     btnHdrNew:                              "Ny",
     lblHdrSelected:                         "valgt",
@@ -8373,7 +8517,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historik ryddet",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager til Vocal, Music & Song",
+    msgStgAboutDesc:                        "Et arbejdsområde til dine Suno-prompts: genanvendelige musik- og vokalstile, kombineret til sange og organiseret på din måde.",
     msgStgAboutLocalDb:                     "Lokal SQLite-database",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -8618,6 +8762,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Älä näytä uudelleen",
     btnNewsOpenLink:                        "Lue lisää",
     tipNewsDismiss:                         "Sulje",
+    tipNewsShow:                            "Uutiset",
     lblStgGeneralNews:                      "Näytä uutiset yaiolista",
     btnNewsClose:                           "Sulje",
 
@@ -8696,6 +8841,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Vie LP-tiedosto",
     btnHdrExportBackup:                     "Tietokannan varmuuskopio",
     tipHdrSettings:                         "Asetukset",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Pienennä",
+    tipWinMaximize:                         "Suurenna",
+    tipWinRestore:                          "Palauta",
+    tipWinClose:                            "Sulje",
+
     tipHdrHelp:                             "Ohje",
     btnHdrNew:                              "Uusi",
     lblHdrSelected:                         "valittu",
@@ -8850,7 +9002,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historia tyhjennetty",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI-kehotehallinnoija Vocal, Music & Song -käyttöön",
+    msgStgAboutDesc:                        "Työtila Suno-kehotteillesi: uudelleenkäytettävät musiikki- ja laulutyylit, yhdistettynä kappaleiksi ja järjestettynä haluamallasi tavalla.",
     msgStgAboutLocalDb:                     "Paikallinen SQLite-tietokanta",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -9095,6 +9247,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Να μην εμφανιστεί ξανά",
     btnNewsOpenLink:                        "Μάθετε περισσότερα",
     tipNewsDismiss:                         "Κλείσιμο",
+    tipNewsShow:                            "Ειδήσεις",
     lblStgGeneralNews:                      "Εμφάνιση ειδήσεων από το yaiol",
     btnNewsClose:                           "Κλείσιμο",
 
@@ -9173,6 +9326,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Εξαγωγή αρχείου LP",
     btnHdrExportBackup:                     "Δημιουργία αντιγράφου ασφαλείας",
     tipHdrSettings:                         "Ρυθμίσεις",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Ελαχιστοποίηση",
+    tipWinMaximize:                         "Μεγιστοποίηση",
+    tipWinRestore:                          "Επαναφορά",
+    tipWinClose:                            "Κλείσιμο",
+
     tipHdrHelp:                             "Βοήθεια",
     btnHdrNew:                              "Νέο",
     lblHdrSelected:                         "επιλεγμένα",
@@ -9327,7 +9487,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Ιστορικό εκκαθαρίστηκε",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Διαχειριστής Προτροπών AI για Vocal, Music & Song",
+    msgStgAboutDesc:                        "Ένας χώρος εργασίας για τις προτροπές Suno σας: επαναχρησιμοποιήσιμα μουσικά και φωνητικά στυλ, συνδυασμένα σε τραγούδια και οργανωμένα με τον τρόπο σας.",
     msgStgAboutLocalDb:                     "Τοπική βάση δεδομένων SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -9572,6 +9732,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "אל תציג שוב",
     btnNewsOpenLink:                        "למידע נוסף",
     tipNewsDismiss:                         "סגור",
+    tipNewsShow:                            "חדשות",
     lblStgGeneralNews:                      "הצג חדשות מ-yaiol",
     btnNewsClose:                           "סגור",
 
@@ -9650,6 +9811,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "ייצוא קובץ LP",
     btnHdrExportBackup:                     "גיבוי מסד נתונים",
     tipHdrSettings:                         "הגדרות",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "מזער",
+    tipWinMaximize:                         "הגדל",
+    tipWinRestore:                          "שחזר",
+    tipWinClose:                            "סגור",
+
     tipHdrHelp:                             "עזרה",
     btnHdrNew:                              "חדש",
     lblHdrSelected:                         "נבחרו",
@@ -9804,7 +9972,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "ההיסטוריה נוקתה",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "מנהל פרומפטים AI עבור Vocal, Music ו-Song",
+    msgStgAboutDesc:                        "סביבת עבודה עבור הפרומפטים של Suno: סגנונות מוזיקה ווקאליים לשימוש חוזר, משולבים לשירים ומאורגנים בדרך שלך.",
     msgStgAboutLocalDb:                     "מסד נתונים SQLite מקומי",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -10049,6 +10217,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "다시 표시 안 함",
     btnNewsOpenLink:                        "자세히 알아보기",
     tipNewsDismiss:                         "닫기",
+    tipNewsShow:                            "뉴스",
     lblStgGeneralNews:                      "yaiol 뉴스 표시",
     btnNewsClose:                           "닫기",
 
@@ -10127,6 +10296,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP 파일 내보내기",
     btnHdrExportBackup:                     "데이터베이스 백업",
     tipHdrSettings:                         "설정",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "최소화",
+    tipWinMaximize:                         "최대화",
+    tipWinRestore:                          "이전 크기로",
+    tipWinClose:                            "닫기",
+
     tipHdrHelp:                             "도움말",
     btnHdrNew:                              "새로 만들기",
     lblHdrSelected:                         "개 선택됨",
@@ -10281,7 +10457,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "기록이 지워졌습니다",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Vocal, Music & Song을 위한 AI 프롬프트 관리자",
+    msgStgAboutDesc:                        "Suno 프롬프트를 위한 작업 공간: 재사용 가능한 음악 및 보컬 스타일을 노래로 조합하고 원하는 방식으로 정리하세요.",
     msgStgAboutLocalDb:                     "로컬 SQLite 데이터베이스",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -10526,6 +10702,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Nu mai afișa",
     btnNewsOpenLink:                        "Află mai multe",
     tipNewsDismiss:                         "Închide",
+    tipNewsShow:                            "Știri",
     lblStgGeneralNews:                      "Afișează știri de la yaiol",
     btnNewsClose:                           "Închide",
 
@@ -10604,6 +10781,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportă fișier LP",
     btnHdrExportBackup:                     "Backup bază de date",
     tipHdrSettings:                         "Setări",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimizare",
+    tipWinMaximize:                         "Maximizare",
+    tipWinRestore:                          "Restaurare",
+    tipWinClose:                            "Închidere",
+
     tipHdrHelp:                             "Ajutor",
     btnHdrNew:                              "Nou",
     lblHdrSelected:                         "selectat(e)",
@@ -10758,7 +10942,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Istoricul șters",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Manager de Prompturi AI pentru Vocal, Music & Song",
+    msgStgAboutDesc:                        "Un spațiu de lucru pentru prompturile tale Suno: stiluri muzicale și vocale reutilizabile, combinate în melodii și organizate după bunul plac.",
     msgStgAboutLocalDb:                     "Bază de date SQLite locală",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -11003,6 +11187,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Không hiển thị lại",
     btnNewsOpenLink:                        "Tìm hiểu thêm",
     tipNewsDismiss:                         "Đóng",
+    tipNewsShow:                            "Tin tức",
     lblStgGeneralNews:                      "Hiển thị tin tức từ yaiol",
     btnNewsClose:                           "Đóng",
 
@@ -11081,6 +11266,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Xuất tệp LP",
     btnHdrExportBackup:                     "Sao lưu cơ sở dữ liệu",
     tipHdrSettings:                         "Cài đặt",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Thu nhỏ",
+    tipWinMaximize:                         "Phóng to",
+    tipWinRestore:                          "Khôi phục",
+    tipWinClose:                            "Đóng",
+
     tipHdrHelp:                             "Trợ giúp",
     btnHdrNew:                              "Mới",
     lblHdrSelected:                         "đã chọn",
@@ -11235,7 +11427,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Đã xóa lịch sử",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Trình quản lý Prompt AI cho Vocal, Music & Song",
+    msgStgAboutDesc:                        "Không gian làm việc cho các lời nhắc Suno của bạn: các phong cách âm nhạc và giọng hát có thể tái sử dụng, kết hợp thành bài hát và sắp xếp theo cách của bạn.",
     msgStgAboutLocalDb:                     "Cơ sở dữ liệu SQLite cục bộ",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -11480,6 +11672,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "دیگر نمایش نده",
     btnNewsOpenLink:                        "بیشتر بدانید",
     tipNewsDismiss:                         "بستن",
+    tipNewsShow:                            "اخبار",
     lblStgGeneralNews:                      "نمایش اخبار از yaiol",
     btnNewsClose:                           "بستن",
 
@@ -11558,6 +11751,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "خروجی گرفتن از فایل LP",
     btnHdrExportBackup:                     "پشتیبان‌گیری از پایگاه داده",
     tipHdrSettings:                         "تنظیمات",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "کوچک‌نمایی",
+    tipWinMaximize:                         "بزرگ‌نمایی",
+    tipWinRestore:                          "بازیابی",
+    tipWinClose:                            "بستن",
+
     tipHdrHelp:                             "راهنما",
     btnHdrNew:                              "جدید",
     lblHdrSelected:                         "انتخاب شده",
@@ -11712,7 +11912,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "تاریخچه پاک شد",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "مدیر پرامپت AI برای خواننده، موسیقی و آهنگ",
+    msgStgAboutDesc:                        "فضای کاری برای دستورات Suno شما: سبک‌های موسیقی و آوازی قابل استفاده مجدد، ترکیب شده در آهنگ‌ها و سازماندهی شده به روش شما.",
     msgStgAboutLocalDb:                     "پایگاه داده محلی SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -11957,6 +12157,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Nezobrazovat znovu",
     btnNewsOpenLink:                        "Další informace",
     tipNewsDismiss:                         "Zavřít",
+    tipNewsShow:                            "Zprávy",
     lblStgGeneralNews:                      "Zobrazovat zprávy z yaiol",
     btnNewsClose:                           "Zavřít",
 
@@ -12035,6 +12236,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportovat soubor LP",
     btnHdrExportBackup:                     "Záloha databáze",
     tipHdrSettings:                         "Nastavení",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimalizovat",
+    tipWinMaximize:                         "Maximalizovat",
+    tipWinRestore:                          "Obnovit",
+    tipWinClose:                            "Zavřít",
+
     tipHdrHelp:                             "Nápověda",
     btnHdrNew:                              "Nový",
     lblHdrSelected:                         "vybráno",
@@ -12189,7 +12397,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historie vymazána",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI správce promptů pro zpěváky, hudbu a písně",
+    msgStgAboutDesc:                        "Pracovní prostor pro vaše Suno prompty: opakovaně použitelné hudební a vokální styly, kombinované do skladeb a organizované podle vašich představ.",
     msgStgAboutLocalDb:                     "Lokální databáze SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -12434,6 +12642,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Ne prikazuj ponovno",
     btnNewsOpenLink:                        "Saznajte više",
     tipNewsDismiss:                         "Zatvori",
+    tipNewsShow:                            "Vijesti",
     lblStgGeneralNews:                      "Prikaži vijesti iz yaiol",
     btnNewsClose:                           "Zatvori",
 
@@ -12512,6 +12721,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Izvezi LP datoteku",
     btnHdrExportBackup:                     "Sigurnosna kopija baze podataka",
     tipHdrSettings:                         "Postavke",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimiziraj",
+    tipWinMaximize:                         "Maksimiziraj",
+    tipWinRestore:                          "Vrati",
+    tipWinClose:                            "Zatvori",
+
     tipHdrHelp:                             "Pomoć",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "odabrano",
@@ -12666,7 +12882,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Povijest obrisana",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI upravitelj promptova za vokalistu, glazbu i pjesmu",
+    msgStgAboutDesc:                        "Radni prostor za vaše Suno upute: višekratni glazbeni i vokalni stilovi, kombinirani u pjesme i organizirani po vašem izboru.",
     msgStgAboutLocalDb:                     "Lokalna SQLite baza podataka",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -12911,6 +13127,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "No tornar a mostrar",
     btnNewsOpenLink:                        "Més informació",
     tipNewsDismiss:                         "Tancar",
+    tipNewsShow:                            "Notícies",
     lblStgGeneralNews:                      "Mostrar notícies de yaiol",
     btnNewsClose:                           "Tancar",
 
@@ -12989,6 +13206,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exporta fitxer LP",
     btnHdrExportBackup:                     "Còpia de seguretat de la base de dades",
     tipHdrSettings:                         "Configuració",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimitzar",
+    tipWinMaximize:                         "Maximitzar",
+    tipWinRestore:                          "Restaurar",
+    tipWinClose:                            "Tancar",
+
     tipHdrHelp:                             "Ajuda",
     btnHdrNew:                              "Nou",
     lblHdrSelected:                         "seleccionat",
@@ -13143,7 +13367,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historial esborrat",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Gestor de prompts d'IA per a vocal, música i cançó",
+    msgStgAboutDesc:                        "Un espai de treball per als teus prompts de Suno: estils musicals i vocals reutilitzables, combinats en cançons i organitzats a la teva manera.",
     msgStgAboutLocalDb:                     "Base de dades SQLite local",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -13388,6 +13612,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Jangan tampilkan lagi",
     btnNewsOpenLink:                        "Pelajari lebih lanjut",
     tipNewsDismiss:                         "Tutup",
+    tipNewsShow:                            "Berita",
     lblStgGeneralNews:                      "Tampilkan berita dari yaiol",
     btnNewsClose:                           "Tutup",
 
@@ -13466,6 +13691,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Ekspor berkas LP",
     btnHdrExportBackup:                     "Backup Database",
     tipHdrSettings:                         "Pengaturan",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimalkan",
+    tipWinMaximize:                         "Maksimalkan",
+    tipWinRestore:                          "Pulihkan",
+    tipWinClose:                            "Tutup",
+
     tipHdrHelp:                             "Bantuan",
     btnHdrNew:                              "Baru",
     lblHdrSelected:                         "dipilih",
@@ -13620,7 +13852,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Riwayat dihapus",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Manajer Prompt AI untuk Vokalis, Musik & Lagu",
+    msgStgAboutDesc:                        "Ruang kerja untuk prompt Suno Anda: gaya musik dan vokal yang dapat digunakan kembali, digabungkan menjadi lagu dan diatur sesuai keinginan Anda.",
     msgStgAboutLocalDb:                     "Database SQLite lokal",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -13865,6 +14097,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Jangan tunjuk lagi",
     btnNewsOpenLink:                        "Ketahui lebih lanjut",
     tipNewsDismiss:                         "Tutup",
+    tipNewsShow:                            "Berita",
     lblStgGeneralNews:                      "Tunjukkan berita dari yaiol",
     btnNewsClose:                           "Tutup",
 
@@ -13943,6 +14176,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Eksport fail LP",
     btnHdrExportBackup:                     "Sandaran Pangkalan Data",
     tipHdrSettings:                         "Tetapan",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimumkan",
+    tipWinMaximize:                         "Maksimumkan",
+    tipWinRestore:                          "Pulihkan",
+    tipWinClose:                            "Tutup",
+
     tipHdrHelp:                             "Bantuan",
     btnHdrNew:                              "Baharu",
     lblHdrSelected:                         "dipilih",
@@ -14097,7 +14337,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Sejarah dipadam",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Pengurus Prompt AI untuk Vokalis, Muzik & Lagu",
+    msgStgAboutDesc:                        "Ruang kerja untuk gesaan Suno anda: gaya muzik dan vokal yang boleh diguna semula, digabungkan menjadi lagu dan diatur mengikut cara anda.",
     msgStgAboutLocalDb:                     "Pangkalan data SQLite tempatan",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -14342,6 +14582,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Больше не показывать",
     btnNewsOpenLink:                        "Узнать больше",
     tipNewsDismiss:                         "Закрыть",
+    tipNewsShow:                            "Новости",
     lblStgGeneralNews:                      "Показывать новости от yaiol",
     btnNewsClose:                           "Закрыть",
 
@@ -14420,6 +14661,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Экспортировать файл LP",
     btnHdrExportBackup:                     "Резервная копия базы данных",
     tipHdrSettings:                         "Настройки",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Свернуть",
+    tipWinMaximize:                         "Развернуть",
+    tipWinRestore:                          "Восстановить",
+    tipWinClose:                            "Закрыть",
+
     tipHdrHelp:                             "Справка",
     btnHdrNew:                              "Новый",
     lblHdrSelected:                         "выбрано",
@@ -14574,7 +14822,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "История очищена",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Менеджер AI-промптов для вокалиста, музыки и песни",
+    msgStgAboutDesc:                        "Рабочее пространство для ваших запросов Suno: многоразовые музыкальные и вокальные стили, объединенные в песни и организованные по вашему усмотрению.",
     msgStgAboutLocalDb:                     "Локальная база данных SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -14819,6 +15067,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "ไม่ต้องแสดงอีก",
     btnNewsOpenLink:                        "เรียนรู้เพิ่มเติม",
     tipNewsDismiss:                         "ปิด",
+    tipNewsShow:                            "ข่าว",
     lblStgGeneralNews:                      "แสดงข่าวสารจาก yaiol",
     btnNewsClose:                           "ปิด",
 
@@ -14897,6 +15146,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "ส่งออกไฟล์ LP",
     btnHdrExportBackup:                     "สำรองข้อมูลฐานข้อมูล",
     tipHdrSettings:                         "การตั้งค่า",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "ย่อ",
+    tipWinMaximize:                         "ขยาย",
+    tipWinRestore:                          "คืนค่า",
+    tipWinClose:                            "ปิด",
+
     tipHdrHelp:                             "วิธีใช้",
     btnHdrNew:                              "ใหม่",
     lblHdrSelected:                         "ที่เลือก",
@@ -15051,7 +15307,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "ล้างประวัติแล้ว",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "ตัวจัดการ AI Prompt สำหรับนักร้อง ดนตรี และเพลง",
+    msgStgAboutDesc:                        "พื้นที่ทำงานสำหรับพรอมต์ Suno ของคุณ: สไตล์ดนตรีและเสียงร้องที่นำกลับมาใช้ใหม่ได้ รวมเป็นเพลงและจัดระเบียบในแบบของคุณ",
     msgStgAboutLocalDb:                     "ฐานข้อมูล SQLite ในเครื่อง",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -15296,6 +15552,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Այլևս չցուցադրել",
     btnNewsOpenLink:                        "Իմանալ ավելին",
     tipNewsDismiss:                         "Փակել",
+    tipNewsShow:                            "Նորություններ",
     lblStgGeneralNews:                      "Ցուցադրել նորություններ yaiol-ից",
     btnNewsClose:                           "Փակել",
 
@@ -15374,6 +15631,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Արտահանել LP ֆայլը",
     btnHdrExportBackup:                     "Tegekabazi pahustpaк",
     tipHdrSettings:                         "Կարգավորումներ",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Նվազեցնել",
+    tipWinMaximize:                         "Առավելագույնի հասցնել",
+    tipWinRestore:                          "Վերականգնել",
+    tipWinClose:                            "Փակել",
+
     tipHdrHelp:                             "Օգնություն",
     btnHdrNew:                              "Նոր",
     lblHdrSelected:                         "ընտրված",
@@ -15528,7 +15792,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Patmutyune maкrvats e",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Hushumi Кaravarul Vokalay, Erazhistutyany ev Eghgi hamar",
+    msgStgAboutDesc:                        "Աշխատանքային տարածք ձեր Suno հուշումների համար. բազմակի օգտագործման երաժշտական և վոկալ ոճեր՝ միավորված երգերի մեջ և կազմակերպված ձեր ցանկությամբ:",
     msgStgAboutLocalDb:                     "Tekayin SQLite tegekabaz",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -15773,6 +16037,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Не показвай отново",
     btnNewsOpenLink:                        "Научете повече",
     tipNewsDismiss:                         "Затвори",
+    tipNewsShow:                            "Новини",
     lblStgGeneralNews:                      "Показвай новини от yaiol",
     btnNewsClose:                           "Затвори",
 
@@ -15851,6 +16116,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Експортиране на LP файл",
     btnHdrExportBackup:                     "Резервно копие на базата данни",
     tipHdrSettings:                         "Настройки",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Минимизиране",
+    tipWinMaximize:                         "Максимизиране",
+    tipWinRestore:                          "Възстановяване",
+    tipWinClose:                            "Затваряне",
+
     tipHdrHelp:                             "Справка",
     btnHdrNew:                              "Нов",
     lblHdrSelected:                         "избрани",
@@ -16005,7 +16277,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Историята е изчистена",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI мениджър на подсказки за Вокал, Музика и Песен",
+    msgStgAboutDesc:                        "Работно пространство за вашите Suno подкани: многократни музикални и вокални стилове, комбинирани в песни и организирани по ваш начин.",
     msgStgAboutLocalDb:                     "Локална SQLite база данни",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -16250,6 +16522,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Non mostrar de novo",
     btnNewsOpenLink:                        "Máis información",
     tipNewsDismiss:                         "Pechar",
+    tipNewsShow:                            "Novas",
     lblStgGeneralNews:                      "Mostrar noticias de yaiol",
     btnNewsClose:                           "Pechar",
 
@@ -16328,6 +16601,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportar ficheiro LP",
     btnHdrExportBackup:                     "Copia de seguridade da base de datos",
     tipHdrSettings:                         "Configuración",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimizar",
+    tipWinMaximize:                         "Maximizar",
+    tipWinRestore:                          "Restaurar",
+    tipWinClose:                            "Pechar",
+
     tipHdrHelp:                             "Axuda",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "seleccionados",
@@ -16482,7 +16762,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historial borrado",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Xestor de prompts de AI para Vocal, Música e Canción",
+    msgStgAboutDesc:                        "Un espazo de traballo para as túas indicacións de Suno: estilos musicais e vocais reutilizables, combinados en cancións e organizados ao teu xeito.",
     msgStgAboutLocalDb:                     "Base de datos SQLite local",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -16727,6 +17007,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Ne mutasd újra",
     btnNewsOpenLink:                        "Tudjon meg többet",
     tipNewsDismiss:                         "Bezárás",
+    tipNewsShow:                            "Hírek",
     lblStgGeneralNews:                      "Hírek megjelenítése a yaiol-tól",
     btnNewsClose:                           "Bezárás",
 
@@ -16805,6 +17086,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP fájl exportálása",
     btnHdrExportBackup:                     "Adatbázis mentés",
     tipHdrSettings:                         "Beállítások",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Kis méretre",
+    tipWinMaximize:                         "Teljes méretre",
+    tipWinRestore:                          "Visszaállítás",
+    tipWinClose:                            "Bezárás",
+
     tipHdrHelp:                             "Súgó",
     btnHdrNew:                              "Új",
     lblHdrSelected:                         "kijelölve",
@@ -16959,7 +17247,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Előzmények törölve",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Kezelő Énekhez, Zenéhez és Dalhoz",
+    msgStgAboutDesc:                        "Munkaterület a Suno promptjaidhoz: újrahasználható zenei és vokális stílusok, dalokká kombinálva és a saját ízlésed szerint rendezve.",
     msgStgAboutLocalDb:                     "Helyi SQLite adatbázis",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -17204,6 +17492,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Daugiau nerodyti",
     btnNewsOpenLink:                        "Sužinoti daugiau",
     tipNewsDismiss:                         "Uždaryti",
+    tipNewsShow:                            "Naujienos",
     lblStgGeneralNews:                      "Rodyti naujienas iš yaiol",
     btnNewsClose:                           "Uždaryti",
 
@@ -17282,6 +17571,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Eksportuoti LP failą",
     btnHdrExportBackup:                     "Duomenų bazės atsarginė kopija",
     tipHdrSettings:                         "Nustatymai",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Mažinti",
+    tipWinMaximize:                         "Didinti",
+    tipWinRestore:                          "Atkurti",
+    tipWinClose:                            "Uždaryti",
+
     tipHdrHelp:                             "Pagalba",
     btnHdrNew:                              "Naujas",
     lblHdrSelected:                         "pasirinkta",
@@ -17436,7 +17732,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Istorija išvalyta",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Raginimų Tvarkyklė Vokalui, Muzikai ir Dainai",
+    msgStgAboutDesc:                        "Darbo sritis jūsų Suno užklausoms: daugkartinio naudojimo muzikos ir vokalo stiliai, sujungti į dainas ir sutvarkyti jūsų nuožiūra.",
     msgStgAboutLocalDb:                     "Vietinė SQLite duomenų bazė",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -17681,6 +17977,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Не прикажувај повторно",
     btnNewsOpenLink:                        "Дознајте повеќе",
     tipNewsDismiss:                         "Затвори",
+    tipNewsShow:                            "Вести",
     lblStgGeneralNews:                      "Прикажи вести од yaiol",
     btnNewsClose:                           "Затвори",
 
@@ -17759,6 +18056,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Извези LP датотека",
     btnHdrExportBackup:                     "Резервна копија на базата",
     tipHdrSettings:                         "Поставки",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Минимизирај",
+    tipWinMaximize:                         "Максимизирај",
+    tipWinRestore:                          "Врати",
+    tipWinClose:                            "Затвори",
+
     tipHdrHelp:                             "Помош",
     btnHdrNew:                              "Нов",
     lblHdrSelected:                         "избрани",
@@ -17913,7 +18217,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Историјата е исчистена",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Менаџер на Промптови за Вокал, Музика и Песна",
+    msgStgAboutDesc:                        "Работен простор за вашите Suno поттикнувања: стилови на музика и вокал за повеќекратна употреба, комбинирани во песни и организирани по ваш избор.",
     msgStgAboutLocalDb:                     "Локална SQLite база на податоци",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -18158,6 +18462,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Не приказуј поново",
     btnNewsOpenLink:                        "Сазнајте више",
     tipNewsDismiss:                         "Затвори",
+    tipNewsShow:                            "Вести",
     lblStgGeneralNews:                      "Прикажи вести из yaiol",
     btnNewsClose:                           "Затвори",
 
@@ -18236,6 +18541,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Извези LP датотеку",
     btnHdrExportBackup:                     "Резервна копија базе",
     tipHdrSettings:                         "Подешавања",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Минимизуј",
+    tipWinMaximize:                         "Максимизуј",
+    tipWinRestore:                          "Врати",
+    tipWinClose:                            "Затвори",
+
     tipHdrHelp:                             "Помоћ",
     btnHdrNew:                              "Ново",
     lblHdrSelected:                         "изабрано",
@@ -18390,7 +18702,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Историја обрисана",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Менаџер Промптова за Вокал, Музику и Песму",
+    msgStgAboutDesc:                        "Радни простор за ваше Suno упите: музички и вокални стилови за вишекратну употребу, комбиновани у песме и организовани по вашем избору.",
     msgStgAboutLocalDb:                     "Локална SQLite база података",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -18635,6 +18947,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Nezobrazovať znova",
     btnNewsOpenLink:                        "Zistiť viac",
     tipNewsDismiss:                         "Zavrieť",
+    tipNewsShow:                            "Správy",
     lblStgGeneralNews:                      "Zobrazovať správy z yaiol",
     btnNewsClose:                           "Zavrieť",
 
@@ -18713,6 +19026,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Exportovať súbor LP",
     btnHdrExportBackup:                     "Záloha databázy",
     tipHdrSettings:                         "Nastavenia",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Minimalizovať",
+    tipWinMaximize:                         "Maximalizovať",
+    tipWinRestore:                          "Obnoviť",
+    tipWinClose:                            "Zavrieť",
+
     tipHdrHelp:                             "Nápoveda",
     btnHdrNew:                              "Nový",
     lblHdrSelected:                         "vybrané",
@@ -18867,7 +19187,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "História vymazaná",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Správca Promptov pre Vokál, Hudbu a Pieseň",
+    msgStgAboutDesc:                        "Pracovný priestor pre vaše Suno prompty: opakovane použiteľné hudobné a vokálne štýly, kombinované do skladieb a organizované podľa vašich predstáv.",
     msgStgAboutLocalDb:                     "Lokálna databáza SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -19112,6 +19432,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Ne prikazuj več",
     btnNewsOpenLink:                        "Več o tem",
     tipNewsDismiss:                         "Zapri",
+    tipNewsShow:                            "Novice",
     lblStgGeneralNews:                      "Prikaži novice iz yaiol",
     btnNewsClose:                           "Zapri",
 
@@ -19190,6 +19511,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Izvozi datoteko LP",
     btnHdrExportBackup:                     "Varnostna kopija baze podatkov",
     tipHdrSettings:                         "Nastavitve",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Pomanjšaj",
+    tipWinMaximize:                         "Povečaj",
+    tipWinRestore:                          "Obnovi",
+    tipWinClose:                            "Zapri",
+
     tipHdrHelp:                             "Pomoč",
     btnHdrNew:                              "Novo",
     lblHdrSelected:                         "izbranih",
@@ -19344,7 +19672,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Zgodovina počiščena",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Upravitelj Pozivov za Vokal, Glasbo in Pesem",
+    msgStgAboutDesc:                        "Delovni prostor za vaše Suno pozive: večkratno uporabni glasbeni in vokalni slogi, združeni v pesmi in organizirani po vaši meri.",
     msgStgAboutLocalDb:                     "Lokalna baza podatkov SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -19589,6 +19917,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "மீண்டும் காட்டாதே",
     btnNewsOpenLink:                        "மேலும் அறிக",
     tipNewsDismiss:                         "மூடு",
+    tipNewsShow:                            "செய்திகள்",
     lblStgGeneralNews:                      "yaiol இலிருந்து செய்திகளைக் காட்டு",
     btnNewsClose:                           "மூடு",
 
@@ -19667,6 +19996,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP கோப்பை ஏற்றுமதி செய்",
     btnHdrExportBackup:                     "தரவுத்தள காப்புப்பிரதி",
     tipHdrSettings:                         "அமைப்புகள்",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "சுருக்கு",
+    tipWinMaximize:                         "பெரிதாக்கு",
+    tipWinRestore:                          "மீட்டமை",
+    tipWinClose:                            "மூடு",
+
     tipHdrHelp:                             "உதவி",
     btnHdrNew:                              "புதியது",
     lblHdrSelected:                         "தேர்ந்தெடுக்கப்பட்டவை",
@@ -19821,7 +20157,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "வரலாறு அழிக்கப்பட்டது",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "குரல், இசை மற்றும் பாடலுக்கான AI அறிவுறுத்தல் நிர்வாகி",
+    msgStgAboutDesc:                        "உங்கள் Suno தூண்டுதல்களுக்கான பணித்தளம்: மீண்டும் பயன்படுத்தக்கூடிய இசை மற்றும் குரல் பாணிகள், பாடல்களாக இணைக்கப்பட்டு உங்கள் விருப்பப்படி ஒழுங்கமைக்கப்படும்.",
     msgStgAboutLocalDb:                     "உள்ளூர் SQLite தரவுத்தளம்",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -20066,6 +20402,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "दोबारा न दिखाएँ",
     btnNewsOpenLink:                        "और जानें",
     tipNewsDismiss:                         "बंद करें",
+    tipNewsShow:                            "समाचार",
     lblStgGeneralNews:                      "yaiol से समाचार दिखाएँ",
     btnNewsClose:                           "बंद करें",
 
@@ -20144,6 +20481,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP फ़ाइल निर्यात करें",
     btnHdrExportBackup:                     "डेटाबेस बैकअप",
     tipHdrSettings:                         "सेटिंग्स",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "छोटा करें",
+    tipWinMaximize:                         "बड़ा करें",
+    tipWinRestore:                          "पुनर्स्थापित करें",
+    tipWinClose:                            "बंद करें",
+
     tipHdrHelp:                             "सहायता",
     btnHdrNew:                              "नया",
     lblHdrSelected:                         "चयनित",
@@ -20298,7 +20642,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "इतिहास साफ़ हो गया",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "आवाज़, संगीत और गाने के लिए AI प्रॉम्प्ट प्रबंधक",
+    msgStgAboutDesc:                        "आपके Suno प्रॉम्प्ट्स के लिए एक कार्यक्षेत्र: पुन: प्रयोज्य संगीत और गायन शैलियाँ, गानों में संयोजित और आपकी इच्छानुसार व्यवस्थित।",
     msgStgAboutLocalDb:                     "स्थानीय SQLite डेटाबेस",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -20543,6 +20887,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "আবার দেখাবেন না",
     btnNewsOpenLink:                        "আরও জানুন",
     tipNewsDismiss:                         "বন্ধ করুন",
+    tipNewsShow:                            "খবর",
     lblStgGeneralNews:                      "yaiol থেকে খবর দেখান",
     btnNewsClose:                           "বন্ধ করুন",
 
@@ -20621,6 +20966,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP ফাইল এক্সপোর্ট করুন",
     btnHdrExportBackup:                     "ডেটাবেস ব্যাকআপ",
     tipHdrSettings:                         "সেটিংস",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "ছোট করুন",
+    tipWinMaximize:                         "বড় করুন",
+    tipWinRestore:                          "পুনরুদ্ধার করুন",
+    tipWinClose:                            "বন্ধ করুন",
+
     tipHdrHelp:                             "সাহায্য",
     btnHdrNew:                              "নতুন",
     lblHdrSelected:                         "নির্বাচিত",
@@ -20775,7 +21127,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "ইতিহাস মুছে গেছে",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "ভোকাল, সংগীত ও গানের জন্য AI প্রম্পট ম্যানেজার",
+    msgStgAboutDesc:                        "আপনার Suno প্রম্পটগুলির জন্য একটি কর্মক্ষেত্র: পুনরায় ব্যবহারযোগ্য সঙ্গীত এবং কণ্ঠের শৈলী, গানগুলিতে একত্রিত এবং আপনার পছন্দ মতো সংগঠিত।",
     msgStgAboutLocalDb:                     "স্থানীয় SQLite ডেটাবেস",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -21020,6 +21372,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "دوبارہ نہ دکھائیں",
     btnNewsOpenLink:                        "مزید جانیں",
     tipNewsDismiss:                         "بند کریں",
+    tipNewsShow:                            "خبریں",
     lblStgGeneralNews:                      "yaiol سے خبریں دکھائیں",
     btnNewsClose:                           "بند کریں",
 
@@ -21098,6 +21451,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "ایل پی فائل ایکسپورٹ کریں",
     btnHdrExportBackup:                     "ڈیٹابیس بیک اپ",
     tipHdrSettings:                         "ترتیبات",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "چھوٹا کریں",
+    tipWinMaximize:                         "بڑا کریں",
+    tipWinRestore:                          "بحال کریں",
+    tipWinClose:                            "بند کریں",
+
     tipHdrHelp:                             "مدد",
     btnHdrNew:                              "نیا",
     lblHdrSelected:                         "منتخب",
@@ -21252,7 +21612,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "تاریخ صاف ہو گئی",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "آواز، موسیقی اور گانے کے لیے AI پرامپٹ منیجر",
+    msgStgAboutDesc:                        "آپ کے Suno پرامپٹس کے لیے ایک ورک اسپیس: دوبارہ استعمال کے قابل موسیقی اور آواز کے انداز، گانوں میں یکجا اور آپ کے طریقے سے منظم۔",
     msgStgAboutLocalDb:                     "مقامی SQLite ڈیٹابیس",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -21497,6 +21857,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Usionyeshe tena",
     btnNewsOpenLink:                        "Jifunze zaidi",
     tipNewsDismiss:                         "Funga",
+    tipNewsShow:                            "Habari",
     lblStgGeneralNews:                      "Onyesha habari kutoka yaiol",
     btnNewsClose:                           "Funga",
 
@@ -21575,6 +21936,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Hamisha faili la LP",
     btnHdrExportBackup:                     "Nakala ya Hifadhi ya Hifadhidata",
     tipHdrSettings:                         "Mipangilio",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Punguza",
+    tipWinMaximize:                         "Ongeza",
+    tipWinRestore:                          "Rejesha",
+    tipWinClose:                            "Funga",
+
     tipHdrHelp:                             "Msaada",
     btnHdrNew:                              "Mpya",
     lblHdrSelected:                         "zilizochaguliwa",
@@ -21729,7 +22097,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Historia imefutwa",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Msimamizi wa Prompt za AI kwa Sauti, Muziki na Wimbo",
+    msgStgAboutDesc:                        "Eneo-kazi kwa vidokezo vyako vya Suno: mitindo ya muziki na sauti inayoweza kutumika tena, iliyounganishwa kuwa nyimbo na kupangwa kwa njia yako.",
     msgStgAboutLocalDb:                     "Hifadhidata ya ndani ya SQLite",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -21974,6 +22342,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "ਦੁਬਾਰਾ ਨਾ ਦਿਖਾਓ",
     btnNewsOpenLink:                        "ਹੋਰ ਜਾਣੋ",
     tipNewsDismiss:                         "ਬੰਦ ਕਰੋ",
+    tipNewsShow:                            "ਖ਼ਬਰਾਂ",
     lblStgGeneralNews:                      "yaiol ਤੋਂ ਖ਼ਬਰਾਂ ਦਿਖਾਓ",
     btnNewsClose:                           "ਬੰਦ ਕਰੋ",
 
@@ -22052,6 +22421,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP ਫਾਈਲ ਐਕਸਪੋਰਟ ਕਰੋ",
     btnHdrExportBackup:                     "ਡੇਟਾਬੇਸ ਬੈਕਅੱਪ",
     tipHdrSettings:                         "ਸੈਟਿੰਗਾਂ",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "ਛੋਟਾ ਕਰੋ",
+    tipWinMaximize:                         "ਵੱਡਾ ਕਰੋ",
+    tipWinRestore:                          "ਮੁੜ-ਬਹਾਲ ਕਰੋ",
+    tipWinClose:                            "ਬੰਦ ਕਰੋ",
+
     tipHdrHelp:                             "ਮਦਦ",
     btnHdrNew:                              "ਨਵਾਂ",
     lblHdrSelected:                         "ਚੁਣੇ ਗਏ",
@@ -22206,7 +22582,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "ਇਤਿਹਾਸ ਸਾਫ਼ ਹੋ ਗਿਆ",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "ਆਵਾਜ਼, ਸੰਗੀਤ ਅਤੇ ਗੀਤ ਲਈ AI ਪ੍ਰੋਂਪਟ ਪ੍ਰਬੰਧਕ",
+    msgStgAboutDesc:                        "ਤੁਹਾਡੇ Suno ਪ੍ਰੋਂਪਟਾਂ ਲਈ ਇੱਕ ਕਾਰਜ ਸਥਾਨ: ਮੁੜ ਵਰਤੋਂ ਯੋਗ ਸੰਗੀਤ ਅਤੇ ਵੋਕਲ ਸ਼ੈਲੀਆਂ, ਗੀਤਾਂ ਵਿੱਚ ਜੋੜੀਆਂ ਗਈਆਂ ਅਤੇ ਤੁਹਾਡੇ ਤਰੀਕੇ ਨਾਲ ਸੰਗਠਿਤ।",
     msgStgAboutLocalDb:                     "ਸਥਾਨਕ SQLite ਡੇਟਾਬੇਸ",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -22451,6 +22827,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Kada a sake nunawa",
     btnNewsOpenLink:                        "Koyi game da shi",
     tipNewsDismiss:                         "Rufe",
+    tipNewsShow:                            "Labarai",
     lblStgGeneralNews:                      "Nuna labarai daga yaiol",
     btnNewsClose:                           "Rufe",
 
@@ -22529,6 +22906,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Fitar da fayil ɗin LP",
     btnHdrExportBackup:                     "Ajiyar Bayanan",
     tipHdrSettings:                         "Saituna",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Rage girma",
+    tipWinMaximize:                         "Ƙara girma",
+    tipWinRestore:                          "Mayar",
+    tipWinClose:                            "Rufe",
+
     tipHdrHelp:                             "Taimako",
     btnHdrNew:                              "Sabo",
     lblHdrSelected:                         "da aka zaɓa",
@@ -22683,7 +23067,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "An share tarihi",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Manajan Prompt na AI don Murya, Kiɗa da Waƙa",
+    msgStgAboutDesc:                        "Wurin aiki don umarnin Suno naka: salo na kiɗa da murya masu sake amfani, haɗaɗɗu cikin waƙoƙi kuma an tsara su yadda kake so.",
     msgStgAboutLocalDb:                     "Bayanan SQLite na gida",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -22928,6 +23312,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Maṣe fi han mọ",
     btnNewsOpenLink:                        "Kọ́ ẹ̀kọ́ síwájú",
     tipNewsDismiss:                         "Pa",
+    tipNewsShow:                            "Ìròyìn",
     lblStgGeneralNews:                      "Fi iroyin lati yaiol han",
     btnNewsClose:                           "Pade",
 
@@ -23006,6 +23391,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "Ṣe ìkópa faili LP",
     btnHdrExportBackup:                     "Ẹ̀dà Àfikún Àkójọ Ìsọfúnni",
     tipHdrSettings:                         "Ètò",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Din-kekere",
+    tipWinMaximize:                         "Din-nla",
+    tipWinRestore:                          "Mu pada",
+    tipWinClose:                            "Pa",
+
     tipHdrHelp:                             "Iranlọwọ",
     btnHdrNew:                              "Tuntun",
     lblHdrSelected:                         "tí a yàn",
@@ -23160,7 +23552,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "A pa ìtàn rẹ́",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "Alàmójútó Prompt AI fún Ohùn, Orin àti Orin",
+    msgStgAboutDesc:                        "Aaye iṣẹ fun awọn ìwúrí Suno rẹ: awọn aṣa orin ati ohun ti o le tun lo, ti a so pọ si orin ati ṣeto ni ọna rẹ.",
     msgStgAboutLocalDb:                     "Àkójọ ìsọfúnni SQLite ìbílẹ̀",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -23405,6 +23797,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "మళ్ళీ చూపవద్దు",
     btnNewsOpenLink:                        "మరింత తెలుసుకోండి",
     tipNewsDismiss:                         "మూసివేయండి",
+    tipNewsShow:                            "వార్తలు",
     lblStgGeneralNews:                      "yaiol నుండి వార్తలను చూపించు",
     btnNewsClose:                           "మూసివేయి",
 
@@ -23483,6 +23876,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP ఫైల్‌ను ఎగుమతి చేయండి",
     btnHdrExportBackup:                     "డేటాబేస్ బ్యాకప్",
     tipHdrSettings:                         "సెట్టింగ్‌లు",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "చిన్నది చేయి",
+    tipWinMaximize:                         "పెద్దది చేయి",
+    tipWinRestore:                          "పునరుద్ధరించు",
+    tipWinClose:                            "మూసివేయి",
+
     tipHdrHelp:                             "సహాయం",
     btnHdrNew:                              "కొత్తది",
     lblHdrSelected:                         "ఎంచుకున్నవి",
@@ -23637,7 +24037,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "చరిత్ర క్లియర్ చేయబడింది",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "స్వరం, సంగీతం మరియు పాట కోసం AI ప్రాంప్ట్ మేనేజర్",
+    msgStgAboutDesc:                        "మీ Suno ప్రాంప్ట్‌ల కోసం ఒక కార్యస్థలం: తిరిగి ఉపయోగించగల సంగీతం మరియు గాత్ర శైలులు, పాటలుగా కలిపి మీ పద్ధతిలో నిర్వహించబడతాయి.",
     msgStgAboutLocalDb:                     "స్థానిక SQLite డేటాబేస్",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -23882,6 +24282,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "पुन्हा दाखवू नका",
     btnNewsOpenLink:                        "अधिक जाणून घ्या",
     tipNewsDismiss:                         "बंद करा",
+    tipNewsShow:                            "बातम्या",
     lblStgGeneralNews:                      "yaiol कडून बातम्या दाखवा",
     btnNewsClose:                           "बंद करा",
 
@@ -23960,6 +24361,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "LP फाइल निर्यात करा",
     btnHdrExportBackup:                     "डेटाबेस बॅकअप",
     tipHdrSettings:                         "सेटिंग्ज",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "लहान करा",
+    tipWinMaximize:                         "मोठे करा",
+    tipWinRestore:                          "पुनर्संचयित करा",
+    tipWinClose:                            "बंद करा",
+
     tipHdrHelp:                             "मदत",
     btnHdrNew:                              "नवीन",
     lblHdrSelected:                         "निवडलेले",
@@ -24114,7 +24522,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "इतिहास साफ झाला",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "आवाज, संगीत आणि गाण्यासाठी AI प्रॉम्प्ट व्यवस्थापक",
+    msgStgAboutDesc:                        "तुमच्या Suno प्रॉम्प्ट्ससाठी एक कार्यक्षेत्र: पुन्हा वापरता येण्याजोग्या संगीत आणि गायन शैली, गाण्यांमध्ये एकत्रित आणि तुमच्या पद्धतीने आयोजित.",
     msgStgAboutLocalDb:                     "स्थानिक SQLite डेटाबेस",
 
     // Prefix:DlgProject - Scope:project edit/create dialog
@@ -24359,6 +24767,7 @@ const TRANSLATIONS = {
     lblNewsHideForever:                     "Huwag nang ipakita muli",
     btnNewsOpenLink:                        "Matuto pa",
     tipNewsDismiss:                         "Isara",
+    tipNewsShow:                            "Balita",
     lblStgGeneralNews:                      "Ipakita ang balita mula sa yaiol",
     btnNewsClose:                           "Isara",
 
@@ -24437,6 +24846,13 @@ const TRANSLATIONS = {
     btnHdrExportAmlp:                       "I-export ang LP file",
     btnHdrExportBackup:                     "Database Backup",
     tipHdrSettings:                         "Mga Setting",
+
+    // Prefix:Win - Scope:window bar (the app's own title bar)
+    tipWinMinimize:                         "Paliitin",
+    tipWinMaximize:                         "Palakihin",
+    tipWinRestore:                          "Ibalik",
+    tipWinClose:                            "Isara",
+
     tipHdrHelp:                             "Tulong",
     btnHdrNew:                              "Bago",
     lblHdrSelected:                         "napili",
@@ -24591,7 +25007,7 @@ const TRANSLATIONS = {
     tstStgAiHistoryCleared:                 "Na-clear ang kasaysayan",
 
     // Prefix:StgAbout - Scope:settings view (About tab)
-    msgStgAboutDesc:                        "AI Prompt Manager para sa Boses, Musika at Kanta",
+    msgStgAboutDesc:                        "Isang workspace para sa iyong mga Suno prompt: magagamit muli na mga estilo ng musika at boses, pinagsama sa mga kanta at inorganisa sa iyong paraan.",
     msgStgAboutLocalDb:                     "Lokal na SQLite database",
 
     // Prefix:DlgProject - Scope:project edit/create dialog

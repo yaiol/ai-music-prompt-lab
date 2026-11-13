@@ -21,8 +21,9 @@ import {
 } from "lucide-react";
 import pkg from '../package.json';
 import { getUrl } from './lib/site-url';
-import { UisNewsLoader } from './lib/uis-news-loader';
+import { UisNewsLoader, UisBtnUpdate, UisBtnNews } from './lib/uis-news-loader';
 import { UisAppHeader } from './lib/uis-header';
+import { UisBarWindow, LbsHokWindow } from './lib/uis-bar-window';
 import { UisIcoGithub } from './lib/uis-icons';
 import { UisStgView } from './lib/uis-stg-view';
 // Custom icons are EDITABLE .svg FILES in src/assets - `?react` (vite-plugin-svgr) turns one into
@@ -334,6 +335,8 @@ async function sunoDraftFromMedia(mediaPath) {
     const { id } = await apiFetch("/suno-id-from-media", { method: "POST", body: JSON.stringify({ mediaPath }) });
     if (!id) return linkedOnly;   // not a Suno track at all — the file is still worth a card
     const draft = await sunoDraftFromUrl(`https://suno.com/song/${id}`);
+    // The song's title on Suno rarely carries the track number; the file name does ("02-Title").
+    if (draft && !draft.sortNumber) draft.sortNumber = linkedOnly.sortNumber;
     // ⚠ CLAUDE: a file that NAMES a song which no longer exists yields NOTHING — null, not
     // linkedOnly. The two failures look alike and are opposite: "no id" means this is just some
     // audio, while "id that 404s" means the song was deleted or made private, and building a card
@@ -568,6 +571,8 @@ export default function App() {
   const [copiedId, setCopiedId]           = useState(null);
   const [deleteConfirm, setDeleteConfirm] = useState(null);
   const [settingsOpen, setSettingsOpen]   = useState(false);
+  // The window bar: its three buttons act through the main process, which also says when the window is maximized.
+  const windowBar = LbsHokWindow(API);
   const [projectModalOpen, setProjectModalOpen] = useState(false);
   const [docCreateOpen, setDocCreateOpen]       = useState(false);
   const [docCreateSettings, setDocCreateSettings] = useState(() => {
@@ -1065,10 +1070,10 @@ export default function App() {
   // one drop is usually something you want to look at before it is saved.)
   // Sequential on purpose: it preserves the dropped order and asks Suno for one song at a time
   // rather than firing N scrapes at once.
-  const createCardsFromMedia = async (mediaPaths) => {
+  // `projectId` is where the cards go: the project a folder import was started on, else the open one.
+  const createCardsFromMedia = async (mediaPaths, projectId = activeProjectIds.length > 0 ? activeProjectIds[0] : null) => {
     if (draftFetching) return;
     setDraftFetching(true);
-    const projectId = activeProjectIds.length > 0 ? activeProjectIds[0] : null;
     const made = [];
     let gone = 0;
     try {
@@ -1520,19 +1525,19 @@ export default function App() {
     } catch (err) { showToast("❌ " + (err.message || t("tipSbrSyncUrls"))); }
   };
 
-  const handleImportFolderConfirm = async (songType) => {
+  // A folder import is a bulk drop of that folder's tracks onto one project: the cards are made by
+  // createCardsFromMedia, so each is filled from Suno when its file says which song it is.
+  const handleImportFolderConfirm = async () => {
     if (!importFolderPending) return;
     const { projectId, path } = importFolderPending;
     setImportFolderPending(null);
     try {
-      const data = await apiFetch("/import-folder", { method: "POST", body: JSON.stringify({ folderPath: path, projectId, songType }) });
-      if (data.created === 0) { showToast(t("tstAppImportJSONNothing")); return; }
+      const { paths = [] } = await apiFetch("/folder-tracks", { method: "POST", body: JSON.stringify({ folderPath: path }) });
+      if (!paths.length) { showToast(t("tstAppImportJSONNothing")); return; }
+      await createCardsFromMedia(paths, projectId);
       await apiFetch(`/projects/${projectId}`, { method: "PUT", body: JSON.stringify({ path }) });
-      const [freshCards, freshProjects] = await Promise.all([apiFetch("/cards"), apiFetch("/projects")]);
-      setCards(freshCards);
-      setProjects(freshProjects);
+      setProjects(await apiFetch("/projects"));
       setActiveProject(projectId);
-      showToast(`✅ ${data.created} song${data.created !== 1 ? "s" : ""} imported`);
     } catch (err) { showToast("❌ " + err.message); }
   };
 
@@ -1833,7 +1838,24 @@ export default function App() {
       <UisNewsLoader api={API} lang={langKey} t={t} />
 
       {/* Header */}
-      <UisAppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD}>
+      {/* ── Window bar ── the app's own title bar: the window has no system frame. */}
+      <UisBarWindow appName={APP_NAME} appVersion={APP_VERSION_BUILD} iconSrc="./app.png" maximized={windowBar.maximized}
+        tipMinimize={t('tipWinMinimize')} tipMaximize={t('tipWinMaximize')} tipRestore={t('tipWinRestore')} tipClose={t('tipWinClose')}
+        onMinimize={windowBar.minimize} onMaximize={windowBar.maximize} onClose={windowBar.close}>
+        <button className={`uis-barh-window-btn uis-stg-toggle ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(o => !o)} title={t("tipHdrSettings")} aria-pressed={settingsOpen}>
+          <Settings />
+        </button>
+        <button className="uis-barh-window-btn" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
+          <HelpCircle />
+        </button>
+        <button className="uis-barh-window-btn" onClick={() => window.open(GITHUB_URL, '_blank')} title="GitHub">
+          <UisIcoGithub />
+        </button>
+        <UisBtnUpdate t={t} />
+        <UisBtnNews t={t} />
+      </UisBarWindow>
+      {/* The name and the version are in the window bar, so the header holds the work buttons only. */}
+      <UisAppHeader appName={APP_NAME} appVersion={APP_VERSION_BUILD} bare>
         <div className="uis-txt-search uis-barh-search" style={{ maxWidth: 300 }}>
           <span className="uis-txt-search-glyph"><Search /></span>
           <input className="uis-txt-search-input" placeholder={t("plhHdrSearch")} value={search}
@@ -1954,18 +1976,6 @@ export default function App() {
           </button>
         </div>
         {/* Only the standard source·help·settings group is pushed right; everything else left. */}
-        <span className="uis-bar-spacer" />
-        <div className="uis-barh-grp">
-          <button className="uis-btn ico" onClick={() => window.open(GITHUB_URL, '_blank')} title="GitHub">
-            <UisIcoGithub />
-          </button>
-          <button className="uis-btn ico" onClick={() => window.open(getUrl(pkg.name, langKey.replace(/_/g, '-'), 'help'), '_blank')} title={t("tipHdrHelp")}>
-            <HelpCircle />
-          </button>
-          <button className={`uis-btn ico uis-stg-toggle ${settingsOpen ? "active" : ""}`} onClick={() => setSettingsOpen(o => !o)} title={t("tipHdrSettings")} aria-pressed={settingsOpen}>
-            <Settings />
-          </button>
-        </div>
         {/* Bulk tag modal - rendered at root level, see below */}
 
         {/* Move Card modal - rendered at root level, see below */}
@@ -2981,7 +2991,7 @@ export default function App() {
             <div className="uis-dlp-foot">
               <button className="uis-btn subtle" onClick={() => setImportFolderPending(null)}>{t("btnGlbCancel")}</button>
               <button className="uis-btn primary" style={{ "--uis-accent": types.SongStateCreated.accent, "--uis-accent-hov": types.SongStateCreated.accent }}
-                onClick={() => handleImportFolderConfirm("song")}>
+                onClick={handleImportFolderConfirm}>
                 <Music2 />{t("btnSbrImportConfirm")}
               </button>
             </div>
@@ -3670,10 +3680,10 @@ const GlobalPlayer = forwardRef(function GlobalPlayer({ media, apiPort, langKey,
       <span style={{ fontSize: 12, fontWeight: 600, color: 'var(--uis-text)', flexShrink: 0, maxWidth: 200, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }} title={media.cardName}>
         {media.cardName}
       </span>
-      <input type="range" min={0} max={duration || 1} step={0.1}
+      <input type="range" className="uis-sld" min={0} max={duration || 1} step={0.1}
         value={currentTime}
         onChange={e => { const v = parseFloat(e.target.value); if (audioRef.current) audioRef.current.currentTime = v; setCurrentTime(v); }}
-        style={{ flex: 1, height: 4, accentColor: 'var(--uis-accent)', cursor: "pointer" }} />
+        style={{ flex: 1 }} />
       <span className="uis-hnt" style={{ flexShrink: 0, fontVariantNumeric: "tabular-nums" }}>
         {fmt(currentTime)} / {fmt(duration)}
       </span>
@@ -3682,10 +3692,10 @@ const GlobalPlayer = forwardRef(function GlobalPlayer({ media, apiPort, langKey,
         <VolumeIcon />
       </button>
       <input
-        type="range" min="0" max="1" step="0.02"
+        type="range" className="uis-sld" min="0" max="1" step="0.02"
         value={muted ? 0 : volume}
         onChange={handleVolume}
-        style={{ width: 72, height: 4, accentColor: 'var(--uis-accent)', cursor: "pointer", flexShrink: 0 }}
+        style={{ width: 72, flexShrink: 0 }}
         title={`${t("tipFtrVolume")}: ${Math.round((muted ? 0 : volume) * 100)}%`}
       />
       <button className="uis-btn ico small subtle" onClick={onClose}>
