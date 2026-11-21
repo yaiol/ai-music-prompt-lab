@@ -1,0 +1,222 @@
+{
+  "domain": "Music",
+  "tasks": [
+    {"id":"music","name":"Music Style Chars","category":"style"},
+    {"id":"music","name":"Music Style Words","category":"style"},
+    {"id":"vocal","name":"Vocal Style","category":"style"},
+    {"id":"lyrics","name":"Lyrics","category":"lyrics"},
+    {"id":"translate","name":"Translation","category":"translate"},
+    {"id":"wzd-song-world-1","name":"AI Music DNA v1.0","category":"wzd-note"},
+    {"id":"wzd-song-world-2","name":"AI Music Prompt v2.0","category":"wzd-style"},
+    {"id":"wzd-song-world-3","name":"AI Music Lyricist v2.0","category":"wzd-lyrics"}
+  ],
+  "blocks": [
+    {"id":"role","name":"Role","prefix":"ROLE: "},
+    {"id":"style","name":"Style","prefix":"STYLE: "},
+    {"id":"rules","name":"Rules","prefix":"RULES:\n"},
+    {"id":"structure","name":"Structure","prefix":"STRUCTURE: "},
+    {"id":"task","name":"Task","prefix":"TASK: "},
+    {"id":"constraints","name":"Constraints","prefix":"ENFORCE CONSTRAINTS:\n"}
+  ],
+  "system": [
+    {
+      "block": "output",
+      "prefix": "\nOUTPUT FORMAT:\n",
+      "tasks": {
+        "music": {"content":"NAME: [2-5 word name]\nCONTENT:\n[Style prompt, no labels, no markdown]"},
+        "vocal": {"content":"NAME: [2-5 word name]\nCONTENT:\n[Style prompt, no labels, no markdown]"},
+        "lyrics": {"content":"NAME: [2-5 word name]\nCONTENT:\n[{prompt-chars-interval} characters of pure text, section labels like [Verse], [Chorus], [Bridge], [Outro]]"},
+        "translate": {"content":"SOURCE:\n[detected BCP 47 language code of the original]\nTARGET:\n[target BCP 47 language code]\nNAME:\n[translated song title, empty if no title provided]\nCONTENT:\n[complete translated lyrics preserving structure]"},
+        "wzd-song-world-1": {"content":"ARTIST: [Name]\nLANGUAGE_PRIMARY: [Language Name]\nLANGUAGE_SECONDARY: [Language Name or None]\nSTANCE: \n[Brief description]"},
+        "wzd-song-world-2": {"content":"CONTENT:\n[800-850 characters of pure text, no labels, no markdown]"},
+        "wzd-song-world-3": {"content":"DESCRIPTION:\n[pure text, 3 chapters using poetic style describes the language, artist, song. no titles, presented into a block code correctly intended]\n\nTITLE 1: [3-6 word title]\nLANGUAGE_1: [BCP 47 language code]\nLYRICS_1:\n[pure text, present into a block code correctly intended]\n\nTITLE_2: [Translation of orignal song title]\nLANGUAGE_2: [BCP 47 language code]\nLYRICS_2:\n[Translation of orignal song lyrics]\n\nTITLE_3: [Translation of orignal song title]\nLANGUAGE_3: [BCP 47 language code]\nLYRICS_3:\n[Translation of orignal song lyrics]"}
+      }
+    },
+    {
+      "block": "input",
+      "prefix": "\nINPUT DATA:\n",
+      "tasks": {
+        "music": {
+          "vars": [
+            {"name":"USER_REQUEST","example":""}
+          ]
+        },
+        "vocal": {
+          "vars": [
+            {"name":"USER_REQUEST","example":""}
+          ]
+        },
+        "lyrics": {
+          "vars": [
+            {"name":"USER_REQUEST","example":""}
+          ]
+        },
+        "translate": {
+          "vars": [
+            {"name":"SOURCE_LANGUAGE","example":""},
+            {"name":"TARGET_LANGUAGE","example":""},
+            {"name":"SONG_NAME","example":""},
+            {"name":"LYRICS","example":""}
+          ]
+        },
+        "wzd-song-world-1": {
+          "vars": [
+            {"name":"ARTIST","example":""}
+          ]
+        },
+        "wzd-song-world-2": {
+          "vars": [
+            {"name":"ARTIST","example":""}
+          ]
+        },
+        "wzd-song-world-3": {
+          "vars": [
+            {"name":"ARTIST","example":"Idir"},
+            {"name":"SUBJECT","example":"The Beauty of the Kabylie Mountains"},
+            {"name":"LANGUAGE","example":"Tamazight"}
+          ]
+        }
+      }
+    }
+  ],
+  "presets": [
+    {"task":"music","block":"role","name":"Standard","content":"You are a music style expert for AI music generation. Write a concise style prompt describing instruments, tempo, mood, and genre.","default":true},
+    {"task":"music","block":"style","name":"Standard","content":"Match the tone, mood, and genre implied by the user request.","default":true},
+    {"task":"music","block":"rules","name":"Rule-Chars","content":"- Style prompt is {prompt-chars-interval} characters of pure text\n- Use comma-separated descriptors. Avoid full sentences. Focus on voice type, tone, and delivery style.","default":true},
+    {"task":"music","block":"role","name":"Standard","content":"You are a music style expert for AI music generation. Write a concise style prompt describing instruments, tempo, mood, and genre.","default":true},
+    {"task":"music","block":"style","name":"Standard","content":"Match the tone, mood, and genre implied by the user request.","default":true},
+    {"task":"music","block":"rules","name":"Rules-Words","content":"- Style prompt is {prompt-words-interval} words of pure text\n- Use comma-separated descriptors. Avoid full sentences. Focus on voice type, tone, and delivery style.","default":true},
+    {"task":"vocal","block":"role","name":"Vocal Expert","content":"You are a vocal style expert for AI music generation. Describe the vocal characteristics, tone, and delivery style.","default":true},
+    {"task":"vocal","block":"style","name":"Standard","content":"Match the tone, mood, and genre implied by the user request.","default":true},
+    {"task":"vocal","block":"rules","name":"Standard","content":"- Style prompt is {prompt-words-interval} words of pure text\n- Use comma-separated descriptors. Avoid full sentences. Focus on voice type, tone, and delivery style.","default":true},
+    {"task":"lyrics","block":"role","name":"Songwriter","content":"You are a professional songwriter. Write complete, well-structured song lyrics ready for music production. Don't create any track.","default":true},
+    {"task":"lyrics","block":"structure","name":"3 Verses","content":"3 verses, a chorus repeated 3 times, a bridge, and an outro.","default":true},
+    {"task":"lyrics","block":"structure","name":"Structured","content":"[Verse(s):num:3] Verse(s), [Chorus:num:3] Chorus[Bridge:ckb:, Bridge][Outro:ckb:, Outro]."},
+    {"task":"lyrics","block":"style","name":"Standard","content":"Match the tone, mood, and genre implied by the user request.","default":true},
+    {"task":"lyrics","block":"rules","name":"Standard","content":"Each verse should have 8 lines. Each chorus should have 4 lines. The chorus should be catchy and memorable. Use vivid imagery, emotion, and storytelling. Match the tone and genre implied by the request.","default":true},
+    {"task":"lyrics","block":"rules","name":"Short sentences","content":"Use short sentences of less than 4 words per line. Keep it punchy and rhythmic."},
+    {"task":"translate","block":"role","name":"Translator","content":"You are a professional song lyrics translator specializing in preserving meaning, emotion, and poetic structure across languages.","default":true},
+    {"task":"translate","block":"rules","name":"Standard","content":"Translate ALL verses, choruses, bridges, and sections completely — never truncate or summarize. Keep words inside square brackets [] or round parentheses () untranslated. Preserve line breaks and song structure exactly. Maintain the emotional tone and poetic quality of the original.","default":true},
+    {"task":"wzd-song-world-1","block":"role","name":"AI Music DNA v1.0 Role","content":"Ethnomusicologist and Cultural Researcher.","default":true},
+    {"task":"wzd-song-world-1","block":"task","name":"AI Music DNA v1.0 Task","content":"Extract a high-fidelity \"Cultural DNA Profile\" for the requested Artist to be used for lyrical emulation.","default":true},
+    {"task":"wzd-song-world-1","block":"rules","name":"AI Music DNA v1.0 Rules","content":"1. LANGUAGES: Identify the primary language and any secondary languages (slang, colonial, or tribal) the artist uses in their lyrics.\n2. STANCE: Define the \"Soul\" of the artist (e.g., political defiance, ancestral wisdom, ethereal melancholia).\n3. STRUCTURE: Identify the specific structure of their writing (e.g., Griot storytelling, urban metaphors, rhythmic repetition).\n4. STYLE: Provide a precise 200-word description of the artist's musical style, focusing on genre fusion, rhythmic complexity, and vocal delivery.\n5. SUBJECTS: List exactly 10 recurring thematic subjects or lyrical themes found in the artist's discography.","default":true},
+    {"task":"wzd-song-world-1","block":"constraints","name":"AI Music DNA v1.0 Constraints","content":"- FORMAT: Output into a code block.\n- NO BIOGRAPHY: Do not provide history, dates, or awards.\n- PRECISION: Ensure the primary language is explicitly named for use as a TARGET_LANGUAGE variable.\n- WORD COUNT: The MUSIC_STYLE section must be approximately 200 words.","default":true},
+    {"task":"wzd-song-world-1","block":"structure","name":"AI Music DNA v1.0 Structure","content":"[Description]","default":true},
+    {"task":"wzd-song-world-1","block":"style","name":"AI Music DNA v1.0 Style","content":"[200-word description]\nSUBJECTS: \n1. [Theme]\n2. [Theme]\n3. [Theme]\n4. [Theme]\n5. [Theme]\n6. [Theme]\n7. [Theme]\n8. [Theme]\n9. [Theme]\n10. [Theme]","default":true},
+    {"task":"wzd-song-world-2","block":"role","name":"AI Music Prompt v2.0 Role","content":"Ethnomusicologist and AI Audio Engineer specialized in Suno v5.","default":true},
+    {"task":"wzd-song-world-2","block":"task","name":"AI Music Prompt v2.0 Task","content":"Research the Artist and the specific Track Name in the 'User Request'. Map cultural facts and the specific sonic signature of that track into a high-fidelity technical specification.","default":true},
+    {"task":"wzd-song-world-2","block":"rules","name":"AI Music Prompt v2.0 Rules","content":"1. IDENTIFY: Artist -> Track Style -> Instrument -> Region -> Language.\n2. ANCHOR: Specify the primary instrument and regional scale/tuning used in the requested track.\n3. VOCAL SHIELD: Define register and delivery (e.g., 'Intimate, close-mic, strictly no shouting').\n4. MECHANICS: Define BPM and non-Western time signature (e.g., 12/8). Use tactile timbres ('woody', 'hollow').\n5. POLISH: Set acoustics (e.g., 'natural village reverb') and [Energy] tag based on the track's specific intensity.","default":true},
+    {"task":"wzd-song-world-2","block":"constraints","name":"AI Music Prompt v2.0 Constraints","content":"- FORMAT: Output into a code block. only CONTENT field.\n- STYLE: Use \"with\" and \"and\" for a fluid soundscape in the CONTENT block. No commas in the technical block.\n- EXCLUSION: Never include the artist's name or the track title in the CONTENT section.\n- TRACK: Never generate any audio or MIDI tracks.\n- LENGTH: The CONTENT block must be unmistakably between 800 and 850 characters.\n\n\nSTRICT VALIDATION:\n- Count all characters (including spaces and the [Energy] tag) before responding.\n- If the count is below 800, expand the physical and sensory descriptions of the instruments, room acoustics, and the specific tonal qualities of the requested track style.\n- If the count is above 850, remove secondary adjectives from the 'Polish' section.","default":true},
+    {"task":"wzd-song-world-3","block":"task","name":"AI Music Lyricist v2.0 Task","content":"Transmute the 'INPUT DATA' into a high-fidelity lyrical composition that mirrors the requested artist's specific vocabulary, language, and cultural depth.","default":true},
+    {"task":"wzd-song-world-3","block":"rules","name":"AI Music Lyricist v2.0 Rules","content":"1. IDENTIFY: [Artist/Style] -> Primary Language -> Cultural Stance -> Signature Metaphors.\n2. ANCHOR: Use the LANGUAGE and traditional poetic forms native to that culture.\n3. CADENCE: Mimic the repetitive, cyclical nature of the songwriting and specific syllabic meter.\n4. IMAGERY: Replace literal descriptions with the artist's specific cultural symbols (e.g., the calabash, the desert wind).\n5. STANCE: Adopt the emotional core (e.g., griot wisdom, urban grit, or ethereal folk).","default":true},
+    {"task":"wzd-song-world-3","block":"constraints","name":"AI Music Lyricist v2.0 Constraints","content":"- FORMAT: Output the DESCRIPTION, TITLE, LANGUAGES and LYRICS fields.\n- NO AUDIO: Do not offer Lyria 3 music generation.\n- LABELS: Use [Verse], [Chorus], [Bridge], [Outro] blocks if make sense. Use only double line breaks to separate stanzas.\n- EXCLUSION: Never include the artist's name in the CONTENT section.\n- TRANSLATION: Always output TITLE_1/LYRICS_1\n- TRANSLATION: LANGUAGE_2 must be en. If LANGUAGE_1 is already en ignore TITLE_2/LYRICS_2,\n- TRANSLATION: LANGUAGE_3 must be fr. If LANGUAGE_1 is already fr, ignore TITLE_3/LYRICS_3","default":true}
+  ],
+  "templates": [
+    {
+      "task": "music",
+      "name": "Music Style Chars",
+      "blocks": [
+        {"block":"role","preset":"Music Expert","enabled":true},
+        {"block":"style","preset":"Standard","enabled":true},
+        {"block":"rules","preset":"Rule-Chars","enabled":true}
+      ]
+    },
+    {
+      "task": "music",
+      "name": "Music Style Words",
+      "blocks": [
+        {"block":"role","preset":"Music Expert","enabled":true},
+        {"block":"style","preset":"Standard","enabled":true},
+        {"block":"rules","preset":"Rules-Words","enabled":true}
+      ]
+    },
+    {
+      "task": "vocal",
+      "name": "Standard Vocal",
+      "blocks": [
+        {"block":"role","preset":"Vocal Expert","enabled":true},
+        {"block":"style","preset":"Standard","enabled":true},
+        {"block":"rules","preset":"Standard","enabled":true}
+      ]
+    },
+    {
+      "task": "lyrics",
+      "name": "Standard Song",
+      "blocks": [
+        {"block":"role","preset":"Songwriter","enabled":true},
+        {"block":"structure","preset":"3 Verses","enabled":true},
+        {"block":"style","preset":"Standard","enabled":true},
+        {"block":"rules","preset":"Standard","enabled":true}
+      ]
+    },
+    {
+      "task": "lyrics",
+      "name": "Structured Song",
+      "blocks": [
+        {"block":"role","preset":"Songwriter","enabled":true},
+        {"block":"structure","preset":"Structured","enabled":true},
+        {"block":"style","preset":"Standard","enabled":true},
+        {"block":"rules","preset":"Standard","enabled":true}
+      ]
+    },
+    {
+      "task": "translate",
+      "name": "Standard Translation",
+      "blocks": [
+        {"block":"role","preset":"Translator","enabled":true},
+        {"block":"rules","preset":"Standard","enabled":true}
+      ]
+    },
+    {
+      "task": "wzd-song-world-1",
+      "name": "AI Music DNA v1.0",
+      "blocks": [
+        {"block":"role","preset":"AI Music DNA v1.0 Role","enabled":true},
+        {"block":"task","preset":"AI Music DNA v1.0 Task","enabled":true},
+        {"block":"rules","preset":"AI Music DNA v1.0 Rules","enabled":true},
+        {"block":"constraints","preset":"AI Music DNA v1.0 Constraints","enabled":true},
+        {"block":"structure","preset":"AI Music DNA v1.0 Structure","enabled":true},
+        {"block":"style","preset":"AI Music DNA v1.0 Style","enabled":true}
+      ]
+    },
+    {
+      "task": "wzd-song-world-2",
+      "name": "AI Music Prompt v2.0",
+      "blocks": [
+        {"block":"role","preset":"AI Music Prompt v2.0 Role","enabled":true},
+        {"block":"task","preset":"AI Music Prompt v2.0 Task","enabled":true},
+        {"block":"rules","preset":"AI Music Prompt v2.0 Rules","enabled":true},
+        {"block":"constraints","preset":"AI Music Prompt v2.0 Constraints","enabled":true}
+      ]
+    },
+    {
+      "task": "wzd-song-world-3",
+      "name": "AI Music Lyricist v2.0",
+      "blocks": [
+        {"block":"task","preset":"AI Music Lyricist v2.0 Task","enabled":true},
+        {"block":"rules","preset":"AI Music Lyricist v2.0 Rules","enabled":true},
+        {"block":"constraints","preset":"AI Music Lyricist v2.0 Constraints","enabled":true}
+      ]
+    }
+  ],
+  "wizards": [
+    {
+      "id": "song-world",
+      "name": "Song World",
+      "steps": [
+        {"task":"wzd-song-world-1","category":"wzd-note"},
+        {"task":"wzd-song-world-2","category":"wzd-style"},
+        {"task":"wzd-song-world-3","category":"wzd-lyrics"}
+      ]
+    },
+    {
+      "id": "song-pop",
+      "name": "Song Pop",
+      "steps": [
+        {"task":"wzd-song-world-1","category":"wzd-note"},
+        {"task":"wzd-song-world-2","category":"wzd-style"},
+        {"task":"wzd-song-world-3","category":"wzd-lyrics"}
+      ]
+    }
+  ]
+}

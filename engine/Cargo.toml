@@ -1,0 +1,22 @@
+[package]
+name = "ai-music-prompt-lab-engine"
+version = "0.1.0"
+edition = "2024"
+
+# ⚠ The library name is FIXED at `engine`, whatever the package is called: the package name
+# carries the app id and changes on scaffold, and a crate name is a code identifier, so letting it
+# vary would rewrite `.rs` source on every rename. The app imports it as `engine::…`.
+[lib]
+name = "engine"
+
+[dependencies]
+chrono = "0.4.45"
+lofty = "0.25.5"
+regex = "1.13.1"
+rusqlite = { version = "0.43.0", features = ["bundled"] }
+rust_xlsxwriter = "0.102.0"
+serde = { version = "1.0.229", features = ["derive"] }
+serde_json = "1.0.154"
+ureq = "3.5.2"
+uuid = { version = "1.29.3", features = ["v4"] }
+zip = { version = "9.6.1", default-features = false, features = ["deflate"] }
