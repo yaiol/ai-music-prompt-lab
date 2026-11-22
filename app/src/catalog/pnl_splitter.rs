@@ -1,4 +1,4 @@
-// twin: uis-pnl-splitter.jsx jsx@20e6020e1377 rsx@a42cf55c8413
+// twin: uis-pnl-splitter.jsx jsx@20e6020e1377 rsx@82ef4db8fc50
 //! UisPnlSplitter — twin of `uis-pnl-splitter.jsx`: the resizable-panel divider. A 4px transparent grab strip,
 //! `col-resize` cursor, accent tint at 40% on hover and full accent while dragging. Only the LOOK is
 //! shared: the drag wiring stays the caller's (`on_resize_start`).
@@ -35,6 +35,7 @@ pub fn UisPnlSplitter(
     #[props(default)] theme: String,
     on_resize_start: EventHandler<MouseEvent>,
     /// Extra inline style (a flex basis, a margin ...); the accent variable is added after it.
+    /// ⚠ It must set the SAME properties on every render: Dioxus keeps one the string no longer sets.
     #[props(default)] style: String,
     /// The tooltip, already translated. Empty = none.
     #[props(default)] title: String,

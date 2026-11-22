@@ -1,4 +1,4 @@
-// twin: uis-fld-value.jsx jsx@e7a9591bcc31 rsx@b2b0e5abf768
+// twin: uis-fld-value.jsx jsx@e7a9591bcc31 rsx@e2afa0a2fcfb
 //! UisFldValue — twin of `uis-fld-value.jsx`: a read-only row that shows a NAMED value with actions beside
 //! it, in a bordered rounded shell. It owns the shell (surface, border, label, value, action slot); the
 //! actions are the caller's and the value is the children. Same classes and element order, so the
@@ -22,10 +22,11 @@ pub fn UisFldValue(
 ) -> Element {
     let class = if wrap { "uis-fld-value wrap" } else { "uis-fld-value" };
     let text_class = if mono { "uis-fld-value-text mono" } else { "uis-fld-value-text" };
-    let style = if accent.is_empty() { String::new() } else { format!("--uis-accent: {accent}") };
+    // ⚠ no attribute at all without an accent (as the JSX): an emptied string would leave the old accent on the row.
+    let style = if accent.is_empty() { None } else { Some(format!("--uis-accent: {accent}")) };
 
     rsx! {
-        div { class: "{class}", style: "{style}",
+        div { class: "{class}", style,
             span { class: "uis-fld-value-label", "{label}" }
             span { class: "{text_class}", {children} }
             if let Some(actions) = actions {

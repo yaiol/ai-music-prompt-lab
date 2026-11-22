@@ -188,7 +188,7 @@ pub(crate) fn Field(label: String, #[props(default)] accent: String, children: E
     rsx! {
         div { class: "uis-fld-labelled",
             if !label.is_empty() {
-                label { class: "uis-fld-labelled-label", style: if accent.is_empty() { String::new() } else { format!("color:{accent}") }, "{label}" }
+                label { class: "uis-fld-labelled-label", style: (!accent.is_empty()).then(|| format!("color:{accent}")), "{label}" }
             }
             {children}
         }

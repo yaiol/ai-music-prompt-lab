@@ -485,30 +485,34 @@ pub fn SettingsMedia() -> Element {
         div { class: "ap-stg",
             div { class: "uis-fld-labelled",
                 label { class: "uis-fld-labelled-label", "{lbl_paths}" }
-                div { class: "uis-barh-grp",
-                    button {
-                        class: if !relative() { "uis-btn ap-grow active" } else { "uis-btn ap-grow" },
-                        onclick: move |_| {
-                            if relative() {
-                                ask_media_paths(ui, false, &root());
-                            }
-                        },
-                        "{btn_abs}"
-                    }
-                    button {
-                        class: if relative() { "uis-btn ap-grow active" } else { "uis-btn ap-grow" },
-                        onclick: move |_| {
-                            if !relative() {
-                                relative.set(true);
-                                if !root().trim().is_empty() {
-                                    ask_media_paths(ui, true, &root());
+                // the same row as AI > Templates (Simple / Expert): the explanation on the left, the welded pair sized to
+                // its text on the right (owner, 2026-11-22; the pair used to stretch over the whole panel)
+                div { class: "ap-row",
+                    span { class: "uis-hnt ap-grow", "{note_paths}" }
+                    div { class: "uis-barh-grp",
+                        button {
+                            class: if !relative() { "uis-btn ap-grow active" } else { "uis-btn ap-grow" },
+                            onclick: move |_| {
+                                if relative() {
+                                    ask_media_paths(ui, false, &root());
                                 }
-                            }
-                        },
-                        "{btn_rel}"
+                            },
+                            "{btn_abs}"
+                        }
+                        button {
+                            class: if relative() { "uis-btn ap-grow active" } else { "uis-btn ap-grow" },
+                            onclick: move |_| {
+                                if !relative() {
+                                    relative.set(true);
+                                    if !root().trim().is_empty() {
+                                        ask_media_paths(ui, true, &root());
+                                    }
+                                }
+                            },
+                            "{btn_rel}"
+                        }
                     }
                 }
-                div { class: "ap-hint", "{note_paths}" }
             }
             if relative() {
             div { class: "uis-fld-labelled",

@@ -1,4 +1,4 @@
-// twin: uis-pkr-date.jsx jsx@e9e492047a5d rsx@1562110d9a8e
+// twin: uis-pkr-date.jsx jsx@e9e492047a5d rsx@967f49971f52
 //! UisPkrDate — twin of `uis-pkr-date.jsx`: the themed calendar date field. A trigger showing the
 //! formatted date + a calendar glyph; clicking opens a popup: a month header (chevron nav + a month/year
 //! jump), a weekday row, the day grid, and a Today / Clear footer. Same classes and element order, so
@@ -115,6 +115,7 @@ pub fn UisPkrDate(
     #[props(default)] clear_label: String,
     #[props(default)] placeholder: String,
     #[props(default)] class: String,
+    /// ⚠ It must set the SAME properties on every render: Dioxus keeps one the string no longer sets.
     #[props(default)] style: String,
 ) -> Element {
     // app langKeys use "_" (pt_BR); Intl wants "-"

@@ -134,7 +134,8 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
         (Mode::Sort, Some(DropAt::Sort { id, after })) if id == card.id => Some(after),
         _ => None,
     };
-    let mark_side = mark.map(|after| if after { "bottom: -5px;" } else { "top: -5px;" });
+    // ⚠ both sides are always written: Dioxus keeps the one a new style string no longer sets
+    let mark_side = mark.map(|after| if after { "top: auto; bottom: -5px;" } else { "top: -5px; bottom: auto;" });
     let mut height = use_signal(|| 56.0f64);
     let (id_down, id_move, id_leave, id_in, id_out) = (card.id.clone(), card.id.clone(), card.id.clone(), card.id.clone(), card.id.clone());
     let label = title.clone();
@@ -147,11 +148,10 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
     };
     linked.sort_by(|a, b| rank(&a.kind).cmp(&rank(&b.kind)).then(a.name.cmp(&b.name)));
     let file = if card.media_path.is_empty() { None } else { Path::new(&card.media_path).file_name().map(|n| n.to_string_lossy().into_owned()) };
-    let (rel, over_style, lock_style) = (
-        if mode == Mode::Sort { "position: relative;" } else { "" },
-        if over { format!("border-color: {accent}; box-shadow: 0 0 0 2px {accent}33;") } else { String::new() },
-        if locked { "pointer-events: none; opacity: 0.45;" } else { "" },
-    );
+    // ⚠ each look that comes and goes is its own attribute (left out when off): as a part of the style string it would
+    // stay on the card, and a `key` on this lone element does not remake it.
+    let over_shadow = over.then(|| format!("0 0 0 2px {accent}33"));
+    let over_border = over.then(|| accent.clone());
     let dashed_border = if any_dragging { format!("{accent}88") } else { "var(--uis-border)".to_owned() };
     let dashed_colour = if any_dragging { accent.clone() } else { "var(--uis-text-mute)".to_owned() };
     let (tip_unlink, tip_remove) = (ui.t("tipPnlLinkUnlink"), ui.t("tipPnlLinkRemoveMedia"));
@@ -166,9 +166,13 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
     let media_path = card.media_path.clone();
     rsx! {
         div {
-            key: "{over}-{locked}",
             class: "{dragged_class}",
-            style: "--ap-accent:{accent};{rel}{over_style}{lock_style}",
+            style: "--ap-accent:{accent};",
+            position: if mode == Mode::Sort { "relative" },
+            border_color: over_border,
+            box_shadow: over_shadow,
+            pointer_events: if locked { "none" },
+            opacity: if locked { "0.45" },
             onmounted: move |e| {
                 spawn(async move {
                     if let Ok(r) = e.get_client_rect().await {
@@ -200,7 +204,7 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
                 }
             },
             if let Some(side) = mark_side {
-                div { style: "position: absolute; left: 0; right: 0; height: 3px; border-radius: 2px; background: var(--uis-accent); pointer-events: none; z-index: 2; {side}" }
+                div { style: "position: absolute; left: 0; right: 0; height: 3px; border-radius: 2px; background-color: var(--uis-accent); pointer-events: none; z-index: 2; {side}" }
             }
             div { class: "ap-rowcard-main",
                 div { class: "ap-rowcard-top",
@@ -216,8 +220,11 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
                     div { class: "ap-rowcard-second",
                         if linked.is_empty() {
                             div {
-                                key: "dash-{any_dragging}",
-                                style: "border: 1px dashed {dashed_border}; border-radius: 6px; padding: 6px 12px; text-align: center; font-size: 11px; color: {dashed_colour}; transition: all 0.2s; flex: 1; min-width: 0;",
+                                // ⚠ the two colours are their own attributes and the style string never changes: rewritten, it keeps
+                                // the drag's border colour when the new one is a var() (and a `key` on a lone element does nothing)
+                                style: "border: 1px dashed; border-radius: 6px; padding: 6px 12px; text-align: center; font-size: 11px; transition: all 0.2s; flex: 1; min-width: 0;",
+                                border_color: "{dashed_border}",
+                                color: "{dashed_colour}",
                                 "{dashed_text}"
                             }
                         } else {
@@ -274,8 +281,11 @@ fn SongCard(card: Card, mode: Mode, locked: bool, last: bool) -> Element {
                             }
                         } else {
                             div {
-                                key: "dash-{any_dragging}",
-                                style: "border: 1px dashed {dashed_border}; border-radius: 6px; padding: 6px 12px; text-align: center; font-size: 11px; color: {dashed_colour}; transition: all 0.2s; flex: 1; min-width: 0;",
+                                // ⚠ the two colours are their own attributes and the style string never changes: rewritten, it keeps
+                                // the drag's border colour when the new one is a var() (and a `key` on a lone element does nothing)
+                                style: "border: 1px dashed; border-radius: 6px; padding: 6px 12px; text-align: center; font-size: 11px; transition: all 0.2s; flex: 1; min-width: 0;",
+                                border_color: "{dashed_border}",
+                                color: "{dashed_colour}",
                                 "{dashed_text}"
                             }
                         }
@@ -301,7 +311,10 @@ fn MvCard(card: Card, locked: bool) -> Element {
     let tip_edit = ui.t("tipCardEdit");
     rsx! {
         div {
-            style: "background: var(--uis-bg-elev); border: 1px solid var(--uis-border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; cursor: grab; opacity: {opacity}; transition: opacity 0.15s; user-select: none; pointer-events: {events};",
+            style: "background: var(--uis-bg-elev); border: 1px solid var(--uis-border); border-radius: 10px; padding: 12px 14px; display: flex; flex-direction: column; gap: 6px; cursor: grab; transition: opacity 0.15s; user-select: none;",
+            // ⚠ own attributes: the style string above holds var() shorthands and must never change
+            opacity: "{opacity}",
+            pointer_events: "{events}",
             onmousedown: move |e| {
                 if !locked {
                     ui.arm_drag(Dragged::Cards(vec![drag_id.clone()]), drag_label.clone(), &e);
@@ -337,7 +350,10 @@ fn MediaFileCard(path: String, owner: Option<Card>, locked: bool) -> Element {
     let (drag_path, drag_name) = (path.clone(), name.clone());
     rsx! {
         div {
-            style: "background: var(--uis-bg-elev); border: 1px solid var(--uis-border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; cursor: grab; opacity: {opacity}; transition: opacity 0.15s; user-select: none; pointer-events: {events};",
+            style: "background: var(--uis-bg-elev); border: 1px solid var(--uis-border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; cursor: grab; transition: opacity 0.15s; user-select: none;",
+            // ⚠ own attributes: the style string above holds var() shorthands and must never change
+            opacity: "{opacity}",
+            pointer_events: "{events}",
             onmousedown: move |e| {
                 if !locked {
                     ui.arm_drag(Dragged::Media(drag_path.clone()), drag_name.clone(), &e);
@@ -519,10 +535,19 @@ pub fn MediaView() -> Element {
     let ui = use_context::<Ui>();
     let songs = songs_of(ui);
     let locked = finalized(ui);
-    let mut folder = use_signal(|| match ui.nav.peek().clone() {
-        Nav::Project(id) => ui.projects.peek().iter().find(|p| p.id == id).map(|p| p.path.clone()).unwrap_or_default(),
+    // ⚠ READ on every render, never kept from the first one: the project's folder can be edited (or another project
+    // picked) while this view is open, and a value taken once went on listing the old folder ("No audio files found").
+    let project_folder = match ui.nav.read().clone() {
+        Nav::Project(id) => ui.projects.read().iter().find(|p| p.id == id).map(|p| p.path.clone()).unwrap_or_default(),
         _ => String::new(),
-    });
+    };
+    // A folder chosen with the browse button, kept only while the project's own folder is the one it was chosen over.
+    let mut picked = use_signal(|| None::<(String, String)>);
+    let folder_now = match picked() {
+        Some((over, chosen)) if over == project_folder => chosen,
+        _ => project_folder.clone(),
+    };
+    let folder = move || folder_now.clone();
     let width = use_link_width(ui);
     // hidden or shown, the choice is remembered (shown the first time, as in the Electron app)
     let mut hide_linked = use_signal(|| ui.st().setting("hide-linked-media") == "1");
@@ -559,9 +584,10 @@ pub fn MediaView() -> Element {
                         class: "uis-btn ico small",
                         title: "{tip_choose}",
                         onclick: move |_| {
+                            let over = project_folder.clone();
                             spawn(async move {
                                 if let Some(dir) = rfd::AsyncFileDialog::new().set_parent(&dioxus::desktop::window().window).pick_folder().await {
-                                    folder.set(dir.path().to_string_lossy().into_owned());
+                                    picked.set(Some((over,dir.path().to_string_lossy().into_owned())));
                                 }
                             });
                         },

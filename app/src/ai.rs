@@ -603,7 +603,7 @@ pub fn AiDlg(kind: String, tweaks: Value, on_tweaks: EventHandler<Value>, on_don
                                         let delete_here = asking_now == Some(Asking::DeletePreset(block.clone()));
                                         let (b1, b2, b3, b4, b5, b6, b7, b8, b9) = (block.clone(), block.clone(), block.clone(), block.clone(), block.clone(), block.clone(), block.clone(), block.clone(), block.clone());
                                         rsx! {
-                                            div { key: "{block}", class: "ap-ai-block", style: if b.enabled { "" } else { "opacity:.5" },
+                                            div { key: "{block}", class: "ap-ai-block", style: if !b.enabled { "opacity:.5" },
                                                 div { class: "ap-ai-block-head",
                                                     button {
                                                         class: small,
@@ -675,10 +675,10 @@ pub fn AiDlg(kind: String, tweaks: Value, on_tweaks: EventHandler<Value>, on_don
                                                         Icon { width: 14, height: 14, icon: LdSave }
                                                     }
                                                     button {
-                                                        key: "tog-{b.enabled}",
                                                         class: small,
                                                         title: "{s_tipDlgAiToggleBlock}",
-                                                        style: if b.enabled { "color:var(--uis-ok)" } else { "" },
+                                                        // ⚠ no `else ""`: an emptied style string keeps the old colour (../CLAUDE.md of rust)
+                                                        style: if b.enabled { "color:var(--uis-ok)" },
                                                         onclick: move |_| {
                                                             if let Some(x) = blocks.write().iter_mut().find(|x| x.block == b6) {
                                                                 x.enabled = !x.enabled;

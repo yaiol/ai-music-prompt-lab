@@ -415,9 +415,12 @@ pub fn CardDlg(id: Option<String>, kind: String, draft: Option<Card>) -> Element
 
     let opt_label = format!("({})", ui.t("msgDlgCardOptional"));
     let min_h = if is_new { 290 } else { 330 };
-    let note_area = if is_note { "min-height: 200px;" } else { "" };
-    let over_style = |n: usize| if n > style_limit { "font-variant-numeric: tabular-nums; color: var(--uis-danger); font-weight: 700;" } else { "font-variant-numeric: tabular-nums;" };
-    let over_lyrics = |n: usize| if n > lyrics_limit { "font-variant-numeric: tabular-nums; color: var(--uis-danger); font-weight: 700;" } else { "font-variant-numeric: tabular-nums;" };
+    // ⚠ what comes and goes is never a part of a style string that changes (Dioxus keeps a property the new string drops):
+    // the attribute is left out, or the property is written as its own attribute.
+    let note_area = is_note.then_some("min-height: 200px;");
+    const COUNT: &str = "font-variant-numeric: tabular-nums;";
+    let over_colour = |over: bool| over.then_some("var(--uis-danger)");
+    let over_weight = |over: bool| over.then_some("700");
     let opt_span = "color: var(--uis-text-mute); text-transform: none; letter-spacing: 0; font-weight: 400;";
     let src_input_style = if lang().is_empty() { "width: 110px; max-width: 150px;" } else { "width: auto; max-width: 150px;" };
 
@@ -497,7 +500,9 @@ pub fn CardDlg(id: Option<String>, kind: String, draft: Option<Card>) -> Element
                             }
                             input {
                                 class: "uis-txt",
-                                style: if name_err() { "border-color: var(--uis-danger); flex: 1; margin: 0;" } else { "flex: 1; margin: 0;" },
+                                // ⚠ the red border is its own attribute: dropped from the style string, it would stay on the field
+                                style: "flex: 1; margin: 0;",
+                                border_color: if name_err() { "var(--uis-danger)" },
                                 placeholder: "{plh_name}",
                                 value: "{name}",
                                 oninput: move |e| {
@@ -534,12 +539,12 @@ pub fn CardDlg(id: Option<String>, kind: String, draft: Option<Card>) -> Element
                         match active_tab {
                             Tab::Desc => rsx! {
                                 Field { label: ui.t("tabDlgCardDesc"), accent: accent.clone(),
-                                    textarea { class: "uis-txt-area", style: "{note_area}", rows: "{ROWS_DESC + bonus}", placeholder: "{ui.t(\"tabDlgCardDesc\")}…", value: "{desc}", oninput: move |e| desc.set(e.value()) }
+                                    textarea { class: "uis-txt-area", style: note_area, rows: "{ROWS_DESC + bonus}", placeholder: "{ui.t(\"tabDlgCardDesc\")}…", value: "{desc}", oninput: move |e| desc.set(e.value()) }
                                 }
                             },
                             Tab::Note => rsx! {
                                 Field { label: ui.t("tabDlgCardNote"), accent: accent.clone(),
-                                    textarea { class: "uis-txt-area", style: "{note_area}", rows: "{ROWS_DESC + bonus}", placeholder: "{ui.t(\"tabDlgCardNote\")}…", value: "{note}", oninput: move |e| note.set(e.value()) }
+                                    textarea { class: "uis-txt-area", style: note_area, rows: "{ROWS_DESC + bonus}", placeholder: "{ui.t(\"tabDlgCardNote\")}…", value: "{note}", oninput: move |e| note.set(e.value()) }
                                 }
                             },
                             Tab::Style => rsx! {
@@ -568,7 +573,7 @@ pub fn CardDlg(id: Option<String>, kind: String, draft: Option<Card>) -> Element
                                         if is_song {
                                             span { class: "uis-hnt", style: "font-variant-numeric: tabular-nums;", "{style().chars().count()} {l_chars}" }
                                         } else {
-                                            span { class: "uis-hnt", style: "{over_style(style().chars().count())}", "{style().chars().count()} {l_chars}" }
+                                            span { class: "uis-hnt", style: COUNT, color: over_colour(style().chars().count() > style_limit), font_weight: over_weight(style().chars().count() > style_limit), "{style().chars().count()} {l_chars}" }
                                         }
                                     }
                                     // a music or vocal card of a saved card can be made global: the one set of cards every environment sees
@@ -1013,8 +1018,8 @@ pub fn CardDlg(id: Option<String>, kind: String, draft: Option<Card>) -> Element
                                 span { style: "font-weight: 700; color: {accent};", "v{version}" }
                             }
                             if is_song {
-                                span { class: "uis-hnt", style: "{over_style(style_total)}", "{ui.t(\"lblDlgCardStyleChars\")} {style_total} {l_chars}" }
-                                span { class: "uis-hnt", style: "{over_lyrics(lyrics_total)}", "{ui.t(\"lblDlgCardLyricsChars\")} {lyrics_total} {l_chars}" }
+                                span { class: "uis-hnt", style: COUNT, color: over_colour(style_total > style_limit), font_weight: over_weight(style_total > style_limit), "{ui.t(\"lblDlgCardStyleChars\")} {style_total} {l_chars}" }
+                                span { class: "uis-hnt", style: COUNT, color: over_colour(lyrics_total > lyrics_limit), font_weight: over_weight(lyrics_total > lyrics_limit), "{ui.t(\"lblDlgCardLyricsChars\")} {lyrics_total} {l_chars}" }
                             }
                         }
                     }

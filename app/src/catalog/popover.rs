@@ -1,4 +1,4 @@
-// twin: uis-ctl-popover.jsx jsx@cebca24f981e rsx@6754f9d0aaaa
+// twin: uis-ctl-popover.jsx jsx@cebca24f981e rsx@f19b1a2e75b1
 //! UisPopover — twin of `uis-ctl-popover.jsx`: the ONE floating-panel MECHANISM of the popover family. It
 //! positions a `.uis-pop-surface` against an anchor element: below it (flipping above when there is no
 //! room), width floored at the anchor (optional) and capped, anchored to the left or right edge so it
@@ -20,7 +20,8 @@
 //! would otherwise hear nothing. That is the one place this control touches the JS bridge.
 //! Differs: behaviour none. Form only: the trigger is named by id (`anchor_id`) because rsx has no element refs, and
 //! the portal is done after the render (the node is created in place, then moved), so a `<!---->` placeholder the
-//! vdom keeps may sit in `<body>` while the panel is closed.
+//! vdom keeps may sit in `<body>` while the panel is closed; the side the panel is not placed from is written `auto`
+//! where the JSX leaves it out (Dioxus never drops a property from a rewritten style).
 
 // Shared by every app: one that uses the menu but not the pickers would otherwise warn on `use_dismiss`
 // and the `Left` alignment, which only the pickers and some callers use.
@@ -182,6 +183,8 @@ pub(super) fn use_portal(id: String, active: bool) {
 }
 
 /// The inline style of the panel: the JSX's placement math, line for line.
+/// ⚠ All four sides are always written, the unused one as `auto`: Dioxus keeps a property the new string no longer sets, so a panel
+/// that flipped while open would otherwise stay pinned to both sides. (`min-width` follows a prop that does not change while mounted.)
 #[allow(clippy::too_many_arguments)]
 fn placement_style(
     r: Rect,
@@ -209,13 +212,13 @@ fn placement_style(
         // A flyout hangs DOWN from its row, so its room is everything below that row's top.
         let cap = fit(r.win_h - r.top - MARGIN * 2.0);
         let horizontal = if flip_left {
-            format!("right: {}px;", MARGIN.max(r.win_w - r.left))
+            format!("left: auto; right: {}px;", MARGIN.max(r.win_w - r.left))
         } else {
-            format!("left: {}px;", r.right)
+            format!("left: {}px; right: auto;", r.right)
         };
         // -4 cancels .uis-pop-surface's padding so the first row lines up with the parent row.
         let top = MARGIN.max((r.top - 4.0).min(r.win_h - cap - MARGIN));
-        return format!("max-width: {mw}px; max-height: {cap}px; {horizontal} top: {top}px;");
+        return format!("max-width: {mw}px; max-height: {cap}px; {horizontal} top: {top}px; bottom: auto;");
     }
 
     // Flip up only when below is genuinely cramped AND above is roomier.
@@ -224,14 +227,14 @@ fn placement_style(
     let cap = fit(if go_up { room_above } else { room_below });
     let min_w = if min_width_anchor { format!("min-width: {}px; ", r.width) } else { String::new() };
     let horizontal = if anchor_right {
-        format!("right: {}px;", MARGIN.max(r.win_w - r.right))
+        format!("left: auto; right: {}px;", MARGIN.max(r.win_w - r.right))
     } else {
-        format!("left: {}px;", r.left)
+        format!("left: {}px; right: auto;", r.left)
     };
     let vertical = if go_up {
-        format!("bottom: {}px;", r.win_h - r.top + 4.0)
+        format!("top: auto; bottom: {}px;", r.win_h - r.top + 4.0)
     } else {
-        format!("top: {}px;", r.bottom + 4.0)
+        format!("top: {}px; bottom: auto;", r.bottom + 4.0)
     };
     format!("max-width: {mw}px; max-height: {cap}px; {min_w}{horizontal} {vertical}")
 }

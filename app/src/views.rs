@@ -122,7 +122,8 @@ fn Sidebar(width: f64) -> Element {
     let all_count = ui.env_cards().len();
     let untagged_count = ui.env_cards().iter().filter(|c| c.tags.is_empty()).count();
     rsx! {
-        aside { style: "width: {width}px; min-width: {width}px; background: var(--uis-pnl-bgd); border-right: 1px solid var(--uis-border); display: flex; flex-direction: row; overflow: hidden; padding: 0;",
+        // ⚠ the width is its own attributes so that the style string never changes: a rewritten string loses a shorthand holding a var()
+        aside { style: "background: var(--uis-pnl-bgd); border-right: 1px solid var(--uis-border); display: flex; flex-direction: row; overflow: hidden; padding: 0;", width: "{width}px", min_width: "{width}px",
             div { class: "uis-barv-tools",
                 div { class: "uis-barv-grp",
                     button {
@@ -262,7 +263,7 @@ fn EnvSelector() -> Element {
     let (tip_edit, tip_del, plh_new, lbl_new) = (ui.t("btnCardEdit"), ui.t("tipCardDelete"), ui.t("plhPnlProjectEnvName"), ui.t("btnPnlProjectEnvNew"));
     rsx! {
         div { style: "position: relative; padding: 0 8px 8px; border-bottom: 1px solid var(--uis-border); margin-bottom: 6px;",
-            button { id: "amlr-env-btn", class: if open() { "uis-ddn-ext open" } else { "uis-ddn-ext" }, onclick: move |_| open.toggle(),
+            button { id: "amlp-env-btn", class: if open() { "uis-ddn-ext open" } else { "uis-ddn-ext" }, onclick: move |_| open.toggle(),
                 span { style: "display: flex; align-items: center; gap: 5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;",
                     if active.as_ref().is_some_and(|e| e.is_global) {
                         Icon { class: "uis-ico-inline", style: "color: var(--uis-accent);", icon: LdGlobe }
@@ -272,7 +273,7 @@ fn EnvSelector() -> Element {
                 Icon { class: "uis-ico-inline", style: "color: var(--uis-text-mute);", icon: LdChevronDown }
             }
             UisPopover {
-                anchor_id: "amlr-env-btn",
+                anchor_id: "amlp-env-btn",
                 open: open(),
                 min_width_anchor: true,
                 on_close: move |_| {

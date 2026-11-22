@@ -1,4 +1,4 @@
-// twin: uis-pkr-color.jsx jsx@b12e784d0179 rsx@76cc65759191
+// twin: uis-pkr-color.jsx jsx@b12e784d0179 rsx@73499bad04a9
 //! UisPkrColor — twin of `uis-pkr-color.jsx`: the colour picker. A swatch button that opens a
 //! draggable popup: a saturation/hue field, an eyedropper (when the platform has one), a hex input,
 //! R/G/B number fields, a row of quick swatches, and Cancel / Apply. Same classes and element order as
@@ -336,28 +336,30 @@ pub fn UisPkrColor(
     let (h, s, v) = hsv();
     let sat_pointer = hsv_to_hex(h, s, v);
     let hue_color = hsv_to_hex(h, 100.0, 100.0);
-    let swatch_shadow = |on: bool, c: &str| if on { format!("box-shadow: 0 0 0 2px {c}") } else { String::new() };
+    // ⚠ the ring is its own attribute (`box_shadow`, left out when off): as a part of the style string it would stay on a swatch
+    // that is no longer the chosen one (Dioxus keeps a property the new string drops).
+    let swatch_shadow = |on: bool, c: &str| on.then(|| format!("0 0 0 2px {c}"));
     let (top, left) = pop_pos();
 
     rsx! {
         div { style: "display: inline-block; flex-shrink: 0",
-            // Dioxus keeps an inline property a later `style` no longer names, so the open ring would stay on the closed swatch:
-            // a one-item loop keyed on the open state makes a fresh button for each state (a `key` on a lone element does nothing).
-            for _ in 0..1 {
-                button {
-                    key: "{open()}",
-                    id: "{btn_id}",
-                    class: if open() { "uis-swt on" } else { "uis-swt" },
-                    style: "background: {color}; {swatch_shadow(open(), &color)}",
-                    onclick: move |_| toggle.call(()),
-                }
+            button {
+                id: "{btn_id}",
+                class: if open() { "uis-swt on" } else { "uis-swt" },
+                style: "background: {color};",
+                box_shadow: swatch_shadow(open(), &color),
+                onclick: move |_| toggle.call(()),
             }
             if open() {
                 style { "{FIELD_CSS}" }
                 div {
                     id: "{pop_id}",
                     class: "uis-dlg-form",
-                    style: "position: fixed; z-index: 9999; top: {top}px; left: {left}px; background: var(--uis-dlg-bgd); border: 1px solid var(--uis-border); border-radius: 10px; box-shadow: 0 8px 32px #0008; display: flex; flex-direction: column; width: 220px; overflow: hidden",
+                    // ⚠ the position is its own attributes so that the style string never changes: rewritten on each move of the
+                    // popup, it would lose its shorthands holding a var() (the background and the border).
+                    top: "{top}px",
+                    left: "{left}px",
+                    style: "position: fixed; z-index: 9999; background: var(--uis-dlg-bgd); border: 1px solid var(--uis-border); border-radius: 10px; box-shadow: 0 8px 32px #0008; display: flex; flex-direction: column; width: 220px; overflow: hidden",
                     div {
                         style: "cursor: grab; display: flex; align-items: center; justify-content: center; padding: 6px 0 4px; border-bottom: 1px solid var(--uis-border); color: var(--uis-text-dim); flex-shrink: 0",
                         onmousedown: move |e| {
@@ -487,7 +489,8 @@ pub fn UisPkrColor(
                                 button {
                                     key: "{c}",
                                     class: if draft_now == c { "uis-swt small on" } else { "uis-swt small" },
-                                    style: "background: {c}; {swatch_shadow(draft_now == c, c)}",
+                                    style: "background: {c};",
+                                    box_shadow: swatch_shadow(draft_now == c, c),
                                     onclick: move |_| update_draft(c.to_string()),
                                 }
                             }

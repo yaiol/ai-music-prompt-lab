@@ -94,10 +94,13 @@ fn PlayBtn(card: Card, media_ok: bool) -> Element {
     let has_media = !card.media_path.is_empty();
     rsx! {
         button {
-            key: "play-{has_media}-{media_ok}",
             class: if playing { "uis-btn ico small active" } else { "uis-btn ico small" },
             // pointer-events: a finalized song card is inert, but listening is not editing (Electron keeps the play button clickable)
-            style: if !has_media { "visibility:hidden;pointer-events:auto" } else if !media_ok { "color:var(--uis-danger);border-color:var(--uis-danger);pointer-events:auto" } else { "pointer-events:auto" },
+            // ⚠ what comes and goes is its own attribute: dropped from a style string, it would stay on the button
+            style: "pointer-events:auto",
+            visibility: if !has_media { "hidden" },
+            color: if has_media && !media_ok { "var(--uis-danger)" },
+            border_color: if has_media && !media_ok { "var(--uis-danger)" },
             title: "{title}",
             disabled: !media_ok,
             onclick: move |_| ui.play_card(&card),
@@ -119,7 +122,9 @@ fn LrcBtn(card: Card, shown: bool, lrc_ok: bool, installed: bool) -> Element {
     rsx! {
         button {
             class: "uis-btn ico small",
-            style: if !shown { "visibility:hidden" } else if lrc_ok { "color:var(--ap-accent)" } else { "color:var(--uis-text-mute)" },
+            // ⚠ two attributes, each always or never there: a style string that swaps one for the other keeps both
+            color: if lrc_ok { "var(--ap-accent)" } else { "var(--uis-text-mute)" },
+            visibility: if !shown { "hidden" },
             title: "{title}",
             disabled: !installed,
             onclick: move |_| {
@@ -197,7 +202,7 @@ fn CopyBtn(card: Card, what: Copy, shown: bool, linked_style: bool) -> Element {
     rsx! {
         button {
             class: if done { "uis-btn ico small ap-ok" } else { "uis-btn ico small" },
-            style: if shown { "" } else { "visibility:hidden" },
+            style: if !shown { "visibility:hidden" },
             title: "{tip}",
             onclick: move |_| ui.copy(&card, mode),
             if done {

@@ -1,6 +1,6 @@
 [package]
 name = "ai-music-prompt-lab"
-version = "2.0.0"
+version = "2.0.1"
 edition = "2024"
 description = "A workspace for your Suno prompts: reusable music and vocal styles, combined into songs and organized your way."
 
